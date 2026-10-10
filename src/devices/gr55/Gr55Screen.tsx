@@ -8,6 +8,7 @@ import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { Library } from './Library';
 import { Stage } from './Stage';
 import { Canvas } from './Canvas';
+import { DeviceScreen } from './DeviceScreen';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
 import { libraryRoute } from './routes';
@@ -225,6 +226,7 @@ export default function Gr55Screen() {
             }
           />
           <Route path="palco" element={<Stage editor={editor} />} />
+          <Route path="device" element={<DeviceScreen editor={editor} onError={setError} />} />
           <Route
             path="*"
             element={

@@ -56,6 +56,7 @@ export const en = {
     navLibrary: 'Library',
     navStage: 'Stage',
     navEditor: 'Patch',
+    navDevice: 'Device',
     workspace: {
       /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
       workingCopy: 'Working copy',
@@ -218,10 +219,42 @@ export const en = {
   },
   stage: {
     title: 'Stage',
-    intro: 'A big, calm view for playing light: patch name and what each pedal step does.',
-    body: 'The Stage view arrives in a later step. Your library and editor are ready.',
+    intro: 'What sounds now, and what each pedal step does.',
     playingCopy:
-      'The pedal is sounding your working copy, not the saved slot. Save it if you want it to survive a patch switch.',
+      'The pedal is sounding your working copy, not the saved slot. Step on the pedals and the sounding patch changes with them.',
+    pedals: 'What each pedal step does',
+    effects: 'Effects now',
+    fixed: 'patch changes, fixed by hardware',
+    on: 'On',
+    off: 'Off',
     back: 'Back to the library',
+    footnote: 'Nothing here is editable. Switch patches by ear on the pedal itself.',
+  },
+  device: {
+    title: 'Device',
+    intro:
+      'Pedal-wide rules. Every change here carries the blue chip, because it affects the whole pedal and all 297 slots.',
+    profileTitle: 'Your instrument',
+    profileIntro:
+      'Tell Rigbench what you play. It shapes hints and patch lists on this computer; the pedal itself is not touched.',
+    profiles: {
+      'guitar-gk': 'Electric guitar with a GK-3 pickup',
+      'acoustic-piezo': 'Steel or nylon acoustic, piezo pickup',
+      'bass-gk': 'Bass guitar with a GK-3B pickup',
+    },
+    modeTitle: 'Guitar mode / Bass mode',
+    modeIntro:
+      'Pedal-wide. Switching remakes the whole patch list — all 297 slots change meaning. Save your working copy first.',
+    confirmMode: (count: number) =>
+      `Switching Guitar⇄Bass is a pedal-wide change that affects all 297 slots` +
+      `${count ? ` and discards ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`}` : ''}. Switch it?`,
+    modeSwitchBlocked:
+      'The working copy still has unsaved changes. Save, revert, or discard them before switching modes.',
+    modeSwitchedTo: (mode: string) => `The pedal is now in ${mode}.`,
+    midiTitle: 'MIDI and USB',
+    midiIntro:
+      'The pedal talks over the USB cable with the driver Roland ships for it. Rigbench reads one patch at a time and sends changes as you make them; nothing is stored on this computer.',
+    systemNotice: 'Pedal-wide settings always ask first.',
+    profileModeWarn: 'Pedal not in this mode',
   },
 };

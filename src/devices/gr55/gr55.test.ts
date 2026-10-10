@@ -202,6 +202,21 @@ describe('Gr55Editor', () => {
     expect(modes).toContain('BASS');
   });
 
+  test('switching the mode writes the system page, not the patch', async () => {
+    const { device, editor } = setUp();
+    await editor.readSystem();
+    device.received.length = 0;
+
+    await editor.setGuitarBassMode('BASS');
+
+    expect(editor.gkMode).toBe('BASS');
+    const writes = device.received.filter((message) => message[6] === 0x12);
+    expect(writes).toHaveLength(1);
+    // System page at 02 00 00 1a: this is the one pedal-wide write.
+    expect(writes[0].slice(7, 12)).toEqual([0x02, 0x00, 0x00, 0x1a, 0x01]);
+    expect(editor.patchSource).toBeUndefined();
+  });
+
   test('writing to a user slot sends the write command and nothing else', async () => {
     const { device, editor } = setUp();
     await editor.readPatch();

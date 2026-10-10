@@ -166,6 +166,17 @@ export class Gr55Editor {
     this.notify();
   }
 
+  /**
+   * Writes GUITAR/BASS to the pedal's system page. The caller owns the impact modal:
+   * this remakes the whole patch map, changing what every one of the 297 slots means.
+   */
+  async setGuitarBassMode(mode: GkMode): Promise<void> {
+    await this.session.writeData(GUITAR_BASS_SELECT.address, [mode === 'BASS' ? 1 : 0]);
+    this.gkMode = mode;
+    this.patchSource = undefined;
+    this.notify();
+  }
+
   async readPatch(onProgress?: (done: number, total: number) => void): Promise<void> {
     const next = new Uint8Array(PATCH_SPAN);
     let done = 0;

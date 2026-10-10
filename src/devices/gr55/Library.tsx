@@ -287,6 +287,16 @@ export function Library({
   return (
     <>
       <div className="library-head">
+        <nav className="top-nav" aria-label={en.gr55.navLibrary}>
+          <Link to="/gr55/editor">{en.gr55.navEditor}</Link>
+          <Link to="/gr55/patches" aria-current="page">
+            {en.gr55.navLibrary}
+          </Link>
+          <Link to="/gr55/palco">{en.gr55.navStage}</Link>
+          <Link className="top-device" to="/gr55/device">
+            {en.gr55.navDevice} <span className="dot" aria-hidden="true" />
+          </Link>
+        </nav>
         <h1>{en.library.title}</h1>
         <p className="hint">{en.library.intro}</p>
       </div>

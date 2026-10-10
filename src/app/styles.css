@@ -352,6 +352,20 @@ a.device-card:hover {
   font-weight: 600;
 }
 
+.top-nav .top-device .dot {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: #7ba3e3;
+}
+
+@media (prefers-color-scheme: light) {
+  .top-nav .top-device .dot {
+    background: #3a68bd;
+  }
+}
+
 /* Library: the home screen. Working copy gate and one card per slot. */
 .library-head {
   margin-bottom: 0.5rem;
@@ -556,6 +570,38 @@ a.device-card:hover {
   color: var(--muted);
 }
 
+/* Device domain: blue-marked pedal-wide settings. */
+.device {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.profile-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.profile-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.profile-list .profile-warn {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+/* Device-styled stage blocks stay under .stage. */
+
 /* Stage: calm and huge, nothing to edit here. */
 .stage {
   min-height: 100vh;
@@ -583,6 +629,53 @@ a.device-card:hover {
 
 .stage-notice {
   font-size: 1.1rem;
+}
+
+.stage-block h2 {
+  color: #9aa1ae;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stage-block ul {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+}
+
+.stage-block li {
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.stage-effects li .dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: #3c4048;
+  align-self: center;
+  flex: none;
+}
+
+.stage-effects li.on .dot {
+  background: #6fcf7f;
+}
+
+.stage-effects li.off {
+  color: #9aa1ae;
+}
+
+.stage-effects em {
+  color: #9aa1ae;
+}
+
+.stage-back {
+  font-size: 0.9rem;
 }
 
 .page {

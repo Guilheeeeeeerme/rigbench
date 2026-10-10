@@ -121,6 +121,9 @@ export function Workspace({
           <Link to="/gr55/editor">{en.gr55.navEditor}</Link>
           <Link to="/gr55/patches">{en.gr55.navLibrary}</Link>
           <Link to="/gr55/palco">{en.gr55.navStage}</Link>
+          <Link className="top-device" to="/gr55/device">
+            {en.gr55.navDevice} <span className="dot" aria-hidden="true" />
+          </Link>
         </nav>
         <div className="patch-title">
           <strong>{patchName || en.gr55.unnamed}</strong>

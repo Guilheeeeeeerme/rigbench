@@ -12,6 +12,7 @@ import {
   USER_PATCH_AREA_ADDRESS,
   USER_PATCH_COUNT,
   USER_PATCH_STRIDE,
+  userPatchAddress,
 } from './patchLayout';
 
 // The device ID Roland ships the GR-55 with; a .syx file is not tied to one pedal.
@@ -106,4 +107,77 @@ export function decodePatchSyx(file: Uint8Array): PatchWrite[] {
     throw new SyxError('no-patch-data');
   }
   return writes;
+}
+
+/** One user slot image from a backup file. */
+export interface SlotImage {
+  userPatchNumber: number;
+  bytes: Uint8Array;
+}
+
+function slotNumber(address: number): number | undefined {
+  const end = USER_PATCH_AREA_ADDRESS + USER_PATCH_COUNT * USER_PATCH_STRIDE;
+  if (address < USER_PATCH_AREA_ADDRESS || address >= end) {
+    return undefined;
+  }
+  return Math.floor((address - USER_PATCH_AREA_ADDRESS) / USER_PATCH_STRIDE);
+}
+
+/** Every user slot in the pedal, as one .syx file of slot-addressed DT1 messages. */
+export function encodeSlotBackupSyx(slots: readonly SlotImage[]): Uint8Array {
+  const out: number[] = [];
+  const size = BULK_DATA_TRANSFER_SIZE_PER_MESSAGE;
+  for (const slot of slots) {
+    const base = userPatchAddress(slot.userPatchNumber);
+    for (const block of PATCH_BLOCKS) {
+      for (let done = 0; done < block.length; done += size) {
+        const start = block.offset + done;
+        const end = Math.min(start + size, block.offset + block.length);
+        out.push(
+          ...makeDataSetMessage(
+            RolandGR55SysExConfig,
+            FILE_DEVICE_ID,
+            base + start,
+            slot.bytes.subarray(start, end),
+          ),
+        );
+      }
+    }
+  }
+  return Uint8Array.from(out);
+}
+
+/**
+ * Reads a slot backup file back into slot images. Messages for other areas are
+ * skipped; a file with no slot data at all is an error.
+ */
+export function decodeSlotBackupSyx(file: Uint8Array): SlotImage[] {
+  const slots = new Map<number, Uint8Array>();
+  for (const message of splitMessages(file)) {
+    const parsed = parseDataResponseMessage(RolandGR55SysExConfig, message);
+    if (!parsed) {
+      continue;
+    }
+    const number = slotNumber(parsed.address);
+    if (number == null) {
+      continue;
+    }
+    if (!isValidChecksum(parsed)) {
+      throw new SyxError('bad-checksum');
+    }
+    const offset = parsed.address - userPatchAddress(number);
+    if (offset < 0 || offset + parsed.valueBytes.length > PATCH_SPAN) {
+      throw new SyxError('out-of-range');
+    }
+    let bytes = slots.get(number);
+    if (!bytes) {
+      bytes = new Uint8Array(PATCH_SPAN);
+      slots.set(number, bytes);
+    }
+    bytes.set(Uint8Array.from(parsed.valueBytes), offset);
+  }
+  if (slots.size === 0) {
+    throw new SyxError('no-patch-data');
+  }
+  return [...slots].map(([userPatchNumber, bytes]) => ({ userPatchNumber, bytes }));
 }

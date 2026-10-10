@@ -27,7 +27,7 @@ export function App() {
         <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<DeviceHome />} />
-            <Route path="/gr55" element={<Gr55Screen />} />
+            <Route path="/gr55/*" element={<Gr55Screen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

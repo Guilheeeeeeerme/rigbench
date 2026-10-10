@@ -311,13 +311,16 @@ a.device-card:hover {
   border-right: 1px solid var(--border);
 }
 
-.pages button {
+.pages button,
+.pages a {
   text-align: left;
   border-color: transparent;
   background: none;
+  color: var(--text);
 }
 
-.pages button[aria-current='page'] {
+.pages button[aria-current='page'],
+.pages a[aria-current='page'] {
   background: var(--surface);
   border-color: var(--border);
   color: var(--accent);
@@ -326,6 +329,172 @@ a.device-card:hover {
 
 .pages .librarian-tab {
   margin-top: 1rem;
+}
+
+/* Top navigation inside the device: Patch | Library | Stage. */
+.top-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.top-nav a {
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.top-nav a[aria-current='page'] {
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Library: the home screen. Working copy gate and one card per slot. */
+.library-head {
+  margin-bottom: 0.5rem;
+}
+
+.working-copy-card .card-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.working-copy-card .card-name strong {
+  font-size: 1.15rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+}
+
+.cards li {
+  list-style: none;
+}
+
+.slot-card {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.slot-card.focus {
+  border-color: var(--accent);
+}
+
+.slot-card .slot-name {
+  color: var(--muted);
+  font-size: 0.9rem;
+  min-height: 1.4em;
+}
+
+.slot-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* The pedal switched on its own: one fixed, unmissable banner. */
+.flash {
+  position: fixed;
+  top: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  max-width: min(90vw, 46rem);
+}
+
+.flash .notice {
+  margin: 0;
+  background: var(--surface);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Modals: the confirmations for the writes that matter cannot be missed. */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  max-width: 40rem;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.diff-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.diff-list li {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 0.25rem;
+}
+
+.diff-list .diff-field {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.diff-list .diff-more {
+  color: var(--muted);
+  justify-content: flex-end;
+}
+
+/* Stage: calm and huge, nothing to edit here. */
+.stage {
+  min-height: 100vh;
+  background: #101114;
+  color: #e7e9ee;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.stage h1 {
+  color: #9aa1ae;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stage-patch {
+  margin: 0;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  line-height: 1.1;
+}
+
+.stage-notice {
+  font-size: 1.1rem;
 }
 
 .page {
@@ -552,11 +721,8 @@ a.device-card:hover {
     padding: 0.5rem 0.75rem;
   }
 
-  .pages button {
+  .pages button,
+  .pages a {
     white-space: nowrap;
-  }
-
-  .pages .librarian-tab {
-    margin-top: 0;
   }
 }

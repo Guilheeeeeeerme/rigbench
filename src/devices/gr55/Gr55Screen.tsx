@@ -1,13 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { en } from '../../copy/en';
 import { requestAccess } from '../../midi/access';
 import { MidiAbortError, MidiSession, MidiTimeoutError, identify } from '../../midi/session';
 import type { MidiInputLike, MidiOutputLike } from '../../midi/session';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
+import { Library } from './Library';
+import { Stage } from './Stage';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
+import { libraryRoute } from './routes';
 import { PATCH_BLOCKS } from './patchLayout';
+import { DiscardNotice } from './DiscardNotice';
+
+const PORT_MEMORY = 'rigbench.gr55.ports';
+
+interface RememberedPorts {
+  input: string;
+  output: string;
+}
+
+function readRememberedPorts(): RememberedPorts | undefined {
+  try {
+    const stored = JSON.parse(localStorage.getItem(PORT_MEMORY) ?? '') as RememberedPorts;
+    return stored.input && stored.output ? stored : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 const GR55_PORT_NAME = /gr-?55/i;
 
@@ -71,11 +91,16 @@ export default function Gr55Screen() {
       const nextOutputs = [...access.outputs.values()];
       setInputs(nextInputs);
       setOutputs(nextOutputs);
+      const remembered = readRememberedPorts();
       setInputId((current) =>
-        nextInputs.some((port) => port.id === current) ? current : preferredPort(nextInputs),
+        nextInputs.some((port) => port.id === current)
+          ? current
+          : (remembered?.input ?? preferredPort(nextInputs)),
       );
       setOutputId((current) =>
-        nextOutputs.some((port) => port.id === current) ? current : preferredPort(nextOutputs),
+        nextOutputs.some((port) => port.id === current)
+          ? current
+          : (remembered?.output ?? preferredPort(nextOutputs)),
       );
     };
     refresh();
@@ -135,6 +160,13 @@ export default function Gr55Screen() {
       if (!stillHere()) {
         return;
       }
+      localStorage.setItem(
+        PORT_MEMORY,
+        JSON.stringify({
+          input: String((input as unknown as MIDIPort).id),
+          output: String((output as unknown as MIDIPort).id),
+        } satisfies RememberedPorts),
+      );
       setPhase({ kind: 'connected', connection: { session, editor } });
     } catch (reason) {
       if (live.current?.session === session) {
@@ -168,13 +200,41 @@ export default function Gr55Screen() {
   };
 
   if (phase.kind === 'connected') {
+    const { editor } = phase.connection;
     return (
-      <Workspace
-        editor={phase.connection.editor}
-        error={error}
-        onError={setError}
-        onDisconnect={disconnect}
-      />
+      <>
+        <DiscardNotice editor={editor} />
+        <Routes>
+          <Route index element={<Navigate to={libraryRoute} replace />} />
+          {/* While connected the setup screen exists only to redirect. */}
+          <Route path="setup" element={<Navigate to={libraryRoute} replace />} />
+          <Route path="patches" element={<Library editor={editor} onError={setError} />} />
+          <Route path="patches/:slot" element={<Library editor={editor} onError={setError} />} />
+          <Route
+            path="editor/:pageId/:sectionSlug?"
+            element={
+              <Workspace
+                editor={editor}
+                error={error}
+                onError={setError}
+                onDisconnect={disconnect}
+              />
+            }
+          />
+          <Route path="palco" element={<Stage editor={editor} />} />
+          <Route
+            path="*"
+            element={
+              <main className="gate">
+                <h1>{en.app.notFound}</h1>
+                <p>
+                  <Link to={libraryRoute}>{en.library.title}</Link>
+                </p>
+              </main>
+            }
+          />
+        </Routes>
+      </>
     );
   }
 

@@ -15,6 +15,8 @@ export interface Section {
   struct: StructReference;
   /** Field keys of the struct shown in this section, in map order. */
   keys: readonly string[];
+  /** Stable URL piece: /gr55/editor/:page/:section. */
+  slug: string;
   /**
    * Key of the enum that picks the active effect. Fields named after another effect of
    * that enum are hidden until that effect is selected.
@@ -27,6 +29,31 @@ export interface Page {
   id: string;
   title: string;
   sections: readonly Section[];
+}
+
+/** Page ids double as URL slugs; they are frozen here so links cannot drift. */
+export const PAGE_IDS = [
+  'patch',
+  'pcm1',
+  'pcm2',
+  'modeling',
+  'normal-pickup',
+  'amp',
+  'mod',
+  'mfx',
+  'delay',
+  'chorus',
+  'reverb',
+  'eq',
+  'assigns',
+  'pedal-gk',
+  'master',
+] as const;
+
+export type PageId = (typeof PAGE_IDS)[number];
+
+export function editorHref(pageId: PageId, sectionSlug: string): string {
+  return `/gr55/editor/${pageId}/${sectionSlug}`;
 }
 
 type KeyFilter = (key: string) => boolean;
@@ -49,11 +76,18 @@ function fieldKeys(struct: StructReference, filter: KeyFilter = () => true): str
 function section(
   title: string,
   struct: unknown,
+  slug: string,
   filter?: KeyFilter,
   extra: Pick<Section, 'typeKey' | 'readOnlyKeys'> = {},
 ): Section {
   const reference = struct as StructReference;
-  return { title, struct: reference, keys: fieldKeys(reference, filter), ...extra };
+  return {
+    title,
+    struct: reference,
+    slug,
+    keys: fieldKeys(reference, filter),
+    ...extra,
+  };
 }
 
 const startsWith =
@@ -97,73 +131,75 @@ export function buildPages(mode: GkMode): Page[] {
     {
       id: 'patch',
       title: t.patch,
-      sections: [section(t.patch, common, isName, { readOnlyKeys: ['patchAttribute'] })],
+      sections: [section(t.patch, common, 'common', isName, { readOnlyKeys: ['patchAttribute'] })],
     },
     {
       id: 'pcm1',
       title: t.pcm1,
       sections: [
-        section(t.tone, patch.patchPCMTone1),
-        section(t.toneOffsets, patch.patchPCMTone1Offset),
+        section(t.tone, patch.patchPCMTone1, 'tone'),
+        section(t.toneOffsets, patch.patchPCMTone1Offset, 'offsets'),
       ],
     },
     {
       id: 'pcm2',
       title: t.pcm2,
       sections: [
-        section(t.tone, patch.patchPCMTone2),
-        section(t.toneOffsets, patch.patchPCMTone2Offset),
+        section(t.tone, patch.patchPCMTone2, 'tone'),
+        section(t.toneOffsets, patch.patchPCMTone2Offset, 'offsets'),
       ],
     },
     {
       id: 'modeling',
       title: t.modeling,
-      sections: [section(t.modeling, patch.modelingTone, forMode(mode))],
+      sections: [section(t.modeling, patch.modelingTone, 'tone', forMode(mode))],
     },
     {
       id: 'normal-pickup',
       title: t.normalPickup,
-      sections: [section(t.normalPickup, common, isNormalPickup)],
+      sections: [section(t.normalPickup, common, 'level', isNormalPickup)],
     },
     {
       id: 'amp',
       title: t.amp,
       sections: [
-        section(t.amp, patch.ampModNs, isAmp),
-        section(t.noiseSuppressor, patch.ampModNs, isNoiseSuppressor),
+        section(t.amp, patch.ampModNs, 'amp', isAmp),
+        section(t.noiseSuppressor, patch.ampModNs, 'noise-suppressor', isNoiseSuppressor),
       ],
     },
     {
       id: 'mod',
       title: t.mod,
       sections: [
-        section(t.mod, patch.ampModNs, not(isAmp, isNoiseSuppressor), { typeKey: 'modType' }),
+        section(t.mod, patch.ampModNs, 'mod', not(isAmp, isNoiseSuppressor), {
+          typeKey: 'modType',
+        }),
       ],
     },
     {
       id: 'mfx',
       title: t.mfx,
-      sections: [section(t.mfx, patch.mfx, undefined, { typeKey: 'mfxType' })],
+      sections: [section(t.mfx, patch.mfx, 'mfx', undefined, { typeKey: 'mfxType' })],
     },
     {
       id: 'delay',
       title: t.delay,
-      sections: [section(t.delay, patch.sendsAndEq, startsWith('delay'))],
+      sections: [section(t.delay, patch.sendsAndEq, 'delay', startsWith('delay'))],
     },
     {
       id: 'chorus',
       title: t.chorus,
-      sections: [section(t.chorus, patch.sendsAndEq, startsWith('chorus'))],
+      sections: [section(t.chorus, patch.sendsAndEq, 'chorus', startsWith('chorus'))],
     },
     {
       id: 'reverb',
       title: t.reverb,
-      sections: [section(t.reverb, patch.sendsAndEq, startsWith('reverb'))],
+      sections: [section(t.reverb, patch.sendsAndEq, 'reverb', startsWith('reverb'))],
     },
     {
       id: 'eq',
       title: t.eq,
-      sections: [section(t.eq, patch.sendsAndEq, startsWith('eq'))],
+      sections: [section(t.eq, patch.sendsAndEq, 'eq', startsWith('eq'))],
     },
     {
       id: 'assigns',
@@ -177,30 +213,39 @@ export function buildPages(mode: GkMode): Page[] {
         common.assign6,
         common.assign7,
         common.assign8,
-      ].map((assign) => section(assign.definition.description, assign)),
+      ].map((assign, index) =>
+        section(assign.definition.description, assign, `assign-${index + 1}`),
+      ),
     },
     {
       id: 'pedal-gk',
       title: t.pedalGk,
       sections: [
-        ...[
-          common.ctl,
-          common.expPdlOff,
-          common.expPdlOn,
-          common.expSw,
-          common.gkVol,
-          common.gkS1,
-          common.gkS2,
-        ].map((control) => section(control.definition.description, control)),
-        section(t.pedalRanges, common, isPedalControl),
+        ...(
+          [
+            [common.ctl, 'ctl'],
+            [common.expPdlOff, 'exp-off'],
+            [common.expPdlOn, 'exp-on'],
+            [common.expSw, 'exp-switch'],
+            [common.gkVol, 'gk-volume'],
+            [common.gkS1, 'gk-s1'],
+            [common.gkS2, 'gk-s2'],
+          ] as const
+        ).map(([control, slug]) => section(control.definition.description, control, slug)),
+        section(t.pedalRanges, common, 'ranges', isPedalControl),
       ],
     },
     {
       id: 'master',
       title: t.master,
       sections: [
-        section(t.master, common, not(isName, isNormalPickup, isPedalControl)),
-        section(t.other, patch.sendsAndEq, not(startsWith('delay', 'chorus', 'reverb', 'eq'))),
+        section(t.master, common, 'voice', not(isName, isNormalPickup, isPedalControl)),
+        section(
+          t.other,
+          patch.sendsAndEq,
+          'sends',
+          not(startsWith('delay', 'chorus', 'reverb', 'eq')),
+        ),
       ],
     },
   ];

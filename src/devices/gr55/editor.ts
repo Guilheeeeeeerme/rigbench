@@ -1,6 +1,7 @@
 import type { MidiSession } from '../../midi/session';
+import { isBooleanField, isNumericField } from '../../protocol/RolandAddressMap';
 import type { FieldReference, FieldType } from '../../protocol/RolandAddressMap';
-import { pack7 } from '../../protocol/RolandSysExProtocol';
+import { BULK_DATA_TRANSFER_SIZE_PER_MESSAGE, pack7 } from '../../protocol/RolandSysExProtocol';
 import {
   GR55_MAP,
   PATCH_BLOCKS,
@@ -13,6 +14,13 @@ import type { PatchFieldSpan } from './changeTracking';
 import { decodePatchSyx, encodePatchSyx } from './syx';
 
 export type GkMode = 'GUITAR' | 'BASS';
+
+/** One parameter that differs between the working copy and a user slot. */
+export interface SlotDiffEntry {
+  description: string;
+  current: string;
+  slot: string;
+}
 
 const PATCH_NAME = GR55_MAP.temporaryPatch.common.patchName;
 const PATCH_NAME_OFFSET = PATCH_NAME.address - TEMPORARY_PATCH_ADDRESS;
@@ -36,6 +44,35 @@ function decodeName(bytes: Uint8Array, offset: number): string {
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function sameBytes(a: Uint8Array, b: Uint8Array): boolean {
+  return a.length === b.length && a.every((byte, index) => byte === b[index]);
+}
+
+/** The value of one field's bytes, in words instead of raw numbers when the map allows. */
+export function formatFieldBytes(field: FieldReference, bytes: Uint8Array): string {
+  try {
+    const { type, size } = field.definition;
+    const value = type.decode(bytes, 0, size);
+    if (typeof value === 'string') {
+      return value.trim();
+    }
+    if (isBooleanField(type)) {
+      return value ? type.trueLabel : type.falseLabel;
+    }
+    if (isNumericField(type)) {
+      return type.format(value);
+    }
+    // Enum fields decode straight to their label.
+    return String(value);
+  } catch {
+    return hexBytes(bytes);
+  }
+}
+
+function hexBytes(bytes: Uint8Array): string {
+  return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join(' ');
 }
 
 export type FieldValue<T> = { ok: true; value: T } | { ok: false; raw: Uint8Array };
@@ -210,12 +247,60 @@ export class Gr55Editor {
     );
   }
 
+  /**
+   * Puts a slot image back into one user slot. This is the only write that does not
+   * start from the temporary patch, so the caller owns its confirmation.
+   */
+  async restoreUserPatch(userPatchNumber: number, patch: Uint8Array): Promise<void> {
+    const base = userPatchAddress(userPatchNumber);
+    const size = BULK_DATA_TRANSFER_SIZE_PER_MESSAGE;
+    for (const block of PATCH_BLOCKS) {
+      for (let done = 0; done < block.length; done += size) {
+        const start = block.offset + done;
+        const end = Math.min(start + size, block.offset + block.length);
+        await this.session.writeData(base + start, patch.slice(start, end));
+      }
+    }
+  }
+
   async readUserPatchName(userPatchNumber: number): Promise<string> {
     const bytes = await this.session.requestData(
       userPatchAddress(userPatchNumber) + PATCH_NAME_OFFSET,
       PATCH_NAME.definition.size,
     );
     return decodeName(bytes, 0);
+  }
+
+  /** Reads a user slot in full, as patch-span-indexed bytes. */
+  async readUserPatch(userPatchNumber: number): Promise<Uint8Array> {
+    const bytes = new Uint8Array(PATCH_SPAN);
+    const base = userPatchAddress(userPatchNumber);
+    await Promise.all(
+      PATCH_BLOCKS.map(async (block) => {
+        bytes.set(await this.session.requestData(base + block.offset, block.length), block.offset);
+      }),
+    );
+    return bytes;
+  }
+
+  /** The parameters that differ between the working copy and a user slot. */
+  async diffUserSlot(userPatchNumber: number): Promise<SlotDiffEntry[]> {
+    const slot = await this.readUserPatch(userPatchNumber);
+    const entries: SlotDiffEntry[] = [];
+    for (const field of this.changeIndex) {
+      const end = field.offset + field.size;
+      const current = this.image.slice(field.offset, end);
+      const stored = slot.slice(field.offset, end);
+      if (sameBytes(current, stored)) {
+        continue;
+      }
+      entries.push({
+        description: field.reference.definition.description,
+        current: formatFieldBytes(field.reference, current),
+        slot: formatFieldBytes(field.reference, stored),
+      });
+    }
+    return entries;
   }
 
   exportSyx(): Uint8Array {

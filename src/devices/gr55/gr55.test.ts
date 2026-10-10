@@ -17,7 +17,14 @@ import {
   TEMPORARY_PATCH_ADDRESS,
   userPatchAddress,
 } from './patchLayout';
-import { SyxError, decodePatchSyx, encodePatchSyx } from './syx';
+import {
+  SyxError,
+  decodePatchSyx,
+  decodeSlotBackupSyx,
+  encodePatchSyx,
+  encodeSlotBackupSyx,
+} from './syx';
+import type { SlotImage } from './syx';
 import { spansOverlapping, temporaryPatchFields } from './changeTracking';
 
 const common = TEMPORARY_PATCH.common;
@@ -308,6 +315,54 @@ describe('unsaved changes', () => {
 
     expect(editor.isDirty).toBe(false);
     expect(editor.discardedChanges).toBe(1);
+  });
+});
+
+describe('slot backup files', () => {
+  test('slot images survive the trip through a file and back into the pedal', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+    await editor.writeToUserSlot(4);
+    await editor.writeToUserSlot(5);
+
+    const images: SlotImage[] = [
+      { userPatchNumber: 4, bytes: await editor.readUserPatch(4) },
+      { userPatchNumber: 5, bytes: await editor.readUserPatch(5) },
+    ];
+    const file = encodeSlotBackupSyx(images);
+    const loaded = decodeSlotBackupSyx(file);
+    expect(loaded.map((slot) => slot.userPatchNumber)).toEqual([4, 5]);
+    expect(loaded[0].bytes).toEqual(images[0].bytes);
+
+    // Put the first slot image back into another slot and read it out again.
+    await editor.restoreUserPatch(6, loaded[0].bytes);
+    expect(await editor.readUserPatch(6)).toEqual(images[0].bytes);
+  });
+
+  test('slot files refuse damage and refuse non-slot data', () => {
+    const file = encodeSlotBackupSyx([]);
+    try {
+      decodeSlotBackupSyx(file);
+    } catch (error) {
+      expect(error instanceof SyxError ? error.problem : 'no error').toBe('no-patch-data');
+    }
+  });
+});
+
+describe('slot diff', () => {
+  test('a slot just written matches the working copy, then the diff follows the edits', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+    await editor.writeToUserSlot(4);
+
+    expect(await editor.diffUserSlot(4)).toEqual([]);
+
+    editor.write(common.patchName, 'Scratch');
+    const diff = await editor.diffUserSlot(4);
+    expect(diff.some((entry) => entry.current.startsWith('Scratch'))).toBe(true);
+    expect(diff.every((entry) => entry.description && entry.current && entry.slot !== '')).toBe(
+      true,
+    );
   });
 });
 

@@ -53,6 +53,9 @@ export const en = {
   gr55: {
     reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
     reload: 'Read from pedal',
+    navLibrary: 'Library',
+    navStage: 'Stage',
+    navEditor: 'Patch',
     workspace: {
       /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
       workingCopy: 'Working copy',
@@ -130,5 +133,53 @@ export const en = {
     confirmWrite: (slot: string, current: string | undefined, name: string) =>
       `Overwrite user patch ${slot}${current ? ` (“${current}”)` : ''} with “${name}”? The patch stored there now is lost.`,
     written: (slot: string) => `Written to user patch ${slot}.`,
+  },
+  library: {
+    title: 'Library',
+    intro:
+      'Every patch stored in the pedal. Try one with a single click, open it in the editor, or write the patch you are working on into a slot.',
+    workingCopy: 'Working copy',
+    workingCopyIntro:
+      'The patch the pedal is sounding right now. The pedal throws it away when it switches patches.',
+    openInEditor: 'Open',
+    changes: (count: number) => (count === 1 ? '1 unsaved change' : `${count} unsaved changes`),
+    noChanges: 'No unsaved changes',
+    test: 'Test',
+    writeTo: 'Write to…',
+    reading: (done: number, total: number) => `Reading slots… ${done}/${total}`,
+    namesTitle: 'Slot names',
+    readAllNames: 'Read all slot names',
+    backupTitle: 'Whole-pedal backup',
+    backupIntro:
+      'Save every slot in the pedal to a file, or put a saved backup back into the pedal. Both keep the pedal busy for a while; names first if you just want an inventory.',
+    backup: 'Save a backup of every slot…',
+    backupProgress: (done: number, total: number) => `Backing up… ${done}/${total} slots`,
+    backupDone: (file: string) => `Backup saved as ${file}.`,
+    backupWriteTitle: 'Restore a slot backup',
+    backupWrite: 'Write a slot backup back to the pedal…',
+    backupRestoring: (done: number, total: number) => `Restoring… ${done}/${total} slots`,
+    backupRestored: 'The backup is back in the pedal.',
+    fileIsEmpty: 'This backup file holds no slots.',
+    writeFlowTitle: (slot: string) => `Write to ${slot}`,
+    readDiff: 'Compare with the working copy',
+    writeFlowIntro:
+      'Only the parameters listed below change. Confirming sends them to the slot; the pedal stays silent for a few seconds — do not step on the pedals while it writes.',
+    diffTitle: 'What changes in this slot',
+    diffEmpty: 'Nothing differs; writing is safe.',
+    diffConfirm: 'Write to the slot',
+    choosing: 'Choose a slot',
+    writing: 'Writing to the pedal — do not step on the pedals…',
+    written: (slot: string) => `Slot ${slot} now holds this patch.`,
+    tested: (slot: string) => `${slot} is sounding now.`,
+    emptySlot: '(empty)',
+    memory: (slot: string) => `Slot ${slot}`,
+  },
+  stage: {
+    title: 'Stage',
+    intro: 'A big, calm view for playing light: patch name and what each pedal step does.',
+    body: 'The Stage view arrives in a later step. Your library and editor are ready.',
+    playingCopy:
+      'The pedal is sounding your working copy, not the saved slot. Save it if you want it to survive a patch switch.',
+    back: 'Back to the library',
   },
 };

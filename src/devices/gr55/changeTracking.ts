@@ -10,6 +10,7 @@ export interface PatchFieldSpan {
   /** Byte offset inside the temporary patch. */
   offset: number;
   size: number;
+  reference: FieldReference;
 }
 
 function childMembers(struct: unknown): AtomReference[] {
@@ -44,7 +45,8 @@ function collect(atom: unknown, out: PatchFieldSpan[]): void {
       out.push({
         address: reference.address,
         offset: reference.address - TEMPORARY_PATCH_ADDRESS,
-        size: definition.size,
+        size: reference.definition.size,
+        reference: reference as FieldReference,
       });
     }
     return;

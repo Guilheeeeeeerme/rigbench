@@ -1,13 +1,12 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { en } from '../../copy/en';
 import { confirmDiscard } from './dirtyGuard';
-import { Librarian } from './Librarian';
 import { SectionView } from './SectionView';
 import type { Gr55Editor } from './editor';
-import { buildPages } from './pages';
-
-const LIBRARIAN = 'librarian';
+import { buildPages, editorHref } from './pages';
+import type { PageId } from './pages';
+import { PAGE_IDS } from './pages';
 
 function errorText(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -23,7 +22,10 @@ function ScopeTag({ scope, word, hint }: { scope: 'amber' | 'blue'; word: string
   );
 }
 
-/** The editor once a pedal is connected and its patch has been read. */
+/**
+ * The editor screen: one patch page at a time, reached by a URL that survives a
+ * refresh. The scope situation always lives in the context bar under the header.
+ */
 export function Workspace({
   editor,
   error,
@@ -35,20 +37,18 @@ export function Workspace({
   onError: (error: unknown) => void;
   onDisconnect: () => void;
 }) {
+  const { pageId: pageParam } = useParams<{ pageId?: string; sectionSlug?: string }>();
+  // An unknown page id falls back to the first page instead of an empty screen.
+  const pageId = (PAGE_IDS as readonly string[]).includes(pageParam ?? '')
+    ? (pageParam as PageId)
+    : 'patch';
   const patchName = useSyncExternalStore(editor.subscribe, () => editor.patchName);
   const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
   // Re-renders whenever the change set changes, keeping the count honest.
   useSyncExternalStore(editor.subscribe, () => editor.dirtySnapshot());
   const pages = useMemo(() => buildPages(gkMode), [gkMode]);
-  const [pageId, setPageId] = useState(pages[0].id);
   const [reading, setReading] = useState(false);
-  /** Discard occurrences the user has already seen. A new one re-raises the notice. */
-  const [dismissedDiscard, setDismissedDiscard] = useState<number>();
-  const discard = editor.discardedChanges;
-  const seen = discard !== undefined && editor.discardSequence === dismissedDiscard;
-  const notice =
-    discard !== undefined && !seen ? en.gr55.workspace.pedalSwitchedNotice(discard) : undefined;
-  const page = pages.find((candidate) => candidate.id === pageId);
+  const page = pages.find((candidate) => candidate.id === pageId) ?? pages[0];
 
   const reload = async () => {
     if (!confirmDiscard(editor)) {
@@ -72,8 +72,14 @@ export function Workspace({
         <Link className="brand" to="/">
           {en.app.name}
         </Link>
+        <nav className="top-nav" aria-label={en.gr55.navEditor}>
+          <Link to={editorHref('patch', 'common')} aria-current={page ? 'page' : undefined}>
+            {en.gr55.navEditor}
+          </Link>
+          <Link to="/gr55/patches">{en.gr55.navLibrary}</Link>
+          <Link to="/gr55/palco">{en.gr55.navStage}</Link>
+        </nav>
         <div className="patch-title">
-          <span className="device-name">{en.devices.gr55.name}</span>
           <strong>{patchName || en.gr55.unnamed}</strong>
           <span className="mode">{en.gr55.mode[gkMode]}</span>
         </div>
@@ -106,14 +112,6 @@ export function Workspace({
       </div>
 
       <div className="alerts">
-        {notice != null && (
-          <p className="notice" role="alert">
-            {notice}{' '}
-            <button type="button" onClick={() => setDismissedDiscard(editor.discardSequence)}>
-              {en.gr55.workspace.dismissNotice}
-            </button>
-          </p>
-        )}
         {error != null && (
           <p className="error" role="alert">
             {en.gr55.error(errorText(error))}{' '}
@@ -126,37 +124,24 @@ export function Workspace({
 
       <nav className="pages" aria-label={en.devices.gr55.name}>
         {pages.map((candidate) => (
-          <button
+          <Link
             key={candidate.id}
-            type="button"
-            aria-current={candidate.id === pageId ? 'page' : undefined}
-            onClick={() => setPageId(candidate.id)}
+            to={editorHref(candidate.id as PageId, candidate.sections[0].slug)}
+            aria-current={candidate.id === page?.id ? 'page' : undefined}
           >
             {candidate.title}
-          </button>
+          </Link>
         ))}
-        <button
-          type="button"
-          className="librarian-tab"
-          aria-current={pageId === LIBRARIAN ? 'page' : undefined}
-          onClick={() => setPageId(LIBRARIAN)}
-        >
-          {en.gr55.librarian}
-        </button>
       </nav>
 
       <main className="page">
-        {page ? (
-          page.sections.map((section) => (
-            <SectionView
-              key={`${page.id}:${section.struct.address}:${section.title}`}
-              editor={editor}
-              section={section}
-            />
-          ))
-        ) : (
-          <Librarian editor={editor} onError={onError} />
-        )}
+        {page?.sections.map((section) => (
+          <SectionView
+            key={`${page.id}:${section.struct.address}:${section.slug}`}
+            editor={editor}
+            section={section}
+          />
+        ))}
       </main>
     </div>
   );

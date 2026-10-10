@@ -1,5 +1,6 @@
 import { useRef, useState, useSyncExternalStore } from 'react';
 import { useT } from '../../copy';
+import { useSync } from './sync/SyncBadge';
 import type { Gr55Editor, GkMode } from './editor';
 import {
   PROFILE_PRESETS,
@@ -39,6 +40,7 @@ export function DeviceScreen({
   onError: (error: unknown) => void;
 }) {
   const t = useT();
+  const sync = useSync();
   const [profile, setProfile] = useState<InstrumentProfile>(() => loadProfile());
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string>();
@@ -66,8 +68,10 @@ export function DeviceScreen({
       return;
     }
     setBusy(true);
-    void editor
-      .setGuitarBassMode(mode)
+    // The other mode has its own 297 slots: hold the sync for the switch, then read them.
+    void sync
+      .exclusive(() => editor.setGuitarBassMode(mode))
+      .then(() => void sync.start())
       .then(() => setNotice(t('device.modeSwitchedTo', t(`gr55.mode.${mode}`))))
       .catch((reason) => onError(reason))
       .finally(() => setBusy(false));
@@ -100,7 +104,7 @@ export function DeviceScreen({
         if (!window.confirm(t('device.confirmSystemWrite'))) {
           return;
         }
-        await editor.writeSystemBytes(bytes);
+        await sync.exclusive(() => editor.writeSystemBytes(bytes));
         setNotice(t('device.systemRestored'));
       })
       .catch((error) => {

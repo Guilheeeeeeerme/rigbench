@@ -14,6 +14,9 @@ import { Gr55Editor } from './editor';
 import { libraryRoute } from './routes';
 import { PATCH_BLOCKS } from './patchLayout';
 import { DiscardNotice } from './DiscardNotice';
+import { openSyncCache } from './sync/cache';
+import { SyncEngine } from './sync/engine';
+import { SyncBadge, SyncProvider } from './sync/SyncBadge';
 
 const PORT_MEMORY = 'rigbench.gr55.ports';
 
@@ -36,6 +39,7 @@ const GR55_PORT_NAME = /gr-?55/i;
 interface Connection {
   session: MidiSession;
   editor: Gr55Editor;
+  sync: SyncEngine;
 }
 
 type Phase =
@@ -64,6 +68,7 @@ export default function Gr55Screen() {
   const release = () => {
     identifyAbort.current?.abort();
     identifyAbort.current = undefined;
+    live.current?.sync.dispose();
     live.current?.editor.dispose();
     live.current?.session.close();
     live.current = undefined;
@@ -150,7 +155,8 @@ export default function Gr55Screen() {
           setError(reason);
         }
       });
-      live.current = { session, editor };
+      const sync = new SyncEngine(editor, openSyncCache());
+      live.current = { session, editor, sync };
       await editor.readSystem();
       if (!stillHere()) {
         return;
@@ -170,7 +176,12 @@ export default function Gr55Screen() {
           output: String((output as unknown as MIDIPort).id),
         } satisfies RememberedPorts),
       );
-      setPhase({ kind: 'connected', connection: { session, editor } });
+      setPhase({ kind: 'connected', connection: { session, editor, sync } });
+      // The cache shows at once; the pedal is then read behind whatever screen is open.
+      void sync
+        .load()
+        .catch(() => {})
+        .then(() => sync.start());
     } catch (reason) {
       if (live.current?.session === session) {
         release();
@@ -205,10 +216,11 @@ export default function Gr55Screen() {
   };
 
   if (phase.kind === 'connected') {
-    const { editor } = phase.connection;
+    const { editor, sync } = phase.connection;
     return (
-      <>
+      <SyncProvider value={sync}>
         <DiscardNotice editor={editor} />
+        <SyncBadge editor={editor} />
         <Routes>
           <Route index element={<Navigate to={libraryRoute} replace />} />
           {/* While connected the setup screen exists only to redirect. */}
@@ -242,7 +254,7 @@ export default function Gr55Screen() {
             }
           />
         </Routes>
-      </>
+      </SyncProvider>
     );
   }
 

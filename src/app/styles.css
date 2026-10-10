@@ -986,3 +986,96 @@ a.device-card:hover {
   background: var(--accent);
   color: var(--accent-text);
 }
+
+/* Sync seal: bottom-right corner of every screen. The detail opens above it and
+   never covers the whole screen. */
+.sync {
+  position: fixed;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  max-width: min(92vw, 26rem);
+}
+
+.sync-badge {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.sync-badge.is-ready {
+  border-color: #3fa86b;
+}
+
+.sync-badge.is-changed,
+.sync-badge.is-paused,
+.sync-badge.is-idle {
+  border-color: var(--accent);
+}
+
+.sync-badge.is-failed {
+  border-color: var(--danger);
+}
+
+.sync-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--border);
+}
+
+.sync-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s linear;
+}
+
+.sync-detail {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.9rem 1rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.sync-detail h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.sync-detail h3 {
+  margin: 0.8rem 0 0.3rem;
+  font-size: 0.9rem;
+}
+
+.sync-detail progress {
+  width: 100%;
+}
+
+.sync-changed {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.not-synced {
+  color: var(--muted);
+  font-style: italic;
+}

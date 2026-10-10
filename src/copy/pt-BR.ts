@@ -201,9 +201,7 @@ export const ptBR: typeof en = {
     noChanges: 'Nenhuma alteração não gravada',
     test: 'Testar',
     writeTo: 'Gravar em…',
-    reading: (done: number, total: number) => `Lendo slots… ${done}/${total}`,
     namesTitle: 'Nomes dos slots',
-    readAllNames: 'Ler os nomes de todos os slots',
     backupTitle: 'Backup do pedal inteiro',
     backupIntro:
       'Salve todos os slots do pedal em um arquivo, ou devolva um backup salvo ao pedal. As duas coisas ocupam o pedal por um tempo; leia só os nomes se você quer apenas um inventário.',
@@ -277,5 +275,48 @@ export const ptBR: typeof en = {
     confirmSystemWrite:
       'Devolver estes ajustes de sistema à página de sistema? Todas as listas de patches e a chave de modo voltam ao que o backup guarda.',
     systemRestored: 'Os ajustes de sistema estão de volta no pedal.',
+  },
+  sync: {
+    title: 'Sincronização com o pedal',
+    intro:
+      'O Rigbench guarda uma cópia de todos os slots neste computador, para que nomes e patches apareçam na hora. O pedal nunca envia sua memória sozinho: o Rigbench a lê slot por slot, e nunca grava nada no pedal enquanto faz isso.',
+    badge: {
+      idle: (done: number, total: number) => `Não sincronizado · ${done}/${total}`,
+      syncing: (slot: string, done: number, total: number) => `SINC ${slot} · ${done}/${total}`,
+      paused: (done: number, total: number) => `Pausado · ${done}/${total}`,
+      ready: (total: number) => `PRONTO ✓ ${total}/${total}`,
+      changed: (count: number) => (count === 1 ? 'Δ 1 divergente' : `Δ ${count} divergentes`),
+      failed: (done: number, total: number) => `Sincronização parada · ${done}/${total}`,
+    },
+    percent: (percent: number) => `${percent}% concluído`,
+    eta: (minutes: number) =>
+      minutes < 1
+        ? 'falta menos de um minuto'
+        : minutes === 1
+          ? 'falta cerca de 1 minuto'
+          : `faltam cerca de ${minutes} minutos`,
+    reading: (slot: string) => `Lendo ${slot} agora.`,
+    queue: (count: number) => (count === 1 ? 'Falta ler 1 slot' : `Falta ler ${count} slots`),
+    finishedAt: (when: string) => `Última sincronização: ${when}.`,
+    readInFull: (count: number) =>
+      count === 1
+        ? '1 slot foi lido por inteiro desta vez.'
+        : `${count} slots foram lidos por inteiro desta vez.`,
+    start: 'Sincronizar agora',
+    continue: 'Continuar a sincronização',
+    pause: 'Pausar',
+    resume: 'Retomar',
+    stop: 'Parar',
+    full: 'Ler todos os slots de novo',
+    fullHint:
+      'Uma sincronização rápida confere o nome e os ajustes comuns de cada slot e só lê de novo os slots em que eles mudaram. Se você editou algo mais fundo no próprio pedal, leia todos os slots de novo.',
+    close: 'Fechar',
+    failed:
+      'O pedal parou de responder. O que já foi lido fica guardado; continue quando o pedal voltar.',
+    changedTitle: 'Mudou no pedal desde a última sincronização',
+    changedEntry: (slot: string, before: string, after: string, parameters: number) =>
+      `${slot}: “${before}” → “${after}” (${parameters === 1 ? '1 parâmetro' : `${parameters} parâmetros`})`,
+    acknowledge: 'Entendi',
+    notSynced: 'Ainda não lido',
   },
 };

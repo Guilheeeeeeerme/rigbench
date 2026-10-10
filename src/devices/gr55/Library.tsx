@@ -1,36 +1,20 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useT } from '../../copy';
-import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { confirmDiscard } from './dirtyGuard';
 import type { Gr55Editor, SlotDiffEntry } from './editor';
 import { editorHref } from './pages';
+import { slotsOfMode } from './slots';
+import type { Slot } from './slots';
+import { useSlotNames, useSync } from './sync/SyncBadge';
 import { SyxError, decodeSlotBackupSyx, encodeSlotBackupSyx } from './syx';
 import type { SlotImage } from './syx';
 
-export interface Slot {
-  label: string;
-  userPatchNumber: number;
-  bankMsb: number;
-  programChange: number;
-}
+export type { Slot };
 
 /** The patch list of the pedal in the current GK mode, as slot cards. */
 export function userSlots(editor: Gr55Editor): Slot[] {
-  const maps = RolandGR55SysExConfig.gr55!;
-  const { patchList } = editor.gkMode === 'BASS' ? maps.patchMapBassMode : maps.patchMapGuitarMode;
-  return patchList.flatMap((patch) =>
-    patch.userPatch
-      ? [
-          {
-            label: patch.patchNumberLabel,
-            userPatchNumber: patch.userPatch.patchNumber,
-            bankMsb: patch.bankMSB,
-            programChange: patch.pc,
-          },
-        ]
-      : [],
-  );
+  return slotsOfMode(editor.gkMode);
 }
 
 function download(bytes: Uint8Array, fileName: string): void {
@@ -51,6 +35,15 @@ function fileNameFor(patchName: string): string {
 
 const DIFF_PREVIEW_LIMIT = 12;
 
+/** A slot's name on its card: the name, a mark for a nameless slot, or "not read yet". */
+function SlotName({ name }: { name: string | undefined }) {
+  const t = useT();
+  if (name === undefined) {
+    return <span className="not-synced">{t('sync.notSynced')}</span>;
+  }
+  return name === '' ? <span className="not-synced">{t('gr55.unnamed')}</span> : name;
+}
+
 type Guard = { get(): boolean };
 
 /**
@@ -69,6 +62,7 @@ export function WriteFlow({
   close: (outcome?: string) => void;
 }) {
   const t = useT();
+  const sync = useSync();
   const [diff, setDiff] = useState<SlotDiffEntry[]>();
   const [busy, setBusy] = useState(false);
 
@@ -85,7 +79,11 @@ export function WriteFlow({
   const write = async () => {
     setBusy(true);
     try {
-      await editor.writeToUserSlot(slot.userPatchNumber);
+      // The pedal goes deaf while it saves: hold the sync, then read the slot back.
+      await sync.exclusive(async () => {
+        await editor.writeToUserSlot(slot.userPatchNumber);
+        await sync.refreshSlot(slot.userPatchNumber);
+      });
       editor.markSaved();
       close(t('librarian.written', slot.label));
     } catch (reason) {
@@ -174,6 +172,9 @@ export function Library({
   const t = useT();
   const { slot: focusLabel } = useParams<{ slot?: string }>();
   const slots = useMemo(() => userSlots(editor), [editor]);
+  const sync = useSync();
+  const cachedName = useSlotNames(sync);
+  // Names learned by trying a slot before sync reached it.
   const [names, setNames] = useState<ReadonlyMap<number, string>>(new Map());
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<string>();
@@ -243,15 +244,6 @@ export function Library({
       return t('librarian.opened', file.name);
     });
 
-  const readNames = () =>
-    run(async () => {
-      for (let index = 0; index < slots.length; index++) {
-        const { userPatchNumber } = slots[index];
-        setProgress(t('library.reading', index, slots.length));
-        setName(userPatchNumber, await editor.readUserPatchName(userPatchNumber));
-      }
-    });
-
   /** Reads every slot and saves one .syx file that holds them all. */
   const backupAll = (guard: Guard) =>
     run(async () => {
@@ -278,11 +270,16 @@ export function Library({
   const restore = (file: File) =>
     run(async () => {
       const images = decodeSlotBackupSyx(new Uint8Array(await file.arrayBuffer()));
-      for (let index = 0; index < images.length; index++) {
-        const image = images[index];
-        setProgress(t('library.backupRestoring', index, images.length));
-        await editor.restoreUserPatch(image.userPatchNumber, image.bytes);
-      }
+      await sync.exclusive(async () => {
+        for (let index = 0; index < images.length; index++) {
+          const image = images[index];
+          setProgress(t('library.backupRestoring', index, images.length));
+          await sync.markStale(image.userPatchNumber);
+          await editor.restoreUserPatch(image.userPatchNumber, image.bytes);
+        }
+      });
+      // The restored slots are read back behind the screen.
+      void sync.start();
       return t('library.backupRestored');
     });
 
@@ -389,11 +386,7 @@ export function Library({
                 {t('librarian.stop')}
               </button>
             </>
-          ) : (
-            <button type="button" disabled={busy} onClick={() => void run(readNames)}>
-              {t('library.readAllNames')}
-            </button>
-          )}
+          ) : null}
         </div>
         {message && (
           <p className="status" role="status">
@@ -409,7 +402,9 @@ export function Library({
             >
               <span className="slot-label">{slot.label}</span>
               <span className="slot-name">
-                {names.get(slot.userPatchNumber) ?? t('librarian.notRead')}
+                <SlotName
+                  name={cachedName(slot.userPatchNumber) ?? names.get(slot.userPatchNumber)}
+                />
               </span>
               <span className="slot-actions">
                 <button type="button" disabled={busy} onClick={() => testSlot(slot)}>

@@ -42,6 +42,10 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
   /** Largest DT1 payload in a reply; lower it to make the device split its answers. */
   replyChunkSize = 512;
   answers = true;
+  /** How long the device takes to answer, in milliseconds: a real pedal is not instant. */
+  replyDelayMs = 0;
+  /** How many of the next data requests go unanswered, as when the pedal falls behind. */
+  dropRequests = 0;
 
   constructor() {
     this.setName(TEMPORARY_PATCH_ADDRESS, 'Simulated Patch');
@@ -59,7 +63,7 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
     const message = Uint8Array.from(data);
     this.received.push([...message]);
     if (this.answers) {
-      setTimeout(() => this.handle(message), 0);
+      setTimeout(() => this.handle(message), this.replyDelayMs);
     }
   }
 
@@ -77,6 +81,11 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
     for (const listener of [...this.listeners]) {
       listener(event);
     }
+  }
+
+  /** Names a user slot, as if it had been saved on the pedal itself. */
+  nameUserPatch(userPatchNumber: number, name: string): void {
+    this.setName(userPatchAddress(userPatchNumber), name);
   }
 
   private setName(patchAddress: number, name: string): void {
@@ -115,6 +124,8 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
       const args = message.subarray(11, message.length - 2);
       if (address === WRITE_PATCH_COMMAND) {
         this.writePatchToUserSlot(args[0] * 128 + args[2]);
+      } else if (this.dropRequests > 0) {
+        this.dropRequests--;
       } else {
         this.emitData(address, this.peek(address, fromSevenBitBytes(args)));
       }

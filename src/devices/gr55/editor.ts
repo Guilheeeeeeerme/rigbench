@@ -341,6 +341,25 @@ export class Gr55Editor {
     return bytes;
   }
 
+  /**
+   * Reads only the first block of a user slot — the one that holds its name and common
+   * settings. Sync uses it to tell cheaply whether a slot it already has still matches.
+   */
+  async readUserPatchProbe(userPatchNumber: number): Promise<Uint8Array> {
+    const block = PATCH_BLOCKS[0];
+    return this.session.requestData(userPatchAddress(userPatchNumber) + block.offset, block.length);
+  }
+
+  /** The name stored in a slot image read with readUserPatch. */
+  nameOfPatch(patch: Uint8Array): string {
+    return decodeName(patch, PATCH_NAME_OFFSET);
+  }
+
+  /** How many parameters differ between two slot images. */
+  countDifferences(a: Uint8Array, b: Uint8Array): number {
+    return this.changeIndex.filter((field) => !spanMatches(a, b, field.offset, field.size)).length;
+  }
+
   /** The parameters that differ between the working copy and a user slot. */
   async diffUserSlot(userPatchNumber: number): Promise<SlotDiffEntry[]> {
     const slot = await this.readUserPatch(userPatchNumber);

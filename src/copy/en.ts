@@ -198,9 +198,7 @@ export const en = {
     noChanges: 'No unsaved changes',
     test: 'Test',
     writeTo: 'Save to…',
-    reading: (done: number, total: number) => `Reading slots… ${done}/${total}`,
     namesTitle: 'Slot names',
-    readAllNames: 'Read all slot names',
     backupTitle: 'Whole-pedal backup',
     backupIntro:
       'Save every slot in the pedal to a file, or put a saved backup back into the pedal. Both keep the pedal busy for a while; names first if you just want an inventory.',
@@ -274,5 +272,48 @@ export const en = {
     confirmSystemWrite:
       'Put these pedal-wide settings back onto the system page? Every patch list and the mode switch go back to what the backup holds.',
     systemRestored: 'The system settings are back on the pedal.',
+  },
+  sync: {
+    title: 'Pedal sync',
+    intro:
+      'Rigbench keeps a copy of every slot on this computer, so names and patches are there at once. The pedal never sends its memory by itself: Rigbench reads it slot by slot, and never saves anything to the pedal while it does.',
+    badge: {
+      idle: (done: number, total: number) => `Not synced · ${done}/${total}`,
+      syncing: (slot: string, done: number, total: number) => `SYNC ${slot} · ${done}/${total}`,
+      paused: (done: number, total: number) => `Paused · ${done}/${total}`,
+      ready: (total: number) => `READY ✓ ${total}/${total}`,
+      changed: (count: number) => `Δ ${count} changed`,
+      failed: (done: number, total: number) => `Sync stopped · ${done}/${total}`,
+    },
+    percent: (percent: number) => `${percent}% complete`,
+    eta: (minutes: number) =>
+      minutes < 1
+        ? 'less than a minute left'
+        : minutes === 1
+          ? 'about 1 minute left'
+          : `about ${minutes} minutes left`,
+    reading: (slot: string) => `Reading ${slot} now.`,
+    queue: (count: number) =>
+      count === 1 ? '1 slot still to read' : `${count} slots still to read`,
+    finishedAt: (when: string) => `Last synced ${when}.`,
+    readInFull: (count: number) =>
+      count === 1
+        ? '1 slot was read in full this time.'
+        : `${count} slots were read in full this time.`,
+    start: 'Sync now',
+    continue: 'Continue the sync',
+    pause: 'Pause',
+    resume: 'Resume',
+    stop: 'Stop',
+    full: 'Read every slot again',
+    fullHint:
+      'A quick sync checks the name and common settings of each slot and reads again only the slots where those changed. If you edited something deeper on the pedal itself, read every slot again.',
+    close: 'Close',
+    failed: 'The pedal stopped answering. What was read is kept; continue when the pedal is back.',
+    changedTitle: 'Changed on the pedal since the last sync',
+    changedEntry: (slot: string, before: string, after: string, parameters: number) =>
+      `${slot}: “${before}” → “${after}” (${parameters === 1 ? '1 parameter' : `${parameters} parameters`})`,
+    acknowledge: 'Got it',
+    notSynced: 'Not read yet',
   },
 };

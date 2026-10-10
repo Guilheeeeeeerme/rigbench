@@ -1,0 +1,9 @@
+dist/
+node_modules/
+package-lock.json
+research_notes/
+reports/
+.claude/
+AGENTS.md
+# Copied from upstream; keep its formatting so diffs against upstream stay readable
+src/protocol/

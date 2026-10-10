@@ -1,0 +1,111 @@
+// Every string the interface shows. Another language is another file with this shape.
+export const en = {
+  app: {
+    name: 'Rigbench',
+    tagline: 'Edit your guitar gear from the browser, over MIDI.',
+    footer: 'Runs in your browser. Nothing you edit leaves this computer.',
+    notFound: 'There is nothing at this address.',
+    backHome: 'All devices',
+  },
+  gate: {
+    noWebMidi: {
+      title: 'This browser cannot talk to MIDI devices',
+      body: 'Rigbench needs Web MIDI, which Safari and every browser on iPhone and iPad lack. Open this page in Chrome or Edge on a computer.',
+    },
+    insecure: {
+      title: 'MIDI needs a secure page',
+      body: 'Browsers only allow MIDI on pages served over HTTPS or from localhost. Open Rigbench from its https:// address, or from http://localhost when running it yourself.',
+    },
+    firefoxNotice:
+      'Firefox asks for an extra permission before it lets a page send SysEx. Allow it when prompted, or the editor cannot reach your device.',
+  },
+  home: {
+    title: 'Pick your device',
+    open: 'Open editor',
+    comingSoon: 'Coming soon',
+  },
+  devices: {
+    gr55: { name: 'Roland GR-55', kind: 'Guitar synthesizer' },
+    vg99: { name: 'Roland VG-99', kind: 'V-Guitar system' },
+    gt10: { name: 'BOSS GT-10', kind: 'Guitar effects processor' },
+  },
+  connection: {
+    title: 'Connect your GR-55',
+    intro:
+      'Plug the GR-55 into this computer with a USB cable, switch it on, then allow MIDI access.',
+    allow: 'Allow MIDI access',
+    denied:
+      'The browser refused MIDI access. Allow MIDI devices for this site in the browser settings and try again.',
+    input: 'MIDI input (from the pedal)',
+    output: 'MIDI output (to the pedal)',
+    noPorts:
+      'No MIDI ports found. Check the USB cable and that the Roland GR-55 driver is installed.',
+    connect: 'Connect',
+    connecting: 'Looking for the GR-55…',
+    noReply:
+      'Nothing answered on these ports. Check that the pedal is on and that both ports belong to it.',
+    wrongDevice: 'The device on these ports answered, but it is not a GR-55.',
+    simulate: 'Use a simulated pedal',
+    simulatedPort: 'Simulated GR-55',
+    disconnect: 'Disconnect',
+    lost: 'The connection to the pedal failed.',
+  },
+  gr55: {
+    reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
+    reload: 'Read from pedal',
+    mode: { GUITAR: 'Guitar mode', BASS: 'Bass mode' },
+    unnamed: '(unnamed)',
+    librarian: 'Librarian',
+    showAllEffects: 'Show the parameters of every effect type',
+    unknownValue: (hex: string) => `Unknown value (${hex})`,
+    error: (message: string) => `The pedal did not accept or answer the last message: ${message}`,
+    dismiss: 'Dismiss',
+    pages: {
+      patch: 'Patch',
+      pcm1: 'PCM 1',
+      pcm2: 'PCM 2',
+      tone: 'Tone',
+      toneOffsets: 'Tone offsets',
+      modeling: 'Modeling',
+      normalPickup: 'Normal pickup',
+      amp: 'Amp',
+      noiseSuppressor: 'Noise suppressor',
+      mod: 'MOD',
+      mfx: 'MFX',
+      delay: 'Delay',
+      chorus: 'Chorus',
+      reverb: 'Reverb',
+      eq: 'EQ',
+      assigns: 'Assigns',
+      pedalGk: 'Pedal / GK',
+      pedalRanges: 'GK set and control ranges',
+      master: 'Master',
+      other: 'Other',
+    },
+  },
+  librarian: {
+    fileTitle: 'Patch file',
+    fileIntro:
+      'A .syx file holds one patch. Opening a file replaces the patch you are editing; it does not touch the patches stored in the pedal.',
+    download: 'Download patch as .syx',
+    open: 'Open .syx file…',
+    opened: (name: string) => `Loaded ${name} into the pedal's edit buffer.`,
+    problems: {
+      'no-patch-data': 'This file has no GR-55 patch in it.',
+      'bad-checksum': 'This file is damaged: a message in it fails its checksum.',
+      'out-of-range': 'This file is damaged: it addresses data outside a GR-55 patch.',
+    },
+    slotsTitle: 'User patches in the pedal',
+    slotsIntro:
+      'Load a user patch to edit it, or write the patch you are editing into a slot. Writing is the only action here that changes what is stored in the pedal.',
+    readNames: 'Read patch names',
+    readingNames: (done: number, total: number) => `Reading names… ${done}/${total}`,
+    stop: 'Stop',
+    load: 'Load',
+    write: 'Write here',
+    notRead: '—',
+    confirmWrite: (slot: string, current: string | undefined, name: string) =>
+      `Overwrite user patch ${slot}${current ? ` (“${current}”)` : ''} with “${name}”? The patch stored there now is lost.`,
+    written: (slot: string) => `Written to user patch ${slot}.`,
+  },
+};

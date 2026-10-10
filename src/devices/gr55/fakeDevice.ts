@@ -1,0 +1,154 @@
+import type { MidiInputLike, MidiMessageListener, MidiOutputLike } from '../../midi/session';
+import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
+import {
+  isValidChecksum,
+  makeDataSetMessage,
+  pack7,
+  parseDataResponseMessage,
+} from '../../protocol/RolandSysExProtocol';
+import {
+  GR55_MAP,
+  PATCH_SPAN,
+  TEMPORARY_PATCH_ADDRESS,
+  USER_PATCH_COUNT,
+  userPatchAddress,
+} from './patchLayout';
+
+const DEVICE_ID = 0x10;
+const COMMAND_RQ1 = 0x11;
+const WRITE_PATCH_COMMAND = pack7(0x0f000000);
+const PATCH_NAME_OFFSET =
+  GR55_MAP.temporaryPatch.common.patchName.address - TEMPORARY_PATCH_ADDRESS;
+
+function fromSevenBitBytes(bytes: Uint8Array): number {
+  let value = 0;
+  for (const byte of bytes) {
+    value = (value << 7) | (byte & 0x7f);
+  }
+  return value;
+}
+
+/**
+ * A stand-in for a GR-55 on the other end of the MIDI cable: both ports in one object.
+ * It answers the messages the editor sends and nothing more. Used by the tests and by
+ * the simulated pedal of the development build.
+ */
+export class FakeGr55 implements MidiInputLike, MidiOutputLike {
+  /** Device memory by packed address. Bytes never written read as zero. */
+  private readonly memory = new Map<number, number>();
+  private readonly listeners = new Set<MidiMessageListener>();
+  /** Every message the editor sent, oldest first. */
+  readonly received: number[][] = [];
+  /** Largest DT1 payload in a reply; lower it to make the device split its answers. */
+  replyChunkSize = 512;
+  answers = true;
+
+  constructor() {
+    this.setName(TEMPORARY_PATCH_ADDRESS, 'Simulated Patch');
+  }
+
+  addEventListener(_type: 'midimessage', listener: MidiMessageListener): void {
+    this.listeners.add(listener);
+  }
+
+  removeEventListener(_type: 'midimessage', listener: MidiMessageListener): void {
+    this.listeners.delete(listener);
+  }
+
+  send(data: number[] | Uint8Array): void {
+    const message = Uint8Array.from(data);
+    this.received.push([...message]);
+    if (this.answers) {
+      setTimeout(() => this.handle(message), 0);
+    }
+  }
+
+  peek(address: number, length: number): Uint8Array {
+    return Uint8Array.from({ length }, (_, i) => this.memory.get(address + i) ?? 0);
+  }
+
+  poke(address: number, bytes: Uint8Array | readonly number[]): void {
+    bytes.forEach((byte, i) => this.memory.set(address + i, byte));
+  }
+
+  /** Sends bytes to the editor as if the pedal had produced them. */
+  emit(data: number[] | Uint8Array): void {
+    const event = { data: Uint8Array.from(data) };
+    for (const listener of [...this.listeners]) {
+      listener(event);
+    }
+  }
+
+  private setName(patchAddress: number, name: string): void {
+    const bytes = Array.from(name.padEnd(16).slice(0, 16), (char) => char.charCodeAt(0));
+    this.poke(patchAddress + PATCH_NAME_OFFSET, bytes);
+  }
+
+  private copyPatch(from: number, to: number): void {
+    this.poke(to, this.peek(from, PATCH_SPAN));
+  }
+
+  private emitData(address: number, bytes: Uint8Array): void {
+    for (let offset = 0; offset < bytes.length; offset += this.replyChunkSize) {
+      this.emit(
+        makeDataSetMessage(
+          RolandGR55SysExConfig,
+          DEVICE_ID,
+          address + offset,
+          bytes.subarray(offset, offset + this.replyChunkSize),
+        ),
+      );
+    }
+  }
+
+  private handle(message: Uint8Array): void {
+    if (message[1] === 0x7e && message[3] === 0x06 && message[4] === 0x01) {
+      // Identity Reply: Roland, family 53 02, model 00 00, software revision 00 00 00 00
+      this.emit([0xf0, 0x7e, DEVICE_ID, 0x06, 0x02, 0x41, 0x53, 0x02, 0, 0, 0, 0, 0, 0, 0xf7]);
+      return;
+    }
+    if (message[1] !== 0x41 || message[2] !== DEVICE_ID) {
+      return;
+    }
+    if (message[6] === COMMAND_RQ1) {
+      const address = fromSevenBitBytes(message.subarray(7, 11));
+      const args = message.subarray(11, message.length - 2);
+      if (address === WRITE_PATCH_COMMAND) {
+        this.writePatchToUserSlot(args[0] * 128 + args[2]);
+      } else {
+        this.emitData(address, this.peek(address, fromSevenBitBytes(args)));
+      }
+      return;
+    }
+    const parsed = parseDataResponseMessage(RolandGR55SysExConfig, message);
+    if (!parsed || !isValidChecksum(parsed)) {
+      return;
+    }
+    this.poke(parsed.address, parsed.valueBytes);
+    if (parsed.address === GR55_MAP.setup.patchPc.address) {
+      this.selectUserPatch();
+    }
+  }
+
+  private writePatchToUserSlot(userPatchNumber: number): void {
+    if (userPatchNumber < USER_PATCH_COUNT) {
+      this.copyPatch(TEMPORARY_PATCH_ADDRESS, userPatchAddress(userPatchNumber));
+    }
+    this.emitData(pack7(0x0f000001), Uint8Array.of(0));
+    this.emitData(pack7(0x0f000002), Uint8Array.of(0));
+  }
+
+  private selectUserPatch(): void {
+    const [msb] = this.peek(GR55_MAP.setup.patchBsMsb.address, 1);
+    const [programChange] = this.peek(GR55_MAP.setup.patchPc.address, 1);
+    const userPatchNumber = msb * 128 + programChange;
+    if (msb > 2 || userPatchNumber >= USER_PATCH_COUNT) {
+      return;
+    }
+    const address = userPatchAddress(userPatchNumber);
+    if (this.peek(address + PATCH_NAME_OFFSET, 16).every((byte) => byte === 0)) {
+      this.setName(address, `User ${userPatchNumber + 1}`);
+    }
+    this.copyPatch(address, TEMPORARY_PATCH_ADDRESS);
+  }
+}

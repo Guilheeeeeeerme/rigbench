@@ -6,6 +6,7 @@ import { SectionView } from './SectionView';
 import { userSlots, WriteFlow } from './Library';
 import type { Slot } from './Library';
 import type { Gr55Editor } from './editor';
+import { FieldSearch } from './FieldSearch';
 import { buildPages, editorHref } from './pages';
 import { PAGE_IDS } from './pages';
 import type { PageId } from './pages';
@@ -157,6 +158,7 @@ export function Workspace({
       </header>
 
       <div className="context-bar" aria-live="polite">
+        <FieldSearch editor={editor} />
         <ScopeTag
           scope="amber"
           word={en.gr55.workspace.workingCopy}

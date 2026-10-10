@@ -789,6 +789,53 @@ a.device-card:hover {
   }
 }
 
+/* Field search: every parameter is two clicks away. */
+.field-search {
+  position: relative;
+  flex: 1 1 18rem;
+  max-width: 26rem;
+  margin-right: auto;
+}
+
+.field-search input {
+  width: 100%;
+}
+
+.search-hits {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  z-index: 60;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.search-hits button {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0.45rem 0.75rem;
+}
+
+.search-hits button span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
 /* Context bar: where the scope situation always lives. */
 .context-bar {
   grid-area: context;

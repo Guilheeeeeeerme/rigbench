@@ -21,8 +21,10 @@ import {
   SyxError,
   decodePatchSyx,
   decodeSlotBackupSyx,
+  decodeSystemSyx,
   encodePatchSyx,
   encodeSlotBackupSyx,
+  encodeSystemSyx,
 } from './syx';
 import type { SlotImage } from './syx';
 import { spansOverlapping, temporaryPatchFields } from './changeTracking';
@@ -378,6 +380,27 @@ describe('slot diff', () => {
     expect(diff.every((entry) => entry.description && entry.current && entry.slot !== '')).toBe(
       true,
     );
+  });
+});
+
+describe('system backup', () => {
+  test('the system bytes survive a file and go back to the pedal', async () => {
+    const { device, editor } = setUp();
+    await editor.readSystem();
+    device.poke(GR55_MAP.system.common.guitarBassSelect.address, [1]);
+    const bytes = await editor.readSystemBytes();
+    expect(bytes.length).toBe(editor.systemSpan());
+
+    const file = encodeSystemSyx(editor.systemAddress(), bytes);
+    const other = setUp();
+    const loaded = decodeSystemSyx(
+      file,
+      other.editor.systemAddress(),
+      other.editor.systemSpan(),
+    );
+    expect(loaded).toEqual(bytes);
+    await other.editor.writeSystemBytes(loaded);
+    expect(await other.editor.readSystemBytes()).toEqual(bytes);
   });
 });
 

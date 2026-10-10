@@ -36,6 +36,9 @@ const WRITE_PATCH_REPLIES = [pack7(0x0f000001), pack7(0x0f000002)];
 // Time the pedal is given to switch patches before the new one is read back.
 const PATCH_CHANGE_SETTLE_MS = 150;
 
+// The system bytes the app knows: offsets 00..1a of the system area, mode included.
+const SYSTEM_BACKUP_SPAN = 0x1b;
+
 // A slot that was never named holds bytes that are not printable characters.
 function decodeName(bytes: Uint8Array, offset: number): string {
   const { type, size } = PATCH_NAME.definition;
@@ -175,6 +178,35 @@ export class Gr55Editor {
     this.gkMode = mode;
     this.patchSource = undefined;
     this.notify();
+  }
+
+  /**
+   * Reads the start of the system area — the part the map defines, mode switch
+   * included. Enough for a small, honest system backup.
+   */
+  async readSystemBytes(): Promise<Uint8Array> {
+    const base = GR55_MAP.system.address;
+    return this.session.requestData(base, SYSTEM_BACKUP_SPAN);
+  }
+
+  /** The absolute address and span of the system block behind readSystemBytes. */
+  systemAddress(): number {
+    return GR55_MAP.system.address;
+  }
+
+  systemSpan(): number {
+    return SYSTEM_BACKUP_SPAN;
+  }
+
+  /** Puts a system block back exactly as it was read. The caller owns the confirm. */
+  async writeSystemBytes(bytes: Uint8Array): Promise<void> {
+    const base = GR55_MAP.system.address;
+    for (let offset = 0; offset < bytes.length; offset += BULK_DATA_TRANSFER_SIZE_PER_MESSAGE) {
+      await this.session.writeData(
+        base + offset,
+        bytes.slice(offset, Math.min(offset + BULK_DATA_TRANSFER_SIZE_PER_MESSAGE, bytes.length)),
+      );
+    }
   }
 
   async readPatch(onProgress?: (done: number, total: number) => void): Promise<void> {

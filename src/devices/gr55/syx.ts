@@ -181,3 +181,47 @@ export function decodeSlotBackupSyx(file: Uint8Array): SlotImage[] {
   }
   return [...slots].map(([userPatchNumber, bytes]) => ({ userPatchNumber, bytes }));
 }
+
+/** A small block of the system area, as one .syx file. */
+export function encodeSystemSyx(address: number, bytes: Uint8Array): Uint8Array {
+  return Uint8Array.from(makeDataSetMessage(RolandGR55SysExConfig, FILE_DEVICE_ID, address, bytes));
+}
+
+/** Reads a system block back, checking it addresses the same area. */
+export function decodeSystemSyx(
+  file: Uint8Array,
+  expectedAddress: number,
+  expectedSize: number,
+): Uint8Array {
+  const blocks: Uint8Array[] = [];
+  for (const message of splitMessages(file)) {
+    const parsed = parseDataResponseMessage(RolandGR55SysExConfig, message);
+    if (!parsed || parsed.address < expectedAddress) {
+      continue;
+    }
+    if (!isValidChecksum(parsed)) {
+      throw new SyxError('bad-checksum');
+    }
+    const offset = parsed.address - expectedAddress;
+    if (offset !== blocks.reduce((sum, block) => sum + block.length, 0)) {
+      throw new SyxError('out-of-range');
+    }
+    blocks.push(Uint8Array.from(parsed.valueBytes));
+  }
+  const joined = concatenate(blocks);
+  if (joined.length !== expectedSize) {
+    throw new SyxError('out-of-range');
+  }
+  return joined;
+}
+
+function concatenate(blocks: readonly Uint8Array[]): Uint8Array {
+  const total = blocks.reduce((sum, block) => sum + block.length, 0);
+  const out = new Uint8Array(total);
+  let offset = 0;
+  for (const block of blocks) {
+    out.set(block, offset);
+    offset += block.length;
+  }
+  return out;
+}

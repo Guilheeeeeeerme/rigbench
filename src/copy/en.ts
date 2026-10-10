@@ -17,7 +17,7 @@ export const en = {
       body: 'Browsers only allow MIDI on pages served over HTTPS or from localhost. Open Rigbench from its https:// address, or from http://localhost when running it yourself.',
     },
     firefoxNotice:
-      'Firefox asks for an extra permission before it lets a page send SysEx. Allow it when prompted, or the editor cannot reach your device.',
+      'Firefox asks for an extra permission before the page can talk MIDI to the pedal. Allow it when prompted, or Rigbench cannot reach the pedal.',
   },
   home: {
     title: 'Pick your device',
@@ -53,6 +53,9 @@ export const en = {
   gr55: {
     reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
     reload: 'Read from pedal',
+    search: {
+      placeholder: 'Find any parameter of this patch…',
+    },
     navLibrary: 'Library',
     navStage: 'Stage',
     navEditor: 'Patch',
@@ -64,7 +67,7 @@ export const en = {
         'This is the patch the pedal is sounding right now. It lives only while this patch is selected: the pedal throws it away when you switch patches.',
       /** Scope chip: this control is stored permanently in the pedal. */
       savedSlot: 'Saved slot',
-      savedSlotHint: 'Saved in the pedal. It stays until you write something else there.',
+      savedSlotHint: 'Saved in the pedal. It stays until you save something else there.',
       /** Scope chip: this control is device-wide, not per patch. */
       pedal: 'Pedal',
       pedalHint: 'Pedal-wide setting. The same for every patch.',
@@ -119,9 +122,9 @@ export const en = {
       revertConfirm: (count: number) =>
         `Undo all ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`} and go back ` +
         'to how the pedal had it? The pedal keeps sounding the stored patch in the meantime.',
-      saveHint: (slot: string) => `This patch came from ${slot}. Saving writes it back there.`,
+      saveHint: (slot: string) => `This patch came from ${slot}. Saving puts it back there.`,
       saveNoSlot:
-        'This patch came off the pedal’s screen or a file, so there is no slot to save to. Use Save as… to write it into a slot.',
+        'This patch came off the pedal’s screen or a file, so there is no slot to save to. Use Save as… to keep it in a slot.',
       advanced: 'Advanced',
     },
     blocks: {
@@ -158,7 +161,8 @@ export const en = {
       'A .syx file holds one patch. Opening a file replaces the patch you are editing; it does not touch the patches stored in the pedal.',
     download: 'Download patch as .syx',
     open: 'Open .syx file…',
-    opened: (name: string) => `Loaded ${name} into the pedal's edit buffer.`,
+    opened: (name: string) =>
+      `Loaded ${name} as the working copy. Always try it with a click before keeping it.`,
     problems: {
       'no-patch-data': 'This file has no GR-55 patch in it.',
       'bad-checksum': 'This file is damaged: a message in it fails its checksum.',
@@ -166,21 +170,21 @@ export const en = {
     },
     slotsTitle: 'User patches in the pedal',
     slotsIntro:
-      'Load a user patch to edit it, or write the patch you are editing into a slot. Writing is the only action here that changes what is stored in the pedal.',
+      'Load a user patch to edit it, or save the patch you are editing into a slot. Saving is the only action here that changes what is stored in the pedal.',
     readNames: 'Read patch names',
     readingNames: (done: number, total: number) => `Reading names… ${done}/${total}`,
     stop: 'Stop',
     load: 'Load',
-    write: 'Write here',
+    write: 'Save here',
     notRead: '—',
     confirmWrite: (slot: string, current: string | undefined, name: string) =>
       `Overwrite user patch ${slot}${current ? ` (“${current}”)` : ''} with “${name}”? The patch stored there now is lost.`,
-    written: (slot: string) => `Written to user patch ${slot}.`,
+    written: (slot: string) => `Saved to user patch ${slot}.`,
   },
   library: {
     title: 'Library',
     intro:
-      'Every patch stored in the pedal. Try one with a single click, open it in the editor, or write the patch you are working on into a slot.',
+      'Every patch stored in the pedal. Try one with a single click, open it in the editor, or save the patch you are working on into a slot.',
     workingCopy: 'Working copy',
     workingCopyIntro:
       'The patch the pedal is sounding right now. The pedal throws it away when it switches patches.',
@@ -188,7 +192,7 @@ export const en = {
     changes: (count: number) => (count === 1 ? '1 unsaved change' : `${count} unsaved changes`),
     noChanges: 'No unsaved changes',
     test: 'Test',
-    writeTo: 'Write to…',
+    writeTo: 'Save to…',
     reading: (done: number, total: number) => `Reading slots… ${done}/${total}`,
     namesTitle: 'Slot names',
     readAllNames: 'Read all slot names',
@@ -199,19 +203,19 @@ export const en = {
     backupProgress: (done: number, total: number) => `Backing up… ${done}/${total} slots`,
     backupDone: (file: string) => `Backup saved as ${file}.`,
     backupWriteTitle: 'Restore a slot backup',
-    backupWrite: 'Write a slot backup back to the pedal…',
+    backupWrite: 'Put a slot backup back…',
     backupRestoring: (done: number, total: number) => `Restoring… ${done}/${total} slots`,
     backupRestored: 'The backup is back in the pedal.',
     fileIsEmpty: 'This backup file holds no slots.',
-    writeFlowTitle: (slot: string) => `Write to ${slot}`,
+    writeFlowTitle: (slot: string) => `Save to ${slot}`,
     readDiff: 'Compare with the working copy',
     writeFlowIntro:
-      'Only the parameters listed below change. Confirming sends them to the slot; the pedal stays silent for a few seconds — do not step on the pedals while it writes.',
+      'Only the parameters listed below change. Confirming sends them to the slot; the pedal stays silent for a few seconds — do not step on the pedals while it saves.',
     diffTitle: 'What changes in this slot',
-    diffEmpty: 'Nothing differs; writing is safe.',
-    diffConfirm: 'Write to the slot',
+    diffEmpty: 'Nothing differs; saving is safe.',
+    diffConfirm: 'Save into the slot',
     choosing: 'Choose a slot',
-    writing: 'Writing to the pedal — do not step on the pedals…',
+    writing: 'Saving to the pedal — do not step on the pedals…',
     written: (slot: string) => `Slot ${slot} now holds this patch.`,
     tested: (slot: string) => `${slot} is sounding now.`,
     emptySlot: '(empty)',
@@ -256,5 +260,14 @@ export const en = {
       'The pedal talks over the USB cable with the driver Roland ships for it. Rigbench reads one patch at a time and sends changes as you make them; nothing is stored on this computer.',
     systemNotice: 'Pedal-wide settings always ask first.',
     profileModeWarn: 'Pedal not in this mode',
+    backupTitle: 'System backup',
+    backupIntro:
+      'Saves the pedal-wide settings Rigbench can see — mode and neighbors on the system page — into a small .syx file. Restoring asks first.',
+    backup: 'Save the system settings…',
+    backupWrite: 'Put a system backup back…',
+    backupDone: (file: string) => `System backup saved as ${file}.`,
+    confirmSystemWrite:
+      'Put these pedal-wide settings back onto the system page? Every patch list and the mode switch go back to what the backup holds.',
+    systemRestored: 'The system settings are back on the pedal.',
   },
 };

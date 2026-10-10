@@ -477,6 +477,28 @@ describe('pages', () => {
     expect(keys('GUITAR')).toContain('level');
   });
 
+  test('essentials are a curated subset of every section that names them', () => {
+    for (const mode of ['GUITAR', 'BASS'] as const) {
+      for (const page of buildPages(mode)) {
+        for (const section of page.sections) {
+          for (const key of section.essentialKeys ?? []) {
+            expect(section.keys).toContain(key);
+          }
+        }
+      }
+    }
+  });
+
+  test('the density switch opens with a bounded set of unique essential fields', () => {
+    const unique = (mode: 'GUITAR' | 'BASS') =>
+      new Set(
+        buildPages(mode).flatMap((page) => page.sections.flatMap((s) => s.essentialKeys ?? [])),
+      ).size;
+    // Per-section slots repeat (8 assigns, mirrored EXP pages); the unique set is
+    // what the musician meets first.
+    expect(unique('GUITAR')).toBeLessThan(70);
+  });
+
   test('rate and time show note names only above the numeric range', () => {
     const delayTime = TEMPORARY_PATCH.sendsAndEq.delayTime.definition.type;
     const chorusRate = TEMPORARY_PATCH.sendsAndEq.chorusRate.definition.type;

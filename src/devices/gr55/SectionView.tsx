@@ -15,7 +15,16 @@ function assignsMapFor(editor: Gr55Editor) {
 }
 
 /** One section of a page: its fields, generated from the address map. */
-export function SectionView({ editor, section }: { editor: Gr55Editor; section: Section }) {
+export function SectionView({
+  editor,
+  section,
+  advanced = true,
+}: {
+  editor: Gr55Editor;
+  section: Section;
+  /** The Advanced switch: without it, only the curated essentials show. */
+  advanced?: boolean;
+}) {
   const [showAll, setShowAll] = useState(false);
   const effects = useMemo(() => effectOfFields(section), [section]);
 
@@ -29,8 +38,17 @@ export function SectionView({ editor, section }: { editor: Gr55Editor; section: 
   const typeValue = typeField && editor.read(typeField);
   const activeEffect = typeValue?.ok ? String(typeValue.value) : undefined;
 
+  const visibleKeys =
+    advanced || section.essentialKeys === undefined
+      ? section.keys
+      : section.keys.filter((key) => section.essentialKeys!.includes(key));
+  // A section with no essentials stays out of the way entirely in Essential mode.
+  if (visibleKeys.length === 0) {
+    return null;
+  }
+
   const groups: { effect: string | undefined; keys: string[] }[] = [];
-  for (const key of section.keys) {
+  for (const key of visibleKeys) {
     const effect = effects.get(key);
     if (effect != null && effect !== activeEffect && !showAll) {
       continue;

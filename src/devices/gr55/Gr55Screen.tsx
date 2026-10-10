@@ -7,6 +7,7 @@ import type { MidiInputLike, MidiOutputLike } from '../../midi/session';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { Library } from './Library';
 import { Stage } from './Stage';
+import { Canvas } from './Canvas';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
 import { libraryRoute } from './routes';
@@ -210,6 +211,8 @@ export default function Gr55Screen() {
           <Route path="setup" element={<Navigate to={libraryRoute} replace />} />
           <Route path="patches" element={<Library editor={editor} onError={setError} />} />
           <Route path="patches/:slot" element={<Library editor={editor} onError={setError} />} />
+          {/* The canvas is the editor's root; each block opens its inspector. */}
+          <Route path="editor" element={<Canvas editor={editor} />} />
           <Route
             path="editor/:pageId/:sectionSlug?"
             element={

@@ -15,6 +15,9 @@ import { decodePatchSyx, encodePatchSyx } from './syx';
 
 export type GkMode = 'GUITAR' | 'BASS';
 
+/** Where the working copy came from. Only a slot copy can be saved straight back. */
+export type PatchSource = { kind: 'slot'; userPatchNumber: number } | { kind: 'file' };
+
 /** One parameter that differs between the working copy and a user slot. */
 export interface SlotDiffEntry {
   description: string;
@@ -98,6 +101,8 @@ export class Gr55Editor {
   private readonly unsubscribe: (() => void)[];
 
   gkMode: GkMode = 'GUITAR';
+  /** Where the current working copy came from, if the app knows. */
+  patchSource: PatchSource | undefined;
   /** Unsaved edits lost when the pedal changed patches on its own, until the app shows it. */
   discardedChanges: number | undefined;
   /** Increments every time discardedChanges is written, so the app can tell new notices apart. */
@@ -203,6 +208,14 @@ export class Gr55Editor {
     this.session.writeData(field.address, bytes, { coalesce: true }).catch(this.onBackgroundError);
   }
 
+  /** The working copy now lives in a slot as-is: reuse it as the new diff baseline. */
+  markSaved(): void {
+    this.baseline.set(this.image);
+    this.dirty.clear();
+    this.dirtyEpoch++;
+    this.notify();
+  }
+
   /** Sends the baseline back to the pedal for every changed field, then reloads the copy. */
   async revert(): Promise<void> {
     const writes: Promise<void>[] = [];
@@ -233,6 +246,8 @@ export class Gr55Editor {
     await this.session.writeData(GR55_MAP.setup.patchBsMsb.address, [bankMsb]);
     await this.session.writeData(GR55_MAP.setup.patchPc.address, [programChange]);
     await delay(PATCH_CHANGE_SETTLE_MS);
+    // User slots select this exact way; anything else (a screen switch) is unknowable.
+    this.patchSource = { kind: 'slot', userPatchNumber: bankMsb * 128 + programChange };
     await this.readPatch();
   }
 
@@ -315,6 +330,7 @@ export class Gr55Editor {
         this.session.writeData(TEMPORARY_PATCH_ADDRESS + write.offset, write.bytes),
       ),
     );
+    this.patchSource = { kind: 'file' };
     await this.readPatch();
   }
 
@@ -337,6 +353,8 @@ export class Gr55Editor {
         this.discardedChanges = this.changeCount;
         this.discardSequence++;
       }
+      // The pedal picked a patch by itself; the app cannot say where it came from.
+      this.patchSource = undefined;
       this.readPatch().catch(this.onBackgroundError);
     }, PATCH_CHANGE_SETTLE_MS);
   }

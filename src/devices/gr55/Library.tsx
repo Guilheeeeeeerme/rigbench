@@ -8,14 +8,15 @@ import { editorHref } from './pages';
 import { SyxError, decodeSlotBackupSyx, encodeSlotBackupSyx } from './syx';
 import type { SlotImage } from './syx';
 
-interface Slot {
+export interface Slot {
   label: string;
   userPatchNumber: number;
   bankMsb: number;
   programChange: number;
 }
 
-function userSlots(editor: Gr55Editor): Slot[] {
+/** The patch list of the pedal in the current GK mode, as slot cards. */
+export function userSlots(editor: Gr55Editor): Slot[] {
   const maps = RolandGR55SysExConfig.gr55!;
   const { patchList } = editor.gkMode === 'BASS' ? maps.patchMapBassMode : maps.patchMapGuitarMode;
   return patchList.flatMap((patch) =>
@@ -56,7 +57,7 @@ type Guard = { get(): boolean };
  * Write the working copy into a slot: see the exact diff, then confirm. While the
  * pedal writes it goes deaf for a few seconds, so the modal repeats the warning.
  */
-function WriteFlow({
+export function WriteFlow({
   editor,
   onError,
   slot,
@@ -84,6 +85,7 @@ function WriteFlow({
     setBusy(true);
     try {
       await editor.writeToUserSlot(slot.userPatchNumber);
+      editor.markSaved();
       close(en.librarian.written(slot.label));
     } catch (reason) {
       onError(reason);

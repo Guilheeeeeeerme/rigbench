@@ -251,12 +251,13 @@ a.device-card:hover {
 .workspace {
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr auto;
   grid-template-areas:
     'header header'
     'context context'
     'error error'
-    'pages page';
+    'pages page'
+    'footer footer';
   min-height: 100vh;
 }
 
@@ -466,6 +467,93 @@ a.device-card:hover {
 .diff-list .diff-more {
   color: var(--muted);
   justify-content: flex-end;
+}
+
+/* Signal-chain canvas: the editor's home inside the patch domain. */
+.canvas {
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.canvas-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.canvas-stack {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.canvas-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  min-width: 8rem;
+  flex: 1;
+}
+
+.canvas-block:hover {
+  border-color: var(--accent);
+}
+
+.canvas-block .canvas-title {
+  font-weight: 600;
+}
+
+.canvas-block .canvas-hint {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.canvas-block-off {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+.canvas-block-off .canvas-off {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.canvas-arrow {
+  align-self: center;
+  color: var(--muted);
+}
+
+.canvas-block.wide {
+  flex: 1 1 100%;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+/* Document footer: the density switch lives here, always reachable. */
+.doc-footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.doc-footer label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--muted);
 }
 
 /* Stage: calm and huge, nothing to edit here. */

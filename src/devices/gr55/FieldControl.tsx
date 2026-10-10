@@ -1,4 +1,4 @@
-import { useId, useSyncExternalStore } from 'react';
+import { useId, useState, useSyncExternalStore } from 'react';
 import { en } from '../../copy/en';
 import {
   AsciiStringField,
@@ -122,18 +122,33 @@ function PickerControl({ id, editor, field, value, disabled }: ControlProps<Nume
   );
 }
 
+/**
+ * The decoded name has trailing spaces removed. While the field is focused, keep the
+ * draft the user is typing so a space before the next letter is not eaten.
+ */
+export function shownTextValue(decoded: string, draft: string | null): string {
+  return draft ?? decoded;
+}
+
 function TextControl({ id, editor, field, value, disabled }: ControlProps<AsciiStringField>) {
+  const [draft, setDraft] = useState<string | null>(null);
   return (
     <span className="control">
       <input
         id={id}
         type="text"
-        value={value}
+        value={shownTextValue(value, draft)}
         maxLength={field.definition.size}
         disabled={disabled}
         spellCheck={false}
         autoComplete="off"
-        onChange={(event) => editor.write(field, event.target.value)}
+        onFocus={() => setDraft(value)}
+        onBlur={() => setDraft(null)}
+        onChange={(event) => {
+          const next = event.target.value;
+          setDraft(next);
+          editor.write(field, next);
+        }}
       />
     </span>
   );

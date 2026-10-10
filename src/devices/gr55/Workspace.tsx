@@ -24,17 +24,17 @@ export function Workspace({
   onError: (error: unknown) => void;
   onDisconnect: () => void;
 }) {
-  const pages = useMemo(() => buildPages(editor.gkMode), [editor]);
+  const patchName = useSyncExternalStore(editor.subscribe, () => editor.patchName);
+  const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
+  const pages = useMemo(() => buildPages(gkMode), [gkMode]);
   const [pageId, setPageId] = useState(pages[0].id);
   const [reading, setReading] = useState(false);
   const page = pages.find((candidate) => candidate.id === pageId);
 
-  // The name can change from any page, from a loaded file or from the pedal.
-  const patchName = useSyncExternalStore(editor.subscribe, () => editor.patchName);
-
   const reload = async () => {
     setReading(true);
     try {
+      await editor.readSystem();
       await editor.readPatch();
       onError(undefined);
     } catch (reason) {
@@ -53,7 +53,7 @@ export function Workspace({
         <div className="patch-title">
           <span className="device-name">{en.devices.gr55.name}</span>
           <strong>{patchName || en.gr55.unnamed}</strong>
-          <span className="mode">{en.gr55.mode[editor.gkMode]}</span>
+          <span className="mode">{en.gr55.mode[gkMode]}</span>
         </div>
         <div className="actions">
           <button type="button" disabled={reading} onClick={() => void reload()}>

@@ -96,6 +96,7 @@ export class Gr55Editor {
       GUITAR_BASS_SELECT.definition.size,
     );
     this.gkMode = GUITAR_BASS_SELECT.definition.type.decode(bytes, 0, bytes.length) as GkMode;
+    this.notify();
   }
 
   async readPatch(onProgress?: (done: number, total: number) => void): Promise<void> {

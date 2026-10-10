@@ -43,6 +43,13 @@ export class MidiTimeoutError extends Error {
   }
 }
 
+export class MidiAbortError extends Error {
+  constructor() {
+    super('Identity request aborted');
+    this.name = 'AbortError';
+  }
+}
+
 /**
  * Sends a universal Identity Request and resolves with the first reply.
  * The caller decides whether the device that answered is the one it wants.
@@ -51,11 +58,21 @@ export function identify(
   input: MidiInputLike,
   output: MidiOutputLike,
   timeoutMs = 1500,
+  signal?: AbortSignal,
 ): Promise<DeviceIdentity> {
   return new Promise((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(new MidiAbortError());
+      return;
+    }
     const cleanup = () => {
       clearTimeout(timer);
       input.removeEventListener('midimessage', listener);
+      signal?.removeEventListener('abort', onAbort);
+    };
+    const onAbort = () => {
+      cleanup();
+      reject(new MidiAbortError());
     };
     const listener: MidiMessageListener = ({ data }) => {
       const identity = data && parseIdentityReplyMessage(data);
@@ -68,6 +85,7 @@ export function identify(
       cleanup();
       reject(new MidiTimeoutError('Identity request'));
     }, timeoutMs);
+    signal?.addEventListener('abort', onAbort, { once: true });
     input.addEventListener('midimessage', listener);
     try {
       output.send(BROADCAST_IDENTITY_REQUEST_MESSAGE);

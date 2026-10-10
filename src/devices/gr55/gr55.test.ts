@@ -5,9 +5,12 @@ import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { pack7, rolandChecksum } from '../../protocol/RolandSysExProtocol';
 import { Gr55Editor } from './editor';
 import { FakeGr55 } from './fakeDevice';
+import { formatRate113, formatTime3413, formatToneRate150 } from '../../protocol/tempoLabels';
+import { shownTextValue } from './FieldControl';
 import { buildPages, effectOfFields, isField, memberOf } from './pages';
 import type { Page, StructReference } from './pages';
 import {
+  GR55_MAP,
   PATCH_BLOCKS,
   PATCH_SPAN,
   TEMPORARY_PATCH,
@@ -85,6 +88,35 @@ describe('Gr55Editor', () => {
     expect([...device.peek(reverbLevel.address, 1)]).toEqual([90]);
   });
 
+  test('a patch name keeps a space while it is being typed', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+    let draft: string | null = null;
+    const type = (next: string) => {
+      draft = next;
+      editor.write(common.patchName, next);
+    };
+    const shown = () => {
+      const read = editor.read(common.patchName);
+      return shownTextValue(read.ok ? read.value : '', draft);
+    };
+
+    type('Foo');
+    type('Foo ');
+    expect(shown()).toBe('Foo ');
+    type('Foo Bar');
+    expect(shown()).toBe('Foo Bar');
+    expect(editor.patchName).toBe('Foo Bar');
+
+    draft = null;
+    expect(shown()).toBe('Foo Bar');
+    await settle();
+    const nameOffset = common.patchName.address - TEMPORARY_PATCH_ADDRESS;
+    expect(device.peek(TEMPORARY_PATCH_ADDRESS + nameOffset, 7)).toEqual(
+      Uint8Array.from('Foo Bar', (char) => char.charCodeAt(0)),
+    );
+  });
+
   test('editing never writes outside the temporary patch', async () => {
     const { device, editor } = setUp();
     await editor.readPatch();
@@ -145,6 +177,21 @@ describe('Gr55Editor', () => {
     await vi.waitFor(() => expect(editor.patchSnapshot()).not.toBe(before), { timeout: 3000 });
 
     expect(editor.read(reverbLevel)).toEqual({ ok: true, value: 9 });
+  });
+
+  test('reloading the system mode picks up a change on the pedal', async () => {
+    const { device, editor } = setUp();
+    const modes: string[] = [];
+    editor.subscribe(() => modes.push(editor.gkMode));
+
+    await editor.readSystem();
+    expect(editor.gkMode).toBe('GUITAR');
+
+    device.poke(GR55_MAP.system.common.guitarBassSelect.address, [1]);
+    await editor.readSystem();
+
+    expect(editor.gkMode).toBe('BASS');
+    expect(modes).toContain('BASS');
   });
 
   test('writing to a user slot sends the write command and nothing else', async () => {
@@ -291,6 +338,25 @@ describe('pages', () => {
     expect(keys('GUITAR').some((key) => key.endsWith('_bass'))).toBe(false);
     expect(keys('BASS').some((key) => key.endsWith('_guitar'))).toBe(false);
     expect(keys('GUITAR')).toContain('level');
+  });
+
+  test('rate and time show note names only above the numeric range', () => {
+    const delayTime = TEMPORARY_PATCH.sendsAndEq.delayTime.definition.type;
+    const chorusRate = TEMPORARY_PATCH.sendsAndEq.chorusRate.definition.type;
+    expect(chorusRate.format(100)).toBe('100');
+    expect(formatRate113(101)).toBe('WHL');
+    expect(chorusRate.format(113)).toBe('16TH');
+    expect(formatTime3413(3400)).toBe('3400 ms');
+    expect(delayTime.format(3401)).toBe('16TH');
+    expect(delayTime.format(3413)).toBe('WHL');
+    expect(formatToneRate150(127)).toBe('127');
+    expect(formatToneRate150(128)).toBe('2WHL');
+    expect(formatToneRate150(149)).toBe('64TH3');
+    expect(formatToneRate150(150)).toBe('TONE');
+    // A note value still encodes as that same number.
+    const bytes = new Uint8Array(delayTime.size);
+    delayTime.encode(3401, bytes, 0, delayTime.size);
+    expect(delayTime.decode(bytes, 0, delayTime.size)).toBe(3401);
   });
 
   test.each([

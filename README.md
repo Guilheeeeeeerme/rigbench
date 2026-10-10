@@ -25,6 +25,20 @@ nothing you edit leaves your computer.
 So far this has been developed against a simulated pedal. If something misbehaves on a real
 GR-55, please open an issue with the firmware version and what you did.
 
+## Check on a real GR-55
+
+The simulator answers what the editor sends. These checks need the pedal, the Roland driver, and
+Chrome or Edge. Do them before changing any byte encoding.
+
+- Identity Reply reports family `53 02`, and guitar/bass mode is read from `02 00 00 1A`.
+- Turn the reverb level. The sound changes, and only that parameter's byte goes out.
+- Type a patch name that contains a space. It stays in the field and comes back after a reload.
+- Write the patch to a user slot and wait. The pedal locks for a few seconds and sends a program
+  change before the `0F 00 00 02` reply. The queue holds the next read until that reply. If the
+  read still hits the 5 second timeout, lengthen the wait on that command only.
+- Set a delay time in the middle of the millisecond range, then one at the top (a note division).
+  If the bytes on the wire do not match the sound, then adjust `USplit12Field` encode. Not before.
+
 Not included yet: `.g5l` librarian files, and system settings beyond reading guitar/bass mode.
 
 ## What you need

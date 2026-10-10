@@ -1,6 +1,7 @@
 // Copied from https://github.com/motiz88/gr55-remote (commit 8eaea7765cd6).
 // Copyright 2022 Moti Zilberman. MIT License, see ./LICENSE.
-// Unmodified apart from this notice.
+// Rigbench changes: tempo-synced rate and time values display as note names.
+// Their encode and decode are unchanged.
 
 import {
   AsciiStringField,
@@ -21,27 +22,35 @@ import {
 } from "./RolandAddressMap";
 import { pcmToneSelectField } from "./RolandGR55ToneMap";
 import { pack7 } from "./RolandSysExProtocol";
+import {
+  formatRate113,
+  formatTime3400,
+  formatTime3413,
+  formatToneRate150,
+} from "./tempoLabels";
 
-// TODO: Fully implement rate field types
-// 0-100, and then 13 tempo-relative labelled values
+// 0-100, and then 13 tempo-relative labelled values. Labels only; bytes are unchanged.
 export const rate113Field = {
-  forPatch: new UByteField(0, 113),
+  forPatch: new UByteField(0, 113, { format: formatRate113 }),
   forAssign: new USplit12Field(0, 113, {
     encodedOffset: 1024,
+    format: formatRate113,
   }),
 };
 
-// 0-127, then 22 tempo-relative labelled values, then TONE
-const toneRate150Field = new USplit8Field(0, 150);
+// 0-127, then 22 tempo-relative labelled values, then TONE. Labels only.
+const toneRate150Field = new USplit8Field(0, 150, {
+  format: formatToneRate150,
+});
 
-// TODO: Fully implement time field type
-// 0-3400, and then 13 tempo-relative labelled values
+// 0-3400, and then 13 tempo-relative labelled values. Labels only; bytes are unchanged.
 export const time3413Field = {
-  forPatch: new USplit12Field(0, 3413),
+  forPatch: new USplit12Field(0, 3413, { format: formatTime3413 }),
   // NOTE: the assign version of this field omits the tempo-relative values
   forAssign: new USplit12Field(5, 3400, {
     decodedFactor: 5,
     encodedOffset: 1024,
+    format: formatTime3400,
   }),
 };
 

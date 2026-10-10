@@ -1,7 +1,7 @@
 import { FakeGr55 } from '../devices/gr55/fakeDevice';
 import { RolandGR55SysExConfig } from '../protocol/RolandDevices';
 import { pack7, rolandChecksum } from '../protocol/RolandSysExProtocol';
-import { MidiSession, MidiTimeoutError, identify } from './session';
+import { MidiSession, MidiAbortError, MidiTimeoutError, identify } from './session';
 
 const TEMPORARY_PATCH = pack7(0x18000000);
 
@@ -23,6 +23,18 @@ describe('identify', () => {
     const device = new FakeGr55();
     device.answers = false;
     await expect(identify(device, device, 20)).rejects.toBeInstanceOf(MidiTimeoutError);
+  });
+
+  test('stops listening when the request is aborted', async () => {
+    const device = new FakeGr55();
+    device.answers = false;
+    const abort = new AbortController();
+    const pending = identify(device, device, 5000, abort.signal);
+    abort.abort();
+    await expect(pending).rejects.toBeInstanceOf(MidiAbortError);
+    device.answers = true;
+    device.emit([0xf0, 0x7e, 0x10, 0x06, 0x02, 0x41, 0x53, 0x02, 0, 0, 0, 0, 0, 0, 0xf7]);
+    await expect(pending).rejects.toBeInstanceOf(MidiAbortError);
   });
 });
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { en } from '../../copy/en';
 import { requestAccess } from '../../midi/access';
-import { MidiSession, MidiTimeoutError, identify } from '../../midi/session';
+import { MidiAbortError, MidiSession, MidiTimeoutError, identify } from '../../midi/session';
 import type { MidiInputLike, MidiOutputLike } from '../../midi/session';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { Workspace } from './Workspace';
@@ -35,20 +35,29 @@ export default function Gr55Screen() {
   const [problem, setProblem] = useState<string>();
   const [error, setError] = useState<unknown>();
   const live = useRef<Connection | undefined>(undefined);
+  const attempt = useRef(0);
+  const identifyAbort = useRef<AbortController | undefined>(undefined);
 
-  const disconnect = () => {
+  const release = () => {
+    identifyAbort.current?.abort();
+    identifyAbort.current = undefined;
     live.current?.editor.dispose();
     live.current?.session.close();
     live.current = undefined;
+  };
+
+  const disconnect = () => {
+    attempt.current += 1;
+    release();
     setError(undefined);
     setPhase({ kind: 'idle' });
   };
 
-  // Leaving the screen releases the ports.
+  // Leaving the screen releases the ports, including a connection still being opened.
   useEffect(
     () => () => {
-      live.current?.editor.dispose();
-      live.current?.session.close();
+      attempt.current += 1;
+      release();
     },
     [],
   );
@@ -84,12 +93,20 @@ export default function Gr55Screen() {
   };
 
   const connect = async (input: MidiInputLike, output: MidiOutputLike) => {
+    const ticket = ++attempt.current;
+    release();
     setProblem(undefined);
     setError(undefined);
     setPhase({ kind: 'connecting', done: 0 });
+    const abort = new AbortController();
+    identifyAbort.current = abort;
+    const stillHere = () => ticket === attempt.current;
     let session: MidiSession | undefined;
     try {
-      const identity = await identify(input, output);
+      const identity = await identify(input, output, 1500, abort.signal);
+      if (!stillHere()) {
+        return;
+      }
       const config = RolandGR55SysExConfig;
       if (
         identity.manufacturerId !== config.manufacturerId ||
@@ -100,14 +117,34 @@ export default function Gr55Screen() {
         return;
       }
       session = new MidiSession(input, output, config, identity.deviceId);
-      const editor = new Gr55Editor(session, setError);
+      const editor = new Gr55Editor(session, (reason) => {
+        if (stillHere()) {
+          setError(reason);
+        }
+      });
+      live.current = { session, editor };
       await editor.readSystem();
-      await editor.readPatch((done) => setPhase({ kind: 'connecting', done }));
-      const connection = { session, editor };
-      live.current = connection;
-      setPhase({ kind: 'connected', connection });
+      if (!stillHere()) {
+        return;
+      }
+      await editor.readPatch((done) => {
+        if (stillHere()) {
+          setPhase({ kind: 'connecting', done });
+        }
+      });
+      if (!stillHere()) {
+        return;
+      }
+      setPhase({ kind: 'connected', connection: { session, editor } });
     } catch (reason) {
-      session?.close();
+      if (live.current?.session === session) {
+        release();
+      } else {
+        session?.close();
+      }
+      if (!stillHere() || reason instanceof MidiAbortError) {
+        return;
+      }
       setProblem(reason instanceof MidiTimeoutError ? en.connection.noReply : en.connection.lost);
       setPhase({ kind: 'idle' });
     }

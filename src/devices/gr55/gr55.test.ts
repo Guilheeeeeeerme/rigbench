@@ -393,11 +393,7 @@ describe('system backup', () => {
 
     const file = encodeSystemSyx(editor.systemAddress(), bytes);
     const other = setUp();
-    const loaded = decodeSystemSyx(
-      file,
-      other.editor.systemAddress(),
-      other.editor.systemSpan(),
-    );
+    const loaded = decodeSystemSyx(file, other.editor.systemAddress(), other.editor.systemSpan());
     expect(loaded).toEqual(bytes);
     await other.editor.writeSystemBytes(loaded);
     expect(await other.editor.readSystemBytes()).toEqual(bytes);

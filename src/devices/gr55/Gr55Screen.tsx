@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import { requestAccess } from '../../midi/access';
 import { MidiAbortError, MidiSession, MidiTimeoutError, identify } from '../../midi/session';
 import type { MidiInputLike, MidiOutputLike } from '../../midi/session';
@@ -48,6 +48,7 @@ function preferredPort<T extends MIDIPort>(ports: T[]): string {
 }
 
 export default function Gr55Screen() {
+  const t = useT();
   const [access, setAccess] = useState<MIDIAccess>();
   const [inputs, setInputs] = useState<MIDIInput[]>([]);
   const [outputs, setOutputs] = useState<MIDIOutput[]>([]);
@@ -115,7 +116,7 @@ export default function Gr55Screen() {
     try {
       setAccess(await requestAccess());
     } catch {
-      setProblem(en.connection.denied);
+      setProblem(t('connection.denied'));
     }
   };
 
@@ -139,7 +140,7 @@ export default function Gr55Screen() {
         identity.manufacturerId !== config.manufacturerId ||
         identity.deviceFamily !== config.familyCode
       ) {
-        setProblem(en.connection.wrongDevice);
+        setProblem(t('connection.wrongDevice'));
         setPhase({ kind: 'idle' });
         return;
       }
@@ -179,7 +180,9 @@ export default function Gr55Screen() {
       if (!stillHere() || reason instanceof MidiAbortError) {
         return;
       }
-      setProblem(reason instanceof MidiTimeoutError ? en.connection.noReply : en.connection.lost);
+      setProblem(
+        reason instanceof MidiTimeoutError ? t('connection.noReply') : t('connection.lost'),
+      );
       setPhase({ kind: 'idle' });
     }
   };
@@ -231,9 +234,9 @@ export default function Gr55Screen() {
             path="*"
             element={
               <main className="gate">
-                <h1>{en.app.notFound}</h1>
+                <h1>{t('app.notFound')}</h1>
                 <p>
-                  <Link to={libraryRoute}>{en.library.title}</Link>
+                  <Link to={libraryRoute}>{t('library.title')}</Link>
                 </p>
               </main>
             }
@@ -247,21 +250,21 @@ export default function Gr55Screen() {
   return (
     <main className="connect">
       <Link className="brand" to="/">
-        {en.app.name}
+        {t('app.name')}
       </Link>
-      <h1>{en.connection.title}</h1>
-      <p>{en.connection.intro}</p>
+      <h1>{t('connection.title')}</h1>
+      <p>{t('connection.intro')}</p>
 
       {!access ? (
         <button type="button" className="primary" onClick={() => void allow()}>
-          {en.connection.allow}
+          {t('connection.allow')}
         </button>
       ) : inputs.length === 0 || outputs.length === 0 ? (
-        <p className="hint">{en.connection.noPorts}</p>
+        <p className="hint">{t('connection.noPorts')}</p>
       ) : (
         <div className="ports">
           <label>
-            {en.connection.input}
+            {t('connection.input')}
             <select
               value={inputId}
               disabled={connecting}
@@ -275,7 +278,7 @@ export default function Gr55Screen() {
             </select>
           </label>
           <label>
-            {en.connection.output}
+            {t('connection.output')}
             <select
               value={outputId}
               disabled={connecting}
@@ -289,7 +292,7 @@ export default function Gr55Screen() {
             </select>
           </label>
           <button type="button" className="primary" disabled={connecting} onClick={connectSelected}>
-            {en.connection.connect}
+            {t('connection.connect')}
           </button>
         </div>
       )}
@@ -297,8 +300,8 @@ export default function Gr55Screen() {
       {connecting && (
         <p className="status" role="status">
           {phase.done === 0
-            ? en.connection.connecting
-            : en.gr55.reading(phase.done, PATCH_BLOCKS.length)}
+            ? t('connection.connecting')
+            : t('gr55.reading', phase.done, PATCH_BLOCKS.length)}
         </p>
       )}
       {problem && (
@@ -310,7 +313,7 @@ export default function Gr55Screen() {
       {import.meta.env.DEV && (
         <p className="hint">
           <button type="button" disabled={connecting} onClick={() => void connectSimulated()}>
-            {en.connection.simulate}
+            {t('connection.simulate')}
           </button>
         </p>
       )}

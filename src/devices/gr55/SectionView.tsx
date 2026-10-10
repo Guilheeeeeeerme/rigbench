@@ -1,5 +1,5 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import type { FieldReference, NumericField } from '../../protocol/RolandAddressMap';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { FieldControl } from './FieldControl';
@@ -25,6 +25,7 @@ export function SectionView({
   /** The Advanced switch: without it, only the curated essentials show. */
   advanced?: boolean;
 }) {
+  const t = useT();
   const [showAll, setShowAll] = useState(false);
   const effects = useMemo(() => effectOfFields(section), [section]);
 
@@ -71,7 +72,7 @@ export function SectionView({
             checked={showAll}
             onChange={(event) => setShowAll(event.target.checked)}
           />
-          {en.gr55.showAllEffects}
+          {t('gr55.showAllEffects')}
         </label>
       )}
       {groups.map((group) => (

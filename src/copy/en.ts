@@ -1,4 +1,5 @@
-// Every string the interface shows. Another language is another file with this shape.
+// Every string the interface shows, in English: the source of truth. Each other language
+// is a file of this exact shape (see pt-BR.ts); `npm run check:copy` holds them to it.
 export const en = {
   app: {
     name: 'Rigbench',
@@ -6,6 +7,10 @@ export const en = {
     footer: 'Runs in your browser. Nothing you edit leaves this computer.',
     notFound: 'There is nothing at this address.',
     backHome: 'All devices',
+  },
+  locale: {
+    label: 'Language',
+    names: { en: 'EN', 'pt-BR': 'PT-BR' },
   },
   gate: {
     noWebMidi: {

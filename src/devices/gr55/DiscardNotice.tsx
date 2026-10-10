@@ -1,5 +1,5 @@
 import { useState, useSyncExternalStore } from 'react';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import type { Gr55Editor } from './editor';
 
 /**
@@ -7,6 +7,7 @@ import type { Gr55Editor } from './editor';
  * before the app could ask. This fixed banner says what was lost until dismissed.
  */
 export function DiscardNotice({ editor }: { editor: Gr55Editor }) {
+  const t = useT();
   const [dismissed, setDismissed] = useState(-1);
   const sequence = useSyncExternalStore(editor.subscribe, () => editor.discardSequence);
   const count = editor.discardedChanges;
@@ -16,9 +17,9 @@ export function DiscardNotice({ editor }: { editor: Gr55Editor }) {
   return (
     <div className="flash">
       <p className="notice" role="alert">
-        {en.gr55.workspace.pedalSwitchedNotice(count)}{' '}
+        {t('gr55.workspace.pedalSwitchedNotice', count)}{' '}
         <button type="button" onClick={() => setDismissed(sequence)}>
-          {en.gr55.workspace.dismissNotice}
+          {t('gr55.workspace.dismissNotice')}
         </button>
       </p>
     </div>

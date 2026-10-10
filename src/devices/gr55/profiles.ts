@@ -1,4 +1,4 @@
-import { en } from '../../copy/en';
+import { t } from '../../copy';
 
 /** Instrument presets the musician picks once; these live in the app, not the pedal. */
 export interface InstrumentProfile {
@@ -34,7 +34,7 @@ export function saveProfile(profile: InstrumentProfile): void {
 }
 
 export function profileName(profile: InstrumentProfile): string {
-  return en.device.profiles[profile.id];
+  return t(`device.profiles.${profile.id}`);
 }
 
 /** The mode the pedal must be in for this profile's patch names to line up. */

@@ -1,6 +1,6 @@
 import { useSyncExternalStore, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import type { FieldReference, BooleanField } from '../../protocol/RolandAddressMap';
 import type { Gr55Editor } from './editor';
 import { editorHref } from './pages';
@@ -30,6 +30,7 @@ function blockOn(editor: Gr55Editor, power?: FieldReference<BooleanField>): bool
 }
 
 function ChainBlock({ editor, block }: { editor: Gr55Editor; block: ChainBlock }) {
+  const t = useT();
   // Subscribes to the power switch so a block wakes up without a patch reload.
   useSyncExternalStore(editor.subscribe, () =>
     block.power ? editor.fieldSnapshot(block.power.address) : '',
@@ -39,7 +40,7 @@ function ChainBlock({ editor, block }: { editor: Gr55Editor; block: ChainBlock }
     <>
       <span className="canvas-title">{block.title}</span>
       {block.hint && <span className="canvas-hint">{block.hint}</span>}
-      {!on && <span className="canvas-off">{en.gr55.blocks.off}</span>}
+      {!on && <span className="canvas-off">{t('gr55.blocks.off')}</span>}
     </>
   );
   return (
@@ -69,40 +70,44 @@ function Arrow() {
  * opens the inspector of its source, effect, or control domain.
  */
 export function Canvas({ editor }: { editor: Gr55Editor }) {
-  const b = en.gr55.blocks;
+  const t = useT();
   return (
     <div className="canvas">
       <div className="canvas-head">
-        <h1>{b.title}</h1>
-        <p className="hint">{b.intro}</p>
+        <h1>{t('gr55.blocks.title')}</h1>
+        <p className="hint">{t('gr55.blocks.intro')}</p>
       </div>
 
       <ChainRow>
         <ChainBlock
           editor={editor}
-          block={{ title: b.input, hint: b.inputHint, href: editorHref('master', 'output') }}
+          block={{
+            title: t('gr55.blocks.input'),
+            hint: t('gr55.blocks.inputHint'),
+            href: editorHref('master', 'output'),
+          }}
         />
         <Arrow />
         <span className="canvas-stack">
           <ChainRow>
             <ChainBlock
               editor={editor}
-              block={{ title: b.pcm1, href: editorHref('pcm1', 'tone') }}
+              block={{ title: t('gr55.blocks.pcm1'), href: editorHref('pcm1', 'tone') }}
             />
             <ChainBlock
               editor={editor}
-              block={{ title: b.pcm2, href: editorHref('pcm2', 'tone') }}
+              block={{ title: t('gr55.blocks.pcm2'), href: editorHref('pcm2', 'tone') }}
             />
           </ChainRow>
           <ChainRow>
             <ChainBlock
               editor={editor}
-              block={{ title: b.modeling, href: editorHref('modeling', 'tone') }}
+              block={{ title: t('gr55.blocks.modeling'), href: editorHref('modeling', 'tone') }}
             />
             <ChainBlock
               editor={editor}
               block={{
-                title: b.normalPickup,
+                title: t('gr55.blocks.normalPickup'),
                 href: editorHref('normal-pickup', 'level'),
                 power: patch.common.normalPuMute,
               }}
@@ -113,7 +118,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
         <ChainBlock
           editor={editor}
           block={{
-            title: b.amp,
+            title: t('gr55.blocks.amp'),
             href: editorHref('amp', 'amp'),
             power: patch.ampModNs.ampSwitch,
           }}
@@ -122,7 +127,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
         <ChainBlock
           editor={editor}
           block={{
-            title: b.mod,
+            title: t('gr55.blocks.mod'),
             href: editorHref('mod', 'mod'),
             power: patch.ampModNs.modSwitch,
           }}
@@ -130,7 +135,11 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
         <Arrow />
         <ChainBlock
           editor={editor}
-          block={{ title: b.mfx, href: editorHref('mfx', 'mfx'), power: patch.mfx.mfxSwitch }}
+          block={{
+            title: t('gr55.blocks.mfx'),
+            href: editorHref('mfx', 'mfx'),
+            power: patch.mfx.mfxSwitch,
+          }}
         />
         <Arrow />
         <span className="canvas-stack">
@@ -138,7 +147,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
             <ChainBlock
               editor={editor}
               block={{
-                title: b.chorus,
+                title: t('gr55.blocks.chorus'),
                 href: editorHref('chorus', 'chorus'),
                 power: patch.sendsAndEq.chorusSwitch,
               }}
@@ -146,7 +155,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
             <ChainBlock
               editor={editor}
               block={{
-                title: b.reverb,
+                title: t('gr55.blocks.reverb'),
                 href: editorHref('reverb', 'reverb'),
                 power: patch.sendsAndEq.reverbSwitch,
               }}
@@ -156,7 +165,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
             <ChainBlock
               editor={editor}
               block={{
-                title: b.delay,
+                title: t('gr55.blocks.delay'),
                 href: editorHref('delay', 'delay'),
                 power: patch.sendsAndEq.delaySwitch,
               }}
@@ -164,7 +173,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
             <ChainBlock
               editor={editor}
               block={{
-                title: b.eq,
+                title: t('gr55.blocks.eq'),
                 href: editorHref('eq', 'eq'),
                 power: patch.sendsAndEq.eqSwitch,
               }}
@@ -174,7 +183,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
         <Arrow />
         <ChainBlock
           editor={editor}
-          block={{ title: b.master, href: editorHref('master', 'output') }}
+          block={{ title: t('gr55.blocks.master'), href: editorHref('master', 'output') }}
         />
       </ChainRow>
 
@@ -182,8 +191,8 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
         <ChainBlock
           editor={editor}
           block={{
-            title: b.control,
-            hint: b.controlHint,
+            title: t('gr55.blocks.control'),
+            hint: t('gr55.blocks.controlHint'),
             href: editorHref('assigns', 'assign-1'),
             wide: true,
           }}

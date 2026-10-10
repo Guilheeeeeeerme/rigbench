@@ -1,6 +1,6 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import { confirmDiscard } from './dirtyGuard';
 import { SectionView } from './SectionView';
 import { userSlots, WriteFlow } from './Library';
@@ -40,6 +40,7 @@ export function Workspace({
   onError: (error: unknown) => void;
   onDisconnect: () => void;
 }) {
+  const t = useT();
   const { pageId: pageParam } = useParams<{ pageId?: string; sectionSlug?: string }>();
   // An unknown page id falls back to the first page instead of an empty screen.
   const pageId = (PAGE_IDS as readonly string[]).includes(pageParam ?? '')
@@ -57,7 +58,7 @@ export function Workspace({
   // The write-to-slot dialog runs for both Save and Save as…, diff and confirm inside.
   const [chooseOpen, setChooseOpen] = useState(false);
   const [writeTo, setWriteTo] = useState<Slot>();
-  const pages = useMemo(() => buildPages(gkMode), [gkMode]);
+  const pages = useMemo(() => buildPages(gkMode, t), [gkMode, t]);
   const slots = useMemo(() => userSlots(editor), [editor]);
   const [reading, setReading] = useState(false);
   const page = pages.find((candidate) => candidate.id === pageId) ?? pages[0];
@@ -99,7 +100,7 @@ export function Workspace({
     if (changeCount === 0) {
       return;
     }
-    if (!window.confirm(en.gr55.document.revertConfirm(changeCount))) {
+    if (!window.confirm(t('gr55.document.revertConfirm', changeCount))) {
       return;
     }
     setReading(true);
@@ -116,21 +117,23 @@ export function Workspace({
     <div className="workspace">
       <header className="workspace-header">
         <Link className="brand" to="/">
-          {en.app.name}
+          {t('app.name')}
         </Link>
-        <nav className="top-nav" aria-label={en.gr55.navEditor}>
-          <Link to="/gr55/editor">{en.gr55.navEditor}</Link>
-          <Link to="/gr55/patches">{en.gr55.navLibrary}</Link>
-          <Link to="/gr55/palco">{en.gr55.navStage}</Link>
+        <nav className="top-nav" aria-label={t('gr55.navEditor')}>
+          <Link to="/gr55/editor">{t('gr55.navEditor')}</Link>
+          <Link to="/gr55/patches">{t('gr55.navLibrary')}</Link>
+          <Link to="/gr55/palco">{t('gr55.navStage')}</Link>
           <Link className="top-device" to="/gr55/device">
-            {en.gr55.navDevice} <span className="dot" aria-hidden="true" />
+            {t('gr55.navDevice')} <span className="dot" aria-hidden="true" />
           </Link>
         </nav>
         <div className="patch-title">
-          <strong>{patchName || en.gr55.unnamed}</strong>
-          <span className="mode">{en.gr55.mode[gkMode]}</span>
+          <strong>{patchName || t('gr55.unnamed')}</strong>
+          <span className="mode">{t(`gr55.mode.${gkMode}`)}</span>
           <span className="changes">
-            {editor.isDirty ? en.library.changes(changeCount) : en.gr55.workspace.noUnsavedChanges}
+            {editor.isDirty
+              ? t('library.changes', changeCount)
+              : t('gr55.workspace.noUnsavedChanges')}
           </span>
         </div>
         <div className="actions">
@@ -140,19 +143,19 @@ export function Workspace({
             disabled={reading || !editor.isDirty || editor.patchSource?.kind !== 'slot'}
             onClick={save}
           >
-            {en.gr55.document.save}
+            {t('gr55.document.save')}
           </button>
           <button type="button" disabled={reading} onClick={() => setChooseOpen(true)}>
-            {en.gr55.document.saveAs}
+            {t('gr55.document.saveAs')}
           </button>
           <button type="button" disabled={reading || !editor.isDirty} onClick={() => void revert()}>
-            {en.gr55.document.revert}
+            {t('gr55.document.revert')}
           </button>
           <button type="button" disabled={reading} onClick={() => void reload()}>
-            {en.gr55.reload}
+            {t('gr55.reload')}
           </button>
           <button type="button" onClick={onDisconnect}>
-            {en.connection.disconnect}
+            {t('connection.disconnect')}
           </button>
         </div>
       </header>
@@ -161,33 +164,33 @@ export function Workspace({
         <FieldSearch editor={editor} />
         <ScopeTag
           scope="amber"
-          word={en.gr55.workspace.workingCopy}
-          hint={en.gr55.workspace.workingCopyHint}
+          word={t('gr55.workspace.workingCopy')}
+          hint={t('gr55.workspace.workingCopyHint')}
         />
         <span className="changes">
           {editor.isDirty
-            ? en.gr55.workspace.unsavedChanges(editor.changeCount)
-            : en.gr55.workspace.noUnsavedChanges}
+            ? t('gr55.workspace.unsavedChanges', editor.changeCount)
+            : t('gr55.workspace.noUnsavedChanges')}
         </span>
         <ScopeTag
           scope="blue"
-          word={`${en.gr55.workspace.pedal}: ${en.gr55.mode[gkMode]}`}
-          hint={en.gr55.workspace.pedalHint}
+          word={`${t('gr55.workspace.pedal')}: ${t(`gr55.mode.${gkMode}`)}`}
+          hint={t('gr55.workspace.pedalHint')}
         />
       </div>
 
       <div className="alerts">
         {error != null && (
           <p className="error" role="alert">
-            {en.gr55.error(errorText(error))}{' '}
+            {t('gr55.error', errorText(error))}{' '}
             <button type="button" onClick={() => onError(undefined)}>
-              {en.gr55.dismiss}
+              {t('gr55.dismiss')}
             </button>
           </p>
         )}
       </div>
 
-      <nav className="pages" aria-label={en.devices.gr55.name}>
+      <nav className="pages" aria-label={t('devices.gr55.name')}>
         {pages.map((candidate) => (
           <Link
             key={candidate.id}
@@ -217,7 +220,7 @@ export function Workspace({
             checked={advanced}
             onChange={(event) => setAdvancedStored(event.target.checked)}
           />
-          {en.gr55.document.advanced}
+          {t('gr55.document.advanced')}
         </label>
       </footer>
 
@@ -241,11 +244,11 @@ export function Workspace({
             aria-labelledby="choose-slot-title"
             onClick={(event) => event.stopPropagation()}
           >
-            <h2 id="choose-slot-title">{en.gr55.document.saveAs}</h2>
+            <h2 id="choose-slot-title">{t('gr55.document.saveAs')}</h2>
             <p className="hint">
               {editor.patchSource?.kind === 'slot'
-                ? en.gr55.document.saveHint(en.gr55.workspace.savedSlot)
-                : en.gr55.document.saveNoSlot}
+                ? t('gr55.document.saveHint', t('gr55.workspace.savedSlot'))
+                : t('gr55.document.saveNoSlot')}
             </p>
             <select
               onChange={(event) => {
@@ -260,7 +263,7 @@ export function Workspace({
               defaultValue=""
             >
               <option value="" disabled>
-                {en.library.choosing}
+                {t('library.choosing')}
               </option>
               {slots.map((slot) => (
                 <option key={slot.userPatchNumber} value={slot.userPatchNumber}>
@@ -270,7 +273,7 @@ export function Workspace({
             </select>
             <div className="actions">
               <button type="button" onClick={() => setChooseOpen(false)}>
-                {en.gr55.dismiss}
+                {t('gr55.dismiss')}
               </button>
             </div>
           </div>

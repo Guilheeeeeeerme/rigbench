@@ -954,3 +954,35 @@ a.device-card:hover {
     white-space: nowrap;
   }
 }
+
+/* Language switch: bottom-left corner of every screen, clear of the fixed bars. */
+.locale-switch {
+  position: fixed;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 30;
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.locale-switch.is-inline {
+  position: static;
+}
+
+.locale-switch button {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.locale-switch button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-text);
+}

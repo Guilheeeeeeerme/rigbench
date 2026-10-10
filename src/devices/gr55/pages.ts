@@ -1,4 +1,5 @@
-import { en } from '../../copy/en';
+import { t as currentT } from '../../copy';
+import type { Translate } from '../../copy';
 import { FieldDefinition, ReservedField, isEnumField } from '../../protocol/RolandAddressMap';
 import type {
   AtomReference,
@@ -279,14 +280,13 @@ const isModFields = oneOf(
  * The editor's pages. Each one is a slice of the address map; controls are generated
  * from the field definitions, so a parameter added to the map shows up here by itself.
  */
-export function buildPages(mode: GkMode): Page[] {
-  const t = en.gr55.pages;
+export function buildPages(mode: GkMode, t: Translate = currentT): Page[] {
   return [
     {
       id: 'patch',
-      title: t.patch,
+      title: t('gr55.pages.patch'),
       sections: [
-        section(t.patch, common, 'common', isName, {
+        section(t('gr55.pages.patch'), common, 'common', isName, {
           essentialKeys: ['patchName'],
           readOnlyKeys: ['patchAttribute'],
         }),
@@ -294,57 +294,62 @@ export function buildPages(mode: GkMode): Page[] {
     },
     {
       id: 'pcm1',
-      title: t.pcm1,
+      title: t('gr55.pages.pcm1'),
       sections: [
-        section(t.tone, patch.patchPCMTone1, 'tone', undefined, {
+        section(t('gr55.pages.tone'), patch.patchPCMTone1, 'tone', undefined, {
           essentialKeys: ['toneSelect', 'muteSwitch', 'partLevel', 'partPan'],
         }),
-        section(t.toneOffsets, patch.patchPCMTone1Offset, 'offsets'),
+        section(t('gr55.pages.toneOffsets'), patch.patchPCMTone1Offset, 'offsets'),
       ],
     },
     {
       id: 'pcm2',
-      title: t.pcm2,
+      title: t('gr55.pages.pcm2'),
       sections: [
-        section(t.tone, patch.patchPCMTone2, 'tone', undefined, {
+        section(t('gr55.pages.tone'), patch.patchPCMTone2, 'tone', undefined, {
           essentialKeys: ['toneSelect', 'muteSwitch', 'partLevel', 'partPan'],
         }),
-        section(t.toneOffsets, patch.patchPCMTone2Offset, 'offsets'),
+        section(t('gr55.pages.toneOffsets'), patch.patchPCMTone2Offset, 'offsets'),
       ],
     },
     {
       id: 'modeling',
-      title: t.modeling,
+      title: t('gr55.pages.modeling'),
       sections: [
-        section(t.modeling, patch.modelingTone, 'tone', forMode(mode), {
+        section(t('gr55.pages.modeling'), patch.modelingTone, 'tone', forMode(mode), {
           essentialKeys: ['level', 'muteSwitch'],
         }),
       ],
     },
     {
       id: 'normal-pickup',
-      title: t.normalPickup,
+      title: t('gr55.pages.normalPickup'),
       sections: [
-        section(t.normalPickup, common, 'level', isNormalPickup, {
+        section(t('gr55.pages.normalPickup'), common, 'level', isNormalPickup, {
           essentialKeys: ['normalPuLevel', 'normalPuMute'],
         }),
       ],
     },
     {
       id: 'amp',
-      title: t.amp,
+      title: t('gr55.pages.amp'),
       sections: [
-        section(t.amp, patch.ampModNs, 'amp', isAmp, {
+        section(t('gr55.pages.amp'), patch.ampModNs, 'amp', isAmp, {
           essentialKeys: ['ampSwitch', 'ampType', 'ampLevel', 'ampSoloLevel'],
         }),
-        section(t.noiseSuppressor, patch.ampModNs, 'noise-suppressor', isNoiseSuppressor),
+        section(
+          t('gr55.pages.noiseSuppressor'),
+          patch.ampModNs,
+          'noise-suppressor',
+          isNoiseSuppressor,
+        ),
       ],
     },
     {
       id: 'mod',
-      title: t.mod,
+      title: t('gr55.pages.mod'),
       sections: [
-        section(t.mod, patch.ampModNs, 'mod', isModFields, {
+        section(t('gr55.pages.mod'), patch.ampModNs, 'mod', isModFields, {
           typeKey: 'modType',
           essentialKeys: [
             'modSwitch',
@@ -359,9 +364,9 @@ export function buildPages(mode: GkMode): Page[] {
     },
     {
       id: 'mfx',
-      title: t.mfx,
+      title: t('gr55.pages.mfx'),
       sections: [
-        section(t.mfx, patch.mfx, 'mfx', undefined, {
+        section(t('gr55.pages.mfx'), patch.mfx, 'mfx', undefined, {
           typeKey: 'mfxType',
           essentialKeys: [
             'mfxSwitch',
@@ -376,41 +381,43 @@ export function buildPages(mode: GkMode): Page[] {
     },
     {
       id: 'delay',
-      title: t.delay,
+      title: t('gr55.pages.delay'),
       sections: [
-        section(t.delay, patch.sendsAndEq, 'delay', isDelay, {
+        section(t('gr55.pages.delay'), patch.sendsAndEq, 'delay', isDelay, {
           essentialKeys: ['delaySwitch', 'delayType', 'delayTime', 'delayEffectLevel'],
         }),
       ],
     },
     {
       id: 'chorus',
-      title: t.chorus,
+      title: t('gr55.pages.chorus'),
       sections: [
-        section(t.chorus, patch.sendsAndEq, 'chorus', isChorus, {
+        section(t('gr55.pages.chorus'), patch.sendsAndEq, 'chorus', isChorus, {
           essentialKeys: ['chorusSwitch', 'chorusType', 'chorusDepth', 'chorusEffectLevel'],
         }),
       ],
     },
     {
       id: 'reverb',
-      title: t.reverb,
+      title: t('gr55.pages.reverb'),
       sections: [
-        section(t.reverb, patch.sendsAndEq, 'reverb', isReverb, {
+        section(t('gr55.pages.reverb'), patch.sendsAndEq, 'reverb', isReverb, {
           essentialKeys: ['reverbSwitch', 'reverbType', 'reverbTime', 'reverbEffectLevel'],
         }),
       ],
     },
     {
       id: 'eq',
-      title: t.eq,
+      title: t('gr55.pages.eq'),
       sections: [
-        section(t.eq, patch.sendsAndEq, 'eq', isEq, { essentialKeys: ['eqSwitch', 'eqLevel'] }),
+        section(t('gr55.pages.eq'), patch.sendsAndEq, 'eq', isEq, {
+          essentialKeys: ['eqSwitch', 'eqLevel'],
+        }),
       ],
     },
     {
       id: 'assigns',
-      title: t.assigns,
+      title: t('gr55.pages.assigns'),
       sections: [
         common.assign1,
         common.assign2,
@@ -428,7 +435,7 @@ export function buildPages(mode: GkMode): Page[] {
     },
     {
       id: 'pedal-gk',
-      title: t.pedalGk,
+      title: t('gr55.pages.pedalGk'),
       sections: [
         ...(
           [
@@ -477,21 +484,23 @@ export function buildPages(mode: GkMode): Page[] {
             essentialKeys: essentials,
           }),
         ),
-        section(t.pedalRanges, common, 'ranges', isPedalControl, { essentialKeys: ['gkSet'] }),
+        section(t('gr55.pages.pedalRanges'), common, 'ranges', isPedalControl, {
+          essentialKeys: ['gkSet'],
+        }),
       ],
     },
     {
       id: 'master',
-      title: t.master,
+      title: t('gr55.pages.master'),
       sections: [
-        section(t.output, common, 'output', isOutput, {
+        section(t('gr55.pages.output'), common, 'output', isOutput, {
           essentialKeys: ['guitarOutSource', 'effectStructure', 'patchLevel'],
         }),
-        section(t.tuning, common, 'tuning', isTuning, {
+        section(t('gr55.pages.tuning'), common, 'tuning', isTuning, {
           essentialKeys: ['altTuneSwitch', 'altTuneType'],
         }),
-        section(t.vlink, common, 'vlink', isVLink),
-        section(t.ez, patch.sendsAndEq, 'ez', isEz),
+        section(t('gr55.pages.vlink'), common, 'vlink', isVLink),
+        section(t('gr55.pages.ez'), patch.sendsAndEq, 'ez', isEz),
       ],
     },
   ];

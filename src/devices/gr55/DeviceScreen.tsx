@@ -1,5 +1,5 @@
 import { useRef, useState, useSyncExternalStore } from 'react';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import type { Gr55Editor, GkMode } from './editor';
 import {
   PROFILE_PRESETS,
@@ -38,6 +38,7 @@ export function DeviceScreen({
   editor: Gr55Editor;
   onError: (error: unknown) => void;
 }) {
+  const t = useT();
   const [profile, setProfile] = useState<InstrumentProfile>(() => loadProfile());
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string>();
@@ -58,16 +59,16 @@ export function DeviceScreen({
     }
     // A dirty working copy dies in the switch; refuse before the modal, not after.
     if (editor.isDirty) {
-      window.alert(en.device.modeSwitchBlocked);
+      window.alert(t('device.modeSwitchBlocked'));
       return;
     }
-    if (!window.confirm(en.device.confirmMode(0))) {
+    if (!window.confirm(t('device.confirmMode', 0))) {
       return;
     }
     setBusy(true);
     void editor
       .setGuitarBassMode(mode)
-      .then(() => setNotice(en.device.modeSwitchedTo(en.gr55.mode[mode])))
+      .then(() => setNotice(t('device.modeSwitchedTo', t(`gr55.mode.${mode}`))))
       .catch((reason) => onError(reason))
       .finally(() => setBusy(false));
   };
@@ -79,7 +80,7 @@ export function DeviceScreen({
       .then((bytes) => {
         const file = systemFileName();
         download(encodeSystemSyx(editor.systemAddress(), bytes), file);
-        setNotice(en.device.backupDone(file));
+        setNotice(t('device.backupDone', file));
       })
       .catch((reason) => onError(reason))
       .finally(() => setBusy(false));
@@ -96,15 +97,15 @@ export function DeviceScreen({
           editor.systemSpan(),
         );
         // Blue rule: a system write names what it touches before it happens.
-        if (!window.confirm(en.device.confirmSystemWrite)) {
+        if (!window.confirm(t('device.confirmSystemWrite'))) {
           return;
         }
         await editor.writeSystemBytes(bytes);
-        setNotice(en.device.systemRestored);
+        setNotice(t('device.systemRestored'));
       })
       .catch((error) => {
         if (error instanceof SyxError) {
-          setNotice(en.librarian.problems[error.problem]);
+          setNotice(t(`librarian.problems.${error.problem}`));
         } else {
           onError(error);
         }
@@ -115,17 +116,17 @@ export function DeviceScreen({
   return (
     <div className="device">
       <h1>
-        {en.device.title}{' '}
+        {t('device.title')}{' '}
         <span className="scope chip-blue">
           <span className="dot" aria-hidden="true" />
-          {en.gr55.workspace.pedal}
+          {t('gr55.workspace.pedal')}
         </span>
       </h1>
-      <p className="hint">{en.device.intro}</p>
+      <p className="hint">{t('device.intro')}</p>
 
       <section className="section">
-        <h2>{en.device.profileTitle}</h2>
-        <p className="hint">{en.device.profileIntro}</p>
+        <h2>{t('device.profileTitle')}</h2>
+        <p className="hint">{t('device.profileIntro')}</p>
         <div className="profile-list">
           {PROFILE_PRESETS.map((preset) => (
             <label key={preset.id}>
@@ -137,7 +138,7 @@ export function DeviceScreen({
               />
               {profileName(preset)}
               {profileMode(preset) !== gkMode && (
-                <span className="profile-warn">{en.device.profileModeWarn}</span>
+                <span className="profile-warn">{t('device.profileModeWarn')}</span>
               )}
             </label>
           ))}
@@ -145,8 +146,8 @@ export function DeviceScreen({
       </section>
 
       <section className="section">
-        <h2>{en.device.modeTitle}</h2>
-        <p className="hint">{en.device.modeIntro}</p>
+        <h2>{t('device.modeTitle')}</h2>
+        <p className="hint">{t('device.modeIntro')}</p>
         <div className="actions">
           <button
             type="button"
@@ -154,7 +155,7 @@ export function DeviceScreen({
             className={gkMode === 'GUITAR' ? 'primary' : undefined}
             onClick={() => switchMode('GUITAR')}
           >
-            {en.gr55.mode.GUITAR}
+            {t('gr55.mode.GUITAR')}
           </button>
           <button
             type="button"
@@ -162,7 +163,7 @@ export function DeviceScreen({
             className={gkMode === 'BASS' ? 'primary' : undefined}
             onClick={() => switchMode('BASS')}
           >
-            {en.gr55.mode.BASS}
+            {t('gr55.mode.BASS')}
           </button>
         </div>
         {notice && (
@@ -171,19 +172,19 @@ export function DeviceScreen({
           </p>
         )}
         {changeCount > 0 && (
-          <p className="notice">{en.gr55.workspace.unsavedChanges(changeCount)}</p>
+          <p className="notice">{t('gr55.workspace.unsavedChanges', changeCount)}</p>
         )}
       </section>
 
       <section className="section">
-        <h2>{en.device.backupTitle}</h2>
-        <p className="hint">{en.device.backupIntro}</p>
+        <h2>{t('device.backupTitle')}</h2>
+        <p className="hint">{t('device.backupIntro')}</p>
         <div className="actions">
           <button type="button" disabled={busy} onClick={backup}>
-            {en.device.backup}
+            {t('device.backup')}
           </button>
           <button type="button" disabled={busy} onClick={() => restoreInput.current?.click()}>
-            {en.device.backupWrite}
+            {t('device.backupWrite')}
           </button>
           <input
             ref={restoreInput}
@@ -202,11 +203,11 @@ export function DeviceScreen({
       </section>
 
       <section className="section">
-        <h2>{en.device.midiTitle}</h2>
-        <p className="hint">{en.device.midiIntro}</p>
+        <h2>{t('device.midiTitle')}</h2>
+        <p className="hint">{t('device.midiIntro')}</p>
       </section>
 
-      <p className="hint">{en.device.systemNotice}</p>
+      <p className="hint">{t('device.systemNotice')}</p>
     </div>
   );
 }

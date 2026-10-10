@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { confirmDiscard } from './dirtyGuard';
 import type { Gr55Editor, SlotDiffEntry } from './editor';
@@ -68,6 +68,7 @@ export function WriteFlow({
   slot: Slot;
   close: (outcome?: string) => void;
 }) {
+  const t = useT();
   const [diff, setDiff] = useState<SlotDiffEntry[]>();
   const [busy, setBusy] = useState(false);
 
@@ -86,7 +87,7 @@ export function WriteFlow({
     try {
       await editor.writeToUserSlot(slot.userPatchNumber);
       editor.markSaved();
-      close(en.librarian.written(slot.label));
+      close(t('librarian.written', slot.label));
     } catch (reason) {
       onError(reason);
       close();
@@ -101,8 +102,8 @@ export function WriteFlow({
         aria-labelledby="write-flow-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="write-flow-title">{en.library.writeFlowTitle(slot.label)}</h2>
-        <p className="hint">{en.library.writeFlowIntro}</p>
+        <h2 id="write-flow-title">{t('library.writeFlowTitle', slot.label)}</h2>
+        <p className="hint">{t('library.writeFlowIntro')}</p>
         {diff === undefined ? (
           <div className="actions">
             <button
@@ -111,17 +112,17 @@ export function WriteFlow({
               disabled={busy}
               onClick={() => void showDiff()}
             >
-              {en.library.readDiff}
+              {t('library.readDiff')}
             </button>
             <button type="button" disabled={busy} onClick={() => close()}>
-              {en.gr55.dismiss}
+              {t('gr55.dismiss')}
             </button>
           </div>
         ) : (
           <>
-            <h3>{en.library.diffTitle}</h3>
+            <h3>{t('library.diffTitle')}</h3>
             {diff.length === 0 ? (
-              <p className="hint">{en.library.diffEmpty}</p>
+              <p className="hint">{t('library.diffEmpty')}</p>
             ) : (
               <ul className="diff-list">
                 {diff.slice(0, DIFF_PREVIEW_LIMIT).map((entry, index) => (
@@ -139,7 +140,7 @@ export function WriteFlow({
             )}
             {busy && (
               <p className="status" role="status">
-                {en.library.writing}
+                {t('library.writing')}
               </p>
             )}
             <div className="actions">
@@ -149,10 +150,10 @@ export function WriteFlow({
                 disabled={busy}
                 onClick={() => void write()}
               >
-                {en.library.diffConfirm}
+                {t('library.diffConfirm')}
               </button>
               <button type="button" disabled={busy} onClick={() => close()}>
-                {en.gr55.dismiss}
+                {t('gr55.dismiss')}
               </button>
             </div>
           </>
@@ -170,6 +171,7 @@ export function Library({
   editor: Gr55Editor;
   onError: (error: unknown) => void;
 }) {
+  const t = useT();
   const { slot: focusLabel } = useParams<{ slot?: string }>();
   const slots = useMemo(() => userSlots(editor), [editor]);
   const [names, setNames] = useState<ReadonlyMap<number, string>>(new Map());
@@ -209,8 +211,8 @@ export function Library({
       if (error instanceof SyxError) {
         setMessage(
           error.problem === 'no-patch-data'
-            ? en.library.fileIsEmpty
-            : en.librarian.problems[error.problem],
+            ? t('library.fileIsEmpty')
+            : t(`librarian.problems.${error.problem}`),
         );
       } else {
         onError(error);
@@ -228,7 +230,7 @@ export function Library({
     void run(async () => {
       await editor.selectPatch(slot.bankMsb, slot.programChange);
       setName(slot.userPatchNumber, editor.patchName);
-      return en.library.tested(slot.label);
+      return t('library.tested', slot.label);
     });
   };
 
@@ -238,14 +240,14 @@ export function Library({
         return;
       }
       await editor.importSyx(new Uint8Array(await file.arrayBuffer()));
-      return en.librarian.opened(file.name);
+      return t('librarian.opened', file.name);
     });
 
   const readNames = () =>
     run(async () => {
       for (let index = 0; index < slots.length; index++) {
         const { userPatchNumber } = slots[index];
-        setProgress(en.library.reading(index, slots.length));
+        setProgress(t('library.reading', index, slots.length));
         setName(userPatchNumber, await editor.readUserPatchName(userPatchNumber));
       }
     });
@@ -256,7 +258,7 @@ export function Library({
       const images: SlotImage[] = [];
       for (let index = 0; index < slots.length; index++) {
         const { userPatchNumber } = slots[index];
-        setProgress(en.library.backupProgress(index, slots.length));
+        setProgress(t('library.backupProgress', index, slots.length));
         images.push({
           userPatchNumber,
           bytes: await editor.readUserPatch(userPatchNumber),
@@ -270,7 +272,7 @@ export function Library({
       }
       const file = `${new Date().toISOString().slice(0, 10)}_gr55-slots.syx`;
       download(encodeSlotBackupSyx(images), file);
-      return en.library.backupDone(file);
+      return t('library.backupDone', file);
     });
 
   const restore = (file: File) =>
@@ -278,60 +280,62 @@ export function Library({
       const images = decodeSlotBackupSyx(new Uint8Array(await file.arrayBuffer()));
       for (let index = 0; index < images.length; index++) {
         const image = images[index];
-        setProgress(en.library.backupRestoring(index, images.length));
+        setProgress(t('library.backupRestoring', index, images.length));
         await editor.restoreUserPatch(image.userPatchNumber, image.bytes);
       }
-      return en.library.backupRestored;
+      return t('library.backupRestored');
     });
 
   return (
     <>
       <div className="library-head">
-        <nav className="top-nav" aria-label={en.gr55.navLibrary}>
-          <Link to="/gr55/editor">{en.gr55.navEditor}</Link>
+        <nav className="top-nav" aria-label={t('gr55.navLibrary')}>
+          <Link to="/gr55/editor">{t('gr55.navEditor')}</Link>
           <Link to="/gr55/patches" aria-current="page">
-            {en.gr55.navLibrary}
+            {t('gr55.navLibrary')}
           </Link>
-          <Link to="/gr55/palco">{en.gr55.navStage}</Link>
+          <Link to="/gr55/palco">{t('gr55.navStage')}</Link>
           <Link className="top-device" to="/gr55/device">
-            {en.gr55.navDevice} <span className="dot" aria-hidden="true" />
+            {t('gr55.navDevice')} <span className="dot" aria-hidden="true" />
           </Link>
         </nav>
-        <h1>{en.library.title}</h1>
-        <p className="hint">{en.library.intro}</p>
+        <h1>{t('library.title')}</h1>
+        <p className="hint">{t('library.intro')}</p>
       </div>
 
       <section className="section working-copy-card">
-        <h2>{en.library.workingCopy}</h2>
+        <h2>{t('library.workingCopy')}</h2>
         <div className="card-name">
-          <strong>{editor.patchName || en.gr55.unnamed}</strong>
+          <strong>{editor.patchName || t('gr55.unnamed')}</strong>
           <span className="scope chip-amber">
             <span className="dot" aria-hidden="true" />
-            {en.gr55.workspace.workingCopy}
+            {t('gr55.workspace.workingCopy')}
           </span>
           <span className="changes">
-            {changeCount > 0 ? en.library.changes(changeCount) : en.gr55.workspace.noUnsavedChanges}
+            {changeCount > 0
+              ? t('library.changes', changeCount)
+              : t('gr55.workspace.noUnsavedChanges')}
           </span>
         </div>
         <div className="actions">
           <Link type="button" className="primary" to={editorHref('patch', 'common')}>
-            {en.library.openInEditor}
+            {t('library.openInEditor')}
           </Link>
           <button
             type="button"
             onClick={() => download(editor.exportSyx(), fileNameFor(editor.patchName))}
           >
-            {en.librarian.download}
+            {t('librarian.download')}
           </button>
         </div>
       </section>
 
       <section className="section">
-        <h2>{en.librarian.fileTitle}</h2>
-        <p className="hint">{en.librarian.fileIntro}</p>
+        <h2>{t('librarian.fileTitle')}</h2>
+        <p className="hint">{t('librarian.fileIntro')}</p>
         <div className="actions">
           <button type="button" disabled={busy} onClick={() => fileInput.current?.click()}>
-            {en.librarian.open}
+            {t('librarian.open')}
           </button>
           <input
             ref={fileInput}
@@ -350,14 +354,14 @@ export function Library({
       </section>
 
       <section className="section">
-        <h2>{en.library.backupTitle}</h2>
-        <p className="hint">{en.library.backupIntro}</p>
+        <h2>{t('library.backupTitle')}</h2>
+        <p className="hint">{t('library.backupIntro')}</p>
         <div className="actions">
           <button type="button" disabled={busy} onClick={() => void run(backupAll)}>
-            {en.library.backup}
+            {t('library.backup')}
           </button>
           <button type="button" disabled={busy} onClick={() => restoreInput.current?.click()}>
-            {en.library.backupWrite}
+            {t('library.backupWrite')}
           </button>
           <input
             ref={restoreInput}
@@ -376,18 +380,18 @@ export function Library({
       </section>
 
       <section className="section">
-        <h2>{en.librarian.slotsTitle}</h2>
+        <h2>{t('librarian.slotsTitle')}</h2>
         <div className="actions">
           {progress ? (
             <>
               <span role="status">{progress}</span>
               <button type="button" onClick={() => (stopCurrent.current = true)}>
-                {en.librarian.stop}
+                {t('librarian.stop')}
               </button>
             </>
           ) : (
             <button type="button" disabled={busy} onClick={() => void run(readNames)}>
-              {en.library.readAllNames}
+              {t('library.readAllNames')}
             </button>
           )}
         </div>
@@ -405,14 +409,14 @@ export function Library({
             >
               <span className="slot-label">{slot.label}</span>
               <span className="slot-name">
-                {names.get(slot.userPatchNumber) ?? en.librarian.notRead}
+                {names.get(slot.userPatchNumber) ?? t('librarian.notRead')}
               </span>
               <span className="slot-actions">
                 <button type="button" disabled={busy} onClick={() => testSlot(slot)}>
-                  ▶ {en.library.test}
+                  ▶ {t('library.test')}
                 </button>
                 <button type="button" disabled={busy} onClick={() => setWriteFlow(slot)}>
-                  {en.library.writeTo}
+                  {t('library.writeTo')}
                 </button>
               </span>
             </li>

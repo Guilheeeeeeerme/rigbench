@@ -1,6 +1,7 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
+import type { Translate } from '../../copy';
 import type { Gr55Editor } from './editor';
 import { buildPages, editorHref, memberOf } from './pages';
 import type { PageId } from './pages';
@@ -15,9 +16,9 @@ interface SearchHit {
 
 const SEARCH_LIMIT = 12;
 
-function buildIndex(mode: Gr55Editor['gkMode']): SearchHit[] {
+function buildIndex(mode: Gr55Editor['gkMode'], t: Translate): SearchHit[] {
   const hits: SearchHit[] = [];
-  for (const page of buildPages(mode)) {
+  for (const page of buildPages(mode, t)) {
     for (const section of page.sections) {
       for (const key of section.keys) {
         const field = memberOf(section.struct, key);
@@ -47,10 +48,11 @@ function search(index: readonly SearchHit[], query: string): SearchHit[] {
  * the patch's parameters can be reached in two clicks, whatever section it lives in.
  */
 export function FieldSearch({ editor }: { editor: Gr55Editor }) {
+  const t = useT();
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
-  const index = useMemo(() => buildIndex(gkMode), [gkMode]);
+  const index = useMemo(() => buildIndex(gkMode, t), [gkMode, t]);
   const hits = useMemo(() => search(index, query), [index, query]);
 
   return (
@@ -58,8 +60,8 @@ export function FieldSearch({ editor }: { editor: Gr55Editor }) {
       <input
         type="search"
         value={query}
-        placeholder={en.gr55.search.placeholder}
-        aria-label={en.gr55.search.placeholder}
+        placeholder={t('gr55.search.placeholder')}
+        aria-label={t('gr55.search.placeholder')}
         onChange={(event) => setQuery(event.target.value)}
       />
       {hits.length > 0 && (

@@ -1,5 +1,5 @@
 import { useId, useState, useSyncExternalStore } from 'react';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import {
   AsciiStringField,
   isBooleanField,
@@ -25,10 +25,12 @@ function fieldLabel(description: string): string {
 }
 
 function ScopeChip({ fieldAddress }: { fieldAddress: number }) {
+  const t = useT();
   const scope = scopeOf(fieldAddress);
-  const label = scope === 'working-copy' ? en.gr55.workspace.workingCopy : en.gr55.workspace.pedal;
+  const label =
+    scope === 'working-copy' ? t('gr55.workspace.workingCopy') : t('gr55.workspace.pedal');
   const hint =
-    scope === 'working-copy' ? en.gr55.workspace.workingCopyHint : en.gr55.workspace.pedalHint;
+    scope === 'working-copy' ? t('gr55.workspace.workingCopyHint') : t('gr55.workspace.pedalHint');
   return (
     <span className={`scope chip-${scope}`} title={hint} aria-label={`${label}: ${hint}`}>
       <span className="dot" aria-hidden="true" />
@@ -183,6 +185,7 @@ export function FieldControl({
   readOnly = false,
   picker = false,
 }: FieldControlProps) {
+  const t = useT();
   const id = useId();
   useSyncExternalStore(editor.subscribe, () => editor.fieldSnapshot(field.address));
   const type = field.definition.type;
@@ -190,7 +193,9 @@ export function FieldControl({
 
   let control;
   if (!result.ok) {
-    control = <output className="control unknown">{en.gr55.unknownValue(hex(result.raw))}</output>;
+    control = (
+      <output className="control unknown">{t('gr55.unknownValue', hex(result.raw))}</output>
+    );
   } else {
     const props = { id, editor, value: result.value, disabled: readOnly };
     if (isBooleanField(type)) {

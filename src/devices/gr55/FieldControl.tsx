@@ -14,6 +14,7 @@ import type {
   NumericField,
 } from '../../protocol/RolandAddressMap';
 import type { Gr55Editor } from './editor';
+import { scopeOf } from './changeTracking';
 
 const hex = (bytes: Uint8Array) =>
   [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join(' ');
@@ -21,6 +22,19 @@ const hex = (bytes: Uint8Array) =>
 function fieldLabel(description: string): string {
   // The GK mode is already settled by the page; the map repeats it on every such field.
   return description.replace(/\s*\(GK mode:\w+\)$/, '');
+}
+
+function ScopeChip({ fieldAddress }: { fieldAddress: number }) {
+  const scope = scopeOf(fieldAddress);
+  const label = scope === 'working-copy' ? en.gr55.workspace.workingCopy : en.gr55.workspace.pedal;
+  const hint =
+    scope === 'working-copy' ? en.gr55.workspace.workingCopyHint : en.gr55.workspace.pedalHint;
+  return (
+    <span className={`scope chip-${scope}`} title={hint} aria-label={`${label}: ${hint}`}>
+      <span className="dot" aria-hidden="true" />
+      {label}
+    </span>
+  );
 }
 
 interface ControlProps<T extends FieldType<unknown>> {
@@ -199,7 +213,10 @@ export function FieldControl({
 
   return (
     <div className="field">
-      <label htmlFor={id}>{fieldLabel(field.definition.description)}</label>
+      <span className="field-head">
+        <label htmlFor={id}>{fieldLabel(field.definition.description)}</label>
+        <ScopeChip fieldAddress={field.address} />
+      </span>
       {control}
     </div>
   );

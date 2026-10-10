@@ -8,6 +8,8 @@ import {
   TEMPORARY_PATCH_ADDRESS,
   userPatchAddress,
 } from './patchLayout';
+import { temporaryPatchFields, spansOverlapping, spanMatches } from './changeTracking';
+import type { PatchFieldSpan } from './changeTracking';
 import { decodePatchSyx, encodePatchSyx } from './syx';
 
 export type GkMode = 'GUITAR' | 'BASS';
@@ -46,18 +48,29 @@ export type FieldValue<T> = { ok: true; value: T } | { ok: false; raw: Uint8Arra
 export class Gr55Editor {
   /** Patch bytes indexed by offset from the start of the temporary patch. */
   private readonly image = new Uint8Array(PATCH_SPAN);
+  /** The patch as it came from the pedal, to diff unsaved edits against. */
+  private readonly baseline = new Uint8Array(PATCH_SPAN);
   private readonly listeners = new Set<() => void>();
   private readonly fieldVersions = new Map<number, number>();
+  private readonly changeIndex: readonly PatchFieldSpan[];
+  /** Addresses of fields whose bytes differ from the baseline. */
+  private readonly dirty = new Set<number>();
   private epoch = 0;
+  private dirtyEpoch = 0;
   private reloadTimer: ReturnType<typeof setTimeout> | undefined;
   private readonly unsubscribe: (() => void)[];
 
   gkMode: GkMode = 'GUITAR';
+  /** Unsaved edits lost when the pedal changed patches on its own, until the app shows it. */
+  discardedChanges: number | undefined;
+  /** Increments every time discardedChanges is written, so the app can tell new notices apart. */
+  discardSequence = 0;
 
   constructor(
     private readonly session: MidiSession,
     private readonly onBackgroundError: (error: unknown) => void = () => {},
   ) {
+    this.changeIndex = temporaryPatchFields();
     this.unsubscribe = [
       // A parameter changed on the pedal itself.
       session.onData((address, bytes) => this.applyRemoteData(address, bytes)),
@@ -90,6 +103,18 @@ export class Gr55Editor {
 
   patchSnapshot = (): number => this.epoch;
 
+  /** Changes when the set of unsaved changes may have changed. */
+  dirtySnapshot = (): string => `${this.epoch}:${this.dirtyEpoch}`;
+
+  /** How many fields of the working copy differ from what the pedal had. */
+  get changeCount(): number {
+    return this.dirty.size;
+  }
+
+  get isDirty(): boolean {
+    return this.dirty.size > 0;
+  }
+
   async readSystem(): Promise<void> {
     const bytes = await this.session.requestData(
       GUITAR_BASS_SELECT.address,
@@ -113,6 +138,9 @@ export class Gr55Editor {
       }),
     );
     this.image.set(next);
+    this.baseline.set(next);
+    this.dirty.clear();
+    this.dirtyEpoch++;
     this.bumpEpoch();
   }
 
@@ -133,8 +161,28 @@ export class Gr55Editor {
     const bytes = new Uint8Array(size);
     type.encode(value, bytes, 0, size);
     this.image.set(bytes, offset);
+    this.reconcile(offset, size);
     this.bumpField(field.address);
     this.session.writeData(field.address, bytes, { coalesce: true }).catch(this.onBackgroundError);
+  }
+
+  /** Sends the baseline back to the pedal for every changed field, then reloads the copy. */
+  async revert(): Promise<void> {
+    const writes: Promise<void>[] = [];
+    const changed = [...this.dirty];
+    for (const address of changed) {
+      const field = this.changeIndex.find((candidate) => candidate.address === address);
+      if (!field) {
+        continue;
+      }
+      const bytes = this.baseline.slice(field.offset, field.offset + field.size);
+      this.image.set(bytes, field.offset);
+      writes.push(this.session.writeData(address, bytes));
+    }
+    await Promise.all(writes);
+    this.dirty.clear();
+    this.dirtyEpoch++;
+    this.bumpEpoch();
   }
 
   get patchName(): string {
@@ -191,14 +239,36 @@ export class Gr55Editor {
       return;
     }
     this.image.set(bytes, offset);
+    this.reconcile(offset, bytes.length);
     this.bumpEpoch();
   }
 
   private scheduleReload(): void {
     clearTimeout(this.reloadTimer);
     this.reloadTimer = setTimeout(() => {
+      // The pedal has already left the old working copy behind; record how much was
+      // in it so the app can say what was lost.
+      if (this.isDirty) {
+        this.discardedChanges = this.changeCount;
+        this.discardSequence++;
+      }
       this.readPatch().catch(this.onBackgroundError);
     }, PATCH_CHANGE_SETTLE_MS);
+  }
+
+  /** Re-evaluates which fields in a byte range now differ from the baseline. */
+  private reconcile(offset: number, size: number): void {
+    const before = this.dirty.size;
+    for (const field of spansOverlapping(this.changeIndex, offset, size)) {
+      if (spanMatches(this.image, this.baseline, field.offset, field.size)) {
+        this.dirty.delete(field.address);
+      } else {
+        this.dirty.add(field.address);
+      }
+    }
+    if (this.dirty.size !== before) {
+      this.dirtyEpoch++;
+    }
   }
 
   private bumpField(address: number): void {

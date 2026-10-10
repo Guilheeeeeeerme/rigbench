@@ -251,9 +251,10 @@ a.device-card:hover {
 .workspace {
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
   grid-template-areas:
     'header header'
+    'context context'
     'error error'
     'pages page';
   min-height: 100vh;
@@ -289,9 +290,16 @@ a.device-card:hover {
   font-size: 0.9rem;
 }
 
-.workspace > .error {
+.alerts .error {
+  margin: 0;
+}
+
+.alerts {
   grid-area: error;
   margin: 0.75rem 1.25rem 0;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
 }
 
 .pages {
@@ -360,9 +368,103 @@ a.device-card:hover {
   min-width: 0;
 }
 
-.field label {
+.field-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.6rem;
+}
+
+.field-head label {
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+/* Scope chips: color, dot, and word always travel together. */
+.scope {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: help;
+}
+
+.scope .dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex: none;
+}
+
+.chip-amber {
+  background: rgba(240, 138, 36, 0.18);
+  color: #f0a24a;
+}
+
+.chip-amber .dot {
+  background: #f0a24a;
+}
+
+.chip-blue {
+  background: rgba(74, 125, 214, 0.25);
+  color: #7ba3e3;
+}
+
+.chip-blue .dot {
+  background: #7ba3e3;
+}
+
+@media (prefers-color-scheme: light) {
+  .chip-amber {
+    background: rgba(194, 94, 0, 0.14);
+    color: #9c4f00;
+  }
+
+  .chip-amber .dot {
+    background: #c25e00;
+  }
+
+  .chip-blue {
+    background: rgba(58, 104, 189, 0.14);
+    color: #2f5cab;
+  }
+
+  .chip-blue .dot {
+    background: #3a68bd;
+  }
+}
+
+/* Context bar: where the scope situation always lives. */
+.context-bar {
+  grid-area: context;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+}
+
+.context-bar .changes {
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.notice {
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem;
 }
 
 .control {

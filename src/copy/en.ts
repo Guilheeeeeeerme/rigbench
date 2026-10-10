@@ -53,6 +53,29 @@ export const en = {
   gr55: {
     reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
     reload: 'Read from pedal',
+    workspace: {
+      /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
+      workingCopy: 'Working copy',
+      workingCopyHint:
+        'This is the patch the pedal is sounding right now. It lives only while this patch is selected: the pedal throws it away when you switch patches.',
+      /** Scope chip: this control is stored permanently in the pedal. */
+      savedSlot: 'Saved slot',
+      savedSlotHint: 'Saved in the pedal. It stays until you write something else there.',
+      /** Scope chip: this control is device-wide, not per patch. */
+      pedal: 'Pedal',
+      pedalHint: 'Pedal-wide setting. The same for every patch.',
+      noUnsavedChanges: 'No unsaved changes',
+      unsavedChanges: (count: number) =>
+        count === 1 ? '1 unsaved change' : `${count} unsaved changes`,
+      confirmDiscard: (count: number) =>
+        `The working copy has ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`}. ` +
+        'Replacing it loses them and the pedal keeps sounding the stored patch. Go ahead?',
+      pedalSwitchedNotice: (count: number) =>
+        `The pedal switched patches on its own. The working copy had ` +
+        `${count === 1 ? 'one unsaved change' : `${count} unsaved changes`}, and it is gone. ` +
+        'The patch below is the one the pedal now holds.',
+      dismissNotice: 'Dismiss',
+    },
     mode: { GUITAR: 'Guitar mode', BASS: 'Bass mode' },
     unnamed: '(unnamed)',
     librarian: 'Librarian',

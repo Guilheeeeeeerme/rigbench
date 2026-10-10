@@ -18,6 +18,7 @@ import {
   userPatchAddress,
 } from './patchLayout';
 import { SyxError, decodePatchSyx, encodePatchSyx } from './syx';
+import { spansOverlapping, temporaryPatchFields } from './changeTracking';
 
 const common = TEMPORARY_PATCH.common;
 // A plain one-byte parameter, at 18 00 06 10.
@@ -226,6 +227,87 @@ describe('Gr55Editor', () => {
       [0x12, 0x01, 0, 0, 1, 4],
     ]);
     expect(editor.patchName).toBe('Stored');
+  });
+});
+
+describe('unsaved changes', () => {
+  test('field spans form a deduplicated, ordered, non-overlapping index', () => {
+    const fields = temporaryPatchFields();
+    expect(fields.length).toBeGreaterThan(600);
+    for (let index = 1; index < fields.length; index++) {
+      const previous = fields[index - 1];
+      expect(fields[index].offset).toBeGreaterThanOrEqual(previous.offset + previous.size);
+    }
+  });
+
+  test('spansOverlapping finds the range that touches', () => {
+    const fields = temporaryPatchFields();
+    const target = TEMPORARY_PATCH.sendsAndEq.reverbEffectLevel;
+    const offset = target.address - TEMPORARY_PATCH_ADDRESS;
+    const hits = spansOverlapping(fields, offset, 1);
+    expect(hits).toHaveLength(1);
+    expect(hits[0].address).toBe(target.address);
+  });
+
+  test('an edit counts, writing the loaded value back uncounts', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+    expect(editor.isDirty).toBe(false);
+
+    editor.write(reverbLevel, 90);
+    expect(editor.changeCount).toBe(1);
+
+    editor.write(reverbLevel, 0);
+    expect(editor.isDirty).toBe(false);
+  });
+
+  test('a second field added to the count', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+
+    editor.write(reverbLevel, 90);
+    editor.write(common.patchName, 'Scratch');
+    expect(editor.changeCount).toBe(2);
+  });
+
+  test('a remote pedal change lands in the count', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+
+    const body = [0x18, 0x00, 0x06, 0x10, 55];
+    device.emit([0xf0, 0x41, 0x10, 0x00, 0x00, 0x53, 0x12, ...body, rolandChecksum(body), 0xf7]);
+
+    expect(editor.read(reverbLevel)).toEqual({ ok: true, value: 55 });
+    expect(editor.changeCount).toBe(1);
+  });
+
+  test('revert sends the loaded bytes back to the pedal and empties the count', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+    editor.write(common.patchName, 'Scratch');
+    editor.write(reverbLevel, 90);
+    await settle();
+    device.received.length = 0;
+
+    await editor.revert();
+
+    expect(editor.isDirty).toBe(false);
+    expect(editor.patchName).toBe('Simulated Patch');
+    const writes = device.received.filter((message) => message[6] === 0x12);
+    expect(writes.length).toBeGreaterThanOrEqual(2);
+  });
+
+  test('a program change from the pedal discards unsaved edits and records how many', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+    editor.write(reverbLevel, 90);
+
+    const before = editor.patchSnapshot();
+    device.emit([0xc0, 3]);
+    await vi.waitFor(() => expect(editor.patchSnapshot()).not.toBe(before), { timeout: 3000 });
+
+    expect(editor.isDirty).toBe(false);
+    expect(editor.discardedChanges).toBe(1);
   });
 });
 

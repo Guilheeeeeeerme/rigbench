@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { en } from '../../copy/en';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
+import { confirmDiscard } from './dirtyGuard';
 import type { Gr55Editor } from './editor';
 import { SyxError } from './syx';
 
@@ -80,6 +81,9 @@ export function Librarian({
 
   const openFile = (file: File) =>
     run(async () => {
+      if (!confirmDiscard(editor)) {
+        return;
+      }
       await editor.importSyx(new Uint8Array(await file.arrayBuffer()));
       return en.librarian.opened(file.name);
     });
@@ -174,7 +178,11 @@ export function Librarian({
               <button
                 type="button"
                 disabled={busy}
-                onClick={() => void run(() => editor.selectPatch(slot.bankMsb, slot.programChange))}
+                onClick={() => {
+                  if (confirmDiscard(editor)) {
+                    void run(() => editor.selectPatch(slot.bankMsb, slot.programChange));
+                  }
+                }}
               >
                 {en.librarian.load}
               </button>

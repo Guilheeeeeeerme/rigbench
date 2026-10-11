@@ -1,16 +1,18 @@
-# Maestro-first UX — session-scoped craft
+# Maestro craft — session-scoped macros
 
-> **Status:** APPROVED — Studio home + sessions/macros in code; absorb remaining
-> Device panels and unfinished macros as tracked by `implemented` in
-> `src/maestro/macros/registry.ts`.
-> **SoT for craft IA.** Precedence: code → this file → archive.
+> **Status:** ACTIVE for **session taxonomy + macros only**.
+> **Superseded for app home / top nav:** the live product is **Stage · Maestro · Setup**
+> ([AGENTS.md](../../AGENTS.md)). `#/gr55/estudio` redirects to Stage. Do **not** treat
+> “Studio home” or “TopNav Studio · Stage · ⋯” in older sections of this file as current IA.
+> **SoT for:** System / Patch / Library session model, macro groups, Stage write boundary for craft.
+> Precedence: code → [AGENTS.md](../../AGENTS.md) → this file (craft sections) → archive.
+> Connect / resume: [connection-resume.md](./connection-resume.md).
 > Grounded in: `docs/manuals/GR-55_OM.pdf` (Owner’s Manual EN),
 > `docs/manuals/GR-55_PT.pdf` (manual PT), `GR-55_PA.pdf` (patch list),
 > `GR-55_PCM_Tone_List.pdf`, `GR-55_Additional_PatchList.pdf`.
 > Cross-checked: `src/devices/gr55/pages.ts`, `systemMap.ts` / Device / GkSets,
-> `src/maestro/fieldRegistry.ts`, `policy.ts`.
-> Read-with: [maestro-architecture.md](./maestro-architecture.md),
-> [../archive/research/00-pesquisa-configuracao-pre-palco.md](../archive/research/00-pesquisa-configuracao-pre-palco.md).
+> `src/maestro/fieldRegistry.ts`, `policy.ts`, `macros/registry.ts`.
+> Read-with: [maestro-architecture.md](./maestro-architecture.md).
 
 ---
 
@@ -42,8 +44,8 @@ The Owner’s Manual draws a hard line the product must mirror:
 **Setup is not an organizer.** First-run GK / OUTPUT SELECT work becomes groups *inside
 System*. The old wizard is “reopen calibration” from System → Instrument, not a home.
 
-**Stage / setlist is not a craft session.** It remains a separate perform surface
-(`stageLive` write-deny). Link from Studio: “Go to Stage.”
+**Stage is not a craft session.** It remains a separate perform surface
+(`stageLive` write-deny). From Maestro: “Go to Stage.”
 
 ### Sessions (product names)
 
@@ -84,21 +86,19 @@ Default session after connect: **Patch** (craft-first). Remember last session pe
    mutate sound or system — only propose loads / explain banks.
 6. **Stage full-screen** remains Maestro write-denied.
 
-### Navigation (resolved)
+### Navigation (resolved — live product)
 
 | Surface | Role |
 |---|---|
-| **Maestro Studio** | App craft home. Session switcher = System / Patch / Library |
-| **Stage** | Live/show — peer top action, not a session |
-| **Advanced editor / Canvas** | Under Patch → ⋯ Advanced (field pages) |
-| **Old Device / GK screens** | Absorbed as System panels; deep routes kept as Advanced / bookmarks |
-| **Setup wizard** | Demoted: first-run gate + System → “Recalibrate instrument” |
-| Old FAB drawer | Removed on Studio; ⌘M jumps to Studio |
+| **Stage** `#/gr55/palco` | **App home** after setup — live/show, not a craft session |
+| **Maestro** `#/gr55/maestro` | AI craft (`Studio.tsx`); session switcher = System / Patch / Library |
+| **Setup** `#/gr55/configuracao` | Global cards: Device / GK / recalibrate |
+| **Setup wizard** | First-run gate + recalibrate (`#/gr55/configurar`) |
+| Advanced editor / Canvas | **Removed**; deep links redirect to Stage |
 
-Top chrome: **Studio · Stage · ⋯** (⋯ holds rare tools). Inside Studio, sessions rule.
-
-**Resolved prior decision #1:** Studio is post-connect craft home; default session **Patch**.
-Stage is one tap for show day. Setup is never home.
+Top chrome (shipped): **Stage · Maestro · Setup** (`AppNav`). `#/gr55/estudio` redirects to Stage.
+Default **craft session** inside Maestro remains **Patch**. Setup is never home.
+Older “Studio home” / “TopNav Studio · Stage · ⋯” wording elsewhere in this file is **not** current IA.
 
 ---
 
@@ -568,8 +568,8 @@ Implementation notes (design):
 | Device screen as separate top nav | **System session panels** (routes kept for Advanced) |
 | Patch macros only in Studio; system “open Device” | System macros + scoped System chat |
 | FAB Maestro drawer | Embedded agent pane; session-aware |
-| TopNav Stage · Editor · Library · Device | **Studio · Stage · ⋯**; Library is a session inside Studio |
-| Open decision “Studio vs Stage home” | **Resolved:** Studio home, default Patch session |
+| TopNav Stage · Editor · Library · Device | **Stage · Maestro · Setup**; Library is a craft session inside Maestro |
+| Open decision “Studio vs Stage home” | **Superseded:** Stage is app home ([AGENTS.md](../../AGENTS.md)); this file keeps Patch as default **craft session** only |
 
 ---
 

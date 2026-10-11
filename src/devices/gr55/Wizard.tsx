@@ -6,8 +6,7 @@ import { LocaleSwitch } from '../../shell/LocaleSwitch';
 import { downloadBytes } from './download';
 import type { Gr55Editor } from './editor';
 import { GkSetList } from './GkSets';
-import { studioHref } from './routes';
-import { TopNav } from './TopNav';
+import { stageHref } from './routes';
 import { SETUP_STEPS, loadSetup, saveSetup } from './setupState';
 import type { SetupState, SetupStep, StepOutcome } from './setupState';
 import { slotsOfMode } from './slots';
@@ -216,7 +215,7 @@ export function Wizard({
       const steps = { ...setup.steps, [step]: outcome };
       if (last) {
         keep({ ...setup, steps, complete: true });
-        void navigate(studioHref);
+        void navigate(stageHref);
       } else {
         keep({ ...setup, steps });
         setIndex(index + 1);
@@ -233,7 +232,6 @@ export function Wizard({
     <div className="wizard">
       <header>
         {/* A first setup is walked in order; once done, it is a screen like the others. */}
-        {setup.complete && <TopNav current="device" />}
         <h1>{t('wizard.title')}</h1>
         <p className="hint">{t('wizard.intro')}</p>
       </header>

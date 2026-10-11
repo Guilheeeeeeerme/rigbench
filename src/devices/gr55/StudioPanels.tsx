@@ -11,7 +11,7 @@ import {
 import { buildFieldRegistry, registryIndex } from '../../maestro/fieldRegistry';
 import type { SessionId } from '../../maestro/session';
 import type { Gr55Editor } from './editor';
-import { deviceHref, editorRootHref, gkHref, libraryHref, stageHref } from './routes';
+import { deviceHref, gkHref, stageHref } from './routes';
 import { ApplyBar, useSystem, useSystemVersion } from './SystemParts';
 
 function groupTitle(group: MacroGroup, locale: 'en' | 'pt-BR'): string {
@@ -27,13 +27,11 @@ function MacroGroupCard({
   session,
   editor,
   onError,
-  onLibraryFilter,
 }: {
   group: MacroGroup;
   session: SessionId;
   editor: Gr55Editor;
   onError: (error: unknown) => void;
-  onLibraryFilter: (style: string) => void;
 }) {
   const t = useT();
   const locale = getLocale();
@@ -49,9 +47,6 @@ function MacroGroupCard({
       <section className="studio-group" aria-labelledby={`macro-${group.id}`}>
         <h3 id={`macro-${group.id}`}>{groupTitle(group, locale)}</h3>
         <p className="hint">{t('studio.renameHint')}</p>
-        <Link className="studio-advanced-link" to={`${editorRootHref}/patch/common`}>
-          {t('studio.openAdvanced')}
-        </Link>
       </section>
     );
   }
@@ -60,15 +55,9 @@ function MacroGroupCard({
     return (
       <section className="studio-group" aria-labelledby={`macro-${group.id}`}>
         <h3 id={`macro-${group.id}`}>{groupTitle(group, locale)}</h3>
-        <p className="hint">
-          {group.id === 'care'
-            ? t('studio.careHint')
-            : group.id === 'load-craft'
-              ? t('studio.loadHint')
-              : t('studio.saveHint')}
-        </p>
-        <Link className="studio-advanced-link" to={group.id === 'care' ? deviceHref : libraryHref}>
-          {group.id === 'care' ? t('studio.openDevice') : t('studio.openLibrary')}
+        <p className="hint">{t('studio.careHint')}</p>
+        <Link className="studio-advanced-link" to={deviceHref}>
+          {t('studio.openDevice')}
         </Link>
       </section>
     );
@@ -95,7 +84,6 @@ function MacroGroupCard({
       system,
       index,
       policy: { stageLive: false, session },
-      onLibraryFilter,
     });
     if (!result.ok && result.reason !== 'opens-advanced' && result.reason !== 'stub') {
       onError(new Error(t('studio.applyFailed')));
@@ -143,14 +131,10 @@ export function StudioPanels({
   session,
   editor,
   onError,
-  libraryFilter,
-  onLibraryFilter,
 }: {
   session: SessionId;
   editor: Gr55Editor;
   onError: (error: unknown) => void;
-  libraryFilter: string | undefined;
-  onLibraryFilter: (style: string) => void;
 }) {
   const t = useT();
   const groups = groupsForSession(session);
@@ -159,11 +143,6 @@ export function StudioPanels({
     <div className="studio-panels">
       <header className="studio-panels-head">
         <h2>{t('studio.panelsTitle')}</h2>
-        {session === 'library' && libraryFilter && (
-          <p className="hint" role="status">
-            {t('studio.filterActive', libraryFilter)}
-          </p>
-        )}
       </header>
       {session === 'system' && <ApplyBar onError={onError} />}
       <div className="studio-groups">
@@ -174,14 +153,11 @@ export function StudioPanels({
             session={session}
             editor={editor}
             onError={onError}
-            onLibraryFilter={onLibraryFilter}
           />
         ))}
       </div>
       <footer className="studio-panels-foot">
-        <Link to={editorRootHref}>{t('studio.advancedEditor')}</Link>
         {session === 'system' && <Link to={gkHref}>{t('studio.advancedGk')}</Link>}
-        {session === 'library' && <Link to={libraryHref}>{t('studio.openLibrary')}</Link>}
         <Link to={stageHref}>{t('studio.goStage')}</Link>
       </footer>
     </div>

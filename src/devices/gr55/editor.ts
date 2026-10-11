@@ -7,6 +7,7 @@ import {
   PATCH_BLOCKS,
   PATCH_SPAN,
   TEMPORARY_PATCH_ADDRESS,
+  USER_PATCH_COUNT,
   userPatchAddress,
 } from './patchLayout';
 import { temporaryPatchFields, spansOverlapping, spanMatches } from './changeTracking';
@@ -282,6 +283,22 @@ export class Gr55Editor {
     return decodeName(this.image, PATCH_NAME_OFFSET);
   }
 
+  /**
+   * Reads which user slot the pedal has selected (setup BS MSB + PC) and sets
+   * patchSource when that pair maps onto a user slot.
+   */
+  async readPatchLocation(): Promise<void> {
+    const [msb] = await this.session.requestData(GR55_MAP.setup.patchBsMsb.address, 1);
+    const [programChange] = await this.session.requestData(GR55_MAP.setup.patchPc.address, 1);
+    const userPatchNumber = msb * 128 + programChange;
+    if (msb <= 2 && userPatchNumber < USER_PATCH_COUNT) {
+      this.patchSource = { kind: 'slot', userPatchNumber };
+    } else {
+      this.patchSource = undefined;
+    }
+    this.notify();
+  }
+
   /** Makes the pedal switch patches, then reads the new temporary patch. */
   async selectPatch(bankMsb: number, programChange: number): Promise<void> {
     // A write to the setup page instead of a program change: it works whatever screen
@@ -415,9 +432,10 @@ export class Gr55Editor {
         this.discardedChanges = this.changeCount;
         this.discardSequence++;
       }
-      // The pedal picked a patch by itself; the app cannot say where it came from.
-      this.patchSource = undefined;
-      this.readPatch().catch(this.onBackgroundError);
+      // Re-read the sounding patch, then ask the setup page which slot it is.
+      this.readPatch()
+        .then(() => this.readPatchLocation())
+        .catch(this.onBackgroundError);
     }, PATCH_CHANGE_SETTLE_MS);
   }
 

@@ -1,17 +1,18 @@
 ---
-description: GR-55 device layer — routes, writes, sync, editor pages
+description: GR-55 device layer — routes, writes, sync, connect resume
 globs: src/devices/gr55/**/*
 alwaysApply: false
 ---
 
 # GR-55 device layer
 
-- Routes SoT: `routes.ts`. Post-setup home: `studioRoute` (`estudio`).
-- Top chrome: Studio · Stage · ⋯ (`TopNav.tsx`). Deep Device/editor under More.
+- Routes SoT: `routes.ts`. Post-setup home: `stageRoute` (`palco`). `studioRoute` redirects to Stage.
+- App bar: Stage · Maestro · Setup (`AppNav.tsx`) — once in `Gr55Screen`.
+- Connect / silent resume: `connectionThunks.ts` + Redux `sessionPrefs` — SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
+- On connect: `readSystem` → `readPatch` → `readPatchLocation` so Stage knows `USER xx-y`.
 - **Patch writes**: `Gr55Editor.write` → immediate DT1 to temporary patch (🟠).
 - **System writes**: stage in `Gr55System` → confirm → Apply (🔵). Never bypass ApplyBar.
 - **Sync**: `sync/engine.ts` polls RQ1; never writes the pedal. Resume + IndexedDB cache.
-- Editor pages: `pages.ts` — every patch field on exactly one page (`PAGE_IDS` frozen).
-- Prefer `essentialKeys` / `typeKey` / `readOnlyKeys` over dumping every knob.
-- Fake pedal: `fakeDevice.ts` for tests and the dev “simulated pedal” path.
-- Recipes: `docs/current/recipes.md`. IA: `docs/current/studio-sessions.md`.
+- Field keys for Maestro: `pages.ts` (`PAGE_IDS` frozen). Advanced editor UI removed.
+- Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path.
+- Recipes: `docs/current/recipes.md`. Macros: `docs/current/studio-sessions.md` (craft only).

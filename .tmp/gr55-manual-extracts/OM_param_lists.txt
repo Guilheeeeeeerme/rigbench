@@ -1,0 +1,747 @@
+      GR-55 Patch List
+
+ GUITAR MODE
+SOUND STYLE: LEAD
+                                PCM TONE1                   PCM TONE2                MODELING TONE
+ Patch No.   Patch Name
+                                Category         Tone No.   Category      Tone No.   Category        Tone No.
+     01-1    Metal Synth Lead   Synth Lead         477      Synth Lead      548      E.GTR             03
+     01-2    Rock Lead Organ    E.Organ            062      ---              ---     SYNTH             22
+     01-3    GR-300 Ctl:+1Oct   ---                 ---     ---              ---     SYNTH             18
+     02-1    Nice Tenor         Sax                407      ---              ---     ---                ---
+     02-2    Flute Solo         Flute              393      ---              ---     ---                ---
+     02-3    Jazz Guitar Vibe   Mallet             143      Mallet          142      E.GTR             10
+     03-1    Legato Solo        Pulsating          821      ---              ---     E.GTR             05
+     03-2    SlowAttack Solo    Synth Lead         524      Synth Lead      524      ---                ---
+     03-3    Synth Brass Lead   Synth Lead         453      Synth Lead      524      SYNTH             23
+     04-1    Drive Blues Harp   Harmonica          119      ---              ---     ---                ---
+     04-2    Tp Section         Ensemble Brass     379      Solo Brass      370      ---                ---
+     04-3    MELLOW CELLO       Solo Strings       339      ---              ---     ---                ---
+     05-1    Strange Whistle    Recorder           414      ---              ---     ---                ---
+     05-2    EMOTIONAL LEAD     Synth Lead         446      ---              ---     ---                ---
+     05-3    WAVE SYNTH SOLO    ---                 ---     ---              ---     SYNTH             19
+     06-1    Dual Sync Lead     Synth Lead         486      Synth Lead      486      E.GTR             02
+     06-2    Funky Syn Lead     Synth Lead         466      Synth Lead      467      E.GTR             05
+     06-3    SqrPipe For You    Synth Lead         527      Synth Lead      527      ---                ---
+     07-1    Concert Grand      Ac.Piano           002      ---              ---     ---                ---
+     07-2    Mute Trumpet/EXP   Solo Brass         377      ---              ---     ---                ---
+     07-3    Epf + 335 Unison   E.Piano1           035      ---              ---     E.GTR             09
+     08-1    P90 & Organ Bell   E.Organ            082      ---              ---     E.GTR             06
+     08-2    Feedback Guitar    E.Guitar           193      ---              ---     E.GTR             01
+     08-3    CTL=DLY/EXP=WAH    ---                 ---     ---              ---     E.GTR             05
+     09-1    More Blacklord     E.Organ            060      E.Organ         065      E.GTR             01
+     09-2    Pdl Bend Guitar    ---                 ---     ---              ---     E.GTR             02
+     09-3    POLY DISTOTION     ---                 ---     ---              ---     SYNTH             19
+     10-1    NaturalResoLead    Synth Lead         560      Synth Lead      501      E.GTR             01
+     10-2    Organ Syn Lead     Synth Lead         554      E.Organ         087      SYNTH             22
+     10-3    Crims-O-Tron       E.Bass             215      Vox/Choir       418      SYNTH             18
+     11-1    Dist Sync Lead     Synth Lead         488      Synth Lead      548      E.GTR             03
+     11-2    5th Layer          Synth Lead         469      Synth Lead      465      E.GTR             05
+     11-3    Screamin Lead      Synth Lead         460      ---              ---     ---                ---
+     12-1    Portamento Lead    Synth Lead         471      Synth Lead      471      SYNTH             19
+     12-2    Dist Sine Solo     Synth Lead         524      Synth Lead      524      E.GTR             05
+     12-3    Dist Square Lead   Synth Lead         536      Synth Lead      535      E.GTR             03
+     13-1    Buzz Lead          Synth Lead         476      Synth Lead      538      SYNTH             18
+     13-2    METAL SAW LEAD     Synth Lead         447      ---              ---     E.GTR             05
+     13-3    BrassyLead         Sax                406      Synth Brass     590      SYNTH             23
+     14-1    LONG ECHO LEAD     Synth Lead         471      ---              ---     E.GTR             05
+     14-2    RockyOrgan         E.Organ            084      E.Organ         087      SYNTH             22
+     14-3    MILD SAW LEAD      Synth Lead         523      ---              ---     ---                ---
+     15-1    Simple Square      Synth Lead         533      ---              ---     ---                ---
+     15-2    +1oct Mild Lead    Synth Lead         533      ---              ---     ---                ---
+     15-3    Unison Lead        Dist.Guitar        201      ---              ---     E.GTR             01
+     16-1    Lead Beast         Synth Lead         455      Synth Lead      456      SYNTH             19
+     16-2    Dream Bell         Vox/Choir          416      Mallet          156      AC                11
+     16-3    Female Chorus      Synth Bellpad      693      Vox/Choir       435      ---                ---
+
+
+
+
+82
+                                                                                                             GR-55 Patch List
+
+                               PCM TONE1                   PCM TONE2                      MODELING TONE
+Patch No.   Patch Name
+                               Category         Tone No.   Category            Tone No.   Category        Tone No.
+  17-1      70s Unison         Dist.Guitar        199      Dist.Guitar           199      E.GTR             01
+  17-2      Comfortable Solo   ---                 ---     ---                    ---     E.GTR             02
+  17-3      Wah Feedback       Synth Lead         524      Synth Lead            524      E.GTR             05
+  18-1      Gtr+Organ Unison   E.Organ            060      E.Organ               060      E.GTR             03
+  18-2      Vibraphone         Mallet             152      ---                    ---     ---                ---
+  18-3      Dark Trumpet       Solo Brass         371      ---                    ---     ---                ---
+  19-1      High Note Tp       Solo Brass         370      ---                    ---     ---                ---
+  19-2      Fat Brass Sec      Ensemble Brass     380      Ensemble Brass        384      ---                ---
+  19-3      Solo Fr.Horn       Solo Brass         369      ---                    ---     ---                ---
+  20-1      SGT Fr Horn        Ensemble Brass     383      ---                    ---     ---                ---
+  20-2      Solo Trombone      Solo Brass         372      ---                    ---     ---                ---
+  20-3      Super Low Brass    Solo Brass         375      Orchestral            365      ---                ---
+  21-1      Clarinet>EXP Vib   Wind               390      ---                    ---     ---                ---
+  21-2      Oboe               Wind               387      ---                    ---     ---                ---
+  21-3      Soprano Sax        Sax                405      ---                    ---     ---                ---
+  22-1      Alto Sax           Sax                409      ---                    ---     ---                ---
+  22-2      Moody Sax          Sax                406      ---                    ---     ---                ---
+  22-3      Guitar+SaxUnison   Sax                410      Sax                   411      E.GTR             09
+  23-1      Flute+Gtr Unison   Flute              399      ---                    ---     E.GTR             10
+  23-2      Pan Flute          Flute              397      ---                    ---     ---                ---
+  23-3      Piccolo            Flute              398      ---                    ---     ---                ---
+  24-1      Flutey GT          Flute              401      Flute                 403      ---                ---
+  24-2      Heaven Ocarina     Recorder           412      ---                    ---     ---                ---
+  24-3      LofiFlute&Glockn   Mallet             156      Flute                 399      ---                ---
+  25-1      Recorder           Recorder           413      ---                    ---     ---                ---
+  25-2      Chromatic Harmo    Harmonica          118      ---                    ---     ---                ---
+  25-3      FILTER HARP        Harmonica          118      ---                    ---     ---                ---
+  26-1      Gt + HARMONICA     Harmonica          118      ---                    ---     E.GTR             09
+  26-2      Heavy Harmonica    Recorder           415      Harmonica             118      E.GTR             05
+  26-3      LEAD VIOLIN        Solo Strings       333      ---                    ---     ---                ---
+  27-1      DIST VIOLIN        Solo Strings       333      ---                    ---     ---                ---
+  27-2      DRIVE+VLN+CELLO    Solo Strings       337      Solo Strings          339      E.GTR             05
+  27-3      DOUBLE CELLO       Solo Strings       339      Solo Strings          339      ---                ---
+  28-1      GLASS CELLO        Solo Strings       339      Synth Pad/Strings     681      ---                ---
+  28-2      OVERDRIVE+CELLO    Solo Strings       339      ---                    ---     E.GTR             09
+  28-3      SMOOTH LEAD+VLN    Solo Strings       336      ---                    ---     E.GTR             09
+  29-1      Brass + Drive      Ensemble Brass     379      Sax                   411      E.GTR             05
+  29-2      Organ,Pf & OD Gt   E.Organ            060      Ac.Piano              003      E.GTR             06
+  29-3      Shamisen           Plucked/Stroke     329      ---                    ---     ---                ---
+  30-1      for Normal PU L1   Pipe Organ         094      E.Organ               080      SYNTH             20
+  30-2      for Normal PU L2   Sax                406      Synth Bass            280      SYNTH             18
+  30-3      for Normal PU L3   Synth Lead         486      Synth Lead            535      SYNTH             23
+
+
+
+
+                                                                                                                          83
+GR-55 Patch List
+
+SOUND STYLE: RHYTHM
+                                PCM TONE1                      PCM TONE2                      MODELING TONE
+ Patch No.   Patch Name
+                                Category            Tone No.   Category            Tone No.   Category        Tone No.
+     01-1    12st AG & Ch Org   Pipe Organ            095      ---                    ---     AC                11
+     01-2    DoubleFlatHeavy    Synth Bass            253      Synth Lead            450      E.GTR             05
+     01-3    SoftBrightPad+L4   Synth Pad/Strings     682      Synth Pad/Strings     680      E.GTR             10
+     02-1    RICH STRINGS       Ensemble Strings      363      Solo Strings          340      ---                ---
+     02-2    POLY SITAR         Plucked/Stroke        327      Synth PolyKey         725      ---                ---
+     02-3    HeavyBrassRock     Ensemble Brass        384      Ensemble Brass        381      E.GTR             05
+     03-1    Syn Str.Pdl Reso   Synth Pad/Strings     633      Synth Pad/Strings     627      E.GTR             02
+     03-2    TB-303 Bass        Synth Bass            289      Synth Bass            289      ---                ---
+     03-3    AG+Bell Pad        Bell                  121      Synth FX              784      AC                11
+     04-1    Double Low Piano   Ac.Piano              003      Ac.Piano              003      ---                ---
+     04-2    E.Piano            E.Piano2              054      ---                    ---     ---                ---
+     04-3    Xylophone Plus     Mallet                148      Pulsating             801      ---                ---
+     05-1    30 String Guitar   Ac.Guitar             178      Ac.Guitar             175      E.GTR             08
+     05-2    ST + TWEED         ---                    ---     ---                    ---     E.GTR             01
+     05-3    LP + STACK         ---                    ---     ---                    ---     E.GTR             05
+     06-1    AcGt12st+STRINGS   Ensemble Strings      346      Solo Strings          339      AC                11
+     06-2    Jazz Guitar        ---                    ---     ---                    ---     E.GTR             10
+     06-3    TL&Rotary Organ    E.Organ               064      ---                    ---     E.GTR             04
+     07-1    Ballade Wurly      E.Piano1              041      ---                    ---     ---                ---
+     07-2    RnB Section        Ensemble Brass        379      Sax                   411      ---                ---
+     07-3    NYLON Gt+STRINGS   Ensemble Strings      346      ---                    ---     AC                12
+     08-1    Symphonic Rock!    Percussion            885      Ensemble Strings      350      E.GTR             03
+     08-2    GR Brass+Strings   Synth Brass           584      Ensemble Strings      344      SYNTH             18
+     08-3    RockInCathedral    Vox/Choir             418      Pipe Organ            092      E.GTR             02
+     09-1    DADGAD PHASER      Ensemble Strings      350      ---                    ---     E.GTR             07
+     09-2    Asian DADGAD       Plucked/Stroke        329      Plucked/Stroke        315      AC                11
+     09-3    TL+StFlanger Pad   Synth Pad/Strings     632      Synth Pad/Strings     609      E.GTR             04
+     10-1    Heavy Gt W/Sweep   Synth Brass           581      Synth Pad/Strings     655      E.GTR             03
+     10-2    Fat Drive Mix      Synth Lead            468      Synth Lead            468      E.GTR             05
+     10-3    Bright Gtr + Pad   Ac.Piano              006      Synth Pad/Strings     618      AC                11
+     11-1    Electric 12str     ---                    ---     ---                    ---     E.GTR             08
+     11-2    AC->12stAC(CTL)    ---                    ---     ---                    ---     AC                11
+     11-3    Nylon String Gtr   ---                    ---     ---                    ---     AC                12
+     12-1    Pedal Wah          ---                    ---     ---                    ---     E.GTR             01
+     12-2    Stolling Rones     ---                    ---     ---                    ---     E.GTR             04
+     12-3    Flat Tuned Drive   ---                    ---     ---                    ---     E.GTR             03
+     13-1    BlueGrass 12-St    Plucked/Stroke        328      ---                    ---     AC                11
+     13-2    Bell Clean         Synth Bellpad         694      Synth Pad/Strings     618      E.GTR             09
+     13-3    AG & Epf           E.Piano1              033      ---                    ---     AC                11
+     14-1    HnkyTonk Piano     Ac.Piano              008      Ac.Piano              008      AC                14
+     14-2    Phaser E.Pf        E.Piano1              032      ---                    ---     ---                ---
+     14-3    Piano + Anlg Pad   Ac.Piano              007      Synth Pad/Strings     614      SYNTH             21
+     15-1    Dyno Epf w/Pad     E.Piano1              032      ---                    ---     SYNTH             23
+     15-2    ST+FM Epf+Voice    E.Piano2              049      Vox/Choir             442      E.GTR             02
+     15-3    Drive Wurly        E.Piano1              040      ---                    ---     ---                ---
+     16-1    80s Piano          Pop Piano             018      Synth Pad/Strings     631      SYNTH             20
+     16-2    Analog Clav S&H    Clav                  106      Synth FX              775      E.GTR             06
+     16-3    E.PIANO/AcPIANO    Ac.Piano              001      E.Piano1              022      ---                ---
+     17-1    Pipe Organ         Pipe Organ            095      ---                    ---     ---                ---
+     17-2    Cheap Organ        E.Organ               086      ---                    ---     ---                ---
+     17-3    3xOrganPower       E.Organ               067      E.Organ               065      SYNTH             22
+
+
+
+
+84
+                                                                                                               GR-55 Patch List
+
+                               PCM TONE1                     PCM TONE2                      MODELING TONE
+Patch No.   Patch Name
+                               Category           Tone No.   Category            Tone No.   Category        Tone No.
+  18-1      Simple Clavi       Clav                 103      ---                    ---     ---                ---
+  18-2      R12st+Clavi+Xylo   Clav                 104      Mallet                161      E.GTR             08
+  18-3      Harpsichord CTL    Harpsichord          098      ---                    ---     ---                ---
+  19-1      Celesta            Celesta              111      ---                    ---     ---                ---
+  19-2      Accordion          Accordion            112      ---                    ---     ---                ---
+  19-3      Bell&Mallet+(Bs)   Bell                 139      Mallet                145      ---                ---
+  20-1      TE+FM Bell Pad     Bell                 121      Synth Pad/Strings     613      E.GTR             04
+  20-2      Marimba            Mallet               146      ---                    ---     ---                ---
+  20-3      SteelDrums/Ethno   Mallet               147      Mallet                150      SYNTH             21
+  21-1      Voice Pad SL       Vox/Choir            420      Synth Pad/Strings     662      SYNTH             20
+  21-2      AG+Voice           Vox/Choir            419      ---                    ---     AC                11
+  21-3      Rotary G & Pad     Vox/Choir            426      Synth Bass            229      E.GTR             06
+  22-1      Gt & Vo Unison     Vox/Choir            438      ---                    ---     E.GTR             10
+  22-2      Vox+Pf+Crystal     Vox/Choir            417      Pop Piano             017      SYNTH             21
+  22-3      Crunch & Voice     Vox/Choir            430      Pulsating             799      E.GTR             04
+  23-1      80s Stack Piano    Pop Piano            017      Synth Brass           569      SYNTH             20
+  23-2      Like 60s           E.Organ              072      E.Organ               061      E.GTR             01
+  23-3      Reed Organ(+LP)    Reed Organ           097      ---                    ---     E.GTR             05
+  24-1      Full Section       Ensemble Brass       382      Sax                   411      ---                ---
+  24-2      Real & Syn Brass   Ensemble Brass       379      Synth Brass           605      ---                ---
+  24-3      Edge Brass         Ensemble Brass       381      Ensemble Brass        379      ---                ---
+  25-1      ORCHESTRA          Orchestral           367      Orchestral            367      ---                ---
+  25-2      PIZZICATO Gt       Ensemble Strings     360      Ensemble Strings      361      E.GTR             01
+  25-3      FLANGE STRINGS     Ensemble Strings     344      Solo Strings          340      ---                ---
+  26-1      PHASE STRINGS      Ensemble Strings     346      Ensemble Strings      358      ---                ---
+  26-2      SynthBrass         Synth Brass          597      Ensemble Brass        380      SYNTH             18
+  26-3      BLADE RUNNING      Synth Brass          575      ---                    ---     ---                ---
+  27-1      Seychelles Tour    Vox/Choir            443      Sound FX              863      E.GTR             01
+  27-2      EmotionalBallad    E.Piano1             042      E.Piano2              053      E.GTR             09
+  27-3      Analog Voice Pad   E.Bass               215      Vox/Choir             418      SYNTH             18
+  28-1      -2 Tubular & LP    Bell                 136      Pipe Organ            095      E.GTR             05
+  28-2      Bridge of Sy's     E.Piano1             042      Synth FX              765      E.GTR             01
+  28-3      Faded Cherry       E.Guitar             190      Mallet                159      AC                12
+  29-1      Acid Bass          Synth Bass           308      Synth Bass            308      SYNTH             23
+  29-2      Acoustic Bass      Ac.Bass              210      ---                    ---     AC                11
+  29-3      Heavy P-Funk BS    Synth Bass           242      Plucked/Stroke        328      E.GTR             02
+  30-1      for Normal PU R1   Synth Bellpad        693      Ensemble Strings      345      AC                11
+  30-2      for Normal PU R2   Synth Brass          569      E.Organ               088      AC                11
+  30-3      for Normal PU R3   Ensemble Strings     362      Synth Pad/Strings     627      SYNTH             19
+
+
+
+
+                                                                                                                            85
+GR-55 Patch List
+
+SOUND STYLE: OTHER
+                                PCM TONE1                      PCM TONE2                      MODELING TONE
+ Patch No.   Patch Name
+                                Category            Tone No.   Category            Tone No.   Category        Tone No.
+     01-1    Ultimate Pulse     Synth Pad/Strings     612      Pulsating           824        SYNTH             18
+     01-2    Heavy Hit&Groove   Hit                   843      Beat&Groove         835        E.GTR             02
+     01-3    Jazz Trio          Percussion            884      Ac.Bass             212        E.GTR             10
+     02-1    Seq*Tempo Dly+EG   Synth Pad/Strings     615      Synth Seq/Pop       788        E.GTR             01
+     02-2    DarkSideOfTheSun   Bell                  128      Synth Pad/Strings   669        E.GTR             03
+     02-3    KOTO DREAMS        Plucked/Stroke        330      Synth PolyKey       726        ---                ---
+     03-1    Voice Hit          Pulsating             825      Hit                 844        E.GTR             04
+     03-2    Heavens Bells      Bell                  129      Synth Pad/Strings   666        E.GTR             08
+     03-3    Sine Air Bend      Synth Lead            549      Synth Lead          549        ---                ---
+     04-1    Question+Answer    Plucked/Stroke        318      E.Grand Piano       020        E.GTR             03
+     04-2    Metamorphosis      Synth FX              775      Pulsating           797        SYNTH             21
+     04-3    HighlanderGTR      Synth Bellpad         704      Wind                391        AC                15
+     05-1    Sitar Fantasy      Synth Lead            553      Ensemble Strings    355        AC                13
+     05-2    GR-300 Triplet     Synth Pad/Strings     675      Synth Pad/Strings   684        SYNTH             18
+     05-3    Noize Mix Drive    Synth FX              764      Synth FX            760        E.GTR             03
+     06-1    Scat & Guitar      Scat                  444      E.Piano1            034        E.GTR             10
+     06-2    SE Pad & LP+MS     Pulsating             825      Synth Pad/Strings   640        E.GTR             05
+     06-3    DancingAcoustic    Synth Pad/Strings     692      Ac.Guitar           173        AC                11
+     07-1    Heavy Pulse        Synth Lead            553      Synth Lead          538        E.GTR             03
+     07-2    NEW WAVES          Synth Lead            492      ---                 ---        ---                ---
+     07-3    FourthOfFifth      Synth PolyKey         735      Synth Bellpad       708        E.GTR             02
+     08-1    E Sitar& Dly Toy   Mallet                141      ---                 ---        AC                13
+     08-2    Trio Concerto      Ac.Piano              002      Ensemble Strings    346        AC                12
+     08-3    PARADISE LOST      Synth PolyKey         754      Synth Bellpad       708        ---                ---
+     09-1    Trademark Riff     ---                    ---     Synth FX            779        ---                ---
+     09-2    Touchy 5th         Synth PolyKey         735      E.Guitar            190        E.GTR             09
+     09-3    Scuba-Diving       Synth FX              779      Pulsating           798        SYNTH             23
+     10-1    Big Syn Drum       Percussion            893      Synth Pad/Strings   633        E.GTR             03
+     10-2    Sequence Clean     Pulsating             812      Synth Pad/Strings   620        E.GTR             01
+     10-3    Acoustic Heaven    Pulsating             815      Synth Pad/Strings   610        AC                11
+     11-1    SparkleBellGTR     Bell                  128      Plucked/Stroke      324        E.GTR             02
+     11-2    Metal Timpani      Percussion            885      Percussion          885        E.GTR             03
+     11-3    Cheezy Movie       Hit                   840      Orchestral          365        E.GTR             04
+     12-1    Stalker Violin     Solo Strings          333      Synth Pad/Strings   681        E.GTR             08
+     12-2    OverblownClnGTR    Sax                   409      Flute               401        E.GTR             10
+     12-3    MotionBuilder      Pulsating             823      Pulsating           809        SYNTH             18
+     13-1    Pulsing Bell+EG    Pulsating             811      Synth Bellpad       696        E.GTR             06
+     13-2    Flying Tremolo     Synth FX              775      Pulsating           803        E.GTR             09
+     13-3    Trance Organ       Pulsating             810      E.Piano1            038        SYNTH             22
+     14-1    Sequence Trio      Pulsating             812      Pulsating           814        E.GTR             02
+     14-2    Extreme FX         Sound FX              859      Sound FX            863        E.GTR             02
+     14-3    Rhythmic Pulse     Pulsating             808      E.Organ             063        E.GTR             02
+     15-1    Scared Score       Sound FX              863      Percussion          886        AC                12
+     15-2    EasternFluteGT     Plucked/Stroke        327      Flute               394        AC                13
+     15-3    Odd Guitar         Ac.Guitar             175      Plucked/Stroke      330        E.GTR             02
+     16-1    DissonantBeauty    E.Piano1              033      Plucked/Stroke      322        SYNTH             19
+     16-2    PluckdBaritoned    ---                    ---     Plucked/Stroke      325        E.GTR             04
+     16-3    GroovePusher       Beat&Groove           831      Pulsating           809        E.GTR             04
+     17-1    JazzEP/BassSplit   E.Piano2              055      Ac.Bass             210        E.GTR             10
+     17-2    Metal Scat         Scat                  444      Scat                444        E.GTR             05
+     17-3    Quantum Physics    Synth Pad/Strings     657      Vox/Choir           429        SYNTH             22
+
+
+
+
+86
+                                                                                                                GR-55 Patch List
+
+                               PCM TONE1                      PCM TONE2                      MODELING TONE
+Patch No.   Patch Name
+                               Category            Tone No.   Category            Tone No.   Category        Tone No.
+  18-1      Enigmatic Rick     Synth FX              755      Synth FX            761        E.GTR             08
+  18-2      Euro Beat Slicer   Synth Bass            242      Synth Lead          553        ---                ---
+  18-3      Fuzz Heaven        Synth PolyKey         754      Pulsating           797        SYNTH             18
+  19-1      Arabian Nights     ---                    ---     Plucked/Stroke      322        AC                14
+  19-2      Morpheus           Bell                  129      Synth Pad/Strings   665        E.GTR             08
+  19-3      Unison+5thPower    Synth Seq/Pop         795      Synth Lead          553        E.GTR             09
+  20-1      BassFluteSaxTrio   Sax                   410      Flute               402        E.BASS            17
+  20-2      Exorbitanz         Synth Pad/Strings     652      Synth FX            757        AC                14
+  20-3      Armageddon         Sound FX              850      Sound FX            849        SYNTH             18
+  21-1      Grinder            Bell                  132      Pulsating           800        AC                13
+  21-2      EmoCarillion       Ac.Guitar             169      Bell                138        SYNTH             18
+  21-3      Unbelievable       Synth Pad/Strings     653      Synth Pad/Strings   668        E.GTR             08
+  22-1      FAB 4 Together     E.Piano1              042      E.Piano2            056        E.BASS            17
+  22-2      Esoteric Vibe      Plucked/Stroke        321      Mallet              152        E.GTR             06
+  22-3      Deja Vu Bass       Synth Lead            542      Synth PolyKey       743        E.BASS            16
+  23-1      GK Paradise        Synth FX              775      Synth PolyKey       726        AC                13
+  23-2      Is Dis Fat?        Synth PolyKey         747      Synth Lead          482        E.GTR             05
+  23-3      Gladiator          Percussion            885      Vox/Choir           425        ---                ---
+  24-1      SlowGearSynth      Bell                  130      Ac.Guitar           174        E.GTR             04
+  24-2      Oxygen Lead        Plucked/Stroke        320      E.Piano1            035        SYNTH             18
+  24-3      SteelPan + Agogo   Percussion            886      Mallet              147        E.GTR             01
+  25-1      GHOSTLY            Synth FX              783      Synth FX            783        E.GTR             01
+  25-2      SNEAKING UP        Ensemble Strings      353      Synth Pad/Strings   681        ---                ---
+  25-3      Big Ben            Plucked/Stroke        320      Bell                137        E.GTR             03
+  26-1      AggroClav          Reed Organ            096      Clav                106        SYNTH             20
+  26-2      Cinematic Art      Sound FX              863      Mallet              156        ---                ---
+  26-3      Strictly E         Mallet                142      Synth Lead          492        E.GTR             06
+  27-1      Beat Provider      Beat&Groove           830      Beat&Groove         829        ---                ---
+  27-2      Shanai+Rhythm      Wind                  392      Beat&Groove         834        ---                ---
+  27-3      BackToDaCrib       Beat&Groove           839      Beat&Groove         838        SYNTH             23
+  28-1      Hyper TE Beat      Sound FX              851      Beat&Groove         837        E.GTR             04
+  28-2      HOUSE FIRE         Beat&Groove           838      Pulsating           822        ---                ---
+  28-3      Trance Groove      Beat&Groove           831      Synth PolyKey       713        E.GTR             03
+  29-1      RAINSTORM          Sound FX              850      Sound FX            849        ---                ---
+  29-2      Scary Scream       Sound FX              860      Sound FX            876        ---                ---
+  29-3      COMEDIAN           Sound FX              875      Sound FX            874        ---                ---
+  30-1      for Normal PU O1   Mallet                143      E.Piano2            054        AC                13
+  30-2      for Normal PU O2   Synth Lead            553      Beat&Groove         832        SYNTH             20
+  30-3      for Normal PU O3   Synth FX              783      Orchestral          367        SYNTH             18
+
+
+
+
+                                                                                                                             87
+GR-55 Patch List
+
+
+ BASS MODE
+SOUND STYLE: LEAD
+                                PCM TONE1                     PCM TONE2                      MODELING TONE
+ Patch No.   Patch Name
+                                Category           Tone No.   Category            Tone No.   Category        Tone No.
+     01-1    Double String Bs   Ensemble Strings     342      Synth Pad/Strings     632      E.BASS            01
+     01-2    Oct Unison Lead    Synth Lead           523      Synth Lead            523      SYNTH             10
+     01-3    Cotton Harp        Harmonica            119      ---                    ---     ---                ---
+     02-1    Jazz Trio          Percussion           884      Mallet                152      E.BASS            01
+     02-2    Mond MG Lead       Synth Lead           482      Solo Brass            378      E.GTR             16
+     02-3    Pipe & Organ       Flute                393      E.Organ               071      ---                ---
+     03-1    Indian Fretless    Plucked/Stroke       319      E.Bass                218      E.BASS            01
+     03-2    EP Unison          E.Piano1             022      E.Piano1              032      E.BASS            01
+     03-3    Mellow Fretless    E.Bass               218      ---                    ---     E.BASS            01
+     04-1    AnalogBass+Pedal   Synth Lead           481      Synth Pad/Strings     688      SYNTH             10
+     04-2    OrgBass+PedalSyn   Synth Lead           561      E.Organ               062      E.BASS            05
+     04-3    ModBass+PedalSyn   Synth Brass          577      Synth Pad/Strings     639      E.BASS            08
+     05-1    Deep Ensemble      Ensemble Strings     358      Solo Strings          340      SYNTH             10
+     05-2    Rock Organic       E.Organ              061      E.Organ               088      E.BASS            06
+     05-3    Pedal Synth Bend   Synth Lead           477      Synth Lead            548      E.BASS            01
+     06-1    Soft Lead          Recorder             414      ---                    ---     E.BASS            01
+     06-2    70s Mond Org       E.Organ              077      ---                    ---     E.GTR             16
+     06-3    Flange GR-500      Synth Lead           456      ---                    ---     SYNTH             10
+     07-1    Solo Cello         Solo Strings         335      Solo Strings          333      ---                ---
+     07-2    Trumpet&Strings    Solo Brass           371      Ensemble Strings      356      E.BASS            01
+     07-3    OctaPiano          Ac.Piano             001      Ac.Piano              001      E.BASS            01
+     08-1    Strings&FL Sound   Ensemble Strings     342      Flute                 399      E.BASS            01
+     08-2    Ska Melody         Solo Strings         340      Ensemble Brass        384      E.BASS            01
+     08-3    Spacy Jazz Bass    ---                   ---     ---                    ---     E.BASS            01
+     09-1    Delayed Nylon      Ac.Guitar            163      ---                    ---     E.BASS            08
+     09-2    Experience         ---                   ---     ---                    ---     E.GTR             16
+     09-3    Extreme Dist       ---                   ---     ---                    ---     E.BASS            05
+     10-1    for Normal PU L1   Pipe Organ           094      E.Organ               080      SYNTH             12
+     10-2    for Normal PU L2   E.Piano1             038      Synth Lead            502      SYNTH             10
+     10-3    for Normal PU L3   Synth Lead           486      Synth Lead            535      SYNTH             15
+
+
+SOUND STYLE: RHYTHM
+                                PCM TONE1                     PCM TONE2                      MODELING TONE
+ Patch No.   Patch Name
+                                Category           Tone No.   Category            Tone No.   Category        Tone No.
+     01-1    Super Saw Bass     Synth Bass           229      Synth PolyKey         723      SYNTH             11
+     01-2    M-Man Brass        Ensemble Brass       379      Sax                   411      E.BASS            05
+     01-3    Fat Upright        Ac.Bass              211      ---                    ---     SYNTH             12
+     02-1    Organ ViolinBass   E.Organ              070      E.Organ               073      E.BASS            09
+     02-2    Bell Sweep Bass    Synth Lead           553      Synth Bellpad         693      SYNTH             10
+     02-3    Heavy E.Piano      E.Piano1             022      E.Piano1              023      E.BASS            04
+     03-1    Shaker Synth       Synth Lead           556      Synth Brass           569      SYNTH             12
+     03-2    FilterBassSynth    ---                   ---     ---                    ---     SYNTH             12
+     03-3    MM & Fat Poly      Synth PolyKey        721      Synth Pad/Strings     656      E.BASS            05
+     04-1    FastTrackin'Bass   Synth Bass           240      ---                    ---     SYNTH             12
+     04-2    Soft Bass          Synth Bass           283      Synth Bass            265      ---                ---
+     04-3    BrightJB+SynBass   Synth Bass           303      ---                    ---     E.BASS            02
+     05-1    Fat Synth Bass     Synth Bass           235      Synth Bass            237      SYNTH             10
+     05-2    Big Synth          Synth Bass           275      ---                    ---     ---                ---
+     05-3    DecayFilterBass    ---                   ---     ---                    ---     SYNTH             12
+
+
+
+
+88
+                                                                                                                 GR-55 Patch List
+
+                                PCM TONE1                      PCM TONE2                      MODELING TONE
+ Patch No.   Patch Name
+                                Category            Tone No.   Category            Tone No.   Category        Tone No.
+   06-1      Bass Synth         Synth Bass            237      ---                    ---     SYNTH             11
+   06-2      Reso Fuzz Bass     Synth Bass            288      ---                    ---     E.BASS            04
+   06-3      ACID CLAV          Synth Bass            262      Clav                  105      ---                ---
+   07-1      Space Funk         Clav                  108      Synth Bass            253      E.BASS            03
+   07-2      Trem E.Piano       E.Piano1              022      ---                    ---     E.BASS            01
+   07-3      Bass + Clav        Clav                  103      ---                    ---     E.BASS            03
+   08-1      OctaClavz          Clav                  109      Clav                  110      E.BASS            03
+   08-2      High Strings       Ensemble Strings      342      Ensemble Strings      363      ---                ---
+   08-3      Brass Mix          Ensemble Brass        379      Synth Brass           579      E.BASS            08
+   09-1      Organ Bass         E.Organ               062      E.Organ               070      E.BASS            01
+   09-2      Octave M-Man       ---                    ---     ---                    ---     E.BASS            05
+   09-3      P-Bass Crunch      ---                    ---     ---                    ---     E.BASS            04
+   10-1      for Normal PU R1   Synth Bellpad         693      Ensemble Strings      345      E.BASS            07
+   10-2      for Normal PU R2   Synth Brass           569      E.Organ               088      E.BASS            08
+   10-3      for Normal PU R3   Ensemble Strings      362      Synth Pad/Strings     627      SYNTH             10
+
+
+SOUND STYLE: OTHER
+                                PCM TONE1                      PCM TONE2                      MODELING TONE
+ Patch No.   Patch Name
+                                Category            Tone No.   Category            Tone No.   Category        Tone No.
+   01-1      Ultimate Pulse     Synth Pad/Strings     612      Pulsating             824      SYNTH             10
+   01-2      Ambient Sparkle    Bell                  120      Synth Pad/Strings     680      ---                ---
+   01-3      Auto Groove        Beat&Groove           835      Synth Brass           569      E.BASS            01
+   02-1      Avalon             Bell                  120      Plucked/Stroke        318      ---                ---
+   02-2      Bollywood Stack    Plucked/Stroke        327      Ensemble Strings      359      SYNTH             10
+   02-3      Gel Sequence       Pulsating             813      Synth Pad/Strings     645      ---                ---
+   03-1      Seq.Str.Hit        Pulsating             815      Ensemble Strings      351      ---                ---
+   03-2      Vint Seq.Bass      Synth FX              773      Synth FX              773      SYNTH             12
+   03-3      Techno Sequence    Pulsating             824      Pulsating             808      ---                ---
+   04-1      Tubular Strings    Bell                  133      Ensemble Strings      361      E.BASS            05
+   04-2      TIME>TRAVELER      Pulsating             805      Pulsating             808      ---                ---
+   04-3      STRINGTHEORY       Pulsating             803      Pulsating             797      ---                ---
+   05-1      Ambient Organ      E.Organ               067      Flute                 402      ---                ---
+   05-2      RingLoop&E.Piano   E.Piano1              024      Pulsating             809      E.BASS            01
+   05-3      Unknown Kingdom    Pulsating             825      Synth Pad/Strings     646      E.BASS            01
+   06-1      Arrival Of King    Percussion            885      Ensemble Strings      345      E.BASS            01
+   06-2      Ringing Bell       ---                    ---     Synth Pad/Strings     680      ---                ---
+   06-3      TOKYO LIGHTS       Synth PolyKey         718      Synth FX              778      ---                ---
+   07-1      Sad Memory         Pulsating             823      Vox/Choir             433      E.BASS            01
+   07-2      Wandering Pipe     Bell                  120      Flute                 394      ---                ---
+   07-3      LUNAR LANDING      Synth FX              759      Pulsating             805      ---                ---
+   08-1      Techno Opening     Pulsating             824      Synth Lead            486      E.BASS            01
+   08-2      Inner Journey      Pulsating             822      Vox/Choir             436      SYNTH             10
+   08-3      HOUSE PARTY        Beat&Groove           839      Hit                   842      ---                ---
+   09-1      Compu-Strings      Beat&Groove           831      Ensemble Strings      362      E.BASS            01
+   09-2      5th & Groovin'     Beat&Groove           829      Synth PolyKey         735      E.BASS            01
+   09-3      Shamisen Beat      Plucked/Stroke        329      Beat&Groove           839      E.BASS            08
+   10-1      for Normal PU O1   Mallet                143      E.Piano2              054      SYNTH             14
+   10-2      for Normal PU O2   Synth Lead            553      Beat&Groove           832      SYNTH             12
+   10-3      for Normal PU O3   Synth FX              783      Orchestral            367      SYNTH             10
+
+
+
+
+                                                                                                                              89
+     Troubleshooting
+     If the GR-55 is not producing sounds or if you think it is not operating properly, first check the following points. If checking these points fails to resolve
+     the problem, consult your dealer or the nearest Roland service center.
+
+During normal performance using the GR-55 alone
+      Problem                              Items to check                            Action                                                                          Page
+                                           Is the [OUTPUT LEVEL] knob turned
+                                                                                     Adjust the knob to an appropriate setting.                                       p. 16
+                                           down completely?
+                                           Could the volume of the GK pickup be
+                                                                                     Raise the volume of the GK pickup to an appropriate level.                       p. 16
+                                           turned down?
+                                           Could the select switch of the GK
+                                                                                     Set the switch of the GK pickup to GK (or SYNTH) or MIX.                         p. 22
+                                           pickup be set to “GUITAR”?
+                                           Could the expression pedal be
+                                                                                     Depress the expression pedal.                                                    p. 20
+                                           released?
+                                           Could the PATCH LEVEL be turned
+                                                                                     Try raising the PATCH LEVEL in the EZ EDIT or other screen.                      p. 18
+                                           down?
+                                           Is there a short in any connecting
+                                                                                     Try replacing the connecting cable.                                               —
+                                           cable?
+      No sound/Low volume
+                                           Are the GR-55 and other devices
+                                                                                     Check the connections with the other devices.                                    p. 8
+                                           connected properly?
+                                           Is the power to the connected amp or
+                                           mixer not turned on, or is the volume     Check the settings for the connected device.                                      —
+                                           turned down?
+                                                                                     The direct sound is not output when the tuner is on if the volume setting
+                                           Is the tuner on?                                                                                                           p. 13
+                                                                                     during tuning is set to “MUTE ON.”
+                                           If there are no sounds through USB,
+                                           are the [SYSTEM] - USB settings           Adjust the settings to the appropriate values.                                   p. 80
+                                           correct?
+                                           Is the [SYSTEM] - USB - DIRECT MON
+                                                                                     Set this to ON.                                                                  p. 80
+                                           switched off?
+      Unwanted synthesizer sound is                                                  If you raise the LOW VELOCITY CUT value, unwanted triggering will be
+                                                                                                                                                                      p. 75
+      heard when you play softly                                                     reduced; softly played notes will be less likely to sound.
+                                           Check the setting for “VELOCITY”
+                                           under “GK SETTING.”                       Adjust the “PLAY FEEL” parameter.
+      Synthesizer sound is inconsistent
+                                                                                     The “5” setting gives you a completely fixed velocity and sound regardless       p. 75
+      in volume
+                                                                                     of your playing strength (picking).
+                                           Was the “GK SENS” setting adjusted
+                                                                                     Perform the adjustment.                                                        p.10,p.11
+                                           correctly for each string?
+                                                                                     Refer to the manual of your GK pickup, and attach the GK pickup correctly.
+      Volume is uneven among the
+      strings                                                                        On the Roland website, the “GK-3/3B Installation Tips” page provides an
+                                           Is the GK pickup attached correctly?      explanation and photos on how to attach a GK pickup. Be sure to take a            —
+                                                                                     look!
+                                                                                     http://www.roland.com/GK/
+      When using the GR-55’s pedal         The effect produced using the
+      effects or expression pedal, the     expression pedal is different for each    Check the effect of each patch beforehand.                                        —
+      result is different for each patch   sound (patch).
+                                           The pitch of some tones (such as
+      The pitch of the synth sound does
+                                           percussion instruments and sound
+      not change in the same way as the                                              It does not indicate a malfunction.                                               —
+                                           effects) will change in a different way
+      pitch of the guitar
+                                           than the pitch of your guitar.
+                                           On some sounds (patches) such
+                                           as piano or organ, the pitch will
+      The pitch changes in half-steps      not change smoothly, but change
+                                                                                     It does not indicate a malfunction.                                               —
+      when bending or etc.                 only in semitone steps. This is done
+                                           intentionally in order to make the
+                                           instrument sound more realistic.
+                                           In the effect settings, could a gain
+      Oscillation occurs                   value or volume-related parameter be      Decrease the value.                                                              p. 41
+                                           set too high?
+                                                                                     When INTERNAL PEDAL or WAVE PEDAL is used for the assign source, the
+      Cannot change parameters with        Are you using INTERNAL PEDAL with         effect parameters set as the assign targets change automatically.
+                                                                                                                                                                      p. 57
+      pedals or buttons                    Control Assign?                           If you want to change parameters with the knobs or PATCH/VALUE dial, first
+                                                                                     switch off Control Assign and cancel the INTERNAL PEDAL setting.
+                                                                                     With the GR-55, you cannot switch patches in any screen other than the
+                                           Is some screen other than the Play
+      Patches not switching                                                          Play screen. Press the [EXIT] button one or more times to return to the Play     p. 20
+                                           screen shown in the display?
+                                                                                     screen.
+                                                                                     Check to make sure the effects incorporating the parameters being
+                                           Are the effects switched off?                                                                                              p. 38
+                                                                                     controlled are on.
+      Unable to control parameters set                                               When carrying out operations using MIDI, check to confirm that both
+                                           Are the MIDI channels matched?                                                                                             p. 79
+      with Assign as expected                                                        devices are set to the same MIDI channel.
+                                           Are the controller numbers (CC#)
+                                                                                     Check to confirm that the controller numbers you are using are the same.         p. 79
+                                           matched?
+
+
+90
+                                                                                                                                                          Troubleshooting
+
+When using the GR-55 with other MIDI devices / When using the GR-55 with the computer
+     Problem                                  Items to check                                  Action                                                                 Page
+                                              Do the MIDI channels of the transmitting
+                                                                                              Match the MIDI channels.                                                p. 79
+     The external sound module                and receiving devices match?
+     connected to the MIDI OUT                Could you have turned down the volume
+     connector does not sound                 using the volume control of the GK pickup or    Raise the controller or volume.                                          —
+                                              the expression pedal?
+                                              Could you be using Mono mode to transmit
+     Only one string sounds on the                                                            Use a sound module that supports multitimbral operation.
+                                              from the GR-55 to a sound module that
+     external sound module (some                                                                                                                                      p. 79
+                                              is unable to receive six MIDI channels          Use the GR-55 in Poly mode.
+     strings do not sound)
+                                              simultaneously?
+                                              Is the Bend Range of your external sound
+                                                                                              Set the Bend Range of your external sound module to +/- 24.              —
+                                              module set to +/- 24?
+     Pitch is incorrect (different than the
+     guitar pitch)                                                                            Use the GR-55’s Tuner function to tune your guitar accurately. You
+                                              Is your guitar tuned accurately?                must also adjust your guitar so that accurate pitches are sounded       p. 13
+                                                                                              even on the high frets.
+
+     When you view the note messages          The GR-55 expresses the pitch as a
+     recorded in your sequencer, the          combination of note data and pitchbend
+     pitches differ from what is actually     data. This means that if you’re looking only    Check the pitchbend data.                                                —
+                                              at the note data, the pitches may appear
+     sounded                                  different than what you played.
+                                              Could there be a short in the MIDI cable?       Try replacing the MIDI cable.                                            —
+                                              Are the GR-55 and the external MIDI device
+                                                                                              Check the connection with the external MIDI device.                     p. 67
+                                              connected properly?
+     MIDI messages not being
+     transmitted/received                     Are the MIDI channels matched?                  Check to confirm that both devices are set to the same MIDI channel.    p. 79
+
+                                              If you are transmitting from the GR-55, have    Check the Program Change message transmission ON/OFF setting
+                                                                                                                                                                      p. 79
+                                              the settings for transmission been made?        and the settings for the controller number to be transmitted.
+                                                                                              If this is turned “ON,” pitch bend data will not be output, and the
+                                              Could the master parameter GTR-MIDI-
+     Pitch does not change smoothly                                                           pitch will change in semitone steps. Check the master parameter         p. 79
+                                              CHROMATIC be “ON”?
+                                                                                              GTR-MIDI-CHROMATIC, and turn it “OFF.”
+
+
+
+When using USB memory
+     Problem                                  Items to check                                  Action                                                                 Page
+                                              Check the format of your USB memory. The
+                                              GR-55 can use USB memory that is formatted      Use your computer to format the USB memory in FAT format. (It is not
+                                              as FAT. (Normally, when you purchase USB        possible to format USB memory using the GR-55.)
+                                              memory, it will be formatted as FAT, so you     In Computer (or My Computer), right-click the USB drive, choose
+     USB memory is not detected / Song
+                                              can start using it immediately.) However, USB   “Format,” and then choose “FAT” as the file system so that the USB       —
+     files are not displayed
+                                              memory that was formatted by a computer         memory will be formatted in FAT format. For details on formatting
+                                              or other device as something other than FAT     USB memory, refer to your computer’s documentation.
+                                              (e.g., NTFS) will not be recognized by the      * When you format USB memory, all of its contents will be lost.
+                                              GR-55.
+                                              Could the USB memory be write protected?        Disable write protection.                                                —
+     Can’t back up to USB memory              Is there sufficient free space on the USB
+                                                                                              Use USB memory that has sufficient free space.                           —
+                                              memory?
+
+
+
+
+                                                                                                                                                                            91
+     Error Messages
+     Message                   Meaning                                                Action
+                                                                                      Check that there is no problem with the MIDI cable connected
+     MIDI OFFLINE!             The MIDI IN connection was broken.                     to the GR-55’s MIDI IN, and that the MIDI cable was not
+                                                                                      disconnected.
+                               An unusually large amount of MIDI data was received,   Reduce the amount of MIDI messages that are being
+     MIDI BUFFER FULL!
+                               and could not be processed.                            transmitted.
+                                                                                      Please execute a Factory Reset.
+                               It is possible that the contents of memory have been
+     MEMORY DAMAGED!                                                                  If this does not resolve the problem, contact your dealer or a
+                               damaged.
+                                                                                      nearby Roland service center.
+     USB MEMORY NOT READY!     USB memory is not connected.                           Connect USB memory.
+                                                                                      Use your computer to format the USB memory.
+     USB MEMORY READ ERROR!    The USB memory could not be read.                      * When you format USB memory, all of its contents will be
+                                                                                        lost.
+                                                                                      Check whether the USB memory might be write protected.
+                                                                                      If the USB memory is not write protected, use your computer to
+     USB MEMORY WRITE ERROR!   The USB memory could not be written.                   format the USB memory.
+                                                                                      * When you format USB memory, all of its contents will be
+                                                                                        lost.
+                                                                                      The GR-55 can use USB memory that is formatted as FAT.
+                                                                                      (Normally, when you purchase USB memory, it will be formatted
+                                                                                      as FAT, so you can start using it immediately.) However, USB
+                                                                                      memory that was formatted by a computer or other device as
+                                                                                      something other than FAT (e.g., NTFS) will not be recognized by
+                                                                                      the GR-55.
+                                                                                      Use your computer to format the USB memory in FAT format. (It
+     UNFORMATTED USB MEMORY!   The USB memory is not formatted.                       is not possible to format USB memory using the GR-55.)
+                                                                                      In Computer (or My Computer), right-click the USB drive,
+                                                                                      choose “Format,” and then choose “FAT” as the file system so
+                                                                                      that the USB memory will be formatted in FAT format. For
+                                                                                      details on formatting USB memory, refer to your computer’s
+                                                                                      documentation.
+                                                                                      * When you format USB memory, all of its contents will be
+                                                                                        lost.
+                               Since there is a USB cable connected to the USB
+     CURRENTLY CONNECTED TO                                                           Disconnect the USB cable from the USB COMPUTER connector,
+                               COMPUTER connector, the AUDIO PLAYER function
+     COMPUTER VIA USB!                                                                then try using the AUDIO PLAYER function.
+                               cannot be used.
+     AUDIO FILE NOT FOUND!     There is no audio file for the AUDIO PLAYER to play.   Save the audio file that you want to play on the USB memory.
+     UNSUPPORTED AUDIO FILE!   This audio file cannot be played by the GR-55.         —
+
+
+
+
+92
+                     MIDI OUT /
+                     COMPUTER (USB) MIDI OUT
+
+                                    GUITAR TO MIDI
+
+                                                                               LINE SELECT
+
+                                                                                                                                     PATCH                   SYSTEM
+                     DIVIDED                         PCM TONE 1
+                     PU
+                                 GK
+           GK IN               SETTING
+
+                                                     PCM TONE 2
+                                                                                                                                                                                            Signal Flow
+
+
+
+
+                                                     MODELING
+                                                       TONE
+
+
+                                                     NORMAL PU
+                     NORMAL
+                     PU
+                                                                  GUITAR OUT
+                                                                    SELECT
+                                                                                               AMP
+
+
+
+                                                                                             MOD
+
+
+
+                                                                                   STRUCTURE
+
+
+
+                                                                                                     MFX
+
+                                                                                                                                                                                COMPUTER
+                       PATCH NO.
+     MIDI IN /         (PROGRAM CHANGE)
+                                                                                                                                                                                (USB)
+                                                                                                           BYPASS
+     COMPUTER                                                                                                                                                                   AUDIO OUT
+     (USB) MIDI IN                                                                                                                                                              AUDIO IN
+
+                                                                                                                                                    PHRASE
+                                                                                                                    DELAY   REVERB    CHORUS
+                                                                                                                                                     LOOP
+                                                                                                                                                                 OUTPUT LEVEL
+                                                                                                                                                                                PHONES
+
+                                                                                                                                                                OUTPUT
+                                                                                                                                               EQ                               OUTPUT
+                                                                                                                                                                SELECT
+
+
+                                                                                                                                                                                GUITAR
+                                                                                                                                                                                OUT
+
+
+
+
+93
+

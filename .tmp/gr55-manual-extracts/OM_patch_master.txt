@@ -1,0 +1,469 @@
+     Patch Settings (MASTER)
+Basic operation                                                                      Controller Settings (ASSIGN)
+1.   Select a patch and press the [EDIT] button.                                       For each parameter, you can specify which controller will control the
+     The EDIT screen will appear.                                                      parameter (p. 62).
+                                                                                       For details on the parameters, refer to “ASSIGN” (p. 57).
+
+
+                                                                                     Patch Tempo Setting (PATCH TEMPO)
+                                                                                       You can specify the tempo used for tempo-synchronized effects.
+
+2.   Use the PAGE [ ] [ ] buttons to select the MASTER tab.                            For details on the parameter, refer to “PATCH TEMPO” (p. 58).
+
+
+                                                                                     GK Pickup Settings for Each Patch
+                                                                                     (GK SET)
+                                                                                       If you’re using the GR-55 for live performance, you might change
+                                                                                       guitars depending on the song you’re performing.
+3.   Use the cursor [ ] [ ] buttons to select the icon for the
+     settings you want to edit.                                                        If so, you can create a GK SET (“GK SETTING,” p. 69) for each guitar, and
+                                                                                       then specify that the GK SET for the guitar used in a particular song
+      Icon                               Description                         Page      will be recalled when you select the patch used for that song.
+
+      PEDAL/GK CTL
+                                         Settings for the pedals and
+                                                                             p. 55
+                                                                                       For details on the parameters, refer to “GK SETTING” (p. 74).
+                                         GK controls.
+      ASSIGN
+                  PATCH TEMPO
+                                         Controller settings.
+                                         Patch tempo setting.
+                                                                             p. 57
+                                                                             p. 58
+                                                                                     GUITAR OUT Jack Settings
+                  GK SET
+                                         GK pickup settings for each
+                                         patch.
+                                                                             p. 58   (GUITAR OUT)
+      OTHER       GUITAR OUT             GUITAR OUT jack settings.           p. 59     The GUITAR OUT jack can output the normal pickup sound and the
+                                         Tuning adjustments for each                   sound of the modeling tone.
+                  ALT-TUNING                                                 p. 59
+                                         string.
+                                                                                       For example, you can make settings so that the normal pickup sound
+                  V-LINK                 V-LINK settings.                    p. 59     and the modeling tone sound will be played through a guitar amp,
+                                                                                       while the other synthesizer sounds will be played through the PA
+4.   Press the [ENTER] button.                                                         system connected to the OUTPUT jacks. For details, refer to System
+                                                                                       settings “GUITAR OUT Jack Settings (GUITAR OUT)” (p. 70).
+5.   Edit the parameter settings.
+                                                                                       For details on the parameters, refer to “GUITAR OUT” (p. 59).
+
+                                                                                       MEMO
+                                                                                       If the SYSTEM setting GUITAR OUT (p. 80) is set to anything other than
+                                                                                       “PATCH,” this setting is ignored.
+
+
+                                                                                     Changing the Tuning of Each String
+        Use the cursor [ ] [ ] buttons to select the parameter that you
+        want to edit, and use the dial to edit the value of the parameter.           (ALT-TUNING)
+                                                                                       You can change the pitch of each string without changing the tuning
+6.   If you want to keep the changes you made, save the patch                          of your guitar.
+     (p. 60).
+                                                                                       For details on the parameters, refer to “ALT-TUNING” (p. 59).
+
+ Pedal and GK Control Settings                                                       * The pitch of the normal pickup sound will not change.
+
+
+ (PEDAL/GK CTL)                                                                      V-LINK Settings (V-LINK)
+     For each patch, you can change the operation that occurs when you                 You can make settings for V-LINK (p. 68), a function that allows you to
+     operate the pedal or operate the GK controls (p. 61).                             switch images or control the brightness or hue of an image.
+     For details on the parameters, refer to “PEDAL/GK CTL” (p. 55).                   For details on the parameters, refer to “V-LINK” (p. 59).
+
+     NOTE!
+        This is available if the SYSTEM parameter “FUNCTION” (p. 76) is
+        set to “PATCH SETTING.” (If unavailable, the display will indicate
+        “**[SYSTEM]**”.)
+
+
+
+
+54
+                                                                                                                                  Patch Settings (MASTER)
+
+
+Parameter List (MASTER)
+PEDAL/GK CTL
+  Tab       Parameter      Value                     Description
+            STATUS
+            (CTL, EXP SW   OFF, ON                   Switches the pedal on/off (reflects the indicator’s illumination status).
+            only)
+                           Here you can specify the function that will be assigned to the [CTL] pedal, the expression pedal switch, or the GK [S1]/[S2] buttons.
+                           OFF                       No function will be assigned to the above pedal or switch.
+                                                     HOLD parameter              Value                Description
+                                                                                                      Notes that were sounding when you pressed the pedal
+                                                                                                      will be held, and successive notes that are played while
+                                                                                                      you continue holding down the pedal will also be held.
+                                                                                                      This differs from “HOLD TYPE 4” in that if a note is already
+                                                                                 1
+                                                                                                      sounding on the same string, the previous note will be
+                                                                                                      silenced, and the note newly played on that string will take
+                                                                                                      its place. This allows you to play without a break even if the
+                                                                                                      note is on a distant fret.
+                                                                                                      Notes that were sounding when you pressed the pedal will
+                                                     HOLD TYPE                                        be held as long as you continue holding down the pedal.
+                                                                                 2
+                                                                                                      Notes played after you started holding down the pedal will
+                           HOLD                                                                       not sound.
+                           (CTL only)                                                                 Notes that were sounding when you pressed the pedal will
+                                                                                                      be held as long as you continue holding down the pedal.
+                                                                                 3
+                                                                                                      Notes played after you started holding down the pedal will
+                                                                                                      sound, but will not be held.
+                                                                                                      Notes that were sounding when you pressed the pedal will
+                                                                                 4                    be held, and successive notes that are played while you
+                                                                                                      continue holding down the pedal will also be held.
+                                                                                 LATCH                Hold will turn on/off each time you press the pedal.
+                                                     SWITCH MODE
+                                                                                 MOMENT               Hold will be on only while you hold down the pedal.
+  CTL,                                                PCM TONE 1                 OFF, ON              Choose the “OFF” setting if you don’t want the tone to be
+  EXP SW,                                             PCM TONE 2                 OFF, ON              held.
+  GK S1,
+                           TAP TEMPO                  Sets the tempo to the timing at which you press the pedal.
+  GK S2     FUNCTION
+                                                      Controls the on/off switch for each tone and the normal pickup.
+                                                      TONE SW parameter           Value               Description
+                                                                                  PCM TONE 1
+                                                                                  OFF/ON
+                                                                                  PCM TONE 2          These settings are for when the STATUS of each controller
+                                                                                  OFF/ON              ([CTL] pedal, expression pedal switch) is “OFF.”
+                                                      SW OFF
+                                                                                  MODELING            GK S1/S2 are the settings for the default state (i.e., before
+                                                                                  TONE OFF/ON         you’ve pressed a switch).
+
+                           TONE SW                                                NORMAL PU
+                                                                                  OFF/ON
+                                                                                  PCM TONE 1
+                                                                                  OFF/ON
+                                                                                  PCM TONE 2          These settings are for when the STATUS of each controller
+                                                                                  OFF/ON              ([CTL] pedal, expression pedal switch) is “ON.”
+                                                      SW ON
+                                                                                  MODELING            GK S1/S2 are the settings for when the switch has been
+                                                                                  TONE OFF/ON         pressed once.
+                                                                                  NORMAL PU
+                                                                                  OFF/ON
+                           AMP SW                     Switches AMP on/off.
+                           MOD SW                     Switches MOD on/off.
+                           MFX SW                     Switches MFX on/off.
+
+                           DELAY SW                   Switches DELAY on/off.
+
+                           REVERB SW                  Switches REVERB on/off.
+
+                           CHORUS SW                  Switches CHORUS on/off.
+
+
+
+
+                                                                                                                                                                      55
+Patch Settings (MASTER)
+
+     Tab       Parameter   Value                     Description
+                           AUDIO PLAYER PLAY/
+                                                     Starts/stops the audio player.
+                           STOP
+                           AUDIO PLAYER SONG
+                           INC
+     CTL,                                            Selects the audio file in USB memory played by the audio player.
+                           AUDIO PLAYER SONG
+     EXP SW,               DEC
+               FUNCTION
+     GK S1,
+                           AUDIO PLAYER SW           Performs the same operation as when the panel’s [AUDIO PLAYER] button is pressed.
+     GK S2
+                           V-LINK SW                 Performs the same operation as when the panel’s [V-LINK] button is pressed.
+
+                           LED MOMENT                The pedal indicator lights up while you press the pedal, and it goes out when you release the pedal.
+
+                           LED TOGGLE                The pedal indicator lights up and goes out when alternate each time you press the pedal.
+                           Here you can specify the functions that will be assigned to the expression pedal or to the GK volume knob.
+                           Two different functions can be assigned separately to the expression pedal; one function for when the expression pedal switch is on,
+                           and another function for when it is off.
+                           OFF                       No function will be assigned to the above pedal or knob.
+
+                           PATCH VOLUME              Adjusts the volume of the patch.
+
+                                                     Adjusts the volume of the tones and the normal pickup.
+                                                     TONE VOLUME
+                                                                                 Value              Description
+                                                     parameter
+                                                     PCM TONE 1                  OFF, ON
+                           TONE VOLUME
+                                                     PCM TONE 2                  OFF, ON            If you don’t want the control to adjust the volume of the
+                                                     MODELING TONE               OFF, ON            respective tone or pickup, choose “OFF.”
+
+                                                     NORMAL PU                   OFF, ON
+
+                                                     Changes the pitch of PCM tone 1, PCM tone 2, and the modeling tone.
+
+                                                     PITCH BEND parameter        Value              Description
+                                                                                                    Specifies the maximum pitch change that will occur when
+                                                     DEPTH                       -12–+12
+                                                                                                    you fully depress the pedal.
+                                                                                                    Choose “OFF” if you don’t want to change the pitch of PCM
+                           PITCH BEND                PCM TONE 1                  OFF, ON
+                                                                                                    TONE 1.
+                                                                                                    Choose “OFF” if you don’t want to change the pitch of PCM
+                                                     PCM TONE 2                  OFF, ON
+                                                                                                    tone 2.
+                                                                                                    Choose “OFF” if you don’t want to change the pitch of the
+                                                     MODELING TONE               OFF, ON            modeling tone.
+     EXP,
+                                                                                                    There will be no effect if “12STR SW” (p. 29) is “ON.”
+     EXP ON,   FUNCTION
+     GK VOL                                          Controls the depth of modulation for PCM tone 1 and PCM tone 2.
+                                                     The effect will differ depending on the PCM tone that’s selected.
+                                                     MODULATION
+                                                                                 Value              Description
+                                                     parameter
+                                                                                                    Specifies the depth of modulation when the pedal is fully
+                                                     MIN                         0–100
+                                                                                                    released.
+                           MODULATION
+                                                                                                    Specifies the depth of modulation when the pedal is fully
+                                                     MAX                         0–100
+                                                                                                    depressed.
+                                                                                                    Choose “OFF” if you don’t want to apply modulation to PCM
+                                                     PCM TONE 1                  OFF, ON
+                                                                                                    tone 1.
+                                                                                                    Choose “OFF” if you don’t want to apply modulation to PCM
+                                                     PCM TONE 2                  OFF, ON
+                                                                                                    tone 2.
+                                                     Controls the volume balance of the tones.
+                                                     CROSS FADER
+                                                                                 Value              Description
+                                                     parameter
+
+                           CROSS FADER               PCM TONE 1 POLARITY         OFF                The volume of the tone will not change.
+                                                     PCM TONE 2 POLARITY                            The volume of the tone will increase as you depress the
+                                                                                 TOE
+                                                     MODELING TONE                                  pedal.
+                                                     POLARITY                                       The volume of the tone will increase as you lift up on the
+                                                                                 HEEL
+                                                     NORMAL PU POLARITY                             pedal.
+                                                     Controls the DELAY/REVERB/CHORUS effect level.
+                           DELAY LEVEL
+                                                     Parameter                   Value              Description
+                           REVERB LEVEL
+                                                     MIN                         0–120 (DELAY)      Specifies the effect level when the pedal is fully released.
+                           CHORUS LEVEL                                          0–100 (REVERB,
+                                                     MAX                         CHORUS)            Specifies the effect level when the pedal is fully depressed.
+
+
+
+
+56
+                                                                                                                                         Patch Settings (MASTER)
+
+  Tab           Parameter      Value                       Description
+                                                           Controls the principal parameter for each type of MOD effect.
+                                                           This is valid if MOD SWITCH is “ON.”
+                                                           MOD CONTROL
+                                                                                          Value              Description
+                                                           Parameter
+                                                           MIN                            Specifies the range of change for the parameter. The values will depend on the
+                                                           MAX                            parameter that’s assigned by MOD type.
+
+                                                           MOD Type                        Parameter                   MOD Type                     Parameter
+  EXP,
+  EXP ON,       FUNCTION       MOD CONTROL                 OD/DS                           DRIVE                       TREMOLO                      RATE
+  GK VOL                                                   WAH (*1)                        PEDAL POSITION              ROTARY                       SPEED SELECT
+
+                                                           COMP                            SUSTAIN                     UNI-V                        RATE
+
+                                                           LIMITER                         THRESHOLD                   PAN                          RATE
+
+                                                           OCTAVE                          OCTAVE LEVEL                DELAY                        EFFECT LEVEL
+
+                                                           PHASER                          RATE                        CHORUS                       EFFECT LEVEL
+
+                                                           FLANGER                         RATE                        EQ                           HI-MID FREQ
+
+
+ (*1) Set the MODE parameter (p. 43) to “MANUAL.”
+
+
+ASSIGN
+  Tab           Parameter              Value                         Description
+                SWITCH                 OFF, ON                       Turns ASSIGN 1–8 on/off.
+                                       Selects the parameter that will be controlled. For details on the parameters, refer to the explanations of each parameter in this
+                TARGET
+                                       manual.
+                TARGET MIN
+                                       Specifies the range of change for the parameter. The values will depend on the parameter that’s assigned by TARGET.
+                TARGET MAX
+                                       Selects the controller to which the function will be assigned.
+                                       CTL                           [CTL] pedal
+                                       EXP                           Expression pedal
+                                       EXP ON                        Expression pedal when the expression pedal switch is on
+                                       EXP SW                        Expression pedal switch
+                                       INT PDL                       Internal pedal (p. 62)
+                SOURCE
+  ASSIGN                               WAVE PDL                      Wave pedal (p. 62)
+  1–8                                  GK S1                         [S1] button of the GK pickup
+                                       GK S2                         [S2] button of the GK pickup
+                                       GK VOL                        Volume knob of the GK pickup
+                                       CC1–31,
+                                                                     Control change number from an external MIDI device
+                                       CC64–95
+                                       Specifies how the value will change for each operation.
+                                                                     The value will normally be off (minimum value), and will be on (maximum value) only while the
+                SOURCE MODE            MOMENT
+                                                                     control is being operated.
+                                       TOGGLE                        The value will toggle between off (minimum) and on (maximum) each time the control is operated.
+                ACT RANGE LO           0–126                         Within the operating range of the source, this specifies the range that will control the target
+                                                                     parameter.
+                ACT RANGE HI           1–127                         The target parameter will be controlled within the range specified by ACT RANGE LO and ACT
+                                                                     RANGE HI. Normally, you should leave ACT RANGE LO at “0” and ACT RANGE HI at “127.”
+
+
+
+
+                                                                                                                                                                           57
+Patch Settings (MASTER)
+
+      Tab            Parameter            Value                       Description
+                                          Specifies how the motion of the internal pedal will be triggered. *1
+                                          PATCH CHANGE                Triggered when you switch patches.
+                                          CTL PDL                     Triggered when you operate the [CTL] pedal.
+                                          EXP LOW                     Triggered when you move the expression pedal to minimum.
+                                          EXP MID                     Triggered when you depress the expression pedal through the center value.
+                                          EXP HIGH                    Triggered when you move the expression pedal to maximum.
+                                                                      Triggered when you move the expression pedal to minimum while the expression pedal switch is
+                     INT TRIG             EXP ON LOW
+                                                                      on.
+                                                                      Triggered when you depress the expression pedal through the center value while the expression
+                                          EXP ON MID
+                                                                      pedal switch is on.
+                                                                      Triggered when you move the expression pedal to maximum while the expression pedal switch is
+                                          EXP ON HIGH
+                                                                      on.
+                                          EXP SW                      Triggered when you operate the expression pedal switch.
+                                          GK S1                       Triggered when you operate the [S1] button of the GK pickup.
+                                          GK S2                       Triggered when you operate the [S2] button of the GK pickup.
+                                                                      Specifies the time over which the internal pedal will move from the released (heel) position to the
+                     INT TIME             0–100
+                                                                      depressed (toe) position. *1
+      ASSIGN
+      1–8                                                             Selects one of the following curves to specify the change produced by the internal pedal. *1
+
+                                                                         LINEAR                   SLOW RISE                    FAST RISE
+                                          LINEAR,
+                     INT CURVE            SLOW RISE,
+                                          FAST RISE
+
+
+
+
+                                                                      Specifies the time for one cycle of the wave pedal. *2
+                                                                      If you choose BPM, the value of this parameter will be set according to the “PATCH TEMPO” (p. 58)
+                                                                      setting of each patch. This is an easy way to make the effect sound synchronize to the tempo of each
+                     WAVE RATE            0–100, BPM
+                                                                      song.
+                                                                           * If the time determined by the tempo exceeds the allowable length, it will be set to
+                                                                             synchronize to 1/2 or 1/4 of that time.
+                                                                      Select one of the following to specify the change produced by the wave pedal. *2
+
+                                                                         SAW                      TRIANGLE                     SINE
+                     WAVE FORM            SAW, TRI, SIN
+
+
+
+
+     *1 INT TRIG, INT TIME, and INT CURVE are used if SOURCE is set to “INT PDL.”
+     *2 WAVE RATE and WAVE FORM are used if SOURCE is set to “WAVE PDL.”
+
+
+ PATCH TEMPO
+      Group           Parameter                            Value                      Description
+                                                                                      Specifies the tempo for tempo-synchronized effects.
+      PATCH TEMPO     TEMPO                                20–250                     If SYSTEM–MIDI/USB–GENERAL–MIDI SYNC (p. 79) is “ON,” the tempo is determined by
+                                                                                      MIDI clock from an external device.
+
+
+
+ GK SET
+      Group          Parameter                            Value                     Description
+                                                                                    Normally, you can leave this set to “SYSTEM.” If you swap guitars for different patches,
+      GK SET         SELECT                               SYSTEM, 1–10
+                                                                                    choose the GK SET you specified for the guitar you use with this patch.
+
+
+
+
+58
+                                                                                                                     Patch Settings (MASTER)
+
+GUITAR OUT
+  Group        Parameter          Value                       Description
+                                  For each patch, specifies the signal that will be sent from the GUITAR OUT jack.
+                                  The system parameter GUITAR OUT lets you specify whether to use the GUITAR OUT setting for each patch or the
+                                  overall setting (system setting) for the entire GR-55. For details, refer to “GUITAR OUT Jack Settings (GUITAR OUT)”
+                                  (p. 70).
+  GUITAR OUT   SOURCE             OFF                         Nothing will be output from the GUITAR OUT jack.
+                                  NORMAL PU                   The normal pickup sound will be output.
+                                  MODELING                    The modeling tone sound will be output.
+                                  BOTH                        Both the normal pickup sound and the modeling tone sound will be output.
+
+
+
+ALT-TUNING
+  Group        Parameter          Value                       Description
+               SWITCH             OFF, ON                     Turns the ALT-TUNING function on/off.
+                                  OPEN-D                      Tuning that produces a D chord when you play the open strings.
+                                  OPEN-E                      Tuning that produces an E chord when you play the open strings.
+                                  OPEN-G                      Tuning that produces a G chord when you play the open strings.
+                                  OPEN-A                      Tuning that produces an A chord when you play the open strings.
+                                  DROP-D                      Tuning that drops only the 6th string by one note (D).
+                                                              Tuning that drops the 6th, 2nd, and 1st string by one note to create an ethnic feel; also
+                                  D-MODAL
+                                                              called “DADGAD.”
+  ALTERNATE-                                                  Tuned one semitone lower.
+                                  -1 STEP
+  TUNING       TYPE                                           Each string is tuned one semitone (one fret) lower.
+                                                              Tuned one full step lower.
+                                  -2 STEP
+                                                              Each string is tuned a full step (two frets) lower.
+                                                              Tuning that drops each string by a perfect fourth (five frets); suitable for heavy
+                                  BARITONE
+                                                              phrases.
+                                                              Tuning that raises the 6th, 5th, 4th, and 3rd strings by one octave; like a 12-string
+                                  NASHVL
+                                                              guitar’s supplementary strings by themselves.
+                                  -1 OCT                      Tuning that lowers all strings by one octave.
+                                  +1 OCT                      Tuning that raises all strings by one octave.
+                                  USER                        Tuning specified by USER SHIFT.
+  USER         USER SHIFT 1–6     -24–+24                     Specifies the amount of shift for each string.
+
+
+
+V-LINK
+  Group        Parameter          Value                       Description
+                                                              Selects the V-LINK device’s palette that you want to use with the current patch.
+               PALETTE            LAST, 1–32
+                                                              If you don’t want to switch palettes, choose “LAST.”
+                                                              Selects the V-LINK device’s clip that you want to use when you switch to the current
+               CLIP               LAST, 1–32                  patch.
+                                                              If you don’t want to switch clips, choose “LAST.”
+                                  When you play your guitar, the V-LINK device will switch clips according to the pitch of the note you play.
+                                  OFF                         If you don’t want your performance to switch clips, choose “OFF.”
+                                  1                           The clip corresponding to the lowest note of those being sounded will be output.
+               NOTE CLIP CHANGE
+                                  2                           The clip corresponding to the highest note of those being sounded will be output.
+  V-LINK
+                                  3                           Clips will be output consecutively, regardless of the notes being sounded.
+                                  4                           The clip corresponding to the note will be output.
+                                  You can use controllers to modify the image.
+                                  OFF                         No effect.
+               EXP
+                                  COLOR Cb
+               EXP ON                                         The hue of the image will change.
+                                  COLOR Cr
+               GK VOL
+                                  BRIGHT                      The brightness of the image will change.
+                                  PLAY SPEED                  If the image is motion video, the playback speed will change.
+
+
+
+
+                                                                                                                                                      59
+

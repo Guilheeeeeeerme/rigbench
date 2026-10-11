@@ -1,4 +1,4 @@
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
 import { useT } from '../../copy';
 import { MaestroDrawer } from '../../maestro/MaestroDrawer';
@@ -11,7 +11,6 @@ import {
   type SessionId,
 } from '../../maestro/session';
 import type { Gr55Editor } from './editor';
-import { TopNav } from './TopNav';
 import { StudioPanels } from './StudioPanels';
 import { SystemGate } from './SystemParts';
 
@@ -34,7 +33,6 @@ export function Studio({
   const t = useT();
   const [session, setSession] = useState<SessionId>(() => loadSession() || DEFAULT_SESSION);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [libraryFilter, setLibraryFilter] = useState<string>();
   const patchName = useSyncExternalStore(editor.subscribe, () => editor.patchName);
   const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
   const changeCount = useSyncExternalStore(editor.subscribe, () => editor.changeCount);
@@ -44,26 +42,9 @@ export function Studio({
     saveSession(next);
   };
 
-  const sessionLabel = useMemo(() => {
-    switch (session) {
-      case 'system':
-        return t('studio.session.system');
-      case 'patch':
-        return t('studio.session.patch');
-      case 'library':
-        return t('studio.session.library');
-    }
-  }, [session, t]);
+  const sessionLabel = t(`studio.session.${session}`);
 
-  const panels = (
-    <StudioPanels
-      session={session}
-      editor={editor}
-      onError={onError}
-      libraryFilter={libraryFilter}
-      onLibraryFilter={setLibraryFilter}
-    />
-  );
+  const panels = <StudioPanels session={session} editor={editor} onError={onError} />;
 
   return (
     <div className="studio">
@@ -71,15 +52,9 @@ export function Studio({
         <Link className="brand" to="/">
           {t('app.name')}
         </Link>
-        <TopNav current="studio" />
         <div className="studio-session" role="tablist" aria-label={t('studio.sessionSwitcher')}>
           {SESSION_IDS.map((id) => {
-            const label =
-              id === 'system'
-                ? t('studio.session.system')
-                : id === 'patch'
-                  ? t('studio.session.patch')
-                  : t('studio.session.library');
+            const label = t(`studio.session.${id}`);
             return (
               <button
                 key={id}
@@ -99,7 +74,7 @@ export function Studio({
           <span className="mode">{t(`gr55.mode.${gkMode}`)}</span>
           <span className="changes">
             {changeCount > 0
-              ? t('library.changes', changeCount)
+              ? t('gr55.workspace.unsavedChanges', changeCount)
               : t('gr55.workspace.noUnsavedChanges')}
           </span>
           <span className="studio-scope" title={sessionLabel}>

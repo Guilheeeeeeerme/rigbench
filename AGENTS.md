@@ -18,22 +18,32 @@ Static React 19 + Vite + TypeScript app. Web MIDI SysEx to a Roland GR-55. No ba
 Nothing edited leaves the machine (IndexedDB / localStorage). EN + PT-BR via `src/copy/`.
 
 ```
-Pick device → Connect → Setup wizard (first time) → Sync → Studio (craft home)
-                                                              ├─ sessions: System | Patch | Library
-                                                              └─ Stage (perform) · Advanced under ⋯
+Pick device → Connect (silent resume if ports still valid; else prompt)
+            → Setup wizard (first run) → Stage (now — mirrors the pedal)
+                                          ├─ Maestro: any configuration with AI
+                                          └─ Setup: Device · GK · recalibrate
 ```
+
+Connect / resume / patch location: [docs/current/connection-resume.md](./docs/current/connection-resume.md).
 
 | Route | Role |
 | --- | --- |
-| `#/gr55/estudio` | **Craft home** after setup — Maestro + session macros |
-| `#/gr55/palco` | Stage / setlist (live; Maestro writes denied) |
-| `#/gr55/configurar` | First-run wizard + recalibrate |
-| `#/gr55/agenda` | Setlist editor |
-| `#/gr55/patches` | Library (also a Studio session) |
-| `#/gr55/editor/:page/:section` | Dense Advanced editor |
-| `#/gr55/dispositivo` · `…/gk` | Device / GK (Advanced; absorbing into Studio System) |
+| `#/gr55/palco` | **Stage — the app.** Like holding the pedal in hand: where you are (`USER 04-2 <name>`), the 3 keys of the current bank, previous/next bank (the pedal moves along); its instruments (icons, mute, level), master, chain switches |
+| `#/gr55/maestro` | **Maestro — the AI.** Does any configuration by conversation (patch ± system craft, BYOK Gemini) |
+| `#/gr55/configuracao` | **Setup.** Global only: cards to Device / GK sets / recalibrate |
+| `#/gr55/configurar` | First-run wizard + recalibrate (no app bar while it runs) |
+| `#/gr55/patches` | Slots & files — save, import, whole-pedal backup (reached from Setup) |
+| `#/gr55/maestro` | Maestro AI sessions (writes follow policy) |
+| `#/gr55/dispositivo` · `…/gk` | Device / GK — global configuration, set once |
+| `#/gr55/estudio` | Legacy address → redirects to Stage |
 
-Top chrome: **Studio · Stage · ⋯**. Canonical IA: [docs/current/studio-sessions.md](./docs/current/studio-sessions.md).
+Navigation: `AppNav` rendered once in `Gr55Screen` — three sticky items (Stage · Maestro · Setup). No per-screen nav.
+
+Advanced editor (`#/gr55/editor/**`) was **removed**. `pages.ts` survives only as the
+locale-free SoT for field keys (Maestro fieldRegistry / macros). Old editor deep links
+redirect to Stage. Built in the address map; shows device / connection.
+
+
 
 [docs/current/mobile-live-control.md](./docs/current/mobile-live-control.md) is a **vision** for Stage Live Simplify and mobile platforms. It does **not** redefine Maestro (AI), Studio, or Stage, and it does not authorize a second app or iOS Web MIDI support.
 
@@ -53,11 +63,16 @@ Top chrome: **Studio · Stage · ⋯**. Canonical IA: [docs/current/studio-sessi
 
 | Area | Path |
 | --- | --- |
+| App Redux store (connection resume) | `src/app/store/**` |
+| Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
 | GR-55 screens / state | `src/devices/gr55/**` |
-| Studio / Stage / Wizard | `Studio.tsx`, `Stage.tsx`, `Wizard.tsx` |
+| GR-55 connect / live MIDI holder | `connectionThunks.ts`, `connectionRuntime.ts`, `ConnectScreen.tsx` |
+| Stage / Setup / Wizard / Maestro | `Stage.tsx`, `Setup.tsx`, `Wizard.tsx`, `Studio.tsx` |
+| Icons / voices | `Icons.tsx`, `voices.ts` |
+| App bar (only nav) | `AppNav.tsx` |
 | Sync + IndexedDB | `src/devices/gr55/sync/` |
 | System map / staging | `systemMap.ts`, `systemState.ts` |
-| Editor pages | `pages.ts`, `Canvas.tsx`, `Workspace.tsx` |
+| Field-key SoT (Maestro) | `pages.ts` |
 | Maestro | `src/maestro/**` (macros under `macros/`) |
 | Copy | `src/copy/` |
 | Frozen protocol / MIDI | `src/protocol/**`, `src/midi/**` |
@@ -75,6 +90,28 @@ npm run lint             # before a broad handoff
 ```
 
 Dev: Node 22 (`.nvmrc`), `npm run dev` → `http://localhost:5173`. Use **simulated pedal** when hardware is unavailable. Chrome/Edge for real Web MIDI + SysEx.
+
+## UI
+
+Visual SoT: [docs/current/ui-guidelines.md](./docs/current/ui-guidelines.md)
+(Linear-inspired dark: Inter, `#080A0A` base, accent `#5E6AD2`, 4px grid, 6/8px radius).
+Implement in `src/app/styles.css` + `index.html`. Do not reintroduce light theme or
+orange chrome accent. Scope chips 🟠🟢🔵 keep `--scope-*` tokens.
+
+## Documentation
+
+After **every** change that affects IA, routes, connect/resume, surfaces, **UI chrome**,
+or user-facing behavior:
+
+1. Audit [docs/current/](./docs/current/), this file, [README.md](./README.md), and
+   `.cursor/rules/` for drift.
+2. **Deduplicate** — one SoT per topic; other docs get a one-line pointer, not a
+   second story.
+3. **Consolidate** — prefer updating the existing SoT over adding a parallel file.
+4. Mark superseded claims in older specs (status banner), never leave two homes.
+5. UI changes must match [ui-guidelines.md](./docs/current/ui-guidelines.md).
+
+Index: [docs/current/README.md](./docs/current/README.md).
 
 ## Communication
 

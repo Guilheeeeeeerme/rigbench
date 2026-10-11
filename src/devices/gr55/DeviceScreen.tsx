@@ -17,7 +17,6 @@ import {
   useSystem,
 } from './SystemParts';
 import { SYSTEM_ADDRESS, SYSTEM_BLOCKS, SYSTEM_SPAN } from './systemMap';
-import { TopNav } from './TopNav';
 
 function systemFileName(): string {
   return `${new Date().toISOString().slice(0, 10)}_gr55-system.syx`;
@@ -76,7 +75,6 @@ export function DeviceScreen({
 
   return (
     <div className="device">
-      <TopNav current="device" />
       <h1>
         {t('device.title')}{' '}
         <span className="scope chip-blue">

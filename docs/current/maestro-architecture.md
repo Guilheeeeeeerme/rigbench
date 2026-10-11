@@ -1,16 +1,14 @@
 # Maestro — architecture reference
 
-> **Status: SHIPPED (v1)** under `src/maestro/**`. This file is the design record
-> for registry / policy / BYOK / prompts — not a “plan only” backlog.
-> **Supersedes for craft UX:** [studio-sessions.md](./studio-sessions.md)
-> (Studio home, session-scoped chat, macros; FAB demoted on Studio).
-> **Policy evolution:** D5 below is historical. Live SoT is `src/maestro/policy.ts`:
-> `changePlan` = 🟠 working-copy only; `stageSystemPlan` = ask (queues into
-> `Gr55System` staging); direct `writeSystem` / `writeSlot` always deny;
-> `stageLive` denies everything.
-> Read-with: [glossary.md](./glossary.md),
-> [../archive/research/00-pesquisa-configuracao-pre-palco.md](../archive/research/00-pesquisa-configuracao-pre-palco.md),
-> [../archive/plans/01-fundacoes.md](../archive/plans/01-fundacoes.md).
+> **Status: SHIPPED (v1)** under `src/maestro/**`. Design record for registry /
+> policy / BYOK / prompts — not a “plan only” backlog.
+> **App shell:** Stage · Maestro · Setup ([AGENTS.md](../../AGENTS.md)). Maestro
+> route is `#/gr55/maestro`. Craft sessions/macros:
+> [studio-sessions.md](./studio-sessions.md) (not app-home IA).
+> **Policy:** Live SoT is `src/maestro/policy.ts`: `changePlan` = 🟠 working-copy
+> only; `stageSystemPlan` = ask (queues into `Gr55System` staging); direct
+> `writeSystem` / `writeSlot` always deny; `stageLive` denies everything.
+> Read-with: [glossary.md](./glossary.md), [connection-resume.md](./connection-resume.md).
 
 ---
 

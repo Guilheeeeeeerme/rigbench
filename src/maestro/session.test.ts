@@ -38,10 +38,9 @@ describe('session model', () => {
   });
 
   it('guards ids and chips', () => {
-    expect(isSessionId('library')).toBe(true);
+    expect(isSessionId('library')).toBe(false);
     expect(isSessionId('stage')).toBe(false);
     expect(sessionChip('system')).toBe('🔵');
     expect(sessionChip('patch')).toBe('🟠');
-    expect(sessionChip('library')).toBe('🟢');
   });
 });

@@ -7,9 +7,12 @@ alwaysApply: true
 
 - Precedence: **code** → `AGENTS.md` + `docs/current/` → `README.md` → `docs/archive/` (never overrides).
 - Ignore `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
-- Craft home is **Studio** (`#/gr55/estudio`), not Stage. Stage is perform-only.
+- App home after setup is **Stage** (`#/gr55/palco`). Nav: Stage · Maestro · Setup. `#/gr55/estudio` redirects to Stage.
+- Connect/resume SoT: `docs/current/connection-resume.md` (silent resume when ports still valid).
+- **UI SoT:** `docs/current/ui-guidelines.md` — Linear dark, Inter, `#080A0A`, accent `#5E6AD2`, 4px grid. No light theme; no orange chrome accent.
 - Do not rewrite `src/protocol/**` or `src/midi/**` unless the task explicitly requires it.
 - No Gemini/Google API keys in the repo, `.env`, logs, or fixtures.
 - UI strings only via `t()` / `useT()`; update both `en.ts` and `pt-BR.ts`.
 - Smallest sufficient change; prefer focused tests over the full matrix unless asked.
 - Read `AGENTS.md` and the matching `docs/current/` file before large GR-55 or Maestro work.
+- **Docs audit (every IA/behavior/UI change):** update or retire drift in `docs/current/`, `AGENTS.md`, `README.md`, `.cursor/rules/`; dedupe — one SoT, pointers elsewhere; never leave a second conflicting “home” or visual story.

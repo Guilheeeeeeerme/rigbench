@@ -1,0 +1,753 @@
+     Editing the Tones (TONE)
+     As shown in the illustration below, a GR-55 patch consists of several tones.
+     You can create a new patch by selecting different tones or by editing the detailed settings of each tone.
+
+
+        PATCH
+          PCM TONE 1                                                     Synthesizer sound
+                                                                         This is a synthesizer sound that plays according to the
+          PCM TONE 2                                                     performance data from your guitar. Two tones can be layered.
+
+
+
+          MODELING TONE                                                  Modeling sound
+                                                                         This is a modeled sound based on the audio from each guitar string.
+
+
+
+
+ Changing the Tone                                                                      Tone Category
+     Here’s how to create a new sound by changing the tone that’s                                                      Number                             Number
+                                                                                       Tone category                                 Tone category
+     selected.                                                                                                         of tones                           of tones
+
+1.   Press the [EDIT] button to access the EDIT screen.                                Ac.Piano                            16        Ensemble Strings            22
+                                                                                       Pop Piano                            3        Orchestral                  4
+                                                                                       E.Grand Piano                        2        Solo Brass                  11
+                                                                                       E.Piano1                            25        Ensemble Brass              7
+                                                                                       E.Piano2                            13        Wind                        7
+                                                                                       E.Organ                             32        Flute                       12
+                                                                                       Pipe Organ                           5        Sax                         7
+2.   Use the PAGE [ ] [ ] buttons to access the TONE tab.
+                                                                                       Reed Organ                           1        Recorder                    4
+     The screen shows the structure of the currently selected patch.
+                                                                                       Harpsichord                          5        Vox/Choir                   28
+                                                                                       Clav                                 8        Scat                        2
+                                                                                       Celesta                              1        Synth Lead              123
+                                                                                       Accordion                            6        Synth Brass                 40
+                                                                                       Harmonica                            2        Synth Pad/Strings           84
+                                                                                       Bell                                21        Synth Bellpad               17
+3.   Select a different tone.                                                          Mallet                              22        Synth PolyKey               45
+                                                                                       Ac.Guitar                           18        Synth FX                    31
+       Use the cursor buttons to select the tone that you want
+                                                                                       E.Guitar                            18        Synth Seq/Pop               11
+       to change, and use the dial to select a different tone.
+                                                                                       Dist.Guitar                         11        Pulsating                   32
+                                                                                       Ac.Bass                              4        Beat&Groove                 11
+                                                                                       E.Bass                              14        Hit                         7
+                                                                                       Synth Bass                          87        Sound FX                    37
+                                                                                       Plucked/Stroke                      18        Percussion                  13
+                                                                                       Solo Strings                         9        Drums                       14
+
+       Move the cursor to the tone switch, and turn the
+       tone on /off .                                                                         MEMO
+                                                                                                  If you select the “Drums” tone category, there will be fewer
+                                                                                                  editable parameters than those listed in this manual.
+     The available tones are listed as shown in the illustration. You can use
+     the cursor [ ] [ ] buttons to select the tone category (p. 23).
+
+
+
+
+4.   Press the [ENTER] button.
+5.   When you’ve finished making settings, press the [EXIT]
+     button.
+6.   If you want to keep your settings, save the patch (p. 60).
+
+
+
+
+                                                                                                                                                                      23
+Editing the Tones (TONE)
+
+
+ Editing the Tone                                                                             Editing a Tone (Detailed Settings)
+     Here’s how to make various settings for the tone.                                            Here’s how to edit the tone settings in detail.
+     If you want to edit detailed settings, refer to “Editing a Tone (Detailed
+     Settings)” (p. 24).                                                                     Basic operation
+Basic operation                                                                              1.   In step 3 of “Changing the Tone” (p. 23), select the tone that
+                                                                                                  you want to edit.
+1.   In step 3 of “Changing the Tone” (p. 23), move the cursor to                            2.   Press the [ENTER] button.
+     the TONE LEVEL field.
+                                                                                                  The TONE EDIT screen will appear.
+     You can use the dial to edit the volume of the tone.
+                                                                                             3.   Edit the parameter settings.
+
+                                                                                                               Use the PAGE [      ][        ] buttons to switch between tabs.
+
+
+
+
+2.   Press the cursor [ ] button.
+     The screen shows the parameters that can be edited for each tone.
+3.   Edit the parameter settings.
+                                                                                                    Use the cursor [ ] [ ] buttons to select the parameter that you want
+       Use the cursor buttons to select the tone parameter that you want to
+                                                                                                    to edit, and use the dial to edit the value of the parameter.
+       edit, and use the dial to edit the value.
+                                                                                                    By holding down the cursor [        ][     ] buttons simultaneously you can
+                                                                                                    make the cursor move faster.
+
+
+                                                                                                  For details on each parameter, refer to “Parameter List (PCM TONE 1/
+                                                                                                  PCM TONE 2)” (p. 25).
+                                                                                             4.   When you’ve finished editing, press the [EXIT] button.
+                                                                                             5.   If you want to keep the changes you made, save the patch
+     MEMO                                                                                         (p. 60).
+     This screen shows the parameters that are marked by a “#” symbol in the
+     parameter list (p. 25 –). The parameters that you can edit will differ for each tone.
+
+4.   When you’ve finished editing, press the [EXIT] button.
+5.   If you want to keep your settings, save the patch (p. 60).
+     MEMO
+     If you want to adjust the overall volume of the patch, use the cursor
+     buttons to select the PATCH LEVEL field, and use the dial to edit the
+     value.
+     Value: 0–200
+
+
+
+
+24
+                                                                                                                  Editing the Tones (TONE)
+
+
+Parameter List (PCM TONE 1/PCM TONE 2)
+  Group   Parameter             Value                      Description
+                                                           Turns the tone on/off.
+          SWITCH                OFF, ON
+                                                           Tones that are turned “OFF” will not sound (they are muted).
+          TONE CATEGORY         Selects the category (group) of tones.
+          TONE NUMBER           Selects the tone number.
+          LEVEL                 0–100                      Adjusts the volume of the tone.
+          OCTAVE #              -3–+3                      Shifts the tone’s pitch in steps of an octave.
+                                                           Turn this “ON” if you want the tone to sound in chromatic steps.
+          CHROMATIC             OFF, ON
+                                                           If this is “ON,” the pitch will change only in semitone steps even if you “bend” a string.
+                                OFF                        Turns the Legato function off.
+                                                           When you play notes in a smoothly connected manner by hammering-on or pulling-
+          LEGATO                                           off, only the pitch will change, and no attack will be heard for the subsequently played
+                                ON                         note.
+                                                           The legato function can be used if CHROMATIC is ON.
+                                                           Adjusts the amount by which the tone’s volume will be affected by your playing
+  TONE                                                     strength.
+          LEVEL VELOCITY SENS   -50–+50
+                                                           With positive “+” values, the volume will increase as you play more strongly.
+                                                           Specifies the curve by which your playing strength will affect the tone’s volume.
+                                                           Normally, you should choose “TONE.” The optimal curve for each tone will be used.
+                                                           If you don’t want the tone’s volume to change, choose “FIX.”
+
+          VELOCITY CURVE TYPE   FIX, 1–7, TONE
+
+
+
+                                                                1           2            3           4            5            6           7
+          NUANCE SW             OFF, ON                    Specifies whether nuances of your performance (p. 28) will produce tonal change.
+          PAN                   L50–R50                    Specifies the pan setting.
+                                                           Adjusts the volume of each string.
+                                                           For the PCM1, PCM2, and MODELING tones, you can specify a value of “0” for each
+          STRING LEVEL1–6       1–100
+                                                           string that you don’t want to be sounded for that tone; this allows you to create “split”
+                                                           setups.
+          PITCH SHIFT           -24–+24                    Specifies the tone’s pitch (semitone steps, +/-2 octaves).
+          PITCH FINE            -50–+50                    Specifies the tone’s pitch (in one cent steps; equivalent to 1/100 semitone).
+                                OFF                        Portamento will not be applied.
+          PORTAMENTO SW         ON                         Portamento will be applied.
+
+  PITCH                         TONE                       The setting most appropriate for the tone will be used.
+                                                           The time required for the pitch change is proportionate to the amount of pitch
+                                RATE
+                                                           change.
+          PORTAMENTO TYPE
+                                                           The pitch change will occupy the same length of time regardless of the amount of
+                                TIME
+                                                           pitch change.
+          PORTAMENTO TIME       0–100                      Specifies the time required for the pitch change when using portamento.
+
+
+
+
+                                                                                                                                                    25
+Editing the Tones (TONE)
+
+     Group      Parameter               Value       Description
+                                        OFF         The filter will not be used.
+                                                    Low Pass Filter.
+                                        LPF
+                                                    The region above the cutoff frequency will be cut, making the sound more mellow.
+                                                    Band Pass Filter.
+                                        BPF         The region around the cutoff frequency will remain, and the regions above and below
+                                                    will be cut. This is a useful way to create a distinctive sound.
+                                                    High Pass Filter.
+                                        HPF         The region below the cutoff frequency will be cut. This is appropriate for percussive
+                                                    sounds with a distinctive high-frequency component.
+                                                    Peaking Filter.
+                                        PKG         The region around the cutoff frequency will be emphasized. You can produce a wah
+                FILTER TYPE                         effect by using an LFO to cyclically change the cutoff frequency.
+                                                    Low Pass Filter 2.
+                                                    The region above the cutoff frequency will be cut, but the filter sensitivity will be half
+                                        LPF2        that of LPF. This is suitable for simulating instruments such as acoustic piano.
+                                                    * If “LPF2” is selected, the RESONANCE setting will be unavailable.
+                                                    Low Pass Filter 3.
+                                                    The region above the cutoff frequency will be cut, but the filter sensitivity will change
+                                                    according to the cutoff frequency. This is suitable for simulating acoustic instruments,
+                                        LPF3        but even with the same TVF ENVELOPE settings, it will produce a sound with a
+     FILTER                                         different nuance than LPF2.
+                                                    * If “LPF3” is selected, the RESONANCE setting will be unavailable.
+                                        TONE        The setting most appropriate for the tone will be used.
+                CUTOFF #                -50–+50     Specifies the frequency at which the filter will begin to be applied.
+                                                    Boosts the region near the cutoff frequency, giving the sound a distinctive character.
+                RESONANCE               -50–+50
+                                                    Raising this value excessively may cause oscillation and distortion.
+                                                    Specifies the amount by which your playing strength will vary the cutoff frequency.
+                CUTOFF VELOCITY SENS    -50–+50
+                                                    With positive “+” values, stronger playing will raise the cutoff frequency.
+                CUTOFF NUANCE SENS      -50–+50     Specifies how nuances of your performance (p. 28) will affect the filter cutoff frequency.
+                                                    Specifies the curve by which your playing strength will affect the cutoff frequency.
+                                                    Normally, you should choose “TONE.” The optimal curve for each tone will be used.
+                                                    If you don’t want the cutoff frequency to be affected, choose “FIX.”
+                                        FIX,
+                CUTOFF VELOCITY CURVE   1–7,
+                                        TONE
+
+                                                        1            2             3          4            5           6             7
+                                                    Specifies how the pitch of the note you play will affect the cutoff frequency.
+                CUTOFF KEYFOLLOW        -200–+200
+                                                    With positive “+” values, the cutoff frequency will rise as you player higher notes.
+                                                    Adjusts the depth of the TVF envelope.
+                TVF ENV DEPTH           -50–+50
+                                                    Higher values will increase the change produced by the TVF envelope.
+                TVF ATTACK TIME         -50–+50     Adjusts the attack time of the filter envelope.
+                TVF DECAY TIME          -50–+50     Adjusts the decay time of the filter envelope.
+     TVF        TVF SUSTAIN LEVEL       -50–+50     Adjusts the sustain level of the filter envelope.
+                TVF RELEASE TIME        -50–+50     Adjusts the release time of the filter envelope.
+                                                    Specifies how your playing strength will affect the filter attack time.
+                TVF ATTACK VEL SENS     -50–+50
+                                                    With positive “+” values, stronger playing will shorten the attack time.
+                TVF ATK NUANCE SENS     -50–+50     Specifies how nuances of your performance (p. 28) will affect the filter attack time.
+
+
+
+
+26
+                                                                                                        Editing the Tones (TONE)
+
+Group       Parameter             Value          Description
+            TVA ATTACK TIME #     -50–+50        Adjusts the attack time of the amp envelope.
+            TVA DECAY TIME        -50–+50        Adjusts the decay time of the amp envelope.
+            TVA SUSTAIN LEVEL     -50–+50        Adjusts the sustain level of the amp envelope.
+            TVA RELEASE TIME #    -50–+50        Adjusts the release time of the amp envelope.
+                                                 Specifies how your playing strength will affect the attack time.
+            TVA ATTACK VEL SENS   -50–+50
+TVA                                              With positive “+” values, stronger playing will shorten the attack time.
+            TVA ATK NUANCE SENS   -50–+50        Specifies how nuances of your performance (p. 28) will affect the attack time of the level.
+            LEVEL NUANCE SENS     -50–+50        Specifies how nuances of your performance (p. 28) will affect the volume.
+                                                 The next note will be sounded while maintaining the release of a previously played
+                                  1
+                                                 note sounding on the same string.
+            RELEASE MODE
+                                                 Any previously played note sounding on the same string will be forcibly decayed
+                                  2
+                                                 before the next note is sounded.
+                                                 Specifies how your playing strength will affect the depth of the pitch envelope.
+            PITCH ENV VEL SENS    -50–+50        With positive “+” values, stronger playing will increase the change produced by the
+                                                 pitch envelope.
+
+PITCH ENV                                        Adjusts the depth of the pitch envelope.
+            PITCH ENV DEPTH       -12–+12
+                                                 Higher settings will increase the change produced by the pitch envelope.
+            PITCH ATTACK TIME     -50–+50        Adjusts the attack time of the pitch envelope.
+            PITCH DECAY TIME      -50–+50        Adjusts the decay time of the pitch envelope.
+                                  0–100          Specifies the LFO rate (speed).
+            LFO1 RATE             BPM     –      Makes the LFO rate synchronize to the tempo in units of the note value you specify.
+                                  TONE           The LFO rate will be set appropriately for the tone.
+                                                 Specifies how the LFO will affect the pitch.
+            LFO1 PITCH DEPTH      OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect the pitch.
+LFO1                                             Specifies how the LFO will affect the cutoff frequency.
+            LFO1 TVF DEPTH        OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect the TVF.
+                                                 Specifies how the LFO will affect the volume.
+            LFO1 TVA DEPTH        OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect the TVA.
+                                                 Specifies how the LFO will affect pan (stereo position).
+            LFO1 PAN DEPTH        OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect pan.
+                                  0–100          Specifies the LFO rate (speed).
+            LFO2 RATE             BPM     –      Makes the LFO rate synchronize to the tempo in units of the note value you specify.
+                                  TONE           The LFO rate will be set appropriately for the tone.
+                                                 Specifies how the LFO will affect the pitch.
+            LFO2 PITCH DEPTH      OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect the pitch.
+LFO2                                             Specifies how the LFO will affect the cutoff frequency.
+            LFO2 TVF DEPTH        OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect the TVF.
+                                                 Specifies how the LFO will affect the volume.
+            LFO2 TVA DEPTH        OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect the TVA.
+                                                 Specifies how the LFO will affect pan (stereo position).
+            LFO2 PAN DEPTH        OFF, -50–+50
+                                                 Choose “OFF” if you don’t want the LFO to affect pan.
+
+
+
+
+                                                                                                                                         27
+Editing the Tones (TONE)
+
+
+       Using the Nuance parameters
+          The Nuance parameters detect when you play your guitar/bass with a soft touch, and apply a corresponding change to the sound of the
+          PCM tone.
+          For example, if CUTOFF NUANCE SENS is set to a positive “+” value, the cutoff frequency of the PCM tone will be lowered when you play a
+          muted or a finger-picked note, producing a softer tone quality.
+          As another example, you might use PCM TONE 1 to create the sound that will be heard when you pluck the string with a pick, and PCM
+          TONE 2 to create the sound that will be heard when you pluck the string with your finger. Then set the Nuance parameters as follows,
+          allowing you to switch between PCM TONE 1 and 2 by alternating your performance technique.
+         • PCM TONE 1 settings
+          TONE CATEGORY/NUMBER: the tone sounded for a note played with a pick
+          LEVEL NUANCE SENS: +50
+         • PCM TONE 2 settings
+          TONE CATEGORY/NUMBER: the tone sounded for a note played with your finger
+          LEVEL NUANCE SENS: -50
+
+
+          To enable the Nuance parameters, turn NUANCE SW “ON” and adjust each NUANCE SENS parameter as desired.
+          If you want to adjust the nuance so it’s appropriate for the guitar or bass you’re using, set the SYSTEM - GK SETTING parameters NUANCE
+          DYNAMICS and NUANCE TRIM (p. 75).
+
+
+
+
+28
+                                                                                                                                 Editing the Tones (TONE)
+
+
+Parameter List (MODELING TONE)
+  Group   Parameter                            Value                       Description
+          SWITCH                               OFF, ON                     Turns the tone on/off. Tones turned “OFF” will not sound (i.e., they are muted).
+                                               If GUITAR<->BASS is set to “GUITAR” (p. 9)
+                                               E.GTR,
+                                               AC,
+                                                                           Selects the category (group) of tones.
+                                               E.BASS,
+          TONE CATEGORY                        SYNTH
+                                               If GUITAR<->BASS is set to “BASS” (p. 9)
+                                               E.BASS,
+  TONE                                         SYNTH,                      Selects the category (group) of tones.
+                                               E.GTR
+                                                                           Selects the tone. For an explanation, refer to the following table (TONE CATEGORY:
+          TONE NUMBER                          001–
+                                                                           E.GTR–SYNTH).
+          LEVEL                                0–100                       Adjusts the volume of the tone.
+                                                                           Adjusts the volume of each string.
+                                                                           For the PCM1, PCM2, and MODELING tones, you can specify a value of “0” for each
+          STRING LEVEL1–6                      0–100
+                                                                           string that you don’t want to be sounded for that tone; this allows you to create “split”
+                                                                           setups.
+          PITCH SHIFT                          -24–+24                     Adjusts the pitch of the tone (in semitone steps, +/-2 octaves).
+  PITCH
+          PITCH FINE                           -50–+50                     Adjusts the pitch of the tone (in one cent steps; equivalent to 1/100 semitone).
+                                                                           Turn this on if you want to produce the sound of a 12-string guitar. The sound of a
+          12STR SW                             OFF/ON                      conventional 6-string guitar will be transformed to the sound of a 12-string guitar
+                                                                           with its supplementary strings.
+          DIRECT LEVEL                         0–100                       Specifies the volume of the main strings.
+                                                                           Adjusts the pitch difference of each     * On a conventional 12-string guitar,
+                                                                           supplementary string relative to           supplementary strings 1 and 2 are tuned
+          SHIFT1–6                             -24–+24
+                                                                           the corresponding main string, in          to the same pitch (SHIFT = 0) as the corre-
+                                                                           semitone steps.                            sponding main string, and supplementary
+                                                                                                                      strings 3–6 are tuned one octave higher
+                                                                           Adjusts the pitch of each                  (SHIFT = +12) than the corresponding
+  12STR   FINE1–6                              -50–+50                     supplementary string in cents              main string. Slightly raising each string’s
+                                                                           (1/100 semitone steps).                    FINE setting will produce a more realistic
+                                                                                                                      12-string guitar tone.
+          * 12STR cannot be used with any of the following settings (the parameters will not be shown).
+
+             • MODELING TONE parameters
+               TONE CATEGORY=E.BASS (if set to GUITAR input) or E.GTR (if set to BASS input)
+               PITCH SHIFT≠0
+               PITCH FINE≠0
+             • MASTER parameters
+               ALTERNATE TUNING “SWITCH” =ON
+
+
+
+
+                                                                                                                                                                  29
+Editing the Tones (TONE)
+
+  * Company names and product names appearing in this document are the registered trademarks or trademarks of their respective owners. This
+    document uses these names in order to appropriately describe the sounds simulated by COSM technology.
+
+
+TONE CATEGORY: E.GTR
+     TONE NUMBER (PICKUP)
+                                   Description
+     GUITAR        BASS
+     01: CLA-ST    16: ST          This models a Fender Stratocaster, a guitar with three traditional single-coil pickups.
+
+     02: MOD-ST             —      This models a guitar with three EMG active single-coil pickups.
+     03: H&H-ST             —      This models a Stratocaster-type guitar with humbucking pickups.
+     04: TE                 —      This models a Fender Telecaster, a guitar with two single-coil pickups often used in blues and country music.
+     05: LP        17: LP          This models a Gibson Les Paul Standard, a guitar with two humbucking pickups often used in rock.
+                                   This models a Gibson Les Paul Junior, a guitar with two single-coil pickups affectionately referred to as “dog ear” or “soap bar”
+     06: P-90               —
+                                   pickups.
+     07: LIPS               —      This models a Danelectro 56-U3, a guitar with three pickups with a distinctive silver “lipstick-style” appearance.
+     08: RICK               —      This models a Rickenbacker 360, a semi-hollow body guitar with two unique single-coil pickups.
+     09: 335                —      This models a Gibson ES-335 Dot, a well-known semi-acoustic guitar with two humbucking pickups.
+                                   This models a Gibson L-4 CES, a acoustic-body guitar suitable for jazz, equipped with two humbucking pickups and strung with
+     10: L4                 —
+                                   flat-wound strings.
+
+
+
+TONE CATEGORY: E.BASS
+     TONE NUMBER (PICKUP)
+                                   Description
+     GUITAR        BASS
+              —    01: VINT JB     This models a Fender Jazz Bass made in the 1960s.
+
+     16: JB        02: JB          This models a Fender Jazz Bass.
+              —    03: VINT PB     This models a Fender Precision Bass made in the early 1960s.
+     17: PB        04: PB          This models a Fender Precision Bass.
+              —    05: M-MAN       This models a Music Man StingRay Bass made in the 1970s.
+              —    06: RICK        This models a Rickenbacker 4001.
+              —    07: T-BIRD      This models a Gibson Thunderbird.
+              —    08: ACTIVE      This models a typical bass equipped with active pickups.
+              —    09: VIOLIN      This models a Höfner violin bass.
+
+
+
+TONE CATEGORY: AC
+     TONE NUMBER (PICKUP)
+                                   Description
+     GUITAR        BASS
+     11: STEEL              —      This models a steel-string guitar.
+
+     12: NYLON              —      This models a nylon-string guitar.
+     13: SITAR              —      This models a Coral electric sitar. The sitar’s distinctive buzz and tonal change are modeled.
+     14: BANJO              —      This models a conventional five-string banjo.
+     15: RESO               —      This models a Dobro-type resonator guitar.
+
+
+
+
+30
+                                                                                                                                                       Editing the Tones (TONE)
+
+TONE CATEGORY: SYNTH
+       TONE NUMBER (PICKUP)
+                                                            Description
+       GUITAR                     BASS
+                                                            This is the sound of a classic analog polyphonic guitar (bass) synthesizer.
+                                                            It provides hexa-distortion, with a hexa-VCO and VCF (variable frequency filter) that generates independent
+       18: ANALOG GR              10: ANALOG GR             pitch-shiftable sawtooth waves for the six strings, letting you enjoy analog synthesizer sounds that reflect the nuances
+                                                            of your guitar or bass performance.
+                                                            To change the pitch, use “PITCH A/B” (p. 36).
+                                                            This algorithm directly processes the string signal from the GK pickup to produce the synthesizer sound. It allows a
+       19: WAVE SYNTH             11: WAVE SYNTH
+                                                            natural performing feel.
+       20: FILTER BASS            12: FILTER BASS           This instrument is similar to a bass synth with a filter applied.
+       21: CRYSTAL                13: CRYSTAL               This is an instrument with a metallic resonance.
+                                                            This is a sustained-tone instrument suitable for solo parts or slow songs. As on an organ, you can adjust the volume
+       22: ORGAN                  14: ORGAN
+                                                            level balance of three parameters (FEET 16, 8, 4) to create the desired tone.
+       23: BRASS                  15: BRASS                 This instrument produces a clear brass type sound good for leads.
+
+
+
+E.GTR
+CLA-ST, MOD-ST, ST
+       Group             Parameter                               Value                        Description
+                                                                 REAR                         Simulates the sound produced when the rear pickup is used.
+                                                                 R+C                          Simulates the sound produced when both rear and center pickups are used.
+                         PU SEL #                                CENTER                       Simulates the sound produced when the center pickup is used.
+       PU                                                        C+F                          Simulates the sound produced when both center and front pickups are used.
+                                                                 FRONT                        Simulates the sound produced when the front pickup is used.
+                         VOLUME                                  0–100                        Sets the volume. With a setting of 0, there will be no sound.
+                         TONE #                                  0–100                        Adjusts the tone. The standard value is 100; lowering the value creates a softer tone.
+                         SWITCH                                  OFF, ON                      Turns the noise suppressor on/off.
+                                                                                              Adjust this according to the level of the noise. Set this to a higher value if the noise
+                         THRESHOLD #                             0–100                        level is high, or to a lower value if the noise level is low. Adjust this so that the decay of
+       NS
+                                                                                              your guitar still sounds natural.
+                                                                                              Specifies the time from when the noise suppressor begins to operate until the volume
+                         RELEASE                                 0–100
+                                                                                              is completely attenuated.
+
+
+
+H&H-ST, TE, LP, P-90, RICK, 335, L4
+       Group             Parameter                               Value                        Description
+                                                                 REAR                         Simulates the sound produced when the rear pickup is used.
+                         PU SEL #                                R+F                          Simulates the sound produced when both rear and front pickups are used.
+       PU                                                        FRONT                        Simulates the sound produced when the front pickup is used.
+                         VOLUME                                  0–100                        Sets the volume. With a setting of 0, there will be no sound.
+                         TONE #                                  0–100                        Adjusts the tone. The standard value is 100; lowering the value creates a softer tone.
+       NS                Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+LIPS
+       Group             Parameter                               Value                       Description
+                                                                 REAR                        Simulates the sound produced when the rear pickup is used.
+                                                                 R+C                         Simulates the sound produced when both center and rear pickups are used.
+                                                                 CENTER                      Simulates the sound produced when the center pickup is used.
+                         PU SEL #
+                                                                 C+F                         Simulates the sound produced when both center and front pickups are used.
+       PU
+                                                                 FRONT                       Simulates the sound produced when the front pickup is used.
+                                                                 ALL                         Simulates the sound produced when all pickups are used.
+                         VOLUME                                  0–100                       Sets the volume. With a setting of 0, there will be no sound.
+                         TONE #                                  0–100                       Adjusts the tone. The standard value is 100; lowering the value creates a softer tone.
+       NS                Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+
+                                                                                                                                                                                         31
+Editing the Tones (TONE)
+
+AC
+STEEL
+     Group      Parameter                               Value                       Description
+                                                        Specifies the acoustic guitar type.
+                                                        MA28                        The sound of a Martin D-28. Older model known for its exquisitely balanced sound.
+                                                                                    The sound of a Martin 000-28. This model features a full low-end resonance and crisp,
+                                                        TRP-0
+                                                                                    distinct contour.
+
+                BODY TYPE #                                                         The sound of a Gibson J-45. This vintage model features a unique, seasoned tone with
+                                                        GB45
+                                                                                    good response.
+
+     BODY                                                                           The sound of a Gibson B-25. Featuring a compact body, this vintage model is often
+                                                        GB SML
+                                                                                    used in blues.
+                                                                                    The sound of a Guild D-40. This model features warm resonance from the body along
+                                                        GLD40
+                                                                                    with a delicate string resonance.
+                                                                                    Adjusts the body resonation. Raising the value produces more of a sense of the guitar
+                BODY                                    0–100
+                                                                                    body in the sound. Lower the value in conditions where feedback is prone to occur.
+                                                                                    Adjusts the tone of the body. The standard value is 0; raising the value boosts the high
+                TONE #                                  -50–+50
+                                                                                    range.
+     NS         Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+NYLON
+     Group      Parameter                               Value                       Description
+                                                                                    Adjusts the body resonation. Raising the value produces more of a sense of the guitar
+                BODY #                                  0–100
+                                                                                    body in the sound. Lower the value in conditions where feedback is prone to occur.
+                                                                                    Specifies the strength of the attack when you pluck the string strongly. As this setting
+     BODY       ATTACK                                  0–100
+                                                                                    is increased, the attack will be sharper, and the sound will be crisper.
+                                                                                    Adjusts the tone of the body. The standard value is 0; raising the value boosts the high
+                TONE #                                  -50–+50
+                                                                                    range.
+
+
+
+SITAR
+     Group      Parameter                               Value                      Description
+                                                        FRONT                      Simulates the sound produced when the front pickup is used.
+                                                        R+F                        Simulates the sound produced when both rear and front pickups are used.
+                PU SEL #
+                                                        REAR                       Simulates the sound produced when the rear pickup is used.
+                                                        PIEZO                      Simulates the sound produced when the piezo pickup is used.
+                SENS                                    0–100                      Adjusts the input sensitivity.
+                                                                                   Adjusts the body resonation. Raising the value produces more of a sense of the guitar
+                BODY                                    0–100
+                                                                                   body in the sound. Lower the value in conditions where feedback is prone to occur.
+     BODY
+                COLOR                                   0–100                      Adjusts the overall tone quality of the sitar.
+                DECAY                                   0–100                      Adjusts the time it takes following the attack for the tone to change.
+                                                                                   Adjusts the amount of characteristic buzz produced by the buzz bridge when the
+                BUZZ                                    0–100
+                                                                                   strings make contact with it.
+                ATTACK LEVEL                            0–100                      Adjusts the volume level of the attack.
+                                                                                   Adjusts the tone of the body. The standard value is 0; raising the value boosts the high
+                TONE #                                  -50–+50
+                                                                                   range.
+
+
+
+
+32
+                                                                                                                                            Editing the Tones (TONE)
+
+BANJO
+       Group     Parameter                               Value                       Description
+                                                                                     Specifies the strength of the attack when you pluck the string strongly. As this setting
+                 ATTACK #                                0–100
+                                                                                     is increased, the attack will be sharper, and the sound will be crisper.
+       BODY      RESO                                    0–100                       Adjusts the body resonation. The resonation increases as the value is raised.
+                                                                                     Adjusts the tone of the body. The standard value is 0; raising the value boosts the high
+                 TONE #                                  -50–+50
+                                                                                     range.
+       NS        Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+RESO
+       Group     Parameter                               Value                       Description
+                                                                                     You can specify how the resulting volume will be affected by changes (loud/soft
+                                                                                     dynamics) in the guitar string vibrations that are input.
+                 SUSTAIN                                 0–100
+                                                                                     Adjusts the range (time) over which low-level signals are boosted. Larger values will
+       BODY                                                                          result in longer sustain.
+                 RESO #                                  0–100                       Adjusts the body resonation. The resonation increases as the value is raised.
+                                                                                     Adjusts the tone of the body. The standard value is 0; raising the value boosts the high
+                 TONE #                                  -50–+50
+                                                                                     range.
+       NS        Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+E.BASS
+JB, VINT JB, T-BIRD
+       Group     Parameter                               Value                      Description
+                 REAR VOL                                0–100                      Sets the volume of the rear pickup.
+                 FRONT VOL                               0–100                      Sets the volume of the front pickup.
+       PU
+                 VOLUME                                  0–100                      Sets the overall bass volume level. With a setting of 0, there will be no sound.
+
+                 TONE #                                  0–100                      Adjusts the tone.
+
+       NS        Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+PB, VINT PB
+       Group     Parameter                               Value                       Description
+                 VOLUME                                  0–100                       Sets the volume. With a setting of 0, there will be no sound.
+       PU
+                 TONE #                                  0–100                       Adjusts the tone.
+       NS        Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+M-MAN
+       Group     Parameter                               Value                       Description
+                 TREBLE #                                -50–+50                     Adjusts the tone for the high frequency range.
+       PU        BASS #                                  0–100                       Adjusts the tone for the low frequency range.
+                 VOLUME                                  0–100                       Sets the volume. With a setting of 0, there will be no sound.
+       NS        Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+
+                                                                                                                                                                             33
+Editing the Tones (TONE)
+
+RICK
+       Group    Parameter                               Value                       Description
+                REAR VOL                                0–100                       Sets the volume of the rear pickup.
+                FRONT VOL                               0–100                       Sets the volume of the front pickup.
+                REAR TONE                               0–100                       Adjusts the tone of the rear pickup.
+                FRONT TONE                              0–100                       Adjusts the tone of the front pickup.
+       PU
+                VOLUME                                  0–100                       Sets the overall bass volume level. With a setting of 0, there will be no sound.
+                                                        REAR                        Simulates the sound produced when the rear pickup is used.
+                PU SEL #                                R+F                         Simulates the sound produced when both rear and front pickups are used.
+                                                        FRONT                       Simulates the sound produced when the front pickup is used.
+       NS       Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+ACTIVE
+       Group    Parameter                               Value                       Description
+                REAR VOL                                0–100                       Sets the volume of the rear pickup.
+                FRONT VOL                               0–100                       Sets the volume of the front pickup.
+       PU       TREBLE #                                0–100                       Adjusts the tone for the high frequency range.
+                BASS #                                  0–100                       Adjusts the tone for the low frequency range.
+                VOLUME                                  0–100                       Sets the overall bass volume level. With a setting of 0, there will be no sound.
+       NS       Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+VIOLIN
+       Group    Parameter                               Value                       Description
+                REAR VOL                                0–100                       Sets the volume of the rear pickup.
+                FRONT VOL                               0–100                       Sets the volume of the front pickup.
+                VOLUME                                  0–100                       Sets the overall bass volume level. With a setting of 0, there will be no sound.
+       PU       TREBLE ON #                             OFF, ON                     Switches the rear pickup on/off.
+                BASS ON #                               OFF, ON                     Switches the front pickup on/off.
+                                                        RHYTHM                      Selects a lower volume suitable for backing.
+                RHYTHM/SOLO #
+                                                        SOLO                        Selects a higher volume suitable for soloing.
+       NS       Refer to the NS section of the table for the “CLA-ST, MOD-ST, ST” model in the “E.GTR” section (p. 31).
+
+
+
+
+34
+                                                                                                                                     Editing the Tones (TONE)
+
+SYNTH
+ANALOG-GR
+    Group   Parameter                              Value                      Description
+
+                                                   Specifies whether to sound the hexa-VCO (sawtooth wave), the hexa-distortion (square wave), or both.
+
+                                                   VCO                        Only the hexa-VCO will sound.
+            MODE #
+                                                   V+D                        The hexa-VCO and hexa-distortion will sound together.
+
+                                                   DIST                       Hexa-distortion will sound.
+
+                                                                              If this is “ON,” the decay time of the hexa-VCO will be extended. If ENV MOD SW is “ON,”
+    TONE
+            COMP                                   OFF, ON                    the decay time of the VCF (variable frequency filter) will also be extended.
+                                                                               * The decay time of the hexa-distortion will not be extended.
+                                                                              Adjusts the VCF cutoff frequency, specifying the brightness of the sound. Higher
+            FILTER CUTOFF #                        0–100
+                                                                              settings will make the sound brighter.
+                                                                              Adjusts the VCF resonance (unique characteristics). Higher settings will boost the
+            FILTER RESO #                          0–100                      sound in the region of the cutoff frequency, producing a sound with more distinctive
+                                                                              characteristics.
+            This automatically varies the VCF cutoff frequency according to the amplitude of the string vibrations. This causes a wah-like tonal change each time you
+            pluck the string.
+                                                   OFF                        The envelope modulator will not be used.
+                                                                              Each time you pluck the string, the VCF cutoff frequency will move from high toward
+                                                                              low, producing a “wah” effect.
+                                                   ON
+                                                                               MEMO
+            ENV MOD SW                                                        Extremely high cutoff frequency settings will make this effect difficult to discern.
+                                                                              Each time you pluck the string, the VCF cutoff frequency will move from low toward
+                                                                              high, producing an “oo-ahh” that is the opposite of the “wah” effect.
+                                                   INV
+    ENV
+                                                                               MEMO
+                                                                              Fairly high cutoff frequency settings will make this effect easier to discern.
+                                                                              Adjusts the input sensitivity of the envelope modulation. Higher settings of this value
+                                                                              will increase the range of envelope modulation that occurs when you pluck a string
+                                                                              softly.
+            ENV MOD SENS                           0–100                       MEMO
+                                                                              Listen to how the sound is affected while you adjust this parameter. Start with the
+                                                                              setting at about “0,” and play while you gradually raise the value.
+                                                                              Setting ENV MOD ATTACK to “0” will make it easier to hear the change.
+                                                                              Adjusts the attack time of the envelope modulation that occurs when you play a
+            ENV MOD ATTACK                         0–100                      string.
+                                                                              Higher values produce a slower attack.
+
+
+
+
+                                                                                                                                                                     35
+

@@ -1,0 +1,147 @@
+Editing the Tones (TONE)
+
+     Group      Parameter                              Value                       Description
+                                                       Switches the pitch shift setting of the hexa-VCO that responds to the pitch of the string vibrations.
+                                                       * Pitch shift applies only to the hexa-VCO; it does not apply to hexa-distortion.
+                                                         If you want to use the pitch shift function, set MODE to “VCO” or “V+D.”
+                PITCH SW
+                                                       OFF                         The pitch of the original sound will be unmodified.
+                                                       A                           The pitch shift specified by PITCH A and PITCH A FINE will be applied.
+                                                       B                           The pitch shift specified by PITCH B and PITCH B FINE will be applied.
+                                                       Adjusts the amount of pitch shift.
+                                                       * This is effective when PITCH SW is set to anything other than “OFF.”
+                                                       * The final amount of pitch shift is the sum of PITCH and PITCH FINE.
+                PITCH A/B
+                                                                                   Specifies the amount of pitch shift for PITCH A/B relative to the original pitch, in
+                                                       -12–+12                     semitones. A setting of “-12” is one octave down, and a setting of “+12” is one octave
+                                                                                   up.
+                                                       Adjusts the amount of pitch shift.
+                                                       * This is effective when PITCH SW is other than “OFF.”
+                                                       * The final amount of pitch shift is the sum of PITCH and PITCH FINE.
+                PITCH A/B FINE
+                                                                                   Applies a fine adjustment to the PITCH A/B pitch. A setting of “-50” is half a semitone
+                                                       -50–+50                     lower, and “+50” is half a semitone higher. This fine setting allows DUET to be used
+                                                                                   effectively.
+                                                                                   If this is “ON,” a sawtooth wave at the same pitch as the original sound will be added to
+     PITCH                                                                         the hexa-VCO, making the sound richer.
+
+                                                                                    MEMO
+                DUET                                   OFF, ON                     By setting the hexa-VCO’s pitch shift to a PITCH setting such as +/-12 (an octave
+                                                                                   up/down), +/- 7 (a perfect fifth), or +/-5 (a perfect fourth), you can create thick,
+                                                                                   synthesizer-like sounds.
+                                                                                   By setting PITCH FINE to about “+/-5” to slightly skew the pitch shift of the hexa-VCO,
+                                                                                   you can give the sound greater depth.
+                This is a Sweep function that smoothly changes the amount of shift when you use PITCH SW to vary the amount of pitch shift.
+                                                                                   Turns the Sweep function on/off.
+
+                                                                                    MEMO
+                                                                                   Normally, you’ll use Control Assign to control PITCH SW, and use the control to operate
+                                                                                   PITCH SW.
+                SWEEP SW                               OFF, ON
+                                                                                   The Sweep function is effective when you operate PITCH SW to change the pitch shift
+                                                                                   amount for the hexa-VCO.
+                                                                                   It does not operate on changes that occur in the input pitch while the pitch shift
+                                                                                   amount is unchanged.
+                                                                                   SWEEP RISE and SWEEP FALL have no effect if SWEEP SW is “OFF.”
+                                                                                   Adjusts the time over which movement to a higher pitch will occur.
+                SWEEP RISE                             0–100
+                                                                                   If this is “0,” the change will occur instantly; higher values produce slower change.
+                                                                                   Adjusts the time over which movement to a lower pitch will occur.
+                SWEEP FALL                             0–100
+                                                                                   If this is “0,” the change will occur instantly; higher values produce slower change.
+                Allows you to apply electronic vibrato to the hexa-VCO.
+                                                                                   Turns the vibrato effect on/off.
+
+                                                                                    MEMO
+                VIBRATO SW                             OFF, ON                     If you make Control Assign settings to control VIBRATO SW, you’ll be able to add
+                                                                                   powerful vibrato by turning VIBRATO SW “ON” when desired during your performance.
+     VIBRATO
+                                                                                   * You can’t apply vibrato to the hexa-distortion.
+                                                                                   Specifies the vibrato rate.
+                VIBRATO RATE                           0–100
+                                                                                   Higher values produce faster vibrato.
+                                                                                   Specifies the vibrato depth.
+                VIBRATO DEPTH                          0–100
+                                                                                   With a setting of “0” there will be no vibrato. Higher values produce deeper vibrato.
+
+
+
+
+36
+                                                                                                         Editing the Tones (TONE)
+
+WAVE SYNTH
+    Parameter         Value    Description
+                      SAW      This is an analog-synth type sound suitable for leads.
+    TYPE #
+                      SQUARE   This is an analog-synth type sound suitable for backing.
+    COLOR #           0–100    Adjusts the tone quality. Increasing this value makes the sound brighter.
+
+
+
+FILTER BASS
+    Parameter         Value    Description
+                               Adjusts the cutoff frequency, setting the brightness (hardness) of the sound. The sound gets brighter
+    FILTER CUTOFF #   0–100
+                               (harder) as the value is raised.
+                               Adjusts the resonance (distinctiveness of the sound). As the value is increased, sounds in the frequency
+    FILTER RESO #     0–100
+                               range near the cutoff frequency are boosted, making the sound more distinctive and unique.
+                               This sets the speed at which the filter stops. The speed increases as the value of the setting is reduced.
+    FILTER DECAY      0–100
+                               * The FILTER DECAY effect cannot be obtained if the TOUCH SENS value is too low.
+                               This sets the sensitivity when the filter is shifted according to the playing. The shifting of the filter
+    TOUCH SENS        0–100    caused by the playing increases as the value is raised.
+                               When the value is set to “0,” the filter remains set, with no movement.
+    COLOR #           0–100    Adjusts the strength of the low range. As the value is increased, the low range will become stronger.
+
+
+
+CRYSTL
+    Parameter         Value    Description
+
+    ATTACK LENGTH     0–100    This sets the decay time for the attack portion of the sound. A smaller setting results in a shorter attack.
+
+    MOD TUNE          0–100    This sets the tuning for the modulation applied to the attack.
+    MOD DEPTH #       0–100    This sets the depth of the modulation applied to the attack. Larger values result in deeper undulations.
+    ATTACK LEVEL #    0–100    This sets the volume level of the attack portion.
+    BODY LEVEL #      0–100    This sets the volume level for the sustained portion of the sound.
+                               Adjusts the range (time) over which low-level signals are boosted. Larger values will result in longer
+    SUSTAIN           0–100
+                               sustain.
+
+
+
+ORGAN
+    Parameter         Value    Description
+
+    FEET16 #          0–100    This is a long tone at the same pitch as the guitar.
+
+    FEET8 #           0–100    This is a long tone one octave higher than the guitar.
+    FEET4 #           0–100    This is a long tone two octave higher than the guitar.
+                               Adjusts the range (time) over which low-level signals are boosted. Larger values will result in longer
+    SUSTAIN           0–100
+                               sustain.
+
+
+
+BRASS
+    Parameter         Value    Description
+                               Adjusts the cutoff frequency, setting the brightness (hardness) of the sound. The
+    FILTER CUTOFF #   0–100
+                               sound gets brighter (harder) as the value is raised.
+                               Adjusts the resonance (distinctiveness of the sound). As the value is increased, sounds in the frequency
+    FILTER RESO #     0–100
+                               range near the cutoff frequency are boosted, making the sound more distinctive and unique.
+                               This sets the sensitivity when the filter is shifted according to the playing. The shifting of the filter
+    TOUCH SENS #      0–100    caused by the playing increases as the value is raised.
+                               When the value is set to “0,” the filter remains set, with no movement.
+                               Adjusts the range (time) over which low-level signals are boosted. Larger values will result in longer
+    SUSTAIN           0–100
+                               sustain.
+
+
+
+
+                                                                                                                                           37
+

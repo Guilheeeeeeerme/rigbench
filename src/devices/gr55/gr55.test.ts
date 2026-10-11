@@ -252,6 +252,27 @@ describe('Gr55Editor', () => {
     ]);
     expect(editor.patchName).toBe('Stored');
   });
+
+  test('readPatchLocation sets patchSource from the setup page', async () => {
+    const { device, editor } = setUp();
+    device.poke(GR55_MAP.setup.patchBsMsb.address, [0]);
+    device.poke(GR55_MAP.setup.patchPc.address, [4]);
+
+    await editor.readPatchLocation();
+
+    expect(editor.patchSource).toEqual({ kind: 'slot', userPatchNumber: 4 });
+  });
+
+  test('readPatchLocation clears patchSource outside the user map', async () => {
+    const { device, editor } = setUp();
+    editor.patchSource = { kind: 'slot', userPatchNumber: 0 };
+    device.poke(GR55_MAP.setup.patchBsMsb.address, [3]);
+    device.poke(GR55_MAP.setup.patchPc.address, [0]);
+
+    await editor.readPatchLocation();
+
+    expect(editor.patchSource).toBeUndefined();
+  });
 });
 
 describe('unsaved changes', () => {

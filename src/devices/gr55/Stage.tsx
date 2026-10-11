@@ -1,63 +1,151 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
-import { Link } from 'react-router-dom';
-import { useEnumLabel, useT } from '../../copy';
-import type { BooleanField, FieldReference, FieldType } from '../../protocol/RolandAddressMap';
+import { useState, useSyncExternalStore } from 'react';
+import { useT } from '../../copy';
+import type {
+  BooleanField,
+  FieldReference,
+  FieldType,
+  NumericField,
+} from '../../protocol/RolandAddressMap';
+import { InstrumentIcon } from './Icons';
 import { confirmDiscard } from './dirtyGuard';
 import type { Gr55Editor } from './editor';
-import { editorHref } from './pages';
-import type { PageId } from './pages';
 import { TEMPORARY_PATCH } from './patchLayout';
-import { deviceHref, setlistHref, setupHref } from './routes';
-import { changesPatch, loadSetlist } from './setlist';
-import type { Song } from './setlist';
-import { loadSetup, skippedSteps } from './setupState';
+import { loadSetup } from './setupState';
 import { slotsOfMode } from './slots';
-import { effectChoice } from './stageInfo';
-import { PEDAL_SECTIONS, stageView } from './stageModel';
-import type { PatchReader, PedalId } from './stageModel';
+import type { Slot } from './slots';
+import { iconsOf, POWER_SWITCHES, voiceTitle, voicesOf } from './voices';
+import type { VoiceState } from './voices';
 import { useSlotNames, useSync } from './sync/SyncBadge';
-import { useSystem, useSystemVersion } from './SystemParts';
-import { SYSTEM } from './systemMap';
-import { TopNav } from './TopNav';
 
 const patch = TEMPORARY_PATCH;
 
-/** Every power switch of the chain, in the order the sound runs through it. */
-const POWER_FIELDS: {
-  block: 'amp' | 'mod' | 'mfx' | 'eq' | 'chorus' | 'delay' | 'reverb';
-  field: FieldReference<BooleanField>;
-}[] = [
-  { block: 'amp', field: patch.ampModNs.ampSwitch },
-  { block: 'mod', field: patch.ampModNs.modSwitch },
-  { block: 'mfx', field: patch.mfx.mfxSwitch },
-  { block: 'eq', field: patch.sendsAndEq.eqSwitch },
-  { block: 'chorus', field: patch.sendsAndEq.chorusSwitch },
-  { block: 'delay', field: patch.sendsAndEq.delaySwitch },
-  { block: 'reverb', field: patch.sendsAndEq.reverbSwitch },
-];
+interface VoiceFields {
+  level: FieldReference<NumericField>;
+  mute: FieldReference<BooleanField>;
+}
 
-/** The pedal-wide function of each pedal: the first of the three layers. */
-const SYSTEM_PEDAL_FUNCTIONS: Record<PedalId, FieldReference> = {
-  ctl: SYSTEM.pedals.ctlFunction,
-  exp: SYSTEM.pedals.expOffFunction,
-  expOn: SYSTEM.pedals.expOnFunction,
-  expSw: SYSTEM.pedals.expSwFunction,
-  gkVol: SYSTEM.pedals.gkVolFunction,
-  gkS1: SYSTEM.pedals.gkS1Function,
-  gkS2: SYSTEM.pedals.gkS2Function,
+/** Where each instrument's mute and level live in the patch. */
+const VOICE_FIELDS: Record<VoiceState['id'], VoiceFields> = {
+  pcm1: {
+    level: patch.patchPCMTone1.partLevel as FieldReference<NumericField>,
+    mute: patch.patchPCMTone1.muteSwitch as FieldReference<BooleanField>,
+  },
+  pcm2: {
+    level: patch.patchPCMTone2.partLevel as FieldReference<NumericField>,
+    mute: patch.patchPCMTone2.muteSwitch as FieldReference<BooleanField>,
+  },
+  modeling: {
+    level: patch.modelingTone.level as FieldReference<NumericField>,
+    mute: patch.modelingTone.muteSwitch as FieldReference<BooleanField>,
+  },
+  normalPickup: {
+    level: patch.common.normalPuLevel as FieldReference<NumericField>,
+    mute: patch.common.normalPuMute as FieldReference<BooleanField>,
+  },
 };
 
-// The pedal-wide value that hands a pedal over to the patch.
-const LEFT_TO_PATCH = 'PATCH SETTING';
+const MASTER: FieldReference<NumericField> = patch.common
+  .patchLevel as FieldReference<NumericField>;
 
-function typing(target: EventTarget | null): boolean {
-  return target instanceof HTMLElement && /^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName);
+/** One instrument: icon, name, a mute switch, and how loud it sits in the mix. */
+function VoiceRow({ editor, voice }: { editor: Gr55Editor; voice: VoiceState }) {
+  const t = useT();
+  const fields = VOICE_FIELDS[voice.id];
+  const { type } = fields.level.definition;
+  return (
+    <li className={voice.muted ? 'voice-row muted' : 'voice-row'}>
+      <span className="voice-icon">
+        <InstrumentIcon kind={voice.icon} title={voiceTitle(voice.icon, t)} />
+      </span>
+      <span className="voice-name">{t(`voices.${voice.id}`)}</span>
+      <MuteSwitch
+        voice={voice}
+        onToggle={() => editor.write(fields.mute!, !voice.muted as never)}
+      />
+      <input
+        type="range"
+        min={type.min}
+        max={type.max}
+        step={type.step}
+        value={voice.level ?? 0}
+        disabled={voice.muted}
+        onChange={(event) => editor.write(fields.level, Number(event.target.value) as never)}
+        aria-label={t(`voices.${voice.id}`)}
+      />
+      <output className="voice-level">{voice.level ?? '—'}</output>
+    </li>
+  );
+}
+
+/** Whether one instrument plays at all: the pedal's inverted mute switch. */
+function MuteSwitch({ voice, onToggle }: { voice: VoiceState; onToggle: () => void }) {
+  const t = useT();
+  return (
+    <button
+      type="button"
+      className={voice.muted ? 'simple-switch' : 'simple-switch on'}
+      aria-pressed={voice.muted ? 'false' : 'true'}
+      title={voice.muted ? t('voices.mute') : t('stage.on')}
+      onClick={onToggle}
+    >
+      <span className="simple-switch-track" aria-hidden="true">
+        <span className="simple-switch-knob" />
+      </span>
+      <span className="voice-screen">{t(`voices.${voice.id}`)}</span>
+    </button>
+  );
+}
+
+/** One of the three patches of a bank, drawn like a key on the pedal's face. */
+function FootPatch({
+  editor,
+  onError,
+  slot,
+  name,
+  bytes,
+  active,
+  busy,
+  onMoved,
+}: {
+  editor: Gr55Editor;
+  onError: (error: unknown) => void;
+  slot: Slot;
+  name: string | undefined;
+  bytes: Uint8Array | undefined;
+  active: boolean;
+  busy: boolean;
+  onMoved: () => void;
+}) {
+  const t = useT();
+  const pick = () => {
+    if (busy || !confirmDiscard(editor)) {
+      return;
+    }
+    editor.selectPatch(slot.bankMsb, slot.programChange).catch(onError).finally(onMoved);
+  };
+  return (
+    <button
+      type="button"
+      className={active ? 'foot-patch active' : 'foot-patch'}
+      aria-pressed={active}
+      disabled={busy}
+      onClick={pick}
+    >
+      <span className="foot-number">{slot.label}</span>
+      <span className="foot-name">{name ?? t('stage.notSynced')}</span>
+      <span className="foot-voices">
+        {iconsOf(bytes).map((kind) => (
+          <InstrumentIcon key={kind} kind={kind} title={voiceTitle(kind, t)} />
+        ))}
+      </span>
+    </button>
+  );
 }
 
 /**
- * The stage: the root of a pedal that is set up. The setlist on one side; on the other,
- * the song sounding now, what each pedal does in it, and the cuts inside its patch.
- * Nothing here saves to the pedal — the only thing it sends is which patch to play.
+ * The stage: now. The patch sounding this instant — style, bank-patch and name,
+ * the three keys of its bank and the bank itself, as if you held the pedal —
+ * and the sound of the patch as instruments.
  */
 export function Stage({
   editor,
@@ -67,327 +155,167 @@ export function Stage({
   onError: (error: unknown) => void;
 }) {
   const t = useT();
-  const enumLabel = useEnumLabel();
   const sync = useSync();
-  const system = useSystem();
-  useSystemVersion(system);
   const cachedName = useSlotNames(sync);
-  // Follows the pedal: a patch change or a pedal step re-renders the whole screen.
+  // Follows the pedal: a patch change or a parameter touched on the pedal re-renders.
   useSyncExternalStore(editor.subscribe, editor.patchSnapshot);
-  const changeCount = useSyncExternalStore(editor.subscribe, () => editor.changeCount);
-  const gkMode = editor.gkMode;
-  const [setlist] = useState(() => loadSetlist());
-  const [skipped] = useState(() => skippedSteps(loadSetup()));
+  useSyncExternalStore(sync.subscribe, sync.slotsSnapshot);
   const [rigName] = useState(() => loadSetup().rigName);
-  const [switching, setSwitching] = useState(false);
-  const songs = setlist.songs;
-  const soundingSlot =
+  const [busy, setBusy] = useState(false);
+
+  const sounding =
     editor.patchSource?.kind === 'slot' ? editor.patchSource.userPatchNumber : undefined;
-  const [position, setPosition] = useState(() =>
-    songs.findIndex((song) => song.mode === gkMode && song.userPatchNumber === soundingSlot),
-  );
+  const slots = slotsOfMode(editor.gkMode);
+  const where =
+    sounding !== undefined ? slots.find((s) => s.userPatchNumber === sounding) : undefined;
 
-  // The pedal-wide pedal rules are read once, behind the screen; the Stage works without.
-  useEffect(() => {
-    if (!system.loaded) {
-      system.load().catch(() => {});
+  /** The UI bank number of a patch, from its pedal label ("04-2" → 4). */
+  const bankOf = (slot: Slot) => Number(slot.label.slice(0, slot.label.indexOf('-')));
+  /** Which key of its bank a patch is ("04-2" → 2). */
+  const indexInBank = (slot: Slot) => Number(slot.label.slice(slot.label.indexOf('-') + 1));
+
+  const bank = where ? bankOf(where) : undefined;
+  const bankSlots = bank === undefined ? [] : slots.filter((s) => bankOf(s) === bank);
+  /** The patch at the same key of the neighbouring bank; the pedal keeps the same place. */
+  const neighbour = (targetBank: number) =>
+    slots.find(
+      (s) => bankOf(s) === targetBank && indexInBank(s) === (where ? indexInBank(where) : 0),
+    ) ?? slots.find((s) => bankOf(s) === targetBank);
+  const previous = bank === undefined ? undefined : neighbour(bank - 1);
+  const next = bank === undefined ? undefined : neighbour(bank + 1);
+
+  const move = (slot: Slot) => {
+    if (busy || !confirmDiscard(editor)) {
+      return;
     }
-  }, [system]);
-
-  const slots = slotsOfMode(gkMode);
-  const slotOf = (song: Song) =>
-    slots.find((slot) => slot.userPatchNumber === song.userPatchNumber);
-  const current = position >= 0 ? songs[position] : undefined;
-  const onSetlist =
-    current !== undefined && current.mode === gkMode && current.userPatchNumber === soundingSlot;
-  const next = position + 1 < songs.length ? songs[position + 1] : undefined;
-
-  const go = useCallback(
-    (index: number) => {
-      const song = songs[index];
-      if (!song || switching || song.mode !== editor.gkMode) {
-        return;
-      }
-      const sounding =
-        editor.patchSource?.kind === 'slot' ? editor.patchSource.userPatchNumber : undefined;
-      if (song.userPatchNumber === sounding) {
-        // Same patch as the one sounding: only the place in the setlist moves. No gap.
-        setPosition(index);
-        return;
-      }
-      if (!confirmDiscard(editor)) {
-        return;
-      }
-      const slot = slotsOfMode(editor.gkMode).find(
-        (candidate) => candidate.userPatchNumber === song.userPatchNumber,
-      );
-      if (!slot) {
-        return;
-      }
-      setSwitching(true);
-      editor
-        .selectPatch(slot.bankMsb, slot.programChange)
-        .then(() => setPosition(index))
-        .catch(onError)
-        .finally(() => setSwitching(false));
-    },
-    [songs, switching, editor, onError],
-  );
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.ctrlKey || event.metaKey || event.altKey || typing(event.target)) {
-        return;
-      }
-      const key = event.key.toLowerCase();
-      if (key === 'n' || key === 'arrowright' || key === 'pagedown') {
-        event.preventDefault();
-        go(position + 1);
-      } else if (key === 'p' || key === 'arrowleft' || key === 'pageup') {
-        event.preventDefault();
-        go(position - 1);
-      } else if (/^[1-9]$/.test(key)) {
-        event.preventDefault();
-        go(Number(key) - 1);
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [go, position]);
-
-  const read: PatchReader = (field) => editor.read(field);
-  const view = stageView(read, gkMode);
-  const cutNames = current?.cuts ?? {};
-  const scene = view.cuts
-    .filter((cut) => cut.active && cutNames[cut.key])
-    .map((cut) => cutNames[cut.key]);
-
-  const systemFunction = (id: PedalId): string | undefined => {
-    if (!system.loaded) {
-      return undefined;
-    }
-    const value = system.readApplied(
-      SYSTEM_PEDAL_FUNCTIONS[id] as FieldReference<FieldType<string>>,
-    );
-    return value.ok && value.value !== LEFT_TO_PATCH ? String(value.value) : undefined;
+    setBusy(true);
+    editor
+      .selectPatch(slot.bankMsb, slot.programChange)
+      .catch(onError)
+      .finally(() => setBusy(false));
   };
 
-  const switchOn = (field: FieldReference<BooleanField>): boolean | undefined => {
-    const result = editor.read(field);
-    return result.ok ? result.value !== field.definition.type.invertedForDisplay : undefined;
+  const read = (field: never) => {
+    const result = editor.read(field as FieldReference<FieldType<never>>);
+    return result.ok ? result.value : undefined;
   };
+  const voices = voicesOf(read);
+  const masterLevel = editor.read(MASTER);
+  const patchLevel = masterLevel.ok ? masterLevel.value : 0;
 
   return (
     <main className="stage">
-      <header className="stage-head">
-        <TopNav current="stage" />
-        {rigName && <p className="stage-rig">{rigName}</p>}
-      </header>
-
-      {skipped.length > 0 && (
-        <p className="notice" role="note">
-          ⚠️ {t('wizard.summaryWarn', skipped.map((step) => t(`wizard.steps.${step}`)).join(', '))}{' '}
-          <Link to={setupHref}>{t('wizard.reopen')}</Link>
-        </p>
-      )}
-      {switching && (
-        <p className="stage-gap" role="alert">
-          {t('stage.switching')}
-        </p>
-      )}
-      {changeCount > 0 && (
+      {rigName && <p className="stage-rig">{rigName}</p>}
+      {editor.changeCount > 0 && (
         <p className="notice stage-notice" role="alert">
           {t('stage.playingCopy')}
         </p>
       )}
 
-      <div className="stage-grid">
-        <section className="stage-setlist" aria-label={t('setlist.title')}>
-          <h2>
-            {setlist.name || t('setlist.title')}{' '}
-            <Link className="stage-edit" to={setlistHref}>
-              {t('stage.manage')}
-            </Link>
-          </h2>
-          {songs.length === 0 ? (
-            <>
-              <p>
-                <strong>{t('stage.emptyTitle')}</strong>
-              </p>
-              <p className="hint">{t('stage.emptyIntro')}</p>
-            </>
-          ) : (
-            <>
-              <ol className="stage-songs">
-                {songs.map((song, index) => {
-                  const slot = slotOf(song);
-                  const otherMode = song.mode !== gkMode;
-                  return (
-                    <li key={song.id}>
-                      {changesPatch(songs[index - 1], song) && (
-                        <span className="stage-gap-mark" title={t('stage.nextGap')}>
-                          {t('setlist.gapHere')}
-                        </span>
-                      )}
-                      <button
-                        type="button"
-                        className="stage-song"
-                        aria-current={index === position ? 'true' : undefined}
-                        disabled={switching || otherMode}
-                        onClick={() => go(index)}
-                      >
-                        <span className="stage-song-number">{index + 1}</span>
-                        <span className="stage-song-title">{song.title}</span>
-                        <span className="stage-song-slot">
-                          {otherMode
-                            ? t('stage.otherMode', t(`gr55.mode.${song.mode}`))
-                            : `${slot?.label ?? ''} ${cachedName(song.userPatchNumber) ?? ''}`}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-              <p className="hint">{t('stage.keys')}</p>
-            </>
-          )}
-        </section>
+      <section className="stage-now">
+        <h2>{t('stage.now')}</h2>
+        <p className="stage-where">
+          <strong>
+            {t('stage.userMark')} {where ? where.label : '—'}
+          </strong>{' '}
+          {editor.patchName || t('gr55.unnamed')}
+        </p>
+      </section>
 
-        <div className="stage-now">
-          <section className="stage-block">
-            <h2>{t('stage.now')}</h2>
-            {current && onSetlist && (
-              <p className="stage-count">{t('stage.songOf', position + 1, songs.length)}</p>
-            )}
-            <p className="stage-patch">
-              {current && onSetlist ? current.title : editor.patchName || t('gr55.unnamed')}
-            </p>
-            {current && onSetlist && (
-              <p className="stage-patch-name">
-                {slotOf(current)?.label} · {editor.patchName || t('gr55.unnamed')}
-              </p>
-            )}
-            {songs.length > 0 && !onSetlist && <p className="notice">{t('stage.offSetlist')}</p>}
-            {scene.length > 0 && (
-              <p className="stage-scene">{t('stage.sceneNow', scene.join(' · '))}</p>
-            )}
-            {songs.length > 0 && (
-              <div className="stage-next">
-                <button
-                  type="button"
-                  disabled={switching || position <= 0}
-                  onClick={() => go(position - 1)}
-                >
-                  ← {t('stage.previous')}
-                </button>
-                {next ? (
-                  <button
-                    type="button"
-                    className="primary"
-                    disabled={switching || next.mode !== gkMode}
-                    onClick={() => go(position + 1)}
-                  >
-                    {t('stage.next', next.title)} →
-                  </button>
-                ) : (
-                  <span className="hint">{t('stage.lastSong')}</span>
-                )}
-                {next &&
-                  (next.userPatchNumber !== soundingSlot ? (
-                    <span className="stage-gap-warning">{t('stage.nextGap')}</span>
-                  ) : (
-                    <span className="hint">{t('stage.nextNoGap')}</span>
-                  ))}
-              </div>
-            )}
-          </section>
-
-          <section className="stage-block">
-            <h2>{t('stage.pedals')}</h2>
-            <ul className="stage-pedals">
-              {view.pedals.map((pedal) => {
-                const rule = systemFunction(pedal.id);
-                return (
-                  <li key={pedal.id} className={pedal.on ? 'on' : undefined}>
-                    <span className="stage-pedal-name">{t(`stage.pedalNames.${pedal.id}`)}</span>
-                    <span className="stage-pedal-does">
-                      {enumLabel('pedalFunction', rule ?? pedal.function ?? '?')}
-                      {pedal.on !== undefined && (
-                        <strong>{pedal.on ? t('stage.on') : t('stage.off')}</strong>
-                      )}
-                    </span>
-                    {rule ? (
-                      <Link
-                        className="scope chip-blue"
-                        to={deviceHref}
-                        title={t('stage.systemRule')}
-                      >
-                        <span className="dot" aria-hidden="true" />
-                        {t('gr55.workspace.pedal')}
-                      </Link>
-                    ) : (
-                      <Link
-                        className="stage-edit"
-                        to={editorHref('pedal-gk', PEDAL_SECTIONS[pedal.id])}
-                      >
-                        {t('stage.edit')}
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-              <li>
-                <span className="stage-pedal-name">{t('stage.pedalNames.fs')}</span>
-                <span className="stage-pedal-does">{t('stage.fixed')}</span>
-              </li>
-            </ul>
-          </section>
-
-          <section className="stage-block">
-            <h2>{t('stage.cuts')}</h2>
-            <p className="hint">{t('stage.cutsIntro')}</p>
-            {view.cuts.length === 0 ? (
-              <p className="hint">{t('stage.noCuts')}</p>
-            ) : (
-              <ul className="stage-cuts">
-                {view.cuts.map((cut) => (
-                  <li key={cut.key} className={cut.active ? 'on' : undefined}>
-                    {cutNames[cut.key] && <strong>{cutNames[cut.key]}</strong>}
-                    <span>
-                      {t('stage.cut', cut.source, cut.target)}
-                      {cut.active && <em> · {t('stage.cutActive')}</em>}
-                    </span>
-                    <Link className="stage-edit" to={editorHref('assigns', cut.key)}>
-                      {t('stage.edit')}
-                    </Link>
-                  </li>
+      <section className="stage-feet" aria-label={t('stage.feet')}>
+        {where ? (
+          <>
+            <div className="stage-bank">
+              <button
+                type="button"
+                className="foot-bank"
+                disabled={busy || !previous}
+                onClick={() => previous && move(previous)}
+              >
+                ←{' '}
+                <strong>
+                  {t('stage.bankMark')}{' '}
+                  {previous ? previous.label.slice(0, previous.label.indexOf('-')) : ''}
+                </strong>
+              </button>
+              <div className="stage-bank-keys">
+                {bankSlots.map((slot) => (
+                  <FootPatch
+                    key={slot.userPatchNumber}
+                    editor={editor}
+                    onError={onError}
+                    slot={slot}
+                    name={cachedName(slot.userPatchNumber)}
+                    bytes={sync.slot(slot.userPatchNumber)?.bytes}
+                    active={sounding === slot.userPatchNumber}
+                    busy={busy}
+                    onMoved={() => undefined}
+                  />
                 ))}
-              </ul>
-            )}
-          </section>
+              </div>
+              <button
+                type="button"
+                className="foot-bank"
+                disabled={busy || !next}
+                onClick={() => next && move(next)}
+              >
+                <strong>
+                  {t('stage.bankMark')} {next ? next.label.slice(0, next.label.indexOf('-')) : ''}
+                </strong>{' '}
+                →
+              </button>
+            </div>
+            <p className="hint">{t('stage.gapWarn')}</p>
+          </>
+        ) : (
+          <p className="hint">{t('stage.unknownSlot')}</p>
+        )}
+      </section>
 
-          <section className="stage-block">
-            <h2>{t('stage.effects')}</h2>
-            <ul className="stage-effects">
-              {POWER_FIELDS.map(({ block, field }) => {
-                const on = switchOn(field);
-                return (
-                  <li key={field.address} className={on ? 'on' : 'off'}>
-                    <span className="dot" aria-hidden="true" />
-                    {t(`gr55.blocks.${block}`)}{' '}
-                    <strong>{on ? t('stage.on') : t('stage.off')}</strong>
-                    {on && effectChoice(editor, field) && <em>{effectChoice(editor, field)}</em>}
-                    <Link className="stage-edit" to={editorHref(block as PageId, block)}>
-                      {t('stage.edit')}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
+      <section className="stage-mixer">
+        <h2>{t('stage.sound')}</h2>
+        <ul className="voice-list">
+          {voices.map((voice) => (
+            <VoiceRow key={voice.id} editor={editor} voice={voice} />
+          ))}
+        </ul>
+        <div className="stage-master">
+          <span className="voice-icon">
+            <InstrumentIcon kind="master" title={t('voices.master')} />
+          </span>
+          <label className="stage-master-label" htmlFor="stage-master-level">
+            {t('voices.master')}
+          </label>
+          <input
+            id="stage-master-level"
+            type="range"
+            min={MASTER.definition.type.min}
+            max={MASTER.definition.type.max}
+            step={MASTER.definition.type.step}
+            value={patchLevel}
+            onChange={(event) => editor.write(MASTER, Number(event.target.value) as never)}
+          />
         </div>
-      </div>
-      <p className="hint stage-footnote">{t('stage.footnote')}</p>
+        <div className="stage-chain" role="group" aria-label={t('stage.onOff')}>
+          {POWER_SWITCHES.map((item) => {
+            const state = editor.read(item.field);
+            const on = state.ok && state.value;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={on ? 'stage-switch on' : 'stage-switch'}
+                aria-pressed={on ? 'true' : 'false'}
+                onClick={() => editor.write(item.field, !on)}
+              >
+                <InstrumentIcon kind={item.id} title={t(`voices.${item.id}`)} />
+                {t(`voices.${item.id}`)}
+              </button>
+            );
+          })}
+        </div>
+        <p className="hint stage-mixer-hint">{t('stage.mixerHint')}</p>
+      </section>
     </main>
   );
 }

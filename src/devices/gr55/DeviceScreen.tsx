@@ -1,36 +1,31 @@
-import { useRef, useState, useSyncExternalStore } from 'react';
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useT } from '../../copy';
+import { downloadBytes } from './download';
+import type { Gr55Editor } from './editor';
+import { gkHref, setupHref } from './routes';
 import { useSync } from './sync/SyncBadge';
-import type { Gr55Editor, GkMode } from './editor';
+import { SyxError, decodeSystemBlocksSyx, encodeSystemBlocksSyx } from './syx';
 import {
-  PROFILE_PRESETS,
-  loadProfile,
-  profileName,
-  profileMode,
-  saveProfile,
-  type InstrumentProfile,
-} from './profiles';
-import { SyxError, decodeSystemSyx, encodeSystemSyx } from './syx';
-
-function download(bytes: Uint8Array, fileName: string): void {
-  const url = URL.createObjectURL(
-    new Blob([bytes as Uint8Array<ArrayBuffer>], { type: 'application/octet-stream' }),
-  );
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 0);
-}
+  ApplyBar,
+  MidiFields,
+  ModeSwitch,
+  OutputFields,
+  PedalFields,
+  SystemField,
+  SystemGate,
+  useSystem,
+} from './SystemParts';
+import { SYSTEM_ADDRESS, SYSTEM_BLOCKS, SYSTEM_SPAN } from './systemMap';
+import { TopNav } from './TopNav';
 
 function systemFileName(): string {
   return `${new Date().toISOString().slice(0, 10)}_gr55-system.syx`;
 }
 
 /**
- * The device domain: pedal-wide settings, always blue, always confirmed.
- * Nothing here is a patch parameter, and nothing here is touched without a
- * named modal that says what it does to the whole pedal.
+ * The device domain: pedal-wide settings, always blue. Changes are staged and listed,
+ * and nothing reaches the pedal without a confirmation that names what it does.
  */
 export function DeviceScreen({
   editor,
@@ -41,53 +36,18 @@ export function DeviceScreen({
 }) {
   const t = useT();
   const sync = useSync();
-  const [profile, setProfile] = useState<InstrumentProfile>(() => loadProfile());
+  const system = useSystem();
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string>();
-  const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
-  // Keeps the danger copy in step with the unsaved-change count.
-  useSyncExternalStore(editor.subscribe, () => editor.dirtySnapshot());
-  const changeCount = editor.changeCount;
   const restoreInput = useRef<HTMLInputElement>(null);
 
-  const pickProfile = (next: InstrumentProfile) => {
-    setProfile(next);
-    saveProfile(next);
-  };
-
-  const switchMode = (mode: GkMode) => {
-    if (mode === gkMode) {
-      return;
-    }
-    // A dirty working copy dies in the switch; refuse before the modal, not after.
-    if (editor.isDirty) {
-      window.alert(t('device.modeSwitchBlocked'));
-      return;
-    }
-    if (!window.confirm(t('device.confirmMode', 0))) {
-      return;
-    }
-    setBusy(true);
-    // The other mode has its own 297 slots: hold the sync for the switch, then read them.
-    void sync
-      .exclusive(() => editor.setGuitarBassMode(mode))
-      .then(() => void sync.start())
-      .then(() => setNotice(t('device.modeSwitchedTo', t(`gr55.mode.${mode}`))))
-      .catch((reason) => onError(reason))
-      .finally(() => setBusy(false));
-  };
-
   const backup = () => {
-    setBusy(true);
-    void editor
-      .readSystemBytes()
-      .then((bytes) => {
-        const file = systemFileName();
-        download(encodeSystemSyx(editor.systemAddress(), bytes), file);
-        setNotice(t('device.backupDone', file));
-      })
-      .catch((reason) => onError(reason))
-      .finally(() => setBusy(false));
+    const file = systemFileName();
+    downloadBytes(
+      encodeSystemBlocksSyx(SYSTEM_ADDRESS, system.appliedBytes(), SYSTEM_BLOCKS),
+      file,
+    );
+    setNotice(t('device.backupDone', file));
   };
 
   const restoreSystem = (file: File) => {
@@ -95,16 +55,13 @@ export function DeviceScreen({
     void file
       .arrayBuffer()
       .then(async (buffer) => {
-        const bytes = decodeSystemSyx(
-          new Uint8Array(buffer),
-          editor.systemAddress(),
-          editor.systemSpan(),
-        );
+        const writes = decodeSystemBlocksSyx(new Uint8Array(buffer), SYSTEM_ADDRESS, SYSTEM_SPAN);
         // Blue rule: a system write names what it touches before it happens.
         if (!window.confirm(t('device.confirmSystemWrite'))) {
           return;
         }
-        await sync.exclusive(() => editor.writeSystemBytes(bytes));
+        await sync.exclusive(() => system.restore(writes));
+        await editor.readSystem();
         setNotice(t('device.systemRestored'));
       })
       .catch((error) => {
@@ -119,6 +76,7 @@ export function DeviceScreen({
 
   return (
     <div className="device">
+      <TopNav current="device" />
       <h1>
         {t('device.title')}{' '}
         <span className="scope chip-blue">
@@ -127,89 +85,82 @@ export function DeviceScreen({
         </span>
       </h1>
       <p className="hint">{t('device.intro')}</p>
+      <p>
+        <Link to={setupHref}>{t('wizard.reopen')} →</Link>
+      </p>
 
-      <section className="section">
-        <h2>{t('device.profileTitle')}</h2>
-        <p className="hint">{t('device.profileIntro')}</p>
-        <div className="profile-list">
-          {PROFILE_PRESETS.map((preset) => (
-            <label key={preset.id}>
-              <input
-                type="radio"
-                name="instrument-profile"
-                checked={profile.id === preset.id}
-                onChange={() => pickProfile(preset)}
-              />
-              {profileName(preset)}
-              {profileMode(preset) !== gkMode && (
-                <span className="profile-warn">{t('device.profileModeWarn')}</span>
-              )}
-            </label>
-          ))}
-        </div>
-      </section>
+      <SystemGate>
+        <section className="section">
+          <h2>{t('system.gkTitle')}</h2>
+          <p className="hint">{t('system.gkIntro')}</p>
+          <div className="fields">
+            <SystemField name="activeGkSet" />
+          </div>
+          <div className="actions">
+            <Link className="button-link primary" to={gkHref}>
+              {t('system.gkOpen')} →
+            </Link>
+          </div>
+        </section>
 
-      <section className="section">
-        <h2>{t('device.modeTitle')}</h2>
-        <p className="hint">{t('device.modeIntro')}</p>
-        <div className="actions">
-          <button
-            type="button"
-            disabled={busy}
-            className={gkMode === 'GUITAR' ? 'primary' : undefined}
-            onClick={() => switchMode('GUITAR')}
-          >
-            {t('gr55.mode.GUITAR')}
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            className={gkMode === 'BASS' ? 'primary' : undefined}
-            onClick={() => switchMode('BASS')}
-          >
-            {t('gr55.mode.BASS')}
-          </button>
-        </div>
-        {notice && (
-          <p className="status" role="status">
-            {notice}
-          </p>
-        )}
-        {changeCount > 0 && (
-          <p className="notice">{t('gr55.workspace.unsavedChanges', changeCount)}</p>
-        )}
-      </section>
+        <section className="section">
+          <h2>{t('system.outputTitle')}</h2>
+          <p className="hint">{t('system.outputIntro')}</p>
+          <OutputFields />
+        </section>
 
-      <section className="section">
-        <h2>{t('device.backupTitle')}</h2>
-        <p className="hint">{t('device.backupIntro')}</p>
-        <div className="actions">
-          <button type="button" disabled={busy} onClick={backup}>
-            {t('device.backup')}
-          </button>
-          <button type="button" disabled={busy} onClick={() => restoreInput.current?.click()}>
-            {t('device.backupWrite')}
-          </button>
-          <input
-            ref={restoreInput}
-            type="file"
-            accept=".syx,application/octet-stream"
-            hidden
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              event.target.value = '';
-              if (file) {
-                restoreSystem(file);
-              }
-            }}
-          />
-        </div>
-      </section>
+        <section className="section">
+          <h2>{t('system.pedalsTitle')}</h2>
+          <p className="hint">{t('system.pedalsIntro')}</p>
+          <PedalFields />
+        </section>
 
-      <section className="section">
-        <h2>{t('device.midiTitle')}</h2>
-        <p className="hint">{t('device.midiIntro')}</p>
-      </section>
+        <section className="section">
+          <h2>{t('system.midiTitle')}</h2>
+          <p className="hint">{t('system.midiIntro')}</p>
+          <MidiFields />
+          <p className="hint">{t('system.notMapped')}</p>
+        </section>
+
+        <ApplyBar onError={onError} />
+
+        <section className="section">
+          <h2>{t('device.modeTitle')}</h2>
+          <p className="hint">{t('device.modeIntro')}</p>
+          <ModeSwitch editor={editor} onError={onError} />
+        </section>
+
+        <section className="section">
+          <h2>{t('device.backupTitle')}</h2>
+          <p className="hint">{t('device.backupIntro')}</p>
+          <div className="actions">
+            <button type="button" disabled={busy} onClick={backup}>
+              {t('device.backup')}
+            </button>
+            <button type="button" disabled={busy} onClick={() => restoreInput.current?.click()}>
+              {t('device.backupWrite')}
+            </button>
+            <input
+              ref={restoreInput}
+              type="file"
+              accept=".syx,application/octet-stream"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                event.target.value = '';
+                if (file) {
+                  restoreSystem(file);
+                }
+              }}
+            />
+          </div>
+          {notice && (
+            <p className="status" role="status">
+              {notice}
+            </p>
+          )}
+        </section>
+      </SystemGate>
 
       <p className="hint">{t('device.systemNotice')}</p>
     </div>

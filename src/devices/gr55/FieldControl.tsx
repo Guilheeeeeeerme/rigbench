@@ -1,5 +1,6 @@
 import { useId, useState, useSyncExternalStore } from 'react';
-import { useT } from '../../copy';
+import { useEnumLabel, useT } from '../../copy';
+import type { EnumGroup } from '../../copy';
 import {
   AsciiStringField,
   isBooleanField,
@@ -13,7 +14,7 @@ import type {
   FieldType,
   NumericField,
 } from '../../protocol/RolandAddressMap';
-import type { Gr55Editor } from './editor';
+import type { FieldValue } from './editor';
 import { scopeOf } from './changeTracking';
 
 const hex = (bytes: Uint8Array) =>
@@ -24,6 +25,17 @@ function fieldLabel(description: string): string {
   return description.replace(/\s*\(GK mode:\w+\)$/, '');
 }
 
+/**
+ * Whatever holds the bytes behind a control: the patch editor, or the pedal-wide
+ * settings. A control only reads a field, writes it, and hears when it changed.
+ */
+export interface FieldHost {
+  subscribe(listener: () => void): () => void;
+  fieldSnapshot(address: number): string;
+  read<T>(field: FieldReference<FieldType<T>>): FieldValue<T>;
+  write<T>(field: FieldReference<FieldType<T>>, value: T): void;
+}
+
 function ScopeChip({ fieldAddress }: { fieldAddress: number }) {
   const t = useT();
   const scope = scopeOf(fieldAddress);
@@ -32,7 +44,11 @@ function ScopeChip({ fieldAddress }: { fieldAddress: number }) {
   const hint =
     scope === 'working-copy' ? t('gr55.workspace.workingCopyHint') : t('gr55.workspace.pedalHint');
   return (
-    <span className={`scope chip-${scope}`} title={hint} aria-label={`${label}: ${hint}`}>
+    <span
+      className={scope === 'working-copy' ? 'scope chip-amber' : 'scope chip-blue'}
+      title={hint}
+      aria-label={`${label}: ${hint}`}
+    >
       <span className="dot" aria-hidden="true" />
       {label}
     </span>
@@ -41,7 +57,7 @@ function ScopeChip({ fieldAddress }: { fieldAddress: number }) {
 
 interface ControlProps<T extends FieldType<unknown>> {
   id: string;
-  editor: Gr55Editor;
+  editor: FieldHost;
   field: FieldReference<T>;
   value: ReturnType<T['decode']>;
   disabled: boolean;
@@ -65,7 +81,15 @@ function SwitchControl({ id, editor, field, value, disabled }: ControlProps<Bool
   );
 }
 
-function EnumControl({ id, editor, field, value, disabled }: ControlProps<EnumField>) {
+function EnumControl({
+  id,
+  editor,
+  field,
+  value,
+  disabled,
+  enumGroup,
+}: ControlProps<EnumField> & { enumGroup?: EnumGroup }) {
+  const enumLabel = useEnumLabel();
   const labels = Object.values(field.definition.type.labels);
   return (
     <span className="control">
@@ -77,7 +101,7 @@ function EnumControl({ id, editor, field, value, disabled }: ControlProps<EnumFi
       >
         {labels.map((label, index) => (
           <option key={index} value={index}>
-            {label}
+            {enumGroup ? enumLabel(enumGroup, label) : label}
           </option>
         ))}
       </select>
@@ -171,9 +195,13 @@ function TextControl({ id, editor, field, value, disabled }: ControlProps<AsciiS
 }
 
 export interface FieldControlProps {
-  editor: Gr55Editor;
+  editor: FieldHost;
   field: FieldReference;
   readOnly?: boolean;
+  /** Translates the values of a curated list; the pedal's own wording is the fallback. */
+  enumGroup?: EnumGroup;
+  /** Replaces the map's description as the label. */
+  label?: string;
   /** Show a numeric field as a list of named values instead of a slider. */
   picker?: boolean;
 }
@@ -184,6 +212,8 @@ export function FieldControl({
   field,
   readOnly = false,
   picker = false,
+  enumGroup,
+  label,
 }: FieldControlProps) {
   const t = useT();
   const id = useId();
@@ -201,7 +231,9 @@ export function FieldControl({
     if (isBooleanField(type)) {
       control = <SwitchControl {...props} field={field as FieldReference<BooleanField>} />;
     } else if (isEnumField(type)) {
-      control = <EnumControl {...props} field={field as FieldReference<EnumField>} />;
+      control = (
+        <EnumControl {...props} field={field as FieldReference<EnumField>} enumGroup={enumGroup} />
+      );
     } else if (isNumericField(type)) {
       const numeric = field as FieldReference<NumericField>;
       control = picker ? (
@@ -219,7 +251,7 @@ export function FieldControl({
   return (
     <div className="field">
       <span className="field-head">
-        <label htmlFor={id}>{fieldLabel(field.definition.description)}</label>
+        <label htmlFor={id}>{label ?? fieldLabel(field.definition.description)}</label>
         <ScopeChip fieldAddress={field.address} />
       </span>
       {control}

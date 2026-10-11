@@ -8,6 +8,7 @@ import type { Slot } from './Library';
 import type { Gr55Editor } from './editor';
 import { FieldSearch } from './FieldSearch';
 import { buildPages, editorHref } from './pages';
+import { TopNav } from './TopNav';
 import { PAGE_IDS } from './pages';
 import type { PageId } from './pages';
 
@@ -119,14 +120,7 @@ export function Workspace({
         <Link className="brand" to="/">
           {t('app.name')}
         </Link>
-        <nav className="top-nav" aria-label={t('gr55.navEditor')}>
-          <Link to="/gr55/editor">{t('gr55.navEditor')}</Link>
-          <Link to="/gr55/patches">{t('gr55.navLibrary')}</Link>
-          <Link to="/gr55/palco">{t('gr55.navStage')}</Link>
-          <Link className="top-device" to="/gr55/device">
-            {t('gr55.navDevice')} <span className="dot" aria-hidden="true" />
-          </Link>
-        </nav>
+        <TopNav current="editor" />
         <div className="patch-title">
           <strong>{patchName || t('gr55.unnamed')}</strong>
           <span className="mode">{t(`gr55.mode.${gkMode}`)}</span>

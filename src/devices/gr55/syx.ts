@@ -225,3 +225,60 @@ function concatenate(blocks: readonly Uint8Array[]): Uint8Array {
   }
   return out;
 }
+
+/** A run of bytes in the system area, as an offset from its start. */
+export interface SystemWrite {
+  offset: number;
+  bytes: Uint8Array;
+}
+
+/** The mirrored stretches of the system area, as system-addressed DT1 messages. */
+export function encodeSystemBlocksSyx(
+  systemAddress: number,
+  image: Uint8Array,
+  blocks: readonly { offset: number; length: number }[],
+): Uint8Array {
+  return concatenate(
+    blocks.map((block) =>
+      encodeSystemSyx(
+        systemAddress + block.offset,
+        image.subarray(block.offset, block.offset + block.length),
+      ),
+    ),
+  );
+}
+
+/**
+ * Reads the system data out of a .syx file: every message that addresses the mirrored
+ * stretch of the system area. Slot data in the same file is skipped.
+ */
+export function decodeSystemBlocksSyx(
+  file: Uint8Array,
+  systemAddress: number,
+  systemSpan: number,
+): SystemWrite[] {
+  const writes: SystemWrite[] = [];
+  for (const message of splitMessages(file)) {
+    const parsed = parseDataResponseMessage(RolandGR55SysExConfig, message);
+    if (!parsed || parsed.address < systemAddress || parsed.address >= systemAddress + systemSpan) {
+      continue;
+    }
+    if (!isValidChecksum(parsed)) {
+      throw new SyxError('bad-checksum');
+    }
+    const offset = parsed.address - systemAddress;
+    if (offset + parsed.valueBytes.length > systemSpan) {
+      throw new SyxError('out-of-range');
+    }
+    writes.push({ offset, bytes: Uint8Array.from(parsed.valueBytes) });
+  }
+  if (writes.length === 0) {
+    throw new SyxError('no-patch-data');
+  }
+  return writes;
+}
+
+/** The whole pedal in one file: the system stretches first, then every slot. */
+export function encodePedalBackupSyx(system: Uint8Array, slots: readonly SlotImage[]): Uint8Array {
+  return concatenate([system, encodeSlotBackupSyx(slots)]);
+}

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'reac
 import { Link, useParams } from 'react-router-dom';
 import { useT } from '../../copy';
 import { confirmDiscard } from './dirtyGuard';
+import { downloadBytes as download } from './download';
+import { TopNav } from './TopNav';
 import type { Gr55Editor, SlotDiffEntry } from './editor';
 import { editorHref } from './pages';
 import { slotsOfMode } from './slots';
@@ -15,17 +17,6 @@ export type { Slot };
 /** The patch list of the pedal in the current GK mode, as slot cards. */
 export function userSlots(editor: Gr55Editor): Slot[] {
   return slotsOfMode(editor.gkMode);
-}
-
-function download(bytes: Uint8Array, fileName: string): void {
-  const url = URL.createObjectURL(
-    new Blob([bytes as Uint8Array<ArrayBuffer>], { type: 'application/octet-stream' }),
-  );
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 function fileNameFor(patchName: string): string {
@@ -286,16 +277,7 @@ export function Library({
   return (
     <>
       <div className="library-head">
-        <nav className="top-nav" aria-label={t('gr55.navLibrary')}>
-          <Link to="/gr55/editor">{t('gr55.navEditor')}</Link>
-          <Link to="/gr55/patches" aria-current="page">
-            {t('gr55.navLibrary')}
-          </Link>
-          <Link to="/gr55/palco">{t('gr55.navStage')}</Link>
-          <Link className="top-device" to="/gr55/device">
-            {t('gr55.navDevice')} <span className="dot" aria-hidden="true" />
-          </Link>
-        </nav>
+        <TopNav current="library" />
         <h1>{t('library.title')}</h1>
         <p className="hint">{t('library.intro')}</p>
       </div>

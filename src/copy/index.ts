@@ -130,6 +130,21 @@ export function useLocale(): Locale {
   return useContext(LocaleContext);
 }
 
+/** The curated lists of pedal values that have translated labels. */
+export type EnumGroup = keyof Copy['enums'];
+
+/** A pedal value in the given language; the pedal's own wording when there is none. */
+export function enumLabelIn(locale: Locale, group: EnumGroup, raw: string | number): string {
+  const labels = dictionaries[locale].enums[group] as Record<string, string>;
+  return labels[String(raw)] ?? String(raw);
+}
+
+/** Labels for a curated list of pedal values, following the chosen language. */
+export function useEnumLabel(): (group: EnumGroup, raw: string | number) => string {
+  const locale = useContext(LocaleContext);
+  return (group, raw) => enumLabelIn(locale, group, raw);
+}
+
 /** The translate function of the current language; its identity changes with the language. */
 export function useT(): Translate {
   return translators[useContext(LocaleContext)];

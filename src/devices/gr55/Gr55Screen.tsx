@@ -11,7 +11,12 @@ import { Canvas } from './Canvas';
 import { DeviceScreen } from './DeviceScreen';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
-import { libraryRoute } from './routes';
+import { deviceRoute, gkRoute, libraryRoute, setupRoute } from './routes';
+import { GkSetsScreen } from './GkSets';
+import { loadSetup } from './setupState';
+import { SystemProvider } from './SystemParts';
+import { Gr55System } from './systemState';
+import { Wizard } from './Wizard';
 import { PATCH_BLOCKS } from './patchLayout';
 import { DiscardNotice } from './DiscardNotice';
 import { openSyncCache } from './sync/cache';
@@ -40,6 +45,7 @@ interface Connection {
   session: MidiSession;
   editor: Gr55Editor;
   sync: SyncEngine;
+  system: Gr55System;
 }
 
 type Phase =
@@ -156,7 +162,8 @@ export default function Gr55Screen() {
         }
       });
       const sync = new SyncEngine(editor, openSyncCache());
-      live.current = { session, editor, sync };
+      const system = new Gr55System(session);
+      live.current = { session, editor, sync, system };
       await editor.readSystem();
       if (!stillHere()) {
         return;
@@ -176,7 +183,7 @@ export default function Gr55Screen() {
           output: String((output as unknown as MIDIPort).id),
         } satisfies RememberedPorts),
       );
-      setPhase({ kind: 'connected', connection: { session, editor, sync } });
+      setPhase({ kind: 'connected', connection: { session, editor, sync, system } });
       // The cache shows at once; the pedal is then read behind whatever screen is open.
       void sync
         .load()
@@ -216,44 +223,60 @@ export default function Gr55Screen() {
   };
 
   if (phase.kind === 'connected') {
-    const { editor, sync } = phase.connection;
+    const { editor, session, sync, system } = phase.connection;
+    // A pedal met for the first time is walked through the stage setup before anything else.
+    const home = loadSetup().complete ? libraryRoute : setupRoute;
     return (
       <SyncProvider value={sync}>
-        <DiscardNotice editor={editor} />
-        <SyncBadge editor={editor} />
-        <Routes>
-          <Route index element={<Navigate to={libraryRoute} replace />} />
-          {/* While connected the setup screen exists only to redirect. */}
-          <Route path="setup" element={<Navigate to={libraryRoute} replace />} />
-          <Route path="patches" element={<Library editor={editor} onError={setError} />} />
-          <Route path="patches/:slot" element={<Library editor={editor} onError={setError} />} />
-          {/* The canvas is the editor's root; each block opens its inspector. */}
-          <Route path="editor" element={<Canvas editor={editor} />} />
-          <Route
-            path="editor/:pageId/:sectionSlug?"
-            element={
-              <Workspace
-                editor={editor}
-                error={error}
-                onError={setError}
-                onDisconnect={disconnect}
-              />
-            }
-          />
-          <Route path="palco" element={<Stage editor={editor} />} />
-          <Route path="device" element={<DeviceScreen editor={editor} onError={setError} />} />
-          <Route
-            path="*"
-            element={
-              <main className="gate">
-                <h1>{t('app.notFound')}</h1>
-                <p>
-                  <Link to={libraryRoute}>{t('library.title')}</Link>
-                </p>
-              </main>
-            }
-          />
-        </Routes>
+        <SystemProvider value={system}>
+          <DiscardNotice editor={editor} />
+          <SyncBadge editor={editor} />
+          <Routes>
+            <Route index element={<Navigate to={home} replace />} />
+            <Route
+              path={setupRoute}
+              element={<Wizard editor={editor} session={session} onError={setError} />}
+            />
+            {/* Addresses from before the stage-first routes. */}
+            <Route path="setup" element={<Navigate to={`../${setupRoute}`} replace />} />
+            <Route path="device" element={<Navigate to={`../${deviceRoute}`} replace />} />
+            <Route path="patches" element={<Library editor={editor} onError={setError} />} />
+            <Route path="patches/:slot" element={<Library editor={editor} onError={setError} />} />
+            {/* The canvas is the editor's root; each block opens its inspector. */}
+            <Route path="editor" element={<Canvas editor={editor} />} />
+            <Route
+              path="editor/:pageId/:sectionSlug?"
+              element={
+                <Workspace
+                  editor={editor}
+                  error={error}
+                  onError={setError}
+                  onDisconnect={disconnect}
+                />
+              }
+            />
+            <Route path="palco" element={<Stage editor={editor} />} />
+            <Route
+              path={deviceRoute}
+              element={<DeviceScreen editor={editor} onError={setError} />}
+            />
+            <Route
+              path={gkRoute}
+              element={<GkSetsScreen editor={editor} session={session} onError={setError} />}
+            />
+            <Route
+              path="*"
+              element={
+                <main className="gate">
+                  <h1>{t('app.notFound')}</h1>
+                  <p>
+                    <Link to={libraryRoute}>{t('library.title')}</Link>
+                  </p>
+                </main>
+              }
+            />
+          </Routes>
+        </SystemProvider>
       </SyncProvider>
     );
   }

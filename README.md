@@ -29,13 +29,15 @@ Home → Connect (resumes when ports still work) → Bank | Global
 - **Connect.** Remembers MIDI ports only (not pedal settings). Silent resume when those ports
   still answer as a GR-55. DEV: simulated pedal.
 - **Bank** (`#/gr55/bank`). Where you are (`USER xx-y`), the three keys of the bank (instrument
-  icons), CTL / expression, mixer and chain. Maestro on this page can configure the whole bank
+  icons), always-visible Tone Deck with searchable tones, Simple use-case profiles or Advanced
+  OM-grouped editor for the sounding patch. Maestro on this page can configure the whole bank
   set — not only the sounding key. Writes go to the temporary working copy immediately, then a
   full snapshot.
 - **Global** (`#/gr55/global`). SYSTEM / GK settings. Maestro acts on global only. Same
   immediate-write + snapshot rule (no staging / Apply bar).
 - **Authority.** While you edit, the app ignores pedal churn; when idle, it mirrors the pedal
-  (including patch changes made on the board). **Request snapshot** re-reads everything.
+  (including patch changes made on the board). **Sync** reloads the working copy from
+  the pedal (on a USER slot, from what that slot has stored).
 - **Exit.** Top-left: disconnect and forget remembered ports, back to Home.
 
 Parameter taxonomy (manual-derived): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).

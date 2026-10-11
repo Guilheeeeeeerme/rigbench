@@ -47,7 +47,7 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 | --- | --- | --- |
 | **Home** | `#/` | Pick GR-55 or a placeholder |
 | **Connect** | `#/gr55/conectar` | MIDI ports; silent resume when remembered ports still valid |
-| **Bank** | `#/gr55/bank` | Three-key bank, CTL/EXP, instruments + chain; Maestro scopes the bank set |
+| **Bank** | `#/gr55/bank` | Three-key bank, Tone Deck + Simple/Advanced; Maestro scopes the bank set |
 | **Global** | `#/gr55/global` | SYSTEM / GK + Maestro (system scope) |
 
 Legacy addresses redirect into Bank or Global. `pages.ts` remains field-key SoT for Maestro.

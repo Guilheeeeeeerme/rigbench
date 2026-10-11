@@ -97,8 +97,7 @@ describe('assembleContext', () => {
       query: 'reverb chorus depth time',
       charBudget: 1,
     });
-    const briefCount = fields.filter((field) => field.depth === 'brief').length;
-    expect(briefCount).toBe(fullCount);
+    expect(fields.every((field) => field.depth !== 'full')).toBe(true);
     expect(serializeContext(fields, baseRequest).length).toBeLessThan(fullLen);
   });
 
@@ -122,3 +121,31 @@ describe('assembleContext', () => {
     expect(serialized).toContain(SEARCH_VOCABULARY_HINT);
   });
 });
+
+describe('assembleContext recipe queries', () => {
+  it('keeps CTL and tone keys full without dumping 900 tone names', async () => {
+    const { buildFieldRegistry } = await import('./fieldRegistry');
+    const registry = buildFieldRegistry('GUITAR');
+    const query =
+      'Patch USER 01-2 metais: INIT, PCM1 Brass ON level 100, Normal Pickup 100, CTL TONE SW';
+    const fields = assembleContext(registry, (entry) => String(entry.fieldKey), {
+      query,
+      patchName: 'Solo',
+      sourceNote: '01-2',
+      modeNote: 'GUITAR',
+    });
+    const serialized = serializeContext(fields, {
+      query,
+      patchName: 'Solo',
+      sourceNote: '01-2',
+      modeNote: 'GUITAR',
+    });
+    expect(serialized).toContain('DATA CONTRACT');
+    expect(serialized).toContain('pedal-gk/ctl/function');
+    expect(serialized).toContain('pcm1/tone/toneSelect');
+    expect(serialized).toMatch(/TONE CANDIDATES:|candidates:/i);
+    expect(serialized.length).toBeLessThan(20_000);
+    expect(serialized).not.toContain('Machine Gun');
+  });
+});
+

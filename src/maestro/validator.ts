@@ -38,6 +38,42 @@ function nearestLabel(value: string, labels: readonly string[]): string | undefi
   return bestDist <= 2 ? best : undefined;
 }
 
+/** Exact, prefix, or unique substring match for large enums (PCM tones). */
+function resolveEnumLabel(
+  value: string,
+  labels: readonly string[],
+): { ok: true; label: string } | { ok: false; reason: string } {
+  const raw = value.trim();
+  const exact = labels.find((label) => label.toLowerCase() === raw.toLowerCase());
+  if (exact) return { ok: true, label: exact };
+
+  const needle = raw.toLowerCase();
+  if (needle.length < 2) {
+    return { ok: false, reason: 'unknown-enum-value' };
+  }
+  const starts = labels.filter((label) => label.toLowerCase().startsWith(needle));
+  if (starts.length === 1) return { ok: true, label: starts[0] };
+  if (starts.length > 1) {
+    return {
+      ok: false,
+      reason: `did you mean: ${starts.slice(0, 8).join(' | ')}?`,
+    };
+  }
+  const contains = labels.filter((label) => label.toLowerCase().includes(needle));
+  if (contains.length === 1) return { ok: true, label: contains[0] };
+  if (contains.length > 1) {
+    return {
+      ok: false,
+      reason: `did you mean: ${contains.slice(0, 8).join(' | ')}?`,
+    };
+  }
+  const suggestion = nearestLabel(raw, labels);
+  return {
+    ok: false,
+    reason: suggestion ? `did you mean: ${suggestion}?` : 'unknown-enum-value',
+  };
+}
+
 function asciiPrintable(text: string): string {
   return [...text]
     .map((ch) => {
@@ -65,6 +101,7 @@ function coerceBoolean(
   const type = entry.ref.definition.type;
   const trueLabel = isBooleanField(type) ? type.trueLabel : 'On';
   const falseLabel = isBooleanField(type) ? type.falseLabel : 'Off';
+  const inverted = isBooleanField(type) ? type.invertedForDisplay : false;
   if (typeof value === 'boolean') {
     return { ok: true, value, proposed: value ? trueLabel : falseLabel };
   }
@@ -72,18 +109,28 @@ function coerceBoolean(
     if (value === 1) return { ok: true, value: true, proposed: trueLabel };
     if (value === 0) return { ok: true, value: false, proposed: falseLabel };
   }
-  const raw = String(value).trim().toLowerCase();
-  const truthy = new Set(['true', 'on', '1', trueLabel.toLowerCase()]);
-  const falsy = new Set(['false', 'off', '0', falseLabel.toLowerCase()]);
+  const raw = String(value).trim().toLowerCase().normalize('NFD').replace(/\p{M}/gu, '');
+  // Mute fields: true=MUTE, false=UNMUTE. Musician "on/ligar" means sounding.
+  if (inverted || entry.fieldKey.toLowerCase().includes('mute')) {
+    if (['mute', 'muted', 'true', '1', trueLabel.toLowerCase()].includes(raw)) {
+      return { ok: true, value: true, proposed: trueLabel };
+    }
+    if (
+      ['unmute', 'sound', 'sounding', 'false', '0', falseLabel.toLowerCase()].includes(raw)
+    ) {
+      return { ok: true, value: false, proposed: falseLabel };
+    }
+    if (['on', 'ligar', 'ligado'].includes(raw)) {
+      return { ok: true, value: false, proposed: falseLabel };
+    }
+    if (['off', 'desligar', 'desligado'].includes(raw)) {
+      return { ok: true, value: true, proposed: trueLabel };
+    }
+  }
+  const truthy = new Set(['true', 'on', '1', 'ligar', 'ligado', trueLabel.toLowerCase()]);
+  const falsy = new Set(['false', 'off', '0', 'desligar', 'desligado', falseLabel.toLowerCase()]);
   if (truthy.has(raw)) return { ok: true, value: true, proposed: trueLabel };
   if (falsy.has(raw)) return { ok: true, value: false, proposed: falseLabel };
-  // PT speech often echoes as LIGAR/DESLIGAR — suggest, never auto-apply.
-  if (raw === 'ligar') {
-    return { ok: false, proposed: String(value), reason: `did you mean: ${trueLabel}?` };
-  }
-  if (raw === 'desligar') {
-    return { ok: false, proposed: String(value), reason: `did you mean: ${falseLabel}?` };
-  }
   const suggestion = nearestLabel(String(value), [trueLabel, falseLabel, 'ON', 'OFF']);
   return {
     ok: false,
@@ -152,25 +199,18 @@ function validateOne(
     case 'enum': {
       const labels = entry.labels ?? [];
       const raw = String(change.value);
-      const exact = labels.find((label) => label.toLowerCase() === raw.toLowerCase());
-      if (exact) {
+      const resolved = resolveEnumLabel(raw, labels);
+      if (resolved.ok) {
         return {
           change,
           entry,
           action: 'accept',
           current,
-          proposed: exact,
-          coerced: exact,
+          proposed: resolved.label,
+          coerced: resolved.label,
         };
       }
-      const suggestion = nearestLabel(raw, labels);
-      return reject(
-        change,
-        entry,
-        current,
-        raw,
-        suggestion ? `did you mean: ${suggestion}?` : 'unknown-enum-value',
-      );
+      return reject(change, entry, current, raw, resolved.reason);
     }
     case 'string': {
       const size = entry.ref.definition.size;

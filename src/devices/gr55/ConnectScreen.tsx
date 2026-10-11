@@ -11,6 +11,7 @@ import { PATCH_BLOCKS } from './patchLayout';
 import {
   connectSelectedPorts,
   connectSimulatedPedal,
+  disconnectPedal,
   requestMidiAccess,
 } from './connectionThunks';
 
@@ -103,7 +104,10 @@ export function ConnectScreen() {
         <p className="status" role="status">
           {progress === 0
             ? t('connection.connecting')
-            : t('gr55.reading', progress, PATCH_BLOCKS.length)}
+            : t('gr55.reading', progress, PATCH_BLOCKS.length)}{' '}
+          <button type="button" onClick={() => dispatch(disconnectPedal())}>
+            {t('connection.cancel')}
+          </button>
         </p>
       )}
       {problem && (
@@ -116,7 +120,6 @@ export function ConnectScreen() {
         <p className="hint">
           <button
             type="button"
-            disabled={connecting}
             onClick={() => void dispatch(connectSimulatedPedal())}
           >
             {t('connection.simulate')}

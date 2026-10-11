@@ -52,6 +52,7 @@ export const ptBR: typeof en = {
       'Nenhuma porta MIDI encontrada. Confira o cabo USB e se o driver do Roland GR-55 está instalado.',
     connect: 'Conectar',
     connecting: 'Procurando o GR-55…',
+    cancel: 'Cancelar',
     noReply:
       'Nada respondeu nestas portas. Confira se o pedal está ligado e se as duas portas são dele.',
     wrongDevice: 'O dispositivo nestas portas respondeu, mas não é um GR-55.',
@@ -74,6 +75,38 @@ export const ptBR: typeof en = {
     bankPedals: 'CTL e expression',
     bankChatHint:
       'O chat nesta página pode ajustar tudo deste banco — as três teclas, CTL, expression e o patch que está soando.',
+    bankMode: {
+      label: 'Modo de edição do banco',
+      simple: 'Simples',
+      advanced: 'Avançado',
+    },
+    toneDeck: {
+      title: 'Timbres e mix',
+      noTone: 'Sem timbre',
+    },
+    tonePicker: {
+      close: 'Fechar',
+      search: 'Buscar timbres',
+      searchPlaceholder: 'Buscar timbres…',
+      recent: 'Recentes',
+      all: 'Todos os timbres',
+      empty: 'Nenhum timbre corresponde a essa busca.',
+      typeToSearch: (count: number) =>
+        `Mostrando uma página de ${count} timbres — digite para buscar o resto.`,
+      pcm1Title: 'Timbre PCM 1',
+      pcm2Title: 'Timbre PCM 2',
+      modelingTitle: 'Timbre de modelagem',
+    },
+    simple: {
+      title: 'Perfis simples',
+      hint: 'Predefinições em linguagem de músico que ajustam vários parâmetros de uma vez. Os timbres ficam no painel acima.',
+      applyFailed: (reason: string) => `Não foi possível aplicar esse perfil (${reason}).`,
+    },
+    advanced: {
+      title: 'Avançado',
+      showAll: 'Mostrar todos os parâmetros',
+      pages: 'Seções do patch',
+    },
     navLibrary: 'Slots e arquivos',
     navDevice: 'Configuração',
     navGk: 'GK sets',
@@ -81,8 +114,12 @@ export const ptBR: typeof en = {
     navMore: 'Mais',
     navRecalibrate: 'Recalibrar instrumento',
     exit: 'Sair',
-    requestSnapshot: 'Pedir snapshot',
-    snapshotBusy: 'Lendo o pedal…',
+    sync: 'Sincronizar',
+    syncBusy: 'Sincronizando…',
+    syncHint:
+      'Recarrega o que o pedal tem gravado. Em um USER slot, substitui as edições temporárias pelo patch salvo.',
+    requestSnapshot: 'Sincronizar',
+    snapshotBusy: 'Sincronizando…',
     authorityApp: 'Confiando no app',
     authorityPedal: 'Espelhando o pedal',
     patchSlot: 'Slot do patch',
@@ -569,6 +606,21 @@ export const ptBR: typeof en = {
       load: 'Carregar',
       cancel: 'Cancelar',
       loaded: (slot: string) => `Carregado ${slot}.`,
+    },
+    bankRecipe: {
+      progress: 'Teclas do bank',
+      writeAllHint: 'As mudanças ficam na cópia temporária até você apertar WRITE.',
+      testing: 'No pedal (temporário) — teste agora',
+      written: 'Gravado no USER',
+      pending: 'Aguardando',
+      stepReady: (slot: string, name: string, index: number, total: number) =>
+        `USER ${slot} (“${name}”) está na cópia temporária — ${index}/${total}. Teste e depois WRITE.`,
+      write: (slot: string, name: string) => `WRITE USER ${slot} (“${name}”)`,
+      singleWritten: (slot: string) => `Gravei ${slot} na memória USER.`,
+      allDone: (total: number) => `Todas as ${total} teclas gravadas na memória USER.`,
+      needConnection: 'Conecte o pedal (ou use o simulado) antes de aplicar.',
+      verifyFailed: (detail: string) => `O pedal não confirmou as mudanças temporárias: ${detail}`,
+      writeFailed: (detail: string) => `WRITE falhou: ${detail}`,
     },
     policy: {
       systemDenied: 'Ajustes de sistema não passam pelo Maestro. Abra Dispositivo.',

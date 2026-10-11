@@ -23,7 +23,7 @@ export interface PolicyContext {
 /**
  * What Maestro may do. Deny is final.
  *
- * Bank page: working-copy field edits + ask to switch any patch (whole bank set).
+ * Bank page: working-copy field edits, USER slot WRITE for recipes, ask to switch keys.
  * Global page: system immediate writes.
  */
 export function decide(
@@ -31,8 +31,12 @@ export function decide(
   action: PolicyAction,
   ctx: PolicyContext,
 ): PolicyDecision {
-  if (action === 'writeSlot' || action === 'factoryReset') {
+  if (action === 'factoryReset') {
     return 'deny';
+  }
+  if (action === 'writeSlot') {
+    // Bank recipes may PATCH WRITE into the selected USER slot after temp edits.
+    return ctx.session === 'bank' || ctx.session === 'patch' ? 'allow' : 'deny';
   }
   if (action === 'writeSystem' || action === 'stageSystemPlan') {
     return ctx.session === 'system' ? 'allow' : 'deny';

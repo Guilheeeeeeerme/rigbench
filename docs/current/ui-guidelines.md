@@ -79,10 +79,19 @@ docs update.
 - No flat single-purpose “dashboard card grids” that fight Stage’s one-job layout.
 - No inventing a second accent that competes with `#5E6AD2` for chrome (scope chips excepted).
 
+## Bank (mobile-first)
+
+Bank patch UI SoT: [bank-patch-config.md](./bank-patch-config.md).
+
+- **Tone Deck** stays above Simple/Advanced; tone rows ≥48px tap targets; picker is a
+  fixed overlay with safe-area insets.
+- Simple profile pills: full-width stack under 640px; two columns above.
+- AppShell ≤900px: config main above Maestro; chat collapsed by default on first load.
+
 ## Checklist before shipping UI
 
 1. Tokens only — no new hex for chrome colors.
 2. Inter still loaded; body still ~17px.
 3. Focus ring visible on keyboard path.
-4. Stage / Connect / AppNav still readable on a phone-width viewport.
+4. Bank / Connect / AppNav still readable on a phone-width viewport.
 5. Update this file if you add a token; point from [docs/current/README.md](./README.md).

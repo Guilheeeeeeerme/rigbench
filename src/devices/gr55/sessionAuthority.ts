@@ -84,7 +84,25 @@ export async function runAppMutation(
   }
 }
 
-/** Manual “Request snapshot” — briefly holds app authority so polls do not race. */
+/**
+ * Manual Sync from the pedal.
+ *
+ * Re-reads system + temporary patch + location. When `reloadWorkingCopy` is
+ * provided (Bank: re-select the current USER slot), the sounding buffer is
+ * replaced with what USER memory has persisted — not leftover temp edits.
+ */
+export async function syncFromPedal(
+  source: SnapshotSource,
+  reloadWorkingCopy?: () => void | Promise<void>,
+): Promise<void> {
+  return runAppMutation(async () => {
+    if (reloadWorkingCopy) {
+      await reloadWorkingCopy();
+    }
+  }, source);
+}
+
+/** @deprecated use syncFromPedal */
 export async function requestSnapshot(source: SnapshotSource): Promise<void> {
-  return runAppMutation(() => undefined, source);
+  return syncFromPedal(source);
 }

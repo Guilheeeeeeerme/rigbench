@@ -23,10 +23,24 @@ describe('validatePlan', () => {
     expect(plan.rejected[0].reason).toBe('unknown-parameter');
   });
 
-  it('rejects PT boolean LIGAR with a did-you-mean hint', () => {
+  it('accepts PT boolean LIGAR as on for effect switches', () => {
     const plan = validatePlan([{ key: chorusSwitch.key, value: 'LIGAR' }], index, readCurrent);
-    expect(plan.rejected).toHaveLength(1);
-    expect(plan.rejected[0].reason).toMatch(/did you mean:/i);
+    expect(plan.accepted).toHaveLength(1);
+    expect(plan.accepted[0].coerced).toBe(true);
+  });
+
+  it('maps ligar/on to UNMUTE on inverted mute fields', () => {
+    const mute = index.get('pcm1/tone/muteSwitch')!;
+    const plan = validatePlan([{ key: mute.key, value: 'ligar' }], index, readCurrent);
+    expect(plan.accepted).toHaveLength(1);
+    expect(plan.accepted[0].coerced).toBe(false);
+  });
+
+  it('resolves a unique PCM tone prefix', () => {
+    const tone = index.get('pcm1/tone/toneSelect')!;
+    const plan = validatePlan([{ key: tone.key, value: 'Harmonica 1' }], index, readCurrent);
+    expect(plan.accepted).toHaveLength(1);
+    expect(plan.accepted[0].coerced).toBe('Harmonica 1');
   });
 
   it('rejects assigns as not-writable-v1 with an editor link', () => {

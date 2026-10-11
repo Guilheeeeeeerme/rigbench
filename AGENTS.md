@@ -33,7 +33,7 @@ Config scope (global vs patch memory): [docs/current/gr55-config-scope.md](./doc
 | --- | --- |
 | `#/` | **Home** — pick GR-55 or a placeholder device |
 | `#/gr55/conectar` | **Connect** — MIDI ports / simulated pedal |
-| `#/gr55/bank` | **Bank** — here (USER xx-y), three keys with instrument icons, CTL/expression, mixer + chain; Maestro scopes the whole bank set |
+| `#/gr55/bank` | **Bank** — here (USER xx-y), three keys, always-visible Tone Deck (searchable tones), Simple profiles / Advanced editor; Maestro scopes the whole bank set |
 | `#/gr55/global` | **Global** — SYSTEM / GK + Maestro (system scope only) |
 
 Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …) redirect into Bank or Global.
@@ -43,8 +43,9 @@ Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `disposit
 - **App write** (UI or Maestro) → DT1 immediately → **full snapshot** (system + temp patch + location). No pending/staged local state.
 - While a write/snapshot is in flight → **trust the app** (`sessionAuthority`: ignore pedal churn).
 - When idle → **mirror the pedal** (remote DT1 / program change).
-- Explicit **Request snapshot** control.
-- Slot WRITE (save to USER) is out of this WIP cut.
+- Explicit **Sync** control (reload system + working copy from the pedal; on a USER
+  slot, copies USER memory into the temporary patch so leftover temp edits are dropped).
+- Slot WRITE: Bank Maestro applies recipes to the temporary patch only; the user presses **WRITE** to call `writeToUserSlot`.
 - localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` Bank|Global). Never pedal field values.
 
 ## Hard rules
@@ -53,7 +54,7 @@ Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `disposit
 - **No GPL FloorBoard** material (text, XML, skins) in the repo. Address facts only; MIT fork CASouthEast is the system-map reference (see README credits).
 - **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
 - **Writes**: patch and system parameters DT1 immediately; then full snapshot. No ApplyBar / staging.
-- **Maestro**: BYOK Gemini only; never commit API keys or put them in `.env`/fixtures/logs. Model never sees raw SysEx addresses. Policy SoT: `src/maestro/policy.ts`. Scoped by page (bank vs system). On Bank, chat may edit the sounding working copy and ask to switch any key in the bank set.
+- **Maestro**: BYOK Gemini for free chat; never commit API keys. Model never sees raw SysEx. Policy SoT: `policy.ts`. Manual SoT: `manualCanon.ts`. **Scope isolation:** Bank → temporary patch via `recipePlan.ts` (USER WRITE only on explicit WRITE button); Global → SYSTEM/GK only (`systemPlan.ts`). Local recipes auto-apply to temp; no Gemini key required for those.
 - **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
 - Prefer targeted reads and the smallest sufficient change. Do not run broad refactors or the full test matrix unless asked.
 
@@ -64,6 +65,7 @@ Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `disposit
 | App Redux store (connection resume) | `src/app/store/**` |
 | Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
 | GR-55 shell / pages | `Gr55Screen.tsx`, `AppShell.tsx`, `BankPage.tsx`, `GlobalPage.tsx`, `ConnectScreen.tsx` |
+| Bank Tone Deck / Simple / Advanced | `ToneDeck.tsx`, `TonePicker.tsx`, `SimpleProfiles.tsx`, `AdvancedPatchEditor.tsx`; SoT [docs/current/bank-patch-config.md](./docs/current/bank-patch-config.md) |
 | Icons / voices | `Icons.tsx`, `voices.ts` |
 | Authority + snapshot | `sessionAuthority.ts`, `snapshotHost.ts` |
 | Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |

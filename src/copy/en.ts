@@ -47,6 +47,7 @@ export const en = {
       'No MIDI ports found. Check the USB cable and that the Roland GR-55 driver is installed.',
     connect: 'Connect',
     connecting: 'Looking for the GR-55…',
+    cancel: 'Cancel',
     noReply:
       'Nothing answered on these ports. Check that the pedal is on and that both ports belong to it.',
     wrongDevice: 'The device on these ports answered, but it is not a GR-55.',
@@ -69,6 +70,37 @@ export const en = {
     bankPedals: 'CTL and expression',
     bankChatHint:
       'Chat on this page can set anything in this bank — the three keys, CTL, expression, and the sounding patch.',
+    bankMode: {
+      label: 'Bank edit mode',
+      simple: 'Simple',
+      advanced: 'Advanced',
+    },
+    toneDeck: {
+      title: 'Tones & mix',
+      noTone: 'No tone',
+    },
+    tonePicker: {
+      close: 'Close',
+      search: 'Search tones',
+      searchPlaceholder: 'Search tones…',
+      recent: 'Recent',
+      all: 'All tones',
+      empty: 'No tones match that search.',
+      typeToSearch: (count: number) => `Showing a page of ${count} tones — type to search the rest.`,
+      pcm1Title: 'PCM 1 tone',
+      pcm2Title: 'PCM 2 tone',
+      modelingTitle: 'Modeling tone',
+    },
+    simple: {
+      title: 'Simple profiles',
+      hint: 'Musician-language presets that set many parameters at once. Tones stay in the deck above.',
+      applyFailed: (reason: string) => `Could not apply that profile (${reason}).`,
+    },
+    advanced: {
+      title: 'Advanced',
+      showAll: 'Show all parameters',
+      pages: 'Patch sections',
+    },
     navLibrary: 'Slots & files',
     navDevice: 'Configuration',
     navGk: 'GK sets',
@@ -76,8 +108,15 @@ export const en = {
     navMore: 'More',
     navRecalibrate: 'Recalibrate instrument',
     exit: 'Exit',
-    requestSnapshot: 'Request snapshot',
-    snapshotBusy: 'Reading pedal…',
+    /** Header control: pull system + working copy from the pedal (USER memory when on a slot). */
+    sync: 'Sync',
+    syncBusy: 'Syncing…',
+    syncHint:
+      'Reload what the pedal has stored. On a USER slot this replaces the temporary edits with the saved patch.',
+    /** @deprecated use sync */
+    requestSnapshot: 'Sync',
+    /** @deprecated use syncBusy */
+    snapshotBusy: 'Syncing…',
     authorityApp: 'Trusting the app',
     authorityPedal: 'Mirroring the pedal',
     patchSlot: 'Patch slot',
@@ -597,6 +636,21 @@ export const en = {
       load: 'Load',
       cancel: 'Cancel',
       loaded: (slot: string) => `Loaded ${slot}.`,
+    },
+    bankRecipe: {
+      progress: 'Bank keys',
+      writeAllHint: 'Changes stay on the temporary patch until you press WRITE.',
+      testing: 'On pedal (temporary) — test now',
+      written: 'Written to USER',
+      pending: 'Waiting',
+      stepReady: (slot: string, name: string, index: number, total: number) =>
+        `USER ${slot} (“${name}”) is on the temporary patch — ${index}/${total}. Test it, then WRITE.`,
+      write: (slot: string, name: string) => `WRITE USER ${slot} (“${name}”)`,
+      singleWritten: (slot: string) => `Wrote ${slot} into USER memory.`,
+      allDone: (total: number) => `All ${total} keys written to USER memory.`,
+      needConnection: 'Connect the pedal (or use the simulated pedal) before applying.',
+      verifyFailed: (detail: string) => `Pedal did not confirm the temporary changes: ${detail}`,
+      writeFailed: (detail: string) => `WRITE failed: ${detail}`,
     },
     policy: {
       systemDenied: 'System settings are not available through Maestro. Open Device instead.',

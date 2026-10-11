@@ -40,6 +40,99 @@ describe('runTurn', () => {
     expect(result.state).toBe('needsKey');
   });
 
+  it('compiles a solo+guitar recipe without calling Gemini', async () => {
+    const provider = fakeProvider([]);
+    const result = await runTurn(
+      'Patch USER 01-1: Solo de Gaita + Violão 50/50. INIT, PCM1 gaita/harmonica ON, Normal Pickup 100, CTL PCM1 SW TOGGLE. WRITE USER 01-1.',
+      deps(provider, {
+        getKey: () => undefined,
+        locale: 'pt-BR',
+        session: 'bank',
+        slots: {
+          resolve: (label) =>
+            /01-1|01:1/i.test(label)
+              ? { label: 'U01-1', bankMsb: 0, programChange: 0 }
+              : undefined,
+        },
+      }),
+    );
+    expect(provider.reply).not.toHaveBeenCalled();
+    expect(result.state).toBe('proposal');
+    expect(result.autoApply).toBe(true);
+    expect(result.plan?.accepted.length).toBeGreaterThan(10);
+    expect(result.loadSlot?.label).toBe('U01-1');
+    expect(result.reply).toMatch(/TONE SW|Harmonica|USER 01-1/i);
+  });
+
+  it('compiles the EN three-key bank set with select+apply steps', async () => {
+    const provider = fakeProvider([]);
+    const prompt = `
+USER 01-1: Accordion Solo + Piezo Acoustic. PCM1 Accordion. CTL OFF piezo only.
+USER 01-2: Brass Section Solo + Piezo Acoustic. PCM1 Brass. CTL TOGGLE.
+USER 01-3: Cumbia Synth Lead + Piezo Acoustic. PCM1 Synth Reed. Initialized Normal Pickup 100.
+CTL pedal PCM1 SW LATCH.`;
+    const result = await runTurn(
+      prompt,
+      deps(provider, {
+        getKey: () => undefined,
+        locale: 'en',
+        session: 'bank',
+        slots: {
+          resolve: (label) => {
+            const m = label.match(/0*1\s*[:-]\s*([123])/i);
+            if (!m) return undefined;
+            const pc = Number(m[1]) - 1;
+            return { label: `U01-${m[1]}`, bankMsb: 0, programChange: pc };
+          },
+        },
+      }),
+    );
+    expect(provider.reply).not.toHaveBeenCalled();
+    expect(result.state).toBe('proposal');
+    expect(result.autoApply).toBe(true);
+    expect(result.bankSteps).toHaveLength(3);
+    expect(result.bankSteps![0]!.slotLabel).toBe('01-1');
+    expect(result.bankSteps![1]!.slotLabel).toBe('01-2');
+    expect(result.bankSteps![2]!.slotLabel).toBe('01-3');
+    expect(result.reply).toMatch(/Bank set|TONE SW|temporary|WRITE/i);
+  });
+
+  it('compiles a Caimbé GK SYSTEM recipe only on Global session', async () => {
+    const provider = fakeProvider([]);
+    const values = new Map<number, unknown>([[0, 0]]);
+    const system = {
+      read: (field: { address: number }) => ({
+        ok: true as const,
+        value: values.get(field.address) ?? 0,
+      }),
+      write: vi.fn(),
+    };
+    // gkSetSelect address from SYSTEM — stub returns 0 for active set 1.
+    const { SYSTEM } = await import('../devices/gr55/systemMap');
+    values.set(SYSTEM.common.gkSetSelect.address, 0);
+
+    const onBank = await runTurn(
+      'violao caimbe godin nylon piezo configuracao global gk sensibilidade',
+      deps(provider, { getKey: () => undefined, locale: 'pt-BR', session: 'bank' }),
+    );
+    expect(onBank.state).toBe('answer');
+    expect(onBank.reply).toMatch(/Global/i);
+
+    const onGlobal = await runTurn(
+      'violao caimbe godin nylon piezo configuracao global gk sensibilidade ghost',
+      deps(provider, {
+        getKey: () => undefined,
+        locale: 'pt-BR',
+        session: 'system',
+        system: system as never,
+      }),
+    );
+    expect(provider.reply).not.toHaveBeenCalled();
+    expect(onGlobal.state).toBe('proposal');
+    expect(onGlobal.autoApply).toBe(true);
+    expect(onGlobal.systemPlan?.accepted.length).toBeGreaterThan(8);
+  });
+
   it('runs exactly one repair round on malformed JSON then degrades', async () => {
     const provider = fakeProvider(['not-json', 'still-not-json']);
     const result = await runTurn('hi', deps(provider));
@@ -65,6 +158,7 @@ describe('runTurn', () => {
     const result = await runTurn(
       'load U01:1',
       deps(provider, {
+        session: 'bank',
         slots: {
           resolve: (label) =>
             label === 'U01:1' ? { label: 'U01:1', bankMsb: 0, programChange: 0 } : undefined,

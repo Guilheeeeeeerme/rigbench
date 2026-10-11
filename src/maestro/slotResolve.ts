@@ -3,7 +3,7 @@ import { slotsOfMode } from '../devices/gr55/slots';
 import type { LoadSlotAsk } from './orchestrator';
 
 /**
- * Resolve model/user slot labels (`U14:2`, `U14-2`, `14-2`) against slotsOfMode.
+ * Resolve model/user slot labels (`USER 01-2`, `U14:2`, `U14-2`, `14-2`) against slotsOfMode.
  */
 export function resolveSlotLabel(mode: GkMode, raw: string): LoadSlotAsk | undefined {
   const trimmed = raw.trim();
@@ -19,7 +19,7 @@ export function resolveSlotLabel(mode: GkMode, raw: string): LoadSlotAsk | undef
     };
   }
 
-  const match = trimmed.match(/^U?(\d{1,3})[:-](\d+)$/i);
+  const match = trimmed.match(/^(?:user\s*)?u?(\d{1,3})\s*[:-]\s*(\d+)$/i);
   if (!match) return undefined;
   const label = `${match[1].padStart(2, '0')}-${match[2]}`;
   const hit = slots.find((slot) => slot.label === label);

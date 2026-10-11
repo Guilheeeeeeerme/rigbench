@@ -4,6 +4,7 @@ import {
   isPedalAuthority,
   readFullSnapshot,
   runAppMutation,
+  syncFromPedal,
 } from './sessionAuthority';
 
 describe('sessionAuthority', () => {
@@ -66,5 +67,36 @@ describe('sessionAuthority', () => {
       },
     });
     expect(hits).toEqual(['loadSystem', 'readSystem', 'readPatch', 'readPatchLocation']);
+  });
+
+  it('syncFromPedal runs reloadWorkingCopy before the trailing snapshot', async () => {
+    const hits: string[] = [];
+    await syncFromPedal(
+      {
+        loadSystem: async () => {
+          hits.push('loadSystem');
+        },
+        readSystem: async () => {
+          hits.push('readSystem');
+        },
+        readPatch: async () => {
+          hits.push('readPatch');
+        },
+        readPatchLocation: async () => {
+          hits.push('readPatchLocation');
+        },
+      },
+      async () => {
+        hits.push('reloadWorkingCopy');
+      },
+    );
+    expect(hits[0]).toBe('reloadWorkingCopy');
+    expect(hits.slice(1)).toEqual([
+      'loadSystem',
+      'readSystem',
+      'readPatch',
+      'readPatchLocation',
+    ]);
+    expect(getAuthority()).toBe('pedal');
   });
 });

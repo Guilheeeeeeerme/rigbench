@@ -3,22 +3,25 @@ import { Link, useLocation } from 'react-router-dom';
 import { getLocale, useT } from '../copy';
 import type { Gr55Editor } from '../devices/gr55/editor';
 import { formatFieldBytes } from '../devices/gr55/editor';
-import { TEMPORARY_PATCH_ADDRESS } from '../devices/gr55/patchLayout';
 import { useConnectionOptional } from '../devices/gr55/connectionRuntime';
 import { globalHref } from '../devices/gr55/routes';
 import { asSnapshotSource } from '../devices/gr55/snapshotHost';
 import { runAppMutation } from '../devices/gr55/sessionAuthority';
 import { slotsOfMode } from '../devices/gr55/slots';
-import type { ValidatedItem, ValidatedPlan } from './contracts';
+import { SYSTEM } from '../devices/gr55/systemMap';
+import { useSystem } from '../devices/gr55/SystemParts';
+import type { ValidatedPlan } from './contracts';
 import { appendMessage, clearHistory, loadHistory, markStale, sourceKeyOf } from './history';
 import type { HistoryThread } from './history';
 import { abortActiveTurn, runTurn } from './orchestrator';
-import type { LoadSlotAsk, TurnResult } from './orchestrator';
+import type { BankApplyStep, LoadSlotAsk, TurnResult } from './orchestrator';
 import { GeminiProvider } from './provider';
 import { buildFieldRegistry, registryIndex } from './fieldRegistry';
 import { forgetApiKey, getApiKey, isRemembered, setApiKey, testApiKey } from './settings';
 import type { SessionId } from './session';
 import { resolveSlotLabel } from './slotResolve';
+import { applyPlanToPedal } from './applyWrites';
+import { applySystemPlan, type SystemPlan } from './systemPlan';
 import { createVoiceInput, voiceSupported } from './voice';
 import type { RegistryEntry } from './fieldRegistry';
 
@@ -63,8 +66,18 @@ interface ChatLine {
   role: 'user' | 'assistant' | 'divider' | 'system';
   text: string;
   plan?: ValidatedPlan;
+  systemPlan?: SystemPlan;
   loadSlot?: LoadSlotAsk;
+  bankSteps?: BankApplyStep[];
+  /** Index of the key currently on the temporary patch (awaiting WRITE). */
+  bankStepIndex?: number;
+  /** Slot waiting for the user to press WRITE (temp already applied). */
+  pendingWrite?: LoadSlotAsk;
+  /** Local recipe applied to temp — do not show Apply/Discard. */
+  autoApplied?: boolean;
   applied?: boolean;
+  /** Pedal write/verify failure. */
+  writeError?: string;
 }
 
 let lineId = 0;
@@ -94,6 +107,7 @@ export function MaestroDrawer({
   const locale = getLocale();
   const location = useLocation();
   const live = useConnectionOptional();
+  const system = useSystem();
   const stageLive = false;
   const patchName = useSyncExternalStore(editor.subscribe, () => editor.patchName);
   const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
@@ -115,9 +129,17 @@ export function MaestroDrawer({
   const voiceRef = useRef<ReturnType<typeof createVoiceInput>>(undefined);
   const lastSource = useRef(sourceKey);
   const lastMode = useRef(gkMode);
+  /** True while a multi-key bank recipe is selecting USER slots — do not wipe chat. */
+  const bankApplyActive = useRef(false);
 
   useEffect(() => {
     if (lastSource.current !== sourceKey || lastMode.current !== gkMode) {
+      // Bank recipes call selectPatch between keys; keep the Continue queue alive.
+      if (bankApplyActive.current) {
+        lastSource.current = sourceKey;
+        lastMode.current = gkMode;
+        return;
+      }
       const note = t(
         'maestro.staleDivider',
         `this talk was about ${patchName} (${sourceLabel(editor)})`,
@@ -172,10 +194,8 @@ export function MaestroDrawer({
   const send = async () => {
     const text = draft.trim();
     if (!text || busy) return;
-    if (!getApiKey()) {
-      setHasKey(false);
-      return;
-    }
+    // Always run the turn — local recipe compilation does not need a Gemini key.
+    setHasKey(Boolean(getApiKey()));
     setDraft('');
     pushLine({ role: 'user', text });
     setThread((prev) => appendMessage(prev, { role: 'user', text }));
@@ -186,6 +206,7 @@ export function MaestroDrawer({
         provider,
         entries,
         index,
+        system,
         locale,
         stageLive,
         session,
@@ -202,6 +223,280 @@ export function MaestroDrawer({
       handleResult(result);
     } finally {
       setBusy(false);
+    }
+  };
+
+  const requireLive = () => {
+    if (!live) {
+      throw new Error(t('maestro.bankRecipe.needConnection'));
+    }
+    return live;
+  };
+
+  const selectSlot = async (slot: LoadSlotAsk) => {
+    const conn = requireLive();
+    await runAppMutation(
+      () => editor.selectPatch(slot.bankMsb, slot.programChange),
+      asSnapshotSource(conn),
+    );
+  };
+
+  /**
+   * Patch CTL (TONE SW) only works when SYSTEM CTL Function = PATCH SETTING.
+   * Otherwise the pedal ignores the whole bank recipe's CTL matrix.
+   */
+  const ensureSystemPatchCtl = async () => {
+    const conn = requireLive();
+    const current = system.read(SYSTEM.pedals.ctlFunction);
+    if (current.ok && current.value === 'PATCH SETTING') return;
+    await runAppMutation(() => {
+      system.write(SYSTEM.pedals.ctlFunction, 'PATCH SETTING');
+    }, asSnapshotSource(conn));
+    await editor.drainWrites();
+  };
+
+  /** DT1 + drain + RQ1 verify on the temporary patch. */
+  const applyTempPlan = async (plan: ValidatedPlan, loadSlot?: LoadSlotAsk) => {
+    const conn = requireLive();
+    let result!: Awaited<ReturnType<typeof applyPlanToPedal>>;
+    // Select + apply under one app-authority lock so a slow patch reload cannot
+    // wipe DT1s between selectPatch settle and the recipe writes.
+    await runAppMutation(async () => {
+      if (loadSlot) {
+        await editor.selectPatch(loadSlot.bankMsb, loadSlot.programChange);
+      }
+      result = await applyPlanToPedal(editor, plan);
+    }, asSnapshotSource(conn));
+    if (result.mismatches.length > 0) {
+      throw new Error(
+        t('maestro.bankRecipe.verifyFailed', result.mismatches.slice(0, 4).join('; ')),
+      );
+    }
+    return result.written;
+  };
+
+  const writePendingSlot = async (slot: LoadSlotAsk) => {
+    const conn = requireLive();
+    const userPatchNumber = slot.bankMsb * 128 + slot.programChange;
+    await runAppMutation(() => editor.writeToUserSlot(userPatchNumber), asSnapshotSource(conn));
+    // Reload USER → temp so the UI matches what was stored.
+    await selectSlot(slot);
+  };
+
+  /** Gemini / single recipe: temp only; optional WRITE button via pendingWrite. */
+  const applyPlan = (lineIdToFlip: string, plan: ValidatedPlan, loadSlot?: LoadSlotAsk) => {
+    void (async () => {
+      try {
+        await ensureSystemPatchCtl();
+        const count = await applyTempPlan(plan, loadSlot);
+        setLines((prev) =>
+          prev.map((line) =>
+            line.id === lineIdToFlip
+              ? {
+                  ...line,
+                  autoApplied: true,
+                  applied: !loadSlot,
+                  pendingWrite: loadSlot,
+                  writeError: undefined,
+                  text: loadSlot
+                    ? t(
+                        'maestro.bankRecipe.stepReady',
+                        loadSlot.label.replace(/^U/i, '').replace(':', '-'),
+                        editor.patchName || 'patch',
+                        1,
+                        1,
+                      )
+                    : t('maestro.applied', count),
+                }
+              : line,
+          ),
+        );
+        setThread((prev) =>
+          appendMessage(prev, {
+            role: 'assistant',
+            text: t('maestro.applied', count),
+            outcome: 'applied',
+          }),
+        );
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        setLines((prev) =>
+          prev.map((line) => (line.id === lineIdToFlip ? { ...line, writeError: message } : line)),
+        );
+        pushLine({ role: 'system', text: message });
+      }
+    })();
+  };
+
+  /** Load one bank key onto the temporary patch for testing (no USER WRITE yet). */
+  const loadBankTemp = async (
+    lineId: string,
+    steps: BankApplyStep[],
+    index: number,
+    options?: { manageBusy?: boolean },
+  ) => {
+    const step = steps[index];
+    if (!step) return;
+    const manageBusy = options?.manageBusy !== false;
+    bankApplyActive.current = true;
+    if (manageBusy) setBusy(true);
+    setLines((prev) =>
+      prev.map((line) =>
+        line.id === lineId ? { ...line, writeError: undefined, bankStepIndex: index } : line,
+      ),
+    );
+    try {
+      await ensureSystemPatchCtl();
+      await applyTempPlan(step.plan, step.loadSlot);
+      const text = t(
+        'maestro.bankRecipe.stepReady',
+        step.slotLabel,
+        step.patchName,
+        index + 1,
+        steps.length,
+      );
+      setLines((prev) => {
+        const updated = prev.map((line) =>
+          line.id === lineId
+            ? {
+                ...line,
+                plan: undefined,
+                bankSteps: steps,
+                bankStepIndex: index,
+                autoApplied: true,
+                applied: false,
+                pendingWrite: step.loadSlot,
+                writeError: undefined,
+                text,
+              }
+            : line,
+        );
+        if (!updated.some((line) => line.id === lineId)) {
+          updated.push({
+            id: lineId,
+            role: 'assistant',
+            text,
+            bankSteps: steps,
+            bankStepIndex: index,
+            autoApplied: true,
+            pendingWrite: step.loadSlot,
+          });
+        }
+        return updated;
+      });
+    } catch (error) {
+      bankApplyActive.current = false;
+      const message = error instanceof Error ? error.message : String(error);
+      setLines((prev) =>
+        prev.map((line) =>
+          line.id === lineId ? { ...line, writeError: message, bankStepIndex: index } : line,
+        ),
+      );
+      pushLine({ role: 'system', text: message });
+      throw error;
+    } finally {
+      if (manageBusy) setBusy(false);
+    }
+  };
+
+  /** USER WRITE for the key currently on the temporary patch, then load the next temp. */
+  const writeBankCurrent = async (lineId: string, steps: BankApplyStep[], index: number) => {
+    const step = steps[index];
+    if (!step) return;
+    bankApplyActive.current = true;
+    setBusy(true);
+    try {
+      await writePendingSlot(step.loadSlot);
+      const done = index + 1;
+      const more = done < steps.length;
+      if (more) {
+        await loadBankTemp(lineId, steps, done, { manageBusy: false });
+      } else {
+        bankApplyActive.current = false;
+        setLines((prev) =>
+          prev.map((line) =>
+            line.id === lineId
+              ? {
+                  ...line,
+                  bankStepIndex: done,
+                  pendingWrite: undefined,
+                  applied: true,
+                  writeError: undefined,
+                  text: t('maestro.bankRecipe.allDone', steps.length),
+                }
+              : line,
+          ),
+        );
+        setThread((prev) =>
+          appendMessage(prev, {
+            role: 'assistant',
+            text: t('maestro.bankRecipe.allDone', steps.length),
+            outcome: 'applied',
+          }),
+        );
+      }
+    } catch (error) {
+      bankApplyActive.current = false;
+      const message = error instanceof Error ? error.message : String(error);
+      setLines((prev) =>
+        prev.map((line) => (line.id === lineId ? { ...line, writeError: message } : line)),
+      );
+      pushLine({ role: 'system', text: t('maestro.bankRecipe.writeFailed', message) });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /** Single-slot WRITE after temp apply. */
+  const writeSinglePending = async (lineId: string, slot: LoadSlotAsk) => {
+    setBusy(true);
+    try {
+      await writePendingSlot(slot);
+      setLines((prev) =>
+        prev.map((line) =>
+          line.id === lineId
+            ? {
+                ...line,
+                pendingWrite: undefined,
+                applied: true,
+                writeError: undefined,
+                text: t('maestro.bankRecipe.singleWritten', slot.label),
+              }
+            : line,
+        ),
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setLines((prev) =>
+        prev.map((line) => (line.id === lineId ? { ...line, writeError: message } : line)),
+      );
+      pushLine({ role: 'system', text: t('maestro.bankRecipe.writeFailed', message) });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const applySystem = (lineIdToFlip: string, plan: SystemPlan) => {
+    const count = plan.accepted.length;
+    const finish = () => {
+      setLines((prev) =>
+        prev.map((line) => (line.id === lineIdToFlip ? { ...line, applied: true } : line)),
+      );
+      setThread((prev) =>
+        appendMessage(prev, {
+          role: 'assistant',
+          text: t('maestro.applied', count),
+          outcome: 'applied',
+        }),
+      );
+    };
+    if (live) {
+      void runAppMutation(() => {
+        applySystemPlan(system, plan);
+      }, asSnapshotSource(live)).then(finish);
+    } else {
+      applySystemPlan(system, plan);
+      finish();
     }
   };
 
@@ -226,12 +521,26 @@ export function MaestroDrawer({
       });
       return;
     }
-    if (result.state === 'proposal' && result.plan) {
-      pushLine({
-        role: 'assistant',
-        text: result.reply ?? t('maestro.proposal', result.intent ?? ''),
-        plan: result.plan,
-      });
+    if (result.state === 'proposal' && (result.plan || result.systemPlan || result.bankSteps?.length)) {
+      const lineId = nextId();
+      const isBankRecipe = Boolean(result.bankSteps?.length);
+      setLines((prev) => [
+        ...prev,
+        {
+          id: lineId,
+          role: 'assistant',
+          text: result.reply ?? t('maestro.proposal', result.intent ?? ''),
+          // Bank recipe: progress card only — hide the Apply-all proposal diff.
+          plan: isBankRecipe ? undefined : result.plan,
+          systemPlan: result.systemPlan,
+          loadSlot: result.autoApply ? undefined : result.loadSlot,
+          bankSteps: result.bankSteps,
+          bankStepIndex: 0,
+          // So WRITE is visible immediately; loadBankTemp refreshes after temp apply.
+          pendingWrite: result.bankSteps?.[0]?.loadSlot ?? result.loadSlot,
+          autoApplied: Boolean(result.autoApply),
+        },
+      ]);
       setThread((prev) =>
         appendMessage(prev, {
           role: 'assistant',
@@ -239,6 +548,14 @@ export function MaestroDrawer({
           intent: result.intent,
         }),
       );
+      if (result.autoApply && result.systemPlan) {
+        applySystem(lineId, result.systemPlan);
+      } else if (result.autoApply && result.bankSteps && result.bankSteps.length > 0) {
+        bankApplyActive.current = true;
+        void loadBankTemp(lineId, result.bankSteps, 0);
+      } else if (result.autoApply && result.plan) {
+        applyPlan(lineId, result.plan, result.loadSlot);
+      }
       return;
     }
     pushLine({ role: 'assistant', text: result.reply ?? '' });
@@ -247,43 +564,8 @@ export function MaestroDrawer({
     );
   };
 
-  const applyItems = (items: ValidatedItem[]) => {
-    for (const item of items) {
-      if (!item.entry || item.coerced === undefined) continue;
-      if (item.entry.ref.address < TEMPORARY_PATCH_ADDRESS) continue;
-      editor.write(item.entry.ref, item.coerced as never);
-    }
-  };
-
-  const applyPlan = (lineIdToFlip: string, plan: ValidatedPlan) => {
-    const items = [...plan.accepted, ...plan.clamped];
-    const finish = () => {
-      setLines((prev) =>
-        prev.map((line) => (line.id === lineIdToFlip ? { ...line, applied: true } : line)),
-      );
-      setThread((prev) =>
-        appendMessage(prev, {
-          role: 'assistant',
-          text: t('maestro.applied', items.length),
-          outcome: 'applied',
-        }),
-      );
-    };
-    if (live) {
-      void runAppMutation(() => applyItems(items), asSnapshotSource(live)).then(finish);
-    } else {
-      applyItems(items);
-      finish();
-    }
-  };
-
   const confirmLoad = async (lineIdToClear: string, slot: LoadSlotAsk) => {
-    const select = () => editor.selectPatch(slot.bankMsb, slot.programChange);
-    if (live) {
-      await runAppMutation(select, asSnapshotSource(live));
-    } else {
-      await select();
-    }
+    await selectSlot(slot);
     setLines((prev) =>
       prev.map((line) =>
         line.id === lineIdToClear
@@ -358,24 +640,44 @@ export function MaestroDrawer({
               ) : (
                 <p>{line.text}</p>
               )}
-              {line.plan && (
+              {line.plan && !line.bankSteps && (
                 <ProposalCard
                   plan={line.plan}
-                  applied={line.applied}
+                  applied={line.applied || line.autoApplied}
                   intent={line.text}
                   onApplyAll={() => applyPlan(line.id, line.plan!)}
-                  onApplyItem={(item) => {
-                    applyItems([item]);
-                    setLines((prev) =>
-                      prev.map((row) => (row.id === line.id ? { ...row, applied: true } : row)),
-                    );
-                  }}
                   onDiscard={() =>
                     setLines((prev) =>
                       prev.map((row) => (row.id === line.id ? { ...row, plan: undefined } : row)),
                     )
                   }
                 />
+              )}
+              {line.systemPlan && (
+                <div className={`maestro-card ${line.applied ? 'maestro-row-applied' : ''}`}>
+                  <ul className="maestro-diff">
+                    {line.systemPlan.accepted.map((item) => (
+                      <li key={item.change.ref}>
+                        <code>{item.change.ref}</code> → {String(item.change.value)}
+                        {item.change.why ? ` — ${item.change.why}` : ''}
+                      </li>
+                    ))}
+                  </ul>
+                  {!line.applied && !line.autoApplied && (
+                    <div className="maestro-card-actions">
+                      <button
+                        type="button"
+                        className="primary"
+                        onClick={() => applySystem(line.id, line.systemPlan!)}
+                      >
+                        {t('maestro.applyAll')}
+                      </button>
+                    </div>
+                  )}
+                  {(line.applied || line.autoApplied) && (
+                    <p role="status">{t('maestro.applied', line.systemPlan.accepted.length)}</p>
+                  )}
+                </div>
               )}
               {line.loadSlot && (
                 <div className="maestro-card">
@@ -403,6 +705,54 @@ export function MaestroDrawer({
                   </div>
                 </div>
               )}
+              {line.bankSteps && line.bankSteps.length > 0 && (
+                <BankRecipeCard
+                  steps={line.bankSteps}
+                  currentIndex={line.bankStepIndex ?? 0}
+                  finished={Boolean(line.applied)}
+                  busy={busy}
+                  error={line.writeError}
+                  onWrite={
+                    !line.applied &&
+                    (line.bankStepIndex ?? 0) < line.bankSteps.length &&
+                    line.bankSteps[line.bankStepIndex ?? 0]
+                      ? () =>
+                          void writeBankCurrent(
+                            line.id,
+                            line.bankSteps!,
+                            line.bankStepIndex ?? 0,
+                          )
+                      : undefined
+                  }
+                />
+              )}
+              {!line.bankSteps && (line.pendingWrite || (line.autoApplied && line.loadSlot)) && (
+                <div className="maestro-card maestro-write-card">
+                  <p>{t('maestro.bankRecipe.writeAllHint')}</p>
+                  {line.writeError && (
+                    <p className="error" role="alert">
+                      {line.writeError}
+                    </p>
+                  )}
+                  <div className="maestro-card-actions">
+                    <button
+                      type="button"
+                      className="primary maestro-write-btn"
+                      disabled={busy || line.applied}
+                      onClick={() => {
+                        const slot = line.pendingWrite ?? line.loadSlot;
+                        if (slot) void writeSinglePending(line.id, slot);
+                      }}
+                    >
+                      {t(
+                        'maestro.bankRecipe.write',
+                        (line.pendingWrite ?? line.loadSlot)!.label,
+                        editor.patchName || 'patch',
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
           {busy && (
@@ -417,6 +767,7 @@ export function MaestroDrawer({
             type="button"
             className="maestro-clear"
             onClick={() => {
+              bankApplyActive.current = false;
               clearHistory(locale, sourceKey);
               setThread({ sourceKey, locale, messages: [] });
               setLines([{ id: nextId(), role: 'system', text: t('maestro.cleared') }]);
@@ -430,7 +781,7 @@ export function MaestroDrawer({
               value={draft}
               placeholder={t('maestro.placeholder')}
               aria-label={t('maestro.placeholder')}
-              disabled={stageLive || !hasKey}
+              disabled={stageLive || busy}
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === 'Enter' && !event.shiftKey) {
@@ -445,7 +796,7 @@ export function MaestroDrawer({
                 className={listening ? 'maestro-mic live' : 'maestro-mic'}
                 title={listening ? t('maestro.voice.listening') : t('maestro.voice.label')}
                 aria-label={t('maestro.voice.label')}
-                disabled={stageLive || !hasKey}
+                disabled={stageLive || busy}
                 onClick={() => {
                   if (listening) voiceRef.current?.stop();
                   else voiceRef.current?.start();
@@ -465,7 +816,7 @@ export function MaestroDrawer({
               <button
                 type="button"
                 className="primary"
-                disabled={stageLive || !hasKey || !draft.trim()}
+                disabled={stageLive || busy || !draft.trim()}
                 onClick={() => void send()}
               >
                 {t('maestro.send')}
@@ -490,19 +841,83 @@ export function MaestroDrawer({
   );
 }
 
+function BankRecipeCard({
+  steps,
+  currentIndex,
+  finished,
+  busy,
+  error,
+  onWrite,
+}: {
+  steps: BankApplyStep[];
+  currentIndex: number;
+  finished: boolean;
+  busy: boolean;
+  error?: string;
+  onWrite?: () => void;
+}) {
+  const t = useT();
+  const current = !finished ? steps[currentIndex] : undefined;
+  return (
+    <div className={`maestro-card ${finished ? 'maestro-row-applied' : ''}`}>
+      <h3>{t('maestro.bankRecipe.progress')}</h3>
+      <p className="hint">{t('maestro.bankRecipe.writeAllHint')}</p>
+      <ol className="maestro-bank-progress">
+        {steps.map((step, index) => {
+          const state = finished
+            ? 'written'
+            : index < currentIndex
+              ? 'written'
+              : index === currentIndex
+                ? 'testing'
+                : 'pending';
+          return (
+            <li key={step.slotLabel} data-state={state === 'testing' ? 'current' : state}>
+              <strong>USER {step.slotLabel}</strong> {step.patchName}
+              <span>
+                {state === 'written'
+                  ? t('maestro.bankRecipe.written')
+                  : state === 'testing'
+                    ? t('maestro.bankRecipe.testing')
+                    : t('maestro.bankRecipe.pending')}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+      {error && (
+        <p className="error" role="alert">
+          {error}
+        </p>
+      )}
+      {onWrite && current && (
+        <div className="maestro-card-actions maestro-write-actions">
+          <button
+            type="button"
+            className="primary maestro-write-btn"
+            disabled={busy}
+            onClick={onWrite}
+          >
+            {t('maestro.bankRecipe.write', current.slotLabel, current.patchName)}
+          </button>
+        </div>
+      )}
+      {finished && <p role="status">{t('maestro.bankRecipe.allDone', steps.length)}</p>}
+    </div>
+  );
+}
+
 function ProposalCard({
   plan,
   applied,
   intent,
   onApplyAll,
-  onApplyItem,
   onDiscard,
 }: {
   plan: ValidatedPlan;
   applied?: boolean;
   intent: string;
   onApplyAll: () => void;
-  onApplyItem: (item: ValidatedItem) => void;
   onDiscard: () => void;
 }) {
   const t = useT();
@@ -530,12 +945,7 @@ function ProposalCard({
             {item.action === 'reject' && item.reason && (
               <span>{t('maestro.rejected', item.reason)}</span>
             )}
-            {item.reason === 'truncated' && <span>{t('maestro.clampedNote')}</span>}
-            {(item.action === 'accept' || item.action === 'clamp') && !applied && (
-              <button type="button" onClick={() => onApplyItem(item)}>
-                {t('maestro.applyItem')}
-              </button>
-            )}
+            {item.reason === 'clamp' && <span>{t('maestro.clampedNote')}</span>}
           </li>
         ))}
       </ul>

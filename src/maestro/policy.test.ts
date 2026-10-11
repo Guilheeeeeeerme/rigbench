@@ -44,7 +44,20 @@ describe('policy.decide', () => {
       'ask',
     ],
     ['system scope denied', systemish, 'changePlan' as const, { stageLive: false }, 'deny'],
-    ['writeSlot denied', null, 'writeSlot' as const, { stageLive: false }, 'deny'],
+    [
+      'writeSlot allowed on bank',
+      null,
+      'writeSlot' as const,
+      { stageLive: false, session: 'bank' as const },
+      'allow',
+    ],
+    [
+      'writeSlot denied outside bank',
+      null,
+      'writeSlot' as const,
+      { stageLive: false, session: 'system' as const },
+      'deny',
+    ],
     [
       'writeSystem allowed on global',
       null,

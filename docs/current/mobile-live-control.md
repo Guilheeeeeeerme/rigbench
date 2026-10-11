@@ -1,9 +1,12 @@
 # Mobile / live simplified control — Rigbench vision
 
-> **Status:** Vision + research. Not a second app. Not a rename of Maestro.
-> **Precedence:** code → [AGENTS.md](../../AGENTS.md) → this file (vision only) →
+> **Status:** Vision + research (Stage-era). **Superseded for Bank UI** by
+> [bank-patch-config.md](./bank-patch-config.md) (Tone Deck + Simple/Advanced).
+> Not a second app. Not a rename of Maestro.
+> **Precedence:** code → [AGENTS.md](../../AGENTS.md) → [bank-patch-config.md](./bank-patch-config.md)
+> for Bank → this file (vision only) →
 > [archive research](../archive/research/mobile-gr55-system-prompt.md).
-> If this doc disagrees with shipped IA (`routes.ts`, Stage home, AppNav), **fix this doc**.
+> If this doc disagrees with shipped IA (`routes.ts`, Bank \| Global), **fix code / AGENTS**.
 > Connect/resume on desktop: [connection-resume.md](./connection-resume.md).
 
 External brief (archived): “Roland GR-55 Mobile Web/Native Control Interface”

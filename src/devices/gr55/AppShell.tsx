@@ -17,7 +17,7 @@ import { GlobalPage } from './GlobalPage';
 import { exitToHome } from './connectionThunks';
 import { bankHref, bankRoute, globalHref, globalRoute } from './routes';
 import { asSnapshotSource } from './snapshotHost';
-import { getAuthority, requestSnapshot, subscribeAuthority } from './sessionAuthority';
+import { getAuthority, syncFromPedal, subscribeAuthority } from './sessionAuthority';
 import { useSystem } from './SystemParts';
 
 function errorText(error: unknown): string {
@@ -46,8 +46,10 @@ export function AppShell({
   const system = useSystem();
   const [error, setError] = useState<unknown>();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [snapshotBusy, setSnapshotBusy] = useState(false);
-  const [chatCollapsed, setChatCollapsed] = useState(false);
+  const [syncBusy, setSyncBusy] = useState(false);
+  const [chatCollapsed, setChatCollapsed] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 900px)').matches : false,
+  );
   const [chatWidth, setChatWidth] = useState(CHAT_DEFAULT);
   const dragRef = useRef<{ startX: number; startWidth: number } | null>(null);
   const authority = useSyncExternalStore(subscribeAuthority, getAuthority);
@@ -84,11 +86,19 @@ export function AppShell({
 
   const source = asSnapshotSource({ editor, system });
 
-  const onSnapshot = () => {
-    setSnapshotBusy(true);
-    void requestSnapshot(source)
+  const onSync = () => {
+    setSyncBusy(true);
+    void syncFromPedal(source, async () => {
+      // Discover current slot from the pedal, then copy USER memory → temp.
+      // Re-selecting the same PC alone often leaves temp edits in place on hardware.
+      await editor.readPatchLocation();
+      const slot = editor.patchSource;
+      if (slot?.kind === 'slot') {
+        await editor.loadUserSlotIntoWorkingCopy(slot.userPatchNumber);
+      }
+    })
       .catch(setError)
-      .finally(() => setSnapshotBusy(false));
+      .finally(() => setSyncBusy(false));
   };
 
   const onExit = () => {
@@ -126,8 +136,8 @@ export function AppShell({
           <span className="hint" role="status">
             {authority === 'app' ? t('gr55.authorityApp') : t('gr55.authorityPedal')}
           </span>
-          <button type="button" disabled={snapshotBusy} onClick={onSnapshot}>
-            {snapshotBusy ? t('gr55.snapshotBusy') : t('gr55.requestSnapshot')}
+          <button type="button" disabled={syncBusy} onClick={onSync} title={t('gr55.syncHint')}>
+            {syncBusy ? t('gr55.syncBusy') : t('gr55.sync')}
           </button>
           <button
             type="button"

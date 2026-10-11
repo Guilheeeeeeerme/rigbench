@@ -308,7 +308,7 @@ export function connectSimulatedPedal() {
     dispatch(setPreferSimulated(true));
     dispatch(setRememberedPorts(null));
     const { FakeGr55 } = await import('./fakeDevice');
-    const pedal = new FakeGr55();
+    const pedal = new FakeGr55({ persist: true });
     return dispatch(connectWithPorts({ input: pedal, output: pedal }));
   };
 }
@@ -319,6 +319,7 @@ export function disconnectPedal() {
     identifyAbort?.abort();
     identifyAbort = undefined;
     releaseLiveConnection();
+    dispatch(clearProblem());
     dispatch(setPhase('needsPrompt'));
   };
 }
@@ -328,10 +329,14 @@ export function disconnectPedal() {
  * Does not touch pedal configuration (nothing of that is stored locally).
  */
 export function exitToHome() {
-  return (dispatch: AppDispatch) => {
+  return async (dispatch: AppDispatch) => {
     dispatch(disconnectPedal());
     dispatch(setRememberedPorts(null));
     dispatch(setPreferSimulated(false));
     dispatch(setLastRoute(''));
+    if (import.meta.env.DEV) {
+      const { clearFakeGr55Memory } = await import('./fakeDevice');
+      clearFakeGr55Memory();
+    }
   };
 }

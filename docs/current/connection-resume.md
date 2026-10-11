@@ -52,3 +52,6 @@ See [AGENTS.md](../../AGENTS.md) and `sessionAuthority.ts`:
 - App mutation → authority `app` → DT1 → full snapshot → authority `pedal`
 - While `app`, ignore pedal-originated DT1 / program-change reloads
 - While `pedal`, mirror the board
+- Header **Sync** (`syncFromPedal`): on a USER slot, copies that slot’s USER memory
+  into the temporary patch (`loadUserSlotIntoWorkingCopy` — not a same-PC reselect),
+  then re-reads system + working copy + location

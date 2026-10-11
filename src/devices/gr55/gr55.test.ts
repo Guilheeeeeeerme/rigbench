@@ -39,7 +39,11 @@ function setUp() {
     gapMs: 0,
     timeoutMs: 500,
   });
-  return { device, session, editor: new Gr55Editor(session) };
+  return {
+    device,
+    session,
+    editor: new Gr55Editor(session, undefined, { patchChangeSettleMs: 20 }),
+  };
 }
 
 function settle(ms = 20) {
@@ -251,6 +255,24 @@ describe('Gr55Editor', () => {
       [0x12, 0x01, 0, 0, 1, 4],
     ]);
     expect(editor.patchName).toBe('Stored');
+  });
+
+  test('loadUserSlotIntoWorkingCopy restores USER memory over temp edits on the same slot', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+    device.nameUserPatch(0, 'Heavy PdlBend');
+    await editor.selectPatch(0, 0);
+    expect(editor.patchName).toBe('Heavy PdlBend');
+
+    editor.write(common.patchName, 'Accordion Solo');
+    await settle();
+    expect(editor.patchName).toBe('Accordion Solo');
+    expect(await editor.readUserPatchName(0)).toBe('Heavy PdlBend');
+
+    await editor.loadUserSlotIntoWorkingCopy(0);
+
+    expect(editor.patchName).toBe('Heavy PdlBend');
+    expect(editor.patchSource).toEqual({ kind: 'slot', userPatchNumber: 0 });
   });
 
   test('readPatchLocation sets patchSource from the setup page', async () => {

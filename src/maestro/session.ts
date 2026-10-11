@@ -1,38 +1,26 @@
-/** Craft sessions shared by Studio chat and macro panels. */
+/** Page scope for Maestro: Patch page vs Global page. */
 export type SessionId = 'system' | 'patch' | 'library';
 
 export const SESSION_IDS: readonly SessionId[] = ['system', 'patch'] as const;
 
 export const DEFAULT_SESSION: SessionId = 'patch';
 
-const STORAGE_KEY = 'rigbench.gr55.studioSession';
-
 export function isSessionId(value: unknown): boolean {
   return value === 'system' || value === 'patch';
 }
 
-/** Last session for this browser; defaults to Patch (craft-first). */
+/** In-memory only — never persist pedal or session config to localStorage. */
+let current: SessionId = DEFAULT_SESSION;
+
 export function loadSession(): SessionId {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw === 'system' || raw === 'patch') {
-      return raw;
-    }
-  } catch {
-    // Private mode / tests.
-  }
-  return DEFAULT_SESSION;
+  return current;
 }
 
 export function saveSession(session: SessionId): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, session);
-  } catch {
-    // Choice still holds for this visit via React state.
-  }
+  current = session;
 }
 
-/** Scope chip glyph used in chrome (manual SYSTEM / PATCH / Library). */
+/** Scope chip glyph used in chrome. */
 export function sessionChip(session: SessionId): '🔵' | '🟠' | '🟢' {
   switch (session) {
     case 'system':

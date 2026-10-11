@@ -11,61 +11,34 @@ The UI is a dark Linear-inspired shell (Inter, indigo accent) — see
 
 | Device       | Status                                             |
 | ------------ | -------------------------------------------------- |
-| Roland GR-55 | Stage (home), Maestro, setup, config; silent MIDI resume |
+| Roland GR-55 | Home → Connect → Patch \| Global (WIP); silent MIDI resume |
 | Roland VG-99 | Coming soon                                        |
 | BOSS GT-10   | Coming soon                                        |
 
 Contributors and coding agents: start at [AGENTS.md](./AGENTS.md) and [docs/](./docs/).
 
-## GR-55
-
-One path from a cold start to playing, in three surfaces:
+## GR-55 (WIP)
 
 ```
-Pick the device → Connect (resumes when ports still work) → Stage setup (first time) → Stage (now)
-                             ├─ Maestro (AI: any configuration, by conversation)
-                             └─ Setup (global: Device · GK)
+Home → Connect (resumes when ports still work) → Patch | Global
+         Maestro chat (left) · parameters (right)
+         Exit purges connection memory → Home
 ```
 
-One app bar, rendered once: **Stage · Maestro · Setup**. Nothing else to think about.
+- **Home.** Pick GR-55 (or a placeholder device).
+- **Connect.** Remembers MIDI ports only (not pedal settings). Silent resume when those ports
+  still answer as a GR-55. DEV: simulated pedal.
+- **Patch** (`#/gr55/patch`). All current-patch parameters. Maestro acts on the patch only.
+  Writes go to the temporary working copy immediately, then the app re-reads a full snapshot.
+- **Global** (`#/gr55/global`). SYSTEM / GK settings. Maestro acts on global only. Same
+  immediate-write + snapshot rule (no staging / Apply bar).
+- **Authority.** While you edit, the app ignores pedal churn; when idle, it mirrors the pedal
+  (including patch changes made on the board). **Request snapshot** re-reads everything.
+- **Exit.** Top-left: disconnect and forget remembered ports, back to Home.
 
-- **Connect.** Remembers your MIDI ports and last screen. If those ports are still
-  there and answer as a GR-55, Rigbench reconnects without asking again; otherwise
-  it prompts. After identify it reads the patch that is playing **and** which user
-  slot is selected, so Stage matches the pedal face.
-- **Stage setup** (`#/gr55/configurar`). Eight steps: language and rig name, guitar or bass mode,
-  your instruments (GK sets), output, pedals, MIDI and USB, backup, sync. A step can be skipped
-  with "Continue anyway"; later screens remind you of what was skipped. Also reachable as
-  **Recalibrate** from Setup.
-- **Sync.** Reads all 297 user slots and the pedal-wide settings into the browser's IndexedDB,
-  one slot at a time, starting at a safe pace and speeding up until the pedal times out. The seal
-  in the corner of every screen shows the slot being read, the count and the time left, then
-  **READY**, or how many slots changed on the pedal since the last sync. A sync cut short — page
-  reload, cable pulled — picks up where it stopped. It never saves anything to the pedal.
-- **Stage** (`#/gr55/palco`). Focused on now — like holding the pedal in hand. At the top it says
-  where you are: `USER 04-2 <name>`; the three keys of the current bank sit there as buttons, with
-  previous / next bank beside them, and the pedal flips along (about one second of silence per
-  switch). Below, the sound of the patch that is playing, as instruments: one row per voice (normal pickup, modeled guitar, PCM synths) with an icon, a mute
-  switch and a level; a master level; and the chain switches (amp, chorus, delay, reverb, EQ).
-  Everything writes the working copy — nothing on the Stage saves to a slot, and Maestro writes
-  stay denied. Which patch plays comes from the pedal's pedals or from Maestro.
-- **Setup** (`#/gr55/configuracao`). One screen of cards for everything configured once,
-  updated rarely: Device, GK sets, and the guided recalibration.
-- **Device** (`#/gr55/dispositivo`, from Setup). Pedal-wide settings — output select, what the
-  GUITAR OUT jack carries, the pedal-wide pedal functions, MIDI and USB, guitar/bass mode, and a
-  system backup. Changes here are staged and listed, and reach the pedal only on **Apply**, after
-  a confirmation that names each one.
-- **GK sets** (`#/gr55/dispositivo/gk`). Name each set, choose pickup and scale, and set the
-  sensitivity of each string beside a meter. Updated at a very low frequency.
-- **Maestro AI** (`#/gr55/maestro`). Chat copilot. It proposes temporary-patch (🟠) edits
-  and can stage system (🔵) changes you confirm before Apply; it never writes a pedal slot.
-  Write-denied while Stage is live (policy).
-- **Advanced editor.** Removed: the simple surfaces above change the sound with instruments and
-  switches. Old `#/gr55/editor/**` links redirect home; `pages.ts` stays as the field-key source
-  of truth for Maestro.
+Parameter taxonomy (manual-derived): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
-Every control carries a chip that says what it changes: 🟠 the working copy, 🟢 a saved slot,
-🔵 the whole pedal.
+Every control carries a chip that says what it changes: 🟠 the working copy, 🔵 the whole pedal.
 
 ### Maestro (BYOK Gemini)
 

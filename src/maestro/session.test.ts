@@ -1,30 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SESSION, isSessionId, loadSession, saveSession, sessionChip } from './session';
 
-function memoryStorage(): Storage {
-  const map = new Map<string, string>();
-  return {
-    get length() {
-      return map.size;
-    },
-    clear: () => map.clear(),
-    getItem: (key: string) => map.get(key) ?? null,
-    setItem: (key: string, value: string) => {
-      map.set(key, value);
-    },
-    removeItem: (key: string) => {
-      map.delete(key);
-    },
-    key: (index: number) => [...map.keys()][index] ?? null,
-  };
-}
-
 describe('session model', () => {
   beforeEach(() => {
-    Object.defineProperty(globalThis, 'localStorage', {
-      configurable: true,
-      value: memoryStorage(),
-    });
+    saveSession(DEFAULT_SESSION);
   });
 
   it('defaults to Patch', () => {
@@ -32,7 +11,7 @@ describe('session model', () => {
     expect(loadSession()).toBe('patch');
   });
 
-  it('persists and loads a session', () => {
+  it('keeps the session in memory only', () => {
     saveSession('system');
     expect(loadSession()).toBe('system');
   });

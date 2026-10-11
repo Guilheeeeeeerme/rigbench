@@ -1,26 +1,29 @@
-# Connection, resume, and Stage “where am I”
+# Connection, resume, and Exit
 
-> **Status:** Live. SoT for MIDI connect / silent resume / route restore / patch location.
+> **Status:** Live (WIP two-page app). SoT for MIDI connect / silent resume / Exit purge.
 > **Precedence:** code (`src/app/store/**`, `connectionThunks.ts`, `connectionRuntime.ts`,
-> `Gr55Screen.tsx`, `editor.readPatchLocation`) → this file → [AGENTS.md](../../AGENTS.md) → README.
+> `Gr55Screen.tsx`) → this file → [AGENTS.md](../../AGENTS.md) → README.
 > Do not restate this flow in other docs beyond a one-line pointer.
 
 ## Product rule
 
 If remembered MIDI ports still exist and identify as a GR-55, **reconnect silently** and land on
-the **last GR-55 route** (or Stage after setup / wizard before it). Prompt only when permission,
-ports, device identity, or the connect handshake fails.
+the **last app page** (`patch` or `global`). Prompt only when permission, ports, device identity,
+or the connect handshake fails.
 
-On a successful connect the app must mirror the pedal: temporary patch (sound) **and** which user
-slot is selected (`USER xx-y`), so Stage looks like holding the board.
+On a successful connect the app reads a **full snapshot**: system + temporary patch + patch
+location. The UI shows that snapshot. Pedal configuration is **never** stored in localStorage.
+
+**Exit** (top-left in the app): disconnect MIDI, clear `rememberedPorts` / `preferSimulated` /
+`lastRoute`, navigate Home. Next visit must Connect again (or pick simulated pedal in DEV).
 
 ## Architecture (do not put MIDI objects in Redux)
 
 | Layer | Owns | Persist? |
 | --- | --- | --- |
-| Redux `sessionPrefs` | `rememberedPorts`, `lastRoute`, DEV `preferSimulated` | Yes (`redux-persist`, key `rigbench.redux`) |
+| Redux `sessionPrefs` | `rememberedPorts`, `lastRoute` (`patch`\|`global`), DEV `preferSimulated` | Yes (`redux-persist`, key `rigbench.redux`) |
 | Redux `connection` | phase, progress, port lists, selection, problems | No |
-| `connectionRuntime` | `MIDIAccess`, live `MidiSession` / `Gr55Editor` / `SyncEngine` / `Gr55System` | No (in-memory) |
+| `connectionRuntime` | `MIDIAccess`, live `MidiSession` / `Gr55Editor` / `Gr55System` | No (in-memory) |
 
 Legacy `localStorage` key `rigbench.gr55.ports` is read once into `sessionPrefs` if present.
 
@@ -37,50 +40,14 @@ Open /gr55/*
        no remembered ports → needsPrompt (ConnectScreen)
        ports missing from MIDIAccess → clear prefs, needsPrompt
        ports present → identify → readSystem → readPatch → readPatchLocation
-                    → phase connected → restore lastRoute or home
+                    → phase connected → restore lastRoute or patch
+Exit → disconnect + purge connection prefs → Home
 ```
 
-Persist storage uses a Vite-safe `localStorage` adapter (`src/app/store/localStorage.ts`),
-not `redux-persist/lib/storage` (broken under Vite ESM).
+## Authority (edit vs mirror)
 
-StrictMode / brief unmount: `retainLiveConnection` keeps the live session for a short grace
-period so remount does not drop MIDI.
+See [AGENTS.md](../../AGENTS.md) and `sessionAuthority.ts`:
 
-## Patch location
-
-`Gr55Editor.readPatchLocation()` RQ1s `setup.patchBsMsb` + `setup.patchPc`. When the pair maps
-to a user slot, `patchSource = { kind: 'slot', userPatchNumber }`. Called after connect and after
-a pedal-driven patch change (`scheduleReload`). Outside the user map → `patchSource` cleared;
-Stage shows the unknown-slot hint but still shows the sounding patch.
-
-## Routes
-
-Child names: [`routes.ts`](../../src/devices/gr55/routes.ts). Resumable: `palco`, `maestro`,
-`configuracao`, `dispositivo`, `dispositivo/gk`, `configurar`. `conectar` is not restored; it
-redirects once connected.
-
-## Files
-
-| Path | Role |
-| --- | --- |
-| `src/app/store/store.ts` | Store + persist (`sessionPrefs` only) |
-| `src/app/store/slices/connectionSlice.ts` | Live connection UI state |
-| `src/app/store/slices/sessionPrefsSlice.ts` | Persisted ports + last route |
-| `src/devices/gr55/connectionThunks.ts` | request / connect / resume / simulate |
-| `src/devices/gr55/connectionRuntime.ts` | Live holder + StrictMode retain |
-| `src/devices/gr55/ConnectScreen.tsx` | Prompt UI |
-| `src/devices/gr55/Gr55Screen.tsx` | Layout: resume + nested routes |
-| `src/devices/gr55/editor.ts` | `readPatchLocation` |
-
-## Verification
-
-```bash
-npm run typecheck
-npm test -- src/app/store/connectionSlice.test.ts \
-  src/devices/gr55/connectionResume.test.ts \
-  src/devices/gr55/routes.test.ts \
-  src/devices/gr55/gr55.test.ts
-```
-
-Hardware: Chrome/Edge + real GR-55 (or simulated pedal in DEV). After one successful Connect,
-reload `#/gr55` — should return without re-picking ports and show the current `USER` slot on Stage.
+- App mutation → authority `app` → DT1 → full snapshot → authority `pedal`
+- While `app`, ignore pedal-originated DT1 / program-change reloads
+- While `pedal`, mirror the board

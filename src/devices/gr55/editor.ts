@@ -12,6 +12,7 @@ import {
 } from './patchLayout';
 import { temporaryPatchFields, spansOverlapping, spanMatches } from './changeTracking';
 import type { PatchFieldSpan } from './changeTracking';
+import { isPedalAuthority } from './sessionAuthority';
 import { decodePatchSyx, encodePatchSyx } from './syx';
 
 export type GkMode = 'GUITAR' | 'BASS';
@@ -247,7 +248,10 @@ export class Gr55Editor {
     const bytes = new Uint8Array(size);
     type.encode(value, bytes, 0, size);
     this.image.set(bytes, offset);
-    this.reconcile(offset, size);
+    // Align baseline so the app has no “pending” local dirty state; snapshot follows.
+    this.baseline.set(bytes, offset);
+    this.dirty.delete(field.address);
+    this.dirtyEpoch++;
     this.bumpField(field.address);
     this.session.writeData(field.address, bytes, { coalesce: true }).catch(this.onBackgroundError);
   }
@@ -414,24 +418,25 @@ export class Gr55Editor {
   }
 
   private applyRemoteData(address: number, bytes: Uint8Array): void {
+    if (!isPedalAuthority()) {
+      return;
+    }
     const offset = address - TEMPORARY_PATCH_ADDRESS;
     if (offset < 0 || offset + bytes.length > PATCH_SPAN) {
       return;
     }
     this.image.set(bytes, offset);
+    this.baseline.set(bytes, offset);
     this.reconcile(offset, bytes.length);
     this.bumpEpoch();
   }
 
   private scheduleReload(): void {
+    if (!isPedalAuthority()) {
+      return;
+    }
     clearTimeout(this.reloadTimer);
     this.reloadTimer = setTimeout(() => {
-      // The pedal has already left the old working copy behind; record how much was
-      // in it so the app can say what was lost.
-      if (this.isDirty) {
-        this.discardedChanges = this.changeCount;
-        this.discardSequence++;
-      }
       // Re-read the sounding patch, then ask the setup page which slot it is.
       this.readPatch()
         .then(() => this.readPatchLocation())

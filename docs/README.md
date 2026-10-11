@@ -20,7 +20,8 @@
 
 - New to the app → root [README.md](../README.md)
 - Coding agent session → [AGENTS.md](../AGENTS.md)
-- Connect / silent resume → [current/connection-resume.md](./current/connection-resume.md)
+- Connect / silent resume / Exit → [current/connection-resume.md](./current/connection-resume.md)
+- Patch vs Global parameter taxonomy → [current/gr55-config-scope.md](./current/gr55-config-scope.md)
 - Surfaces / wording → [current/glossary.md](./current/glossary.md)
 - Visual UI (Linear dark) → [current/ui-guidelines.md](./current/ui-guidelines.md)
 - Maestro internals → [current/maestro-architecture.md](./current/maestro-architecture.md)

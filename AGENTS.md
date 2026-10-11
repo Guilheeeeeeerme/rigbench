@@ -12,51 +12,49 @@ Active design: [docs/current/](./docs/current/). Historical material: [docs/arch
 
 Do **not** follow `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
 
-## Product (current)
+## Product (current — WIP)
 
 Static React 19 + Vite + TypeScript app. Web MIDI SysEx to a Roland GR-55. No backend.
-Nothing edited leaves the machine (IndexedDB / localStorage). EN + PT-BR via `src/copy/`.
+Connection prefs may persist; **pedal configuration does not** (immediate write + snapshot).
+EN + PT-BR via `src/copy/`.
 
 ```
-Pick device → Connect (silent resume if ports still valid; else prompt)
-            → Setup wizard (first run) → Stage (now — mirrors the pedal)
-                                          ├─ Maestro: any configuration with AI
-                                          └─ Setup: Device · GK · recalibrate
+Home (GR-55 + placeholders)
+  → Connect (silent resume if ports still valid; else prompt)
+  → App: Patch | Global
+       Maestro chat (left) · full parameter UI (right)
+       Exit (top-left) purges connection prefs → Home
 ```
 
-Connect / resume / patch location: [docs/current/connection-resume.md](./docs/current/connection-resume.md).
+Connect / resume: [docs/current/connection-resume.md](./docs/current/connection-resume.md).  
+Config scope (global vs patch): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
 | Route | Role |
 | --- | --- |
-| `#/gr55/palco` | **Stage — the app.** Like holding the pedal in hand: where you are (`USER 04-2 <name>`), the 3 keys of the current bank, previous/next bank (the pedal moves along); its instruments (icons, mute, level), master, chain switches |
-| `#/gr55/maestro` | **Maestro — the AI.** Does any configuration by conversation (patch ± system craft, BYOK Gemini) |
-| `#/gr55/configuracao` | **Setup.** Global only: cards to Device / GK sets / recalibrate |
-| `#/gr55/configurar` | First-run wizard + recalibrate (no app bar while it runs) |
-| `#/gr55/patches` | Slots & files — save, import, whole-pedal backup (reached from Setup) |
-| `#/gr55/maestro` | Maestro AI sessions (writes follow policy) |
-| `#/gr55/dispositivo` · `…/gk` | Device / GK — global configuration, set once |
-| `#/gr55/estudio` | Legacy address → redirects to Stage |
+| `#/` | **Home** — pick GR-55 or a placeholder device |
+| `#/gr55/conectar` | **Connect** — MIDI ports / simulated pedal |
+| `#/gr55/patch` | **Patch** — all current-patch parameters + Maestro (patch scope only) |
+| `#/gr55/global` | **Global** — SYSTEM / GK + Maestro (system scope only) |
 
-Navigation: `AppNav` rendered once in `Gr55Screen` — three sticky items (Stage · Maestro · Setup). No per-screen nav.
+Legacy hashes (`palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …) redirect into Patch or Global.
 
-Advanced editor (`#/gr55/editor/**`) was **removed**. `pages.ts` survives only as the
-locale-free SoT for field keys (Maestro fieldRegistry / macros). Old editor deep links
-redirect to Stage. Built in the address map; shows device / connection.
+### Authority model
 
-
-
-[docs/current/mobile-live-control.md](./docs/current/mobile-live-control.md) is a **vision** for Stage Live Simplify and mobile platforms. It does **not** redefine Maestro (AI), Studio, or Stage, and it does not authorize a second app or iOS Web MIDI support.
+- **App write** (UI or Maestro) → DT1 immediately → **full snapshot** (system + temp patch + location). No pending/staged local state.
+- While a write/snapshot is in flight → **trust the app** (`sessionAuthority`: ignore pedal churn).
+- When idle → **mirror the pedal** (remote DT1 / program change).
+- Explicit **Request snapshot** control.
+- Slot WRITE (save to USER) is out of this WIP cut.
+- localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` Patch|Global). Never pedal field values.
 
 ## Hard rules
 
 - **Do not rewrite** `src/protocol/**` or `src/midi/**` unless the task explicitly requires a protocol/MIDI fix. Prefer `systemMap.ts` and device-layer types for system extensions.
 - **No GPL FloorBoard** material (text, XML, skins) in the repo. Address facts only; MIT fork CASouthEast is the system-map reference (see README credits).
-- **Scope chips**: 🟠 temporary working copy · 🟢 saved slot · 🔵 pedal-wide system. Every control must make scope obvious.
-- **Writes**: patch parameters go immediately to the temporary buffer via `Gr55Editor.write`. System changes **stage → named confirm → Apply**. Never silent slot overwrite; show diff first.
-- **Stage**: no destructive writes while Stage is live. Maestro `decide()` denies writes when `stageLive`.
-- **Maestro**: BYOK Gemini only; never commit API keys or put them in `.env`/fixtures/logs. Model never sees raw SysEx addresses. Policy SoT: `src/maestro/policy.ts`.
+- **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
+- **Writes**: patch and system parameters DT1 immediately; then full snapshot. No ApplyBar / staging.
+- **Maestro**: BYOK Gemini only; never commit API keys or put them in `.env`/fixtures/logs. Model never sees raw SysEx addresses. Policy SoT: `src/maestro/policy.ts`. Scoped by page (patch vs system).
 - **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
-- **UI glossary**: prefer working copy · slot · save · apply · system — not buffer / SysEx / write / global in user-facing copy.
 - Prefer targeted reads and the smallest sufficient change. Do not run broad refactors or the full test matrix unless asked.
 
 ## Where to work
@@ -65,15 +63,12 @@ redirect to Stage. Built in the address map; shows device / connection.
 | --- | --- |
 | App Redux store (connection resume) | `src/app/store/**` |
 | Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
-| GR-55 screens / state | `src/devices/gr55/**` |
-| GR-55 connect / live MIDI holder | `connectionThunks.ts`, `connectionRuntime.ts`, `ConnectScreen.tsx` |
-| Stage / Setup / Wizard / Maestro | `Stage.tsx`, `Setup.tsx`, `Wizard.tsx`, `Studio.tsx` |
-| Icons / voices | `Icons.tsx`, `voices.ts` |
-| App bar (only nav) | `AppNav.tsx` |
-| Sync + IndexedDB | `src/devices/gr55/sync/` |
-| System map / staging | `systemMap.ts`, `systemState.ts` |
+| GR-55 shell / pages | `Gr55Screen.tsx`, `AppShell.tsx`, `PatchPage.tsx`, `GlobalPage.tsx`, `ConnectScreen.tsx` |
+| Authority + snapshot | `sessionAuthority.ts`, `snapshotHost.ts` |
+| Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |
+| System map / immediate system writes | `systemMap.ts`, `systemState.ts` |
 | Field-key SoT (Maestro) | `pages.ts` |
-| Maestro | `src/maestro/**` (macros under `macros/`) |
+| Maestro | `src/maestro/**` |
 | Copy | `src/copy/` |
 | Frozen protocol / MIDI | `src/protocol/**`, `src/midi/**` |
 
@@ -84,24 +79,17 @@ Recipes: [docs/current/recipes.md](./docs/current/recipes.md). Glossary: [docs/c
 ```bash
 npm run check:copy
 npm run typecheck
-npm test                 # or a focused Vitest path for the files you touched
-npm run check:secrets    # if Maestro / keys / storage touched
-npm run lint             # before a broad handoff
+npm test # or a focused Vitest path for the files you touched
+npm run check:secrets # if Maestro / keys / storage touched
+npm run lint # before a broad handoff
 ```
 
 Dev: Node 22 (`.nvmrc`), `npm run dev` → `http://localhost:5173`. Use **simulated pedal** when hardware is unavailable. Chrome/Edge for real Web MIDI + SysEx.
 
-## UI
-
-Visual SoT: [docs/current/ui-guidelines.md](./docs/current/ui-guidelines.md)
-(Linear-inspired dark: Inter, `#080A0A` base, accent `#5E6AD2`, 4px grid, 6/8px radius).
-Implement in `src/app/styles.css` + `index.html`. Do not reintroduce light theme or
-orange chrome accent. Scope chips 🟠🟢🔵 keep `--scope-*` tokens.
-
 ## Documentation
 
-After **every** change that affects IA, routes, connect/resume, surfaces, **UI chrome**,
-or user-facing behavior:
+After **every** change that affects IA, routes, connect/resume, surfaces, or
+user-facing behavior:
 
 1. Audit [docs/current/](./docs/current/), this file, [README.md](./README.md), and
    `.cursor/rules/` for drift.
@@ -109,7 +97,6 @@ or user-facing behavior:
    second story.
 3. **Consolidate** — prefer updating the existing SoT over adding a parallel file.
 4. Mark superseded claims in older specs (status banner), never leave two homes.
-5. UI changes must match [ui-guidelines.md](./docs/current/ui-guidelines.md).
 
 Index: [docs/current/README.md](./docs/current/README.md).
 

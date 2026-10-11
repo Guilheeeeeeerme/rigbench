@@ -4,31 +4,17 @@ import { useT } from '../../copy';
 import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
 import { setPhase } from '../../app/store/slices/connectionSlice';
 import { setLastRoute } from '../../app/store/slices/sessionPrefsSlice';
-import { Stage } from './Stage';
-import { DeviceScreen } from './DeviceScreen';
-import { AppNav } from './AppNav';
-import { SetupScreen } from './Setup';
-import { Studio } from './Studio';
+import { AppShell } from './AppShell';
 import {
-  connectRoute,
-  configRoute,
-  deviceRoute,
-  gkRoute,
-  isResumableRoute,
-  maestroRoute,
   childRouteOfPath,
-  setupRoute,
-  stageHref,
-  stageRoute,
-  studioRoute,
+  connectRoute,
+  globalRoute,
+  isResumableRoute,
+  normalizeAppRoute,
+  patchHref,
+  patchRoute,
 } from './routes';
-import { GkSetsScreen } from './GkSets';
-import { loadSetup } from './setupState';
 import { SystemProvider } from './SystemParts';
-import { Wizard } from './Wizard';
-import { DiscardNotice } from './DiscardNotice';
-import { SyncBadge, SyncProvider } from './sync/SyncBadge';
-import { MaestroHost } from '../../maestro/MaestroHost';
 import { ConnectScreen } from './ConnectScreen';
 import {
   ConnectionProvider,
@@ -38,8 +24,8 @@ import {
 import { resumeIfPossible } from './connectionThunks';
 
 /**
- * GR-55 shell: silent resume when remembered ports still work, otherwise the
- * connect prompt. Live MIDI objects live in connectionRuntime, not Redux.
+ * GR-55 shell: silent resume when remembered ports still work, otherwise Connect.
+ * Connected app is Patch | Global only.
  */
 export default function Gr55Screen() {
   const t = useT();
@@ -47,8 +33,8 @@ export default function Gr55Screen() {
   const location = useLocation();
   const phase = useAppSelector((state) => state.connection.phase);
   const lastRoute = useAppSelector((state) => state.sessionPrefs.lastRoute);
-  const [error, setError] = useState<unknown>();
-  // Re-read after every Redux phase change so connect completion paints Stage.
+  const [, setError] = useState<unknown>();
+  void setError;
   const live = phase === 'connected' ? getLiveConnection() : undefined;
 
   useEffect(() => {
@@ -73,57 +59,42 @@ export default function Gr55Screen() {
     return <ConnectScreen />;
   }
 
-  const { editor, session, sync, system } = live;
-  const home = loadSetup().complete ? stageRoute : setupRoute;
-  const resumeTarget = isResumableRoute(lastRoute) ? lastRoute : home;
+  const { editor, system } = live;
+  const resumeTarget = isResumableRoute(lastRoute)
+    ? lastRoute
+    : normalizeAppRoute(childRouteOfPath(location.pathname));
 
   return (
     <ConnectionProvider value={live}>
-      <SyncProvider value={sync}>
-        <SystemProvider value={system}>
-          <DiscardNotice editor={editor} />
-          <SyncBadge editor={editor} />
-          <MaestroHost editor={editor} />
-          <AppNav />
-          <Routes>
-            <Route index element={<Navigate to={resumeTarget} replace />} />
-            <Route
-              path={setupRoute}
-              element={<Wizard editor={editor} session={session} onError={setError} />}
-            />
-            <Route path={connectRoute} element={<Navigate to={`../${resumeTarget}`} replace />} />
-            <Route path="setup" element={<Navigate to={`../${setupRoute}`} replace />} />
-            <Route path="device" element={<Navigate to={`../${deviceRoute}`} replace />} />
-            <Route path={studioRoute} element={<Navigate to={`../${stageRoute}`} replace />} />
-            <Route
-              path={maestroRoute}
-              element={<Studio editor={editor} error={error} onError={setError} />}
-            />
-            <Route path="editor/*" element={<Navigate to={`../${stageRoute}`} replace />} />
-            <Route path={stageRoute} element={<Stage editor={editor} onError={setError} />} />
-            <Route path={configRoute} element={<SetupScreen />} />
-            <Route
-              path={deviceRoute}
-              element={<DeviceScreen editor={editor} onError={setError} />}
-            />
-            <Route
-              path={gkRoute}
-              element={<GkSetsScreen editor={editor} session={session} onError={setError} />}
-            />
-            <Route
-              path="*"
-              element={
-                <main className="gate">
-                  <h1>{t('app.notFound')}</h1>
-                  <p>
-                    <Link to={stageHref}>{t('stage.title')}</Link>
-                  </p>
-                </main>
-              }
-            />
-          </Routes>
-        </SystemProvider>
-      </SyncProvider>
+      <SystemProvider value={system}>
+        <Routes>
+          <Route index element={<Navigate to={resumeTarget} replace />} />
+          <Route path={connectRoute} element={<Navigate to={`../${resumeTarget}`} replace />} />
+          <Route path={patchRoute} element={<AppShell editor={editor} page="patch" />} />
+          <Route path={globalRoute} element={<AppShell editor={editor} page="global" />} />
+          {/* Legacy addresses → Patch or Global */}
+          <Route path="palco" element={<Navigate to={`../${patchRoute}`} replace />} />
+          <Route path="estudio" element={<Navigate to={`../${patchRoute}`} replace />} />
+          <Route path="maestro" element={<Navigate to={`../${patchRoute}`} replace />} />
+          <Route path="editor/*" element={<Navigate to={`../${patchRoute}`} replace />} />
+          <Route path="configuracao" element={<Navigate to={`../${globalRoute}`} replace />} />
+          <Route path="configurar" element={<Navigate to={`../${globalRoute}`} replace />} />
+          <Route path="dispositivo/*" element={<Navigate to={`../${globalRoute}`} replace />} />
+          <Route path="setup" element={<Navigate to={`../${globalRoute}`} replace />} />
+          <Route path="device" element={<Navigate to={`../${globalRoute}`} replace />} />
+          <Route
+            path="*"
+            element={
+              <main className="gate">
+                <h1>{t('app.notFound')}</h1>
+                <p>
+                  <Link to={patchHref}>{t('gr55.navPatch')}</Link>
+                </p>
+              </main>
+            }
+          />
+        </Routes>
+      </SystemProvider>
     </ConnectionProvider>
   );
 }

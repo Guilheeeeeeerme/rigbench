@@ -22,6 +22,7 @@ import {
   type RememberedPorts,
 } from '../../app/store/slices/connectionSlice';
 import {
+  setLastRoute,
   setPreferSimulated,
   setRememberedPorts,
 } from '../../app/store/slices/sessionPrefsSlice';
@@ -184,15 +185,9 @@ export function connectWithPorts(args: ConnectPortsArgs) {
         dispatch(setPreferSimulated(false));
       }
 
+      // Slot library sync intentionally not started — pedal config is not cached as SoT.
+      void sync;
       dispatch(setPhase('connected'));
-      void sync
-        .load()
-        .catch(() => {})
-        .then(() => {
-          if (getLiveConnection()?.sync === sync) {
-            sync.start();
-          }
-        });
       return true;
     } catch (reason) {
       if (getLiveConnection()?.session === session) {
@@ -325,5 +320,18 @@ export function disconnectPedal() {
     identifyAbort = undefined;
     releaseLiveConnection();
     dispatch(setPhase('needsPrompt'));
+  };
+}
+
+/**
+ * Exit the app: drop MIDI, purge connection resume prefs, leave for Home.
+ * Does not touch pedal configuration (nothing of that is stored locally).
+ */
+export function exitToHome() {
+  return (dispatch: AppDispatch) => {
+    dispatch(disconnectPedal());
+    dispatch(setRememberedPorts(null));
+    dispatch(setPreferSimulated(false));
+    dispatch(setLastRoute(''));
   };
 }

@@ -1,18 +1,11 @@
----
-description: GR-55 device layer — routes, writes, sync, connect resume
-globs: src/devices/gr55/**/*
-alwaysApply: false
----
-
 # GR-55 device layer
 
-- Routes SoT: `routes.ts`. Post-setup home: `stageRoute` (`palco`). `studioRoute` redirects to Stage.
-- App bar: Stage · Maestro · Setup (`AppNav.tsx`) — once in `Gr55Screen`.
-- Connect / silent resume: `connectionThunks.ts` + Redux `sessionPrefs` — SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
-- On connect: `readSystem` → `readPatch` → `readPatchLocation` so Stage knows `USER xx-y`.
-- **Patch writes**: `Gr55Editor.write` → immediate DT1 to temporary patch (🟠).
-- **System writes**: stage in `Gr55System` → confirm → Apply (🔵). Never bypass ApplyBar.
-- **Sync**: `sync/engine.ts` polls RQ1; never writes the pedal. Resume + IndexedDB cache.
-- Field keys for Maestro: `pages.ts` (`PAGE_IDS` frozen). Advanced editor UI removed.
+- Routes SoT: `routes.ts`. Connected surfaces: `patchRoute`, `globalRoute`. Legacy paths redirect.
+- Shell: `AppShell.tsx` — Exit · Patch | Global · snapshot; Maestro left, parameters right.
+- Connect / silent resume / Exit: `connectionThunks.ts` + Redux `sessionPrefs` — SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
+- On connect: `readSystem` → `readPatch` → `readPatchLocation`.
+- **Writes**: patch + system DT1 immediately; then `runAppMutation` / full snapshot. No system staging.
+- **Authority**: `sessionAuthority.ts` — `app` while writing/snapshotting, `pedal` when idle.
+- Field keys for Maestro: `pages.ts` (`PAGE_IDS` frozen).
 - Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path.
-- Recipes: `docs/current/recipes.md`. Macros: `docs/current/studio-sessions.md` (craft only).
+- Config taxonomy: `docs/current/gr55-config-scope.md`.

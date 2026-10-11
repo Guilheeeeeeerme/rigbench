@@ -41,16 +41,15 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 - On connect, the app reads the sounding temporary patch **and** which user slot is selected
   (setup BS MSB + PC). See [connection-resume.md](./connection-resume.md).
 
-## Surfaces (current IA)
+## Surfaces (current IA — WIP)
 
 | Surface | Route | Role |
 | --- | --- | --- |
-| **Stage** | `#/gr55/palco` | **The app** after first-run setup — where you are on the pedal, bank keys, sounding instruments; no slot save |
-| **Maestro** | `#/gr55/maestro` | AI craft by conversation (patch ± system); write-denied while Stage is the live perform surface per policy |
-| **Setup** | `#/gr55/configuracao` | Rare global cards: Device, GK, recalibrate |
-| **Wizard** | `#/gr55/configurar` | First-run gate + recalibrate (no app bar) |
-| **Connect** | prompt until linked | Silent resume when remembered ports still valid; otherwise pick ports |
+| **Home** | `#/` | Pick GR-55 or a placeholder |
+| **Connect** | `#/gr55/conectar` | MIDI ports; silent resume when remembered ports still valid |
+| **Patch** | `#/gr55/patch` | Current-patch parameters + Maestro (patch scope) |
+| **Global** | `#/gr55/global` | SYSTEM / GK + Maestro (system scope) |
 
-`#/gr55/estudio` is a **legacy redirect to Stage**. Advanced editor routes redirect to Stage; `pages.ts` remains field-key SoT for Maestro.
+Legacy addresses redirect into Patch or Global. `pages.ts` remains field-key SoT for Maestro.
 
 Macro / session taxonomy (System · Patch · Library) for Maestro craft: [studio-sessions.md](./studio-sessions.md).

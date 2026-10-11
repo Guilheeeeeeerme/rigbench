@@ -60,14 +60,13 @@ function systemFields(): SystemField[] {
 /**
  * The pedal-wide settings of a connected GR-55, mirrored in memory.
  *
- * Unlike a patch parameter, nothing here goes to the pedal as it is changed: edits are
- * staged, listed as changes, and sent only by apply(). A pedal-wide setting affects every
- * patch, so the musician sees exactly what will change before it does.
+ * Writes go to the pedal immediately (DT1). There is no staging / pending layer —
+ * image and baseline stay aligned after each write; callers re-read a full snapshot.
  */
 export class Gr55System {
-  /** The settings as staged here, indexed by offset from the start of the system area. */
+  /** Mirrored system bytes, indexed by offset from the start of the system area. */
   private readonly image = new Uint8Array(SYSTEM_SPAN);
-  /** The settings as the pedal has them. */
+  /** Same as image after each immediate write or load (kept for backup helpers). */
   private readonly baseline = new Uint8Array(SYSTEM_SPAN);
   private readonly listeners = new Set<() => void>();
   private readonly fields = systemFields();
@@ -85,11 +84,11 @@ export class Gr55System {
   snapshot = (): number => this.version;
 
   /** Same contract as the patch editor's, so the same controls can show a system field. */
-  fieldSnapshot(): string {
+  fieldSnapshot(_address?: number): string {
     return String(this.version);
   }
 
-  /** Reads the mapped stretches of the system area. Staged changes are dropped. */
+  /** Reads the mapped stretches of the system area. */
   load(): Promise<void> {
     // Two screens asking at once share one read.
     this.loading ??= this.readAll().finally(() => {
@@ -126,49 +125,35 @@ export class Gr55System {
     }
   }
 
-  /** The value the pedal itself holds, whatever is staged. */
+  /** Same as read() — no staging layer. */
   readApplied<T>(field: FieldReference<FieldType<T>>): FieldValue<T> {
-    const offset = field.address - SYSTEM_ADDRESS;
-    const { type, size } = field.definition;
-    try {
-      return { ok: true, value: type.decode(this.baseline, offset, size) };
-    } catch {
-      return { ok: false, raw: this.baseline.slice(offset, offset + size) };
-    }
+    return this.read(field);
   }
 
-  /** Stages a change. Nothing reaches the pedal until apply(). */
+  /** Writes immediately to the pedal (DT1) and keeps the mirror aligned. */
   write<T>(field: FieldReference<FieldType<T>>, value: T): void {
     const offset = field.address - SYSTEM_ADDRESS;
     const { type, size } = field.definition;
     const bytes = new Uint8Array(size);
     type.encode(value, bytes, 0, size);
     this.image.set(bytes, offset);
+    this.baseline.set(bytes, offset);
     this.bump();
+    void this.session.writeData(field.address, bytes, { coalesce: true });
   }
 
-  /** What apply() would change on the pedal, in words. */
+  /** Empty — immediate writes leave no pending diff. */
   get changes(): SystemChange[] {
-    return this.changedFields().map(({ reference, offset, size, gkSet: gkSetNumber }) => ({
-      field: reference,
-      gkSet: gkSetNumber,
-      from: formatFieldBytes(reference, this.baseline.slice(offset, offset + size)),
-      to: formatFieldBytes(reference, this.image.slice(offset, offset + size)),
-    }));
+    return [];
   }
 
   get changeCount(): number {
-    return this.changedFields().length;
+    return 0;
   }
 
-  /** Sends every staged change to the pedal. The caller owns the confirmation. */
+  /** No-op: writes already reached the pedal. Kept for older call sites. */
   async apply(): Promise<void> {
-    for (const { reference, offset, size } of this.changedFields()) {
-      const bytes = this.image.slice(offset, offset + size);
-      await this.session.writeData(reference.address, bytes);
-      this.baseline.set(bytes, offset);
-    }
-    this.bump();
+    // Intentionally empty.
   }
 
   /** Puts backed-up system bytes back on the pedal, then reads it. The caller owns the confirm. */
@@ -179,10 +164,9 @@ export class Gr55System {
     await this.load();
   }
 
-  /** Drops every staged change. */
+  /** No-op: there is no staging layer. */
   discard(): void {
-    this.image.set(this.baseline);
-    this.bump();
+    // Intentionally empty.
   }
 
   /** The mirrored stretch of the system area as the pedal has it, for a backup file. */

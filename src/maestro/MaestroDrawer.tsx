@@ -4,7 +4,10 @@ import { getLocale, useT } from '../copy';
 import type { Gr55Editor } from '../devices/gr55/editor';
 import { formatFieldBytes } from '../devices/gr55/editor';
 import { TEMPORARY_PATCH_ADDRESS } from '../devices/gr55/patchLayout';
-import { deviceHref, stageRoute } from '../devices/gr55/routes';
+import { useConnectionOptional } from '../devices/gr55/connectionRuntime';
+import { globalHref } from '../devices/gr55/routes';
+import { asSnapshotSource } from '../devices/gr55/snapshotHost';
+import { runAppMutation } from '../devices/gr55/sessionAuthority';
 import { slotsOfMode } from '../devices/gr55/slots';
 import type { ValidatedItem, ValidatedPlan } from './contracts';
 import { appendMessage, clearHistory, loadHistory, markStale, sourceKeyOf } from './history';
@@ -90,7 +93,8 @@ export function MaestroDrawer({
   const t = useT();
   const locale = getLocale();
   const location = useLocation();
-  const stageLive = location.pathname.endsWith(`/${stageRoute}`);
+  const live = useConnectionOptional();
+  const stageLive = false;
   const patchName = useSyncExternalStore(editor.subscribe, () => editor.patchName);
   const gkMode = useSyncExternalStore(editor.subscribe, () => editor.gkMode);
   const changeSet = useSyncExternalStore(editor.subscribe, () => editor.dirtySnapshot());
@@ -252,22 +256,34 @@ export function MaestroDrawer({
   };
 
   const applyPlan = (lineIdToFlip: string, plan: ValidatedPlan) => {
-    applyItems([...plan.accepted, ...plan.clamped]);
-    setLines((prev) =>
-      prev.map((line) => (line.id === lineIdToFlip ? { ...line, applied: true } : line)),
-    );
-    setThread((prev) => {
-      const next = appendMessage(prev, {
-        role: 'assistant',
-        text: t('maestro.applied', editor.changeCount),
-        outcome: 'applied',
-      });
-      return next;
-    });
+    const items = [...plan.accepted, ...plan.clamped];
+    const finish = () => {
+      setLines((prev) =>
+        prev.map((line) => (line.id === lineIdToFlip ? { ...line, applied: true } : line)),
+      );
+      setThread((prev) =>
+        appendMessage(prev, {
+          role: 'assistant',
+          text: t('maestro.applied', items.length),
+          outcome: 'applied',
+        }),
+      );
+    };
+    if (live) {
+      void runAppMutation(() => applyItems(items), asSnapshotSource(live)).then(finish);
+    } else {
+      applyItems(items);
+      finish();
+    }
   };
 
   const confirmLoad = async (lineIdToClear: string, slot: LoadSlotAsk) => {
-    await editor.selectPatch(slot.bankMsb, slot.programChange);
+    const select = () => editor.selectPatch(slot.bankMsb, slot.programChange);
+    if (live) {
+      await runAppMutation(select, asSnapshotSource(live));
+    } else {
+      await select();
+    }
     setLines((prev) =>
       prev.map((line) =>
         line.id === lineIdToClear
@@ -457,7 +473,7 @@ export function MaestroDrawer({
             )}
           </div>
           <p className="maestro-policy-links">
-            <Link to={deviceHref}>{t('maestro.policy.systemDenied')}</Link>
+            <Link to={globalHref}>{t('maestro.policy.systemDenied')}</Link>
           </p>
         </footer>
       </aside>

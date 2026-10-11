@@ -294,28 +294,20 @@ describe('unsaved changes', () => {
     expect(hits[0].address).toBe(target.address);
   });
 
-  test('an edit counts, writing the loaded value back uncounts', async () => {
-    const { editor } = setUp();
+  test('an edit writes immediately and leaves no local dirty state', async () => {
+    const { device, editor } = setUp();
     await editor.readPatch();
     expect(editor.isDirty).toBe(false);
 
     editor.write(reverbLevel, 90);
-    expect(editor.changeCount).toBe(1);
-
-    editor.write(reverbLevel, 0);
+    await settle();
+    expect(editor.changeCount).toBe(0);
     expect(editor.isDirty).toBe(false);
+    expect(editor.read(reverbLevel)).toEqual({ ok: true, value: 90 });
+    expect(device.received.some((message) => message[6] === 0x12)).toBe(true);
   });
 
-  test('a second field added to the count', async () => {
-    const { editor } = setUp();
-    await editor.readPatch();
-
-    editor.write(reverbLevel, 90);
-    editor.write(common.patchName, 'Scratch');
-    expect(editor.changeCount).toBe(2);
-  });
-
-  test('a remote pedal change lands in the count', async () => {
+  test('a remote pedal change updates the mirror when authority is pedal', async () => {
     const { device, editor } = setUp();
     await editor.readPatch();
 
@@ -323,26 +315,10 @@ describe('unsaved changes', () => {
     device.emit([0xf0, 0x41, 0x10, 0x00, 0x00, 0x53, 0x12, ...body, rolandChecksum(body), 0xf7]);
 
     expect(editor.read(reverbLevel)).toEqual({ ok: true, value: 55 });
-    expect(editor.changeCount).toBe(1);
+    expect(editor.changeCount).toBe(0);
   });
 
-  test('revert sends the loaded bytes back to the pedal and empties the count', async () => {
-    const { device, editor } = setUp();
-    await editor.readPatch();
-    editor.write(common.patchName, 'Scratch');
-    editor.write(reverbLevel, 90);
-    await settle();
-    device.received.length = 0;
-
-    await editor.revert();
-
-    expect(editor.isDirty).toBe(false);
-    expect(editor.patchName).toBe('Simulated Patch');
-    const writes = device.received.filter((message) => message[6] === 0x12);
-    expect(writes.length).toBeGreaterThanOrEqual(2);
-  });
-
-  test('a program change from the pedal discards unsaved edits and records how many', async () => {
+  test('a program change from the pedal reloads the sounding patch', async () => {
     const { device, editor } = setUp();
     await editor.readPatch();
     editor.write(reverbLevel, 90);
@@ -352,7 +328,6 @@ describe('unsaved changes', () => {
     await vi.waitFor(() => expect(editor.patchSnapshot()).not.toBe(before), { timeout: 3000 });
 
     expect(editor.isDirty).toBe(false);
-    expect(editor.discardedChanges).toBe(1);
   });
 });
 

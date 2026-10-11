@@ -9,11 +9,12 @@ coverage/
 research_notes/
 reports/
 
-# Local agent tooling
+# Local agent tooling (AGENTS.md and .cursor/rules are tracked)
 .claude/
-.cursor/
-AGENTS.md
+.opencode/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 
 .DS_Store
 Thumbs.db
-.opencode/

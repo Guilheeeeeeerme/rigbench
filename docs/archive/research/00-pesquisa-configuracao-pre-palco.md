@@ -1,5 +1,10 @@
 # Pesquisa profunda — Configuração pré-palco do GR-55 e sincronização total
 
+> **ARCHIVED research.** Hardware/SYSTEM facts remain useful; “what is missing”
+> gap tables and Stage-as-root IA are stale. Live product:
+> [AGENTS.md](../../../AGENTS.md), [docs/current/](../../current/).
+> `research_notes/…/protocolo_midi.md` is not in this repo.
+>
 > Base desta rodada: Owner's Manual oficial GR‑55 (pages 69–74 e 70 via
 > manualsdump.com), GR‑55 Training Guide oficial da Roland (`GR-55_Training_Guide.pdf`,
 > extraído via busca), threads da VGuitarForums (patch delay, live use, tracking),

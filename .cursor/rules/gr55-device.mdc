@@ -1,0 +1,17 @@
+---
+description: GR-55 device layer — routes, writes, sync, editor pages
+globs: src/devices/gr55/**/*
+alwaysApply: false
+---
+
+# GR-55 device layer
+
+- Routes SoT: `routes.ts`. Post-setup home: `studioRoute` (`estudio`).
+- Top chrome: Studio · Stage · ⋯ (`TopNav.tsx`). Deep Device/editor under More.
+- **Patch writes**: `Gr55Editor.write` → immediate DT1 to temporary patch (🟠).
+- **System writes**: stage in `Gr55System` → confirm → Apply (🔵). Never bypass ApplyBar.
+- **Sync**: `sync/engine.ts` polls RQ1; never writes the pedal. Resume + IndexedDB cache.
+- Editor pages: `pages.ts` — every patch field on exactly one page (`PAGE_IDS` frozen).
+- Prefer `essentialKeys` / `typeKey` / `readOnlyKeys` over dumping every knob.
+- Fake pedal: `fakeDevice.ts` for tests and the dev “simulated pedal” path.
+- Recipes: `docs/current/recipes.md`. IA: `docs/current/studio-sessions.md`.

@@ -1,11 +1,13 @@
 # PROMPT MESTRE v2 — RigbenchPalco (orientação ao palco, Pt/EN)
 
-> **Uso:** entregue este arquivo como briefing único a um agente de código em
-> sessão nova. Ele descreve o estado ATUAL do app (o redesign "Circuito & Documento"
-> já foi implementado), o novo objetivo (o app é **uma ferramenta de palco**),
-> e todas as peças que faltam. As pastas `docs/plans/` e `docs/palco/` são leitura
-> de referência; **este arquivo prevalece** em caso de divergência.
-> Idioma de resposta: siga o idioma do usuário. Código, commits e comentários: inglês.
+> **ARCHIVED — do not use as a live agent briefing.**
+> Phases A–E described here shipped; craft home is now **Studio**
+> (`#/gr55/estudio`), not Stage. Authoritative entry: [AGENTS.md](../../AGENTS.md)
+> and [docs/current/](../current/). This file does **not** prevail over code.
+>
+> Original note (historical): single briefing for the Stage-first redesign;
+> `docs/plans/` and `docs/palco/` were reference. Response language: user.
+> Code, commits, comments: English.
 
 ---
 

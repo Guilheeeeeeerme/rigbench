@@ -1,12 +1,16 @@
 # Maestro-first UX — session-scoped craft
 
-> Status: APPROVED — first implementation slice in progress.
+> **Status:** APPROVED — Studio home + sessions/macros in code; absorb remaining
+> Device panels and unfinished macros as tracked by `implemented` in
+> `src/maestro/macros/registry.ts`.
+> **SoT for craft IA.** Precedence: code → this file → archive.
 > Grounded in: `docs/manuals/GR-55_OM.pdf` (Owner’s Manual EN),
 > `docs/manuals/GR-55_PT.pdf` (manual PT), `GR-55_PA.pdf` (patch list),
 > `GR-55_PCM_Tone_List.pdf`, `GR-55_Additional_PatchList.pdf`.
 > Cross-checked: `src/devices/gr55/pages.ts`, `systemMap.ts` / Device / GkSets,
 > `src/maestro/fieldRegistry.ts`, `policy.ts`.
-> Read-with: `docs/palco/01-plano-maestro.md`, `docs/palco/00-pesquisa-configuracao-pre-palco.md`.
+> Read-with: [maestro-architecture.md](./maestro-architecture.md),
+> [../archive/research/00-pesquisa-configuracao-pre-palco.md](../archive/research/00-pesquisa-configuracao-pre-palco.md).
 
 ---
 

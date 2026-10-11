@@ -7,55 +7,63 @@ no backend, and nothing you edit leaves your computer.
 The interface is in English and Brazilian Portuguese. It follows the browser's language on the
 first visit; the **EN | PT-BR** switch in the corner of every screen changes it without a reload.
 
-| Device       | Status                           |
-| ------------ | -------------------------------- |
-| Roland GR-55 | Stage, setup, editor and library |
-| Roland VG-99 | Coming soon                      |
-| BOSS GT-10   | Coming soon                      |
+| Device       | Status                                      |
+| ------------ | ------------------------------------------- |
+| Roland GR-55 | Studio, Stage, setup, editor and library    |
+| Roland VG-99 | Coming soon                                 |
+| BOSS GT-10   | Coming soon                                 |
+
+Contributors and coding agents: start at [AGENTS.md](./AGENTS.md) and [docs/](./docs/).
 
 ## GR-55
 
-Rigbench is built around the stage. One path leads there:
+One path from a cold start to craft and show:
 
 ```
-Pick the device → Connect → Stage setup (first time) → Sync → Stage
-                                                              ├─ Patch (editor) · Library
-                                                              └─ Device (pedal-wide settings)
+Pick the device → Connect → Stage setup (first time) → Sync → Studio (craft home)
+                                                              ├─ System | Patch | Library (+ Maestro)
+                                                              └─ Stage (perform) · Advanced under ⋯
 ```
+
+Top chrome after connect: **Studio · Stage · ⋯** (⋯ holds Advanced editor, Library, Device, recalibrate).
 
 - **Connect.** Finds the pedal with a MIDI Identity Request, then reads the patch it is playing.
 - **Stage setup** (`#/gr55/configurar`). Eight steps: language and rig name, guitar or bass mode,
   your instruments (GK sets), output, pedals, MIDI and USB, backup, sync. A step can be skipped
-  with "Continue anyway"; the Stage then reminds you of what was skipped.
+  with "Continue anyway"; later screens remind you of what was skipped. Also reachable as
+  **Recalibrate** under ⋯.
 - **Sync.** Reads all 297 user slots and the pedal-wide settings into the browser's IndexedDB,
   one slot at a time, starting at a safe pace and speeding up until the pedal times out. The seal
   in the corner of every screen shows the slot being read, the count and the time left, then
   **READY**, or how many slots changed on the pedal since the last sync. A sync cut short — page
   reload, cable pulled — picks up where it stopped. It never saves anything to the pedal.
-- **Stage** (`#/gr55/palco`). The root once the setup is done. A setlist names each song and the
-  slot that plays it; `N`/`P`, the arrow keys and `1`–`9` move through it. The pedal is silent for
-  about a second when it changes patches, so a move to another slot is flagged before you make it
-  and a move within the same slot is marked as gap-free. For the patch that is sounding it shows
-  what each pedal does, the assigns that are on as named "cuts", and the effects — each with a
-  link into the editor. Nothing on the Stage saves to the pedal.
+- **Studio** (`#/gr55/estudio`). Craft home once setup is done. Sessions **System · Patch ·
+  Library** share Maestro chat and high-level macro panels (musician-language bundles of real
+  parameters). Default session is Patch. Dense editor and Device remain under Advanced / ⋯.
+- **Stage** (`#/gr55/palco`). Live/show surface. A setlist names each song and the slot that
+  plays it; `N`/`P`, the arrow keys and `1`–`9` move through it. The pedal is silent for about a
+  second when it changes patches, so a move to another slot is flagged before you make it and a
+  move within the same slot is marked as gap-free. For the patch that is sounding it shows what
+  each pedal does, the assigns that are on as named "cuts", and the effects. Nothing on the Stage
+  saves to the pedal; Maestro writes stay denied here.
 - **Setlist** (`#/gr55/agenda`). Add, rename, reorder (drag, or the arrows), test, name the cuts
   of each song's patch, and save or open the setlist as a JSON file to share it.
-- **Patch** (`#/gr55/editor`). Every parameter of the patch, laid out along the signal chain: PCM
-  tones 1 and 2, modeling, normal pickup, amp, MOD, MFX, delay, chorus, reverb, EQ, assigns,
-  pedal and GK controls, master. Moving a control sends that one parameter to the pedal. These
-  edits go to the working copy, which the pedal throws away when it changes patches.
+- **Patch / Advanced editor** (`#/gr55/editor`). Every parameter of the patch, laid out along the
+  signal chain: PCM tones 1 and 2, modeling, normal pickup, amp, MOD, MFX, delay, chorus, reverb,
+  EQ, assigns, pedal and GK controls, master. Moving a control sends that one parameter to the
+  pedal. These edits go to the working copy, which the pedal throws away when it changes patches.
 - **Library** (`#/gr55/patches`). The 297 slots as cards, named from the sync. Try a slot with a
   click; save the working copy into a slot after seeing exactly which parameters differ; download
-  or open a patch as `.syx`; save or restore a backup of every slot.
+  or open a patch as `.syx`; save or restore a backup of every slot. Also a Studio session.
 - **Device** (`#/gr55/dispositivo`). Pedal-wide settings: the ten GK sets, output select, what
   the GUITAR OUT jack carries, the pedal-wide pedal functions, MIDI and USB, guitar/bass mode, and
   a system backup. Changes here are staged and listed, and reach the pedal only on **Apply**,
-  after a confirmation that names each one.
+  after a confirmation that names each one. System craft is also moving into Studio → System.
 - **GK sets** (`#/gr55/dispositivo/gk`). Name each set, choose pickup and scale, and set the
   sensitivity of each string beside a meter.
-- **Maestro** (edge button or `Ctrl`/`⌘`+`M`). A chat copilot for the working copy. It proposes
-  temporary-patch (🟠) edits you confirm before they are applied; it never writes a pedal slot
-  or system setting. Hidden on the Stage full-screen view.
+- **Maestro** (Studio panel; elsewhere edge button or `Ctrl`/`⌘`+`M`). Chat copilot scoped to the
+  active Studio session. It proposes temporary-patch (🟠) edits and can stage system (🔵) changes
+  you confirm before Apply; it never writes a pedal slot. Hidden / write-denied on Stage.
 
 Every control carries a chip that says what it changes: 🟠 the working copy, 🟢 a saved slot,
 🔵 the whole pedal.
@@ -65,18 +73,18 @@ Every control carries a chip that says what it changes: 🟠 the working copy, �
 Maestro talks to Google Gemini (`gemini-3.6-flash`) with **your** API key. Rigbench never ships a
 key and never puts one in the repository, `.env`, logs, or fixtures.
 
-- **Open.** Floating button on the right edge of every connected screen except Stage, or
-  `Ctrl`/`⌘`+`M`. `Esc` closes the drawer.
+- **Open.** On Studio it is a first-class panel beside the session macros. Elsewhere: floating
+  button on the right edge, or `Ctrl`/`⌘`+`M`. `Esc` closes the drawer when it is a drawer.
 - **Storage.** The key lives in `sessionStorage` by default. Opt in to “Remember on this device”
   to keep it in `localStorage`. Use **Forget** to clear both. Use **Test** to ping Gemini without
   sending patch data.
 - **Privacy / rotation.** In Google AI Studio, restrict the key by HTTP referrer to this app’s
   origin, set a budget cap, and rotate the key if it was ever exposed.
-- **What it can do.** Propose edits to orange temporary-patch fields (you apply them), explain
-  controls, and ask to load a user slot (you confirm). Voice input (Chrome/Edge) fills the draft
-  only — it never auto-sends.
-- **What it cannot do.** Auto-apply, write slots, change system/GK settings, or edit while Stage
-  is open.
+- **What it can do.** Propose edits to orange temporary-patch fields (you apply them), stage
+  blue system changes into the same Apply confirmation as Device, explain controls, and ask to
+  load a user slot (you confirm). Voice input (Chrome/Edge) fills the draft only — it never
+  auto-sends.
+- **What it cannot do.** Auto-apply, write slots directly, or edit while Stage is open.
 
 `npm run check:secrets` scans the tree for Gemini/Google key-shaped strings.
 
@@ -133,7 +141,8 @@ Not included yet: `.g5l` librarian files, and the read-only preset banks.
 ## What you need
 
 - **Chrome or Edge on a computer.** Safari and every browser on iPhone and iPad have no Web MIDI.
-  Firefox works, but asks for an extra permission before a page may send SysEx.
+  Firefox works, but asks for an extra permission before a page may send SysEx. Android Chrome over
+  USB-C is experimental and unverified; see [docs/current/mobile-live-control.md](./docs/current/mobile-live-control.md).
 - **The page on HTTPS or `localhost`.** Browsers hide MIDI everywhere else.
 - **The GR-55 connected by USB**, with the Roland GR-55 driver installed. On Windows the pedal
   shows up in Device Manager with hardware ID `USB\VID_0582&PID_0127`; if it is listed as an
@@ -172,17 +181,19 @@ src/
   app/            App shell, routes, styles
   shell/          Browser gate, device picker, language switch
   copy/           en.ts (source of truth) and pt-BR.ts; t() and useT() in index.ts
-  maestro/        Maestro copilot (registry, policy, Gemini BYOK, drawer)
+  maestro/        Maestro (policy, registry, Gemini BYOK, macros/, Studio host)
   midi/           Web MIDI access; the session that queues RQ1/DT1 messages 20 ms apart
   protocol/       Roland SysEx and the GR-55 patch address map (see Credits)
   devices/gr55/   Everything the GR-55 screens are made of:
-    editor.ts, pages.ts, …      the working copy and the generated editor pages
-    systemMap.ts, systemState.ts the pedal-wide settings, staged until applied
-    sync/                        the sync engine, its IndexedDB cache, the corner seal
-    Stage.tsx, stageModel.ts     the Stage and what it reads out of a patch
-    setlist.ts, SetlistScreen.tsx the setlist and its editor
-    Wizard.tsx, setupState.ts    the stage setup
-    fakeDevice.ts                the simulated pedal used by tests and the dev build
+    Studio.tsx, StudioPanels.tsx craft home (sessions + macros)
+    Stage.tsx, stageModel.ts     live Stage and what it reads out of a patch
+    editor.ts, pages.ts, …       working copy and generated editor pages
+    systemMap.ts, systemState.ts pedal-wide settings, staged until applied
+    sync/                        sync engine, IndexedDB cache, corner seal
+    setlist.ts, SetlistScreen.tsx setlist editor
+    Wizard.tsx, setupState.ts    first-run / recalibrate setup
+    routes.ts, TopNav.tsx        hash routes and Studio · Stage · ⋯ chrome
+    fakeDevice.ts                simulated pedal for tests and the dev build
 ```
 
 The editor pages are not drawn parameter by parameter. Each page is a slice of the address map,
@@ -196,6 +207,8 @@ the pedal prints them.
 What Rigbench keeps on your computer: the language, the stage setup and the setlist in
 `localStorage`; the synced slots in IndexedDB. Clearing the site's data removes them and nothing
 on the pedal.
+
+Agent-oriented recipes and glossary: [docs/current/](./docs/current/).
 
 ## Credits and license
 

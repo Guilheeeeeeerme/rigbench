@@ -1,11 +1,16 @@
-# Maestro (Mestre) — detailed implementation spec
+# Maestro — architecture reference
 
-> Status: PLAN ONLY. No code is written until this spec is approved.
-> Ground: `main` at `857da13` (Phases A–E of prompt v2 shipped and green:
-> lint, 94+ tests, build). This feature lands as Phase F.
-> Read-with: `docs/palco/00-pesquisa-configuracao-pre-palco.md` (stage-first
-> research), `docs/plans/01-fundacoes.md` (scope chips 🟠🟢🔵, personas),
-> `docs/plans/00-summary.md` (the IA already implemented).
+> **Status: SHIPPED (v1)** under `src/maestro/**`. This file is the design record
+> for registry / policy / BYOK / prompts — not a “plan only” backlog.
+> **Supersedes for craft UX:** [studio-sessions.md](./studio-sessions.md)
+> (Studio home, session-scoped chat, macros; FAB demoted on Studio).
+> **Policy evolution:** D5 below is historical. Live SoT is `src/maestro/policy.ts`:
+> `changePlan` = 🟠 working-copy only; `stageSystemPlan` = ask (queues into
+> `Gr55System` staging); direct `writeSystem` / `writeSlot` always deny;
+> `stageLive` denies everything.
+> Read-with: [glossary.md](./glossary.md),
+> [../archive/research/00-pesquisa-configuracao-pre-palco.md](../archive/research/00-pesquisa-configuracao-pre-palco.md),
+> [../archive/plans/01-fundacoes.md](../archive/plans/01-fundacoes.md).
 
 ---
 
@@ -13,11 +18,11 @@
 
 | # | Decision | Value |
 |---|---|---|
-| D1 | Shape | **Global right drawer**, button on the screen edge + `Ctrl/⌘+M`, everywhere except Stage full-screen (read-only there) |
+| D1 | Shape | Originally global right drawer + `Ctrl/⌘+M` (still on non-Studio screens). On Studio, Maestro is first-class panel — see studio-sessions.md |
 | D2 | Provider v1 | **Gemini only** (`gemini-3.6-flash`, REST, BYOK). An `AskProvider` interface exists so Ollama/OpenAI-compatible is a drop-in later — but only Gemini is implemented |
 | D3 | Capability | **Edit + explain.** No manual citations in v1 (RAG is gated F3) |
-| D4 | Tools | propose `ChangePlan` + `loadSlot` (with human confirm). **Never** writes a slot, never writes system |
-| D5 | Writability | **🟠 temporary-patch fields only.** System 🔵 is policy-denied and structurally absent from the registry |
+| D4 | Tools | propose `ChangePlan` + `loadSlot` (with human confirm). **Never** writes a slot; system only via staged plan + Apply |
+| D5 | Writability *(historical)* | Originally 🟠 only. **Now:** also `stageSystemPlan` → ask — see status banner |
 | D6 | Voice | **Web Speech API**, transcript lands as editable draft — never auto-sends |
 | D7 | History | Persisted **per patch** in `localStorage`, capped; cleared per conversation |
 | D8 | Key storage | `sessionStorage` default; opt-in "Remember on this device" → `localStorage`; visible "Forget"; test button. **Never** in repo, `.env`, logs, or git |

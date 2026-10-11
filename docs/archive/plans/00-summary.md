@@ -1,5 +1,9 @@
 # Redesign do Rigbench — Summary dos 11 planos
 
+> **ARCHIVED.** Stage-era “v2 implementada” note below is historical; craft home
+> is now Studio — see [AGENTS.md](../../../AGENTS.md) and
+> [docs/current/studio-sessions.md](../../current/studio-sessions.md).
+>
 > Perguntas de fundação que todo plano responde: **o que é global, o que é local,
 > o que é por patch?** · **Onde configuro o instrumento (GK‑3, violão piezo, baixo)?**
 > · **Onde vejo/edito meus patches?** · **Sabendo o que acontece ao pisar cada pedal?**
@@ -65,7 +69,7 @@ implementação, trade-offs e critérios de aceite.
 
 ## Nota — v2 implementada (2026-10-10)
 
-O briefing `prompt.md` ("RigbenchPalco") foi implementado no branch `palco-v2`, nas
+O briefing arquivado `docs/archive/prompt-v2-rigbench-palco.md` foi implementado no branch `palco-v2`, nas
 cinco fases previstas:
 
 | Fase | O que entrou | Onde |

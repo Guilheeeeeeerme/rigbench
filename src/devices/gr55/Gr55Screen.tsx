@@ -237,7 +237,7 @@ export default function Gr55Screen() {
   if (phase.kind === 'connected') {
     const { editor, session, sync, system } = phase.connection;
     // A pedal met for the first time is walked through the stage setup before anything else.
-    // After that the Stage is the root; the editor and the library are reached from it.
+    // After setup, Studio is craft home; Stage / Advanced editor / Library sit beside it.
     const home = loadSetup().complete ? studioRoute : setupRoute;
     return (
       <SyncProvider value={sync}>

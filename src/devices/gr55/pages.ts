@@ -1,4 +1,5 @@
-import { en } from '../../copy/en';
+import { t as currentT } from '../../copy';
+import type { Translate } from '../../copy';
 import { FieldDefinition, ReservedField, isEnumField } from '../../protocol/RolandAddressMap';
 import type {
   AtomReference,
@@ -15,6 +16,13 @@ export interface Section {
   struct: StructReference;
   /** Field keys of the struct shown in this section, in map order. */
   keys: readonly string[];
+  /** Stable URL piece: /gr55/editor/:page/:section. */
+  slug: string;
+  /**
+   * The few parameters of this section most patches actually need. They are always
+   * shown; the Advanced switch adds the rest.
+   */
+  essentialKeys?: readonly string[];
   /**
    * Key of the enum that picks the active effect. Fields named after another effect of
    * that enum are hidden until that effect is selected.
@@ -29,7 +37,30 @@ export interface Page {
   sections: readonly Section[];
 }
 
-type KeyFilter = (key: string) => boolean;
+/** Page ids double as URL slugs; they are frozen here so links cannot drift. */
+export const PAGE_IDS = [
+  'patch',
+  'pcm1',
+  'pcm2',
+  'modeling',
+  'normal-pickup',
+  'amp',
+  'mod',
+  'mfx',
+  'delay',
+  'chorus',
+  'reverb',
+  'eq',
+  'assigns',
+  'pedal-gk',
+  'master',
+] as const;
+
+export type PageId = (typeof PAGE_IDS)[number];
+
+export function editorHref(pageId: PageId, sectionSlug: string): string {
+  return `/gr55/editor/${pageId}/${sectionSlug}`;
+}
 
 export function memberOf(struct: StructReference, key: string): AtomReference {
   return (struct as unknown as Record<string, AtomReference>)[key];
@@ -46,30 +77,30 @@ function fieldKeys(struct: StructReference, filter: KeyFilter = () => true): str
   });
 }
 
+/** A keys filter. Groups are curated lists; no prefix or leftover filters remain. */
+type KeyFilter = (key: string) => boolean;
+
 function section(
   title: string,
   struct: unknown,
+  slug: string,
   filter?: KeyFilter,
-  extra: Pick<Section, 'typeKey' | 'readOnlyKeys'> = {},
+  extra: Pick<Section, 'typeKey' | 'readOnlyKeys' | 'essentialKeys'> = {},
 ): Section {
   const reference = struct as StructReference;
-  return { title, struct: reference, keys: fieldKeys(reference, filter), ...extra };
+  return {
+    title,
+    struct: reference,
+    slug,
+    keys: fieldKeys(reference, filter),
+    ...extra,
+  };
 }
-
-const startsWith =
-  (...prefixes: string[]): KeyFilter =>
-  (key) =>
-    prefixes.some((prefix) => key.startsWith(prefix));
 
 const oneOf =
   (...keys: string[]): KeyFilter =>
   (key) =>
     keys.includes(key);
-
-const not =
-  (...filters: KeyFilter[]): KeyFilter =>
-  (key) =>
-    !filters.some((filter) => filter(key));
 
 // Modeling parameters exist once per GK mode; the key suffix says which.
 const MODE_SUFFIX: Record<GkMode, string> = { GUITAR: '_guitar', BASS: '_bass' };
@@ -83,91 +114,310 @@ const common = patch.common;
 
 const isName = oneOf('patchName', 'patchAttribute');
 const isNormalPickup = oneOf('normalPuMute', 'normalPuLevel', 'lineSelectNormalPU');
-const isPedalControl = (key: string) => key === 'gkSet' || key.includes('ModControl');
-const isAmp = startsWith('amp');
-const isNoiseSuppressor = startsWith('ns');
+// Groups are curated key lists, never prefix matches: what a group holds is visible here.
+const isAmp = oneOf(
+  'ampSwitch',
+  'ampType',
+  'ampGain',
+  'ampLevel',
+  'ampGainSwitch',
+  'ampSoloSwitch',
+  'ampSoloLevel',
+  'ampBass',
+  'ampMiddle',
+  'ampTreble',
+  'ampPresence',
+  'ampBright',
+  'ampSpType',
+  'ampMicType',
+  'ampMicDistance',
+  'ampMicPosition',
+  'ampMicLevel',
+);
+const isNoiseSuppressor = oneOf('nsSwitch', 'nsThreshold', 'nsReleaseTime');
+const isPedalControl = oneOf(
+  'gkSet',
+  'expPdlOffModControlMin',
+  'expPdlOffModControlMax',
+  'expPdlOnModControlMin',
+  'expPdlOnModControlMax',
+  'gkVolModControlMin',
+  'gkVolModControlMax',
+);
+const isDelay = oneOf('delaySwitch', 'delayType', 'delayTime', 'delayFeedback', 'delayEffectLevel');
+const isChorus = oneOf(
+  'chorusSwitch',
+  'chorusType',
+  'chorusRate',
+  'chorusDepth',
+  'chorusEffectLevel',
+);
+const isReverb = oneOf(
+  'reverbSwitch',
+  'reverbType',
+  'reverbTime',
+  'reverbHighCut',
+  'reverbEffectLevel',
+);
+const isEq = oneOf(
+  'eqSwitch',
+  'eqLowCutoffFreq',
+  'eqLowGain',
+  'eqLowMidCutoffFreq',
+  'eqLowMidQ',
+  'eqLowMidGain',
+  'eqHighMidCutoffFreq',
+  'eqHighMidQ',
+  'eqHighMidGain',
+  'eqHighCutoffFreq',
+  'eqHighGain',
+  'eqLevel',
+);
+const isOutput = oneOf(
+  'guitarOutSource',
+  'lineSelectModel',
+  'effectStructure',
+  'patchLevel',
+  'patchTempo',
+  'bypassChorusSendLevel',
+  'bypassDelaySendLevel',
+  'bypassReverbSendLevel',
+);
+const isTuning = oneOf(
+  'altTuneSwitch',
+  'altTuneType',
+  'userTuneShiftString1',
+  'userTuneShiftString2',
+  'userTuneShiftString3',
+  'userTuneShiftString4',
+  'userTuneShiftString5',
+  'userTuneShiftString6',
+);
+const isVLink = oneOf(
+  'vlinkPalette',
+  'vlinkPatchClip',
+  'vlinkClipChange',
+  'vlinkExpPedal',
+  'vlinkExpPedalOn',
+  'vlinkGkVol',
+);
+const isEz = oneOf('ezCharacter');
+// The MOD block: everything the amp and the noise suppressor do not hold.
+const isModFields = oneOf(
+  'modSwitch',
+  'modType',
+  'modPan',
+  'modChorusSendLevel',
+  'modDelaySendLevel',
+  'modReverbSendLevel',
+  'odDsType',
+  'odDsDrive',
+  'odDsTone',
+  'odDsLevel',
+  'wahMode',
+  'wahType',
+  'wahPedalPosition',
+  'wahSens',
+  'wahFreq',
+  'wahPeak',
+  'wahLevel',
+  'compSustain',
+  'compAttack',
+  'compLevel',
+  'limiterThreshold',
+  'limiterRelease',
+  'limiterLevel',
+  'octaveOctLevel',
+  'octaveDryLevel',
+  'phaserType',
+  'phaserRate',
+  'phaserDepth',
+  'phaserResonance',
+  'phaserLevel',
+  'flangerRate',
+  'flangerDepth',
+  'flangerManual',
+  'flangerResonance',
+  'flangerLevel',
+  'tremoloRate',
+  'tremoloDepth',
+  'tremoloWaveShape',
+  'tremoloLevel',
+  'rotaryRateSlow',
+  'rotaryRateFast',
+  'rotaryDepth',
+  'rotarySelect',
+  'rotaryLevel',
+  'uniVRate',
+  'uniVDepth',
+  'uniVLevel',
+  'panRate',
+  'panDepth',
+  'panWaveShape',
+  'panLevel',
+  'delayType',
+  'delayTime',
+  'delayFeedback',
+  'delayEffectLevel',
+  'chorusType',
+  'chorusRate',
+  'chorusDepth',
+  'chorusEffectLevel',
+  'eqLowCutoffFreq',
+  'eqLowGain',
+  'eqLowMidCutoffFreq',
+  'eqLowMidQ',
+  'eqLowMidGain',
+  'eqHighMidCutoffFreq',
+  'eqHighMidQ',
+  'eqHighMidGain',
+  'eqHighGain',
+  'eqHighCutoffFreq',
+  'eqLevel',
+);
 
 /**
  * The editor's pages. Each one is a slice of the address map; controls are generated
  * from the field definitions, so a parameter added to the map shows up here by itself.
  */
-export function buildPages(mode: GkMode): Page[] {
-  const t = en.gr55.pages;
+export function buildPages(mode: GkMode, t: Translate = currentT): Page[] {
   return [
     {
       id: 'patch',
-      title: t.patch,
-      sections: [section(t.patch, common, isName, { readOnlyKeys: ['patchAttribute'] })],
+      title: t('gr55.pages.patch'),
+      sections: [
+        section(t('gr55.pages.patch'), common, 'common', isName, {
+          essentialKeys: ['patchName'],
+          readOnlyKeys: ['patchAttribute'],
+        }),
+      ],
     },
     {
       id: 'pcm1',
-      title: t.pcm1,
+      title: t('gr55.pages.pcm1'),
       sections: [
-        section(t.tone, patch.patchPCMTone1),
-        section(t.toneOffsets, patch.patchPCMTone1Offset),
+        section(t('gr55.pages.tone'), patch.patchPCMTone1, 'tone', undefined, {
+          essentialKeys: ['toneSelect', 'muteSwitch', 'partLevel', 'partPan'],
+        }),
+        section(t('gr55.pages.toneOffsets'), patch.patchPCMTone1Offset, 'offsets'),
       ],
     },
     {
       id: 'pcm2',
-      title: t.pcm2,
+      title: t('gr55.pages.pcm2'),
       sections: [
-        section(t.tone, patch.patchPCMTone2),
-        section(t.toneOffsets, patch.patchPCMTone2Offset),
+        section(t('gr55.pages.tone'), patch.patchPCMTone2, 'tone', undefined, {
+          essentialKeys: ['toneSelect', 'muteSwitch', 'partLevel', 'partPan'],
+        }),
+        section(t('gr55.pages.toneOffsets'), patch.patchPCMTone2Offset, 'offsets'),
       ],
     },
     {
       id: 'modeling',
-      title: t.modeling,
-      sections: [section(t.modeling, patch.modelingTone, forMode(mode))],
+      title: t('gr55.pages.modeling'),
+      sections: [
+        section(t('gr55.pages.modeling'), patch.modelingTone, 'tone', forMode(mode), {
+          essentialKeys: ['level', 'muteSwitch'],
+        }),
+      ],
     },
     {
       id: 'normal-pickup',
-      title: t.normalPickup,
-      sections: [section(t.normalPickup, common, isNormalPickup)],
+      title: t('gr55.pages.normalPickup'),
+      sections: [
+        section(t('gr55.pages.normalPickup'), common, 'level', isNormalPickup, {
+          essentialKeys: ['normalPuLevel', 'normalPuMute'],
+        }),
+      ],
     },
     {
       id: 'amp',
-      title: t.amp,
+      title: t('gr55.pages.amp'),
       sections: [
-        section(t.amp, patch.ampModNs, isAmp),
-        section(t.noiseSuppressor, patch.ampModNs, isNoiseSuppressor),
+        section(t('gr55.pages.amp'), patch.ampModNs, 'amp', isAmp, {
+          essentialKeys: ['ampSwitch', 'ampType', 'ampLevel', 'ampSoloLevel'],
+        }),
+        section(
+          t('gr55.pages.noiseSuppressor'),
+          patch.ampModNs,
+          'noise-suppressor',
+          isNoiseSuppressor,
+        ),
       ],
     },
     {
       id: 'mod',
-      title: t.mod,
+      title: t('gr55.pages.mod'),
       sections: [
-        section(t.mod, patch.ampModNs, not(isAmp, isNoiseSuppressor), { typeKey: 'modType' }),
+        section(t('gr55.pages.mod'), patch.ampModNs, 'mod', isModFields, {
+          typeKey: 'modType',
+          essentialKeys: [
+            'modSwitch',
+            'modType',
+            'modPan',
+            'modChorusSendLevel',
+            'modDelaySendLevel',
+            'modReverbSendLevel',
+          ],
+        }),
       ],
     },
     {
       id: 'mfx',
-      title: t.mfx,
-      sections: [section(t.mfx, patch.mfx, undefined, { typeKey: 'mfxType' })],
+      title: t('gr55.pages.mfx'),
+      sections: [
+        section(t('gr55.pages.mfx'), patch.mfx, 'mfx', undefined, {
+          typeKey: 'mfxType',
+          essentialKeys: [
+            'mfxSwitch',
+            'mfxType',
+            'mfxPan',
+            'mfxChorusSendLevel',
+            'mfxDelaySendLevel',
+            'mfxReverbSendLevel',
+          ],
+        }),
+      ],
     },
     {
       id: 'delay',
-      title: t.delay,
-      sections: [section(t.delay, patch.sendsAndEq, startsWith('delay'))],
+      title: t('gr55.pages.delay'),
+      sections: [
+        section(t('gr55.pages.delay'), patch.sendsAndEq, 'delay', isDelay, {
+          essentialKeys: ['delaySwitch', 'delayType', 'delayTime', 'delayEffectLevel'],
+        }),
+      ],
     },
     {
       id: 'chorus',
-      title: t.chorus,
-      sections: [section(t.chorus, patch.sendsAndEq, startsWith('chorus'))],
+      title: t('gr55.pages.chorus'),
+      sections: [
+        section(t('gr55.pages.chorus'), patch.sendsAndEq, 'chorus', isChorus, {
+          essentialKeys: ['chorusSwitch', 'chorusType', 'chorusDepth', 'chorusEffectLevel'],
+        }),
+      ],
     },
     {
       id: 'reverb',
-      title: t.reverb,
-      sections: [section(t.reverb, patch.sendsAndEq, startsWith('reverb'))],
+      title: t('gr55.pages.reverb'),
+      sections: [
+        section(t('gr55.pages.reverb'), patch.sendsAndEq, 'reverb', isReverb, {
+          essentialKeys: ['reverbSwitch', 'reverbType', 'reverbTime', 'reverbEffectLevel'],
+        }),
+      ],
     },
     {
       id: 'eq',
-      title: t.eq,
-      sections: [section(t.eq, patch.sendsAndEq, startsWith('eq'))],
+      title: t('gr55.pages.eq'),
+      sections: [
+        section(t('gr55.pages.eq'), patch.sendsAndEq, 'eq', isEq, {
+          essentialKeys: ['eqSwitch', 'eqLevel'],
+        }),
+      ],
     },
     {
       id: 'assigns',
-      title: t.assigns,
+      title: t('gr55.pages.assigns'),
       sections: [
         common.assign1,
         common.assign2,
@@ -177,30 +427,80 @@ export function buildPages(mode: GkMode): Page[] {
         common.assign6,
         common.assign7,
         common.assign8,
-      ].map((assign) => section(assign.definition.description, assign)),
+      ].map((assign, index) =>
+        section(assign.definition.description, assign, `assign-${index + 1}`, undefined, {
+          essentialKeys: ['switch', 'target', 'source'],
+        }),
+      ),
     },
     {
       id: 'pedal-gk',
-      title: t.pedalGk,
+      title: t('gr55.pages.pedalGk'),
       sections: [
-        ...[
-          common.ctl,
-          common.expPdlOff,
-          common.expPdlOn,
-          common.expSw,
-          common.gkVol,
-          common.gkS1,
-          common.gkS2,
-        ].map((control) => section(control.definition.description, control)),
-        section(t.pedalRanges, common, isPedalControl),
+        ...(
+          [
+            [common.ctl, 'ctl', ['status', 'function'] as const],
+            [
+              common.expPdlOff,
+              'exp-off',
+              [
+                'function',
+                'volumeSwitchPCMTone1',
+                'volumeSwitchPCMTone2',
+                'volumeSwitchModelingTone',
+                'volumeSwitchNormalPU',
+                'bendRange',
+              ] as const,
+            ],
+            [
+              common.expPdlOn,
+              'exp-on',
+              [
+                'function',
+                'volumeSwitchPCMTone1',
+                'volumeSwitchPCMTone2',
+                'volumeSwitchModelingTone',
+                'volumeSwitchNormalPU',
+                'bendRange',
+              ] as const,
+            ],
+            [common.expSw, 'exp-switch', ['status', 'function'] as const],
+            [
+              common.gkVol,
+              'gk-volume',
+              [
+                'function',
+                'volumeSwitchPCMTone1',
+                'volumeSwitchPCMTone2',
+                'volumeSwitchModelingTone',
+                'volumeSwitchNormalPU',
+              ] as const,
+            ],
+            [common.gkS1, 'gk-s1', ['function'] as const],
+            [common.gkS2, 'gk-s2', ['function'] as const],
+          ] as const
+        ).map(([control, slug, essentials]) =>
+          section(control.definition.description, control, slug, undefined, {
+            essentialKeys: essentials,
+          }),
+        ),
+        section(t('gr55.pages.pedalRanges'), common, 'ranges', isPedalControl, {
+          essentialKeys: ['gkSet'],
+        }),
       ],
     },
     {
       id: 'master',
-      title: t.master,
+      title: t('gr55.pages.master'),
       sections: [
-        section(t.master, common, not(isName, isNormalPickup, isPedalControl)),
-        section(t.other, patch.sendsAndEq, not(startsWith('delay', 'chorus', 'reverb', 'eq'))),
+        section(t('gr55.pages.output'), common, 'output', isOutput, {
+          essentialKeys: ['guitarOutSource', 'effectStructure', 'patchLevel'],
+        }),
+        section(t('gr55.pages.tuning'), common, 'tuning', isTuning, {
+          essentialKeys: ['altTuneSwitch', 'altTuneType'],
+        }),
+        section(t('gr55.pages.vlink'), common, 'vlink', isVLink),
+        section(t('gr55.pages.ez'), patch.sendsAndEq, 'ez', isEz),
       ],
     },
   ];

@@ -17,7 +17,17 @@ import {
   TEMPORARY_PATCH_ADDRESS,
   userPatchAddress,
 } from './patchLayout';
-import { SyxError, decodePatchSyx, encodePatchSyx } from './syx';
+import {
+  SyxError,
+  decodePatchSyx,
+  decodeSlotBackupSyx,
+  decodeSystemSyx,
+  encodePatchSyx,
+  encodeSlotBackupSyx,
+  encodeSystemSyx,
+} from './syx';
+import type { SlotImage } from './syx';
+import { spansOverlapping, temporaryPatchFields } from './changeTracking';
 
 const common = TEMPORARY_PATCH.common;
 // A plain one-byte parameter, at 18 00 06 10.
@@ -194,6 +204,21 @@ describe('Gr55Editor', () => {
     expect(modes).toContain('BASS');
   });
 
+  test('switching the mode writes the system page, not the patch', async () => {
+    const { device, editor } = setUp();
+    await editor.readSystem();
+    device.received.length = 0;
+
+    await editor.setGuitarBassMode('BASS');
+
+    expect(editor.gkMode).toBe('BASS');
+    const writes = device.received.filter((message) => message[6] === 0x12);
+    expect(writes).toHaveLength(1);
+    // System page at 02 00 00 1a: this is the one pedal-wide write.
+    expect(writes[0].slice(7, 12)).toEqual([0x02, 0x00, 0x00, 0x1a, 0x01]);
+    expect(editor.patchSource).toBeUndefined();
+  });
+
   test('writing to a user slot sends the write command and nothing else', async () => {
     const { device, editor } = setUp();
     await editor.readPatch();
@@ -226,6 +251,152 @@ describe('Gr55Editor', () => {
       [0x12, 0x01, 0, 0, 1, 4],
     ]);
     expect(editor.patchName).toBe('Stored');
+  });
+});
+
+describe('unsaved changes', () => {
+  test('field spans form a deduplicated, ordered, non-overlapping index', () => {
+    const fields = temporaryPatchFields();
+    expect(fields.length).toBeGreaterThan(600);
+    for (let index = 1; index < fields.length; index++) {
+      const previous = fields[index - 1];
+      expect(fields[index].offset).toBeGreaterThanOrEqual(previous.offset + previous.size);
+    }
+  });
+
+  test('spansOverlapping finds the range that touches', () => {
+    const fields = temporaryPatchFields();
+    const target = TEMPORARY_PATCH.sendsAndEq.reverbEffectLevel;
+    const offset = target.address - TEMPORARY_PATCH_ADDRESS;
+    const hits = spansOverlapping(fields, offset, 1);
+    expect(hits).toHaveLength(1);
+    expect(hits[0].address).toBe(target.address);
+  });
+
+  test('an edit counts, writing the loaded value back uncounts', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+    expect(editor.isDirty).toBe(false);
+
+    editor.write(reverbLevel, 90);
+    expect(editor.changeCount).toBe(1);
+
+    editor.write(reverbLevel, 0);
+    expect(editor.isDirty).toBe(false);
+  });
+
+  test('a second field added to the count', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+
+    editor.write(reverbLevel, 90);
+    editor.write(common.patchName, 'Scratch');
+    expect(editor.changeCount).toBe(2);
+  });
+
+  test('a remote pedal change lands in the count', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+
+    const body = [0x18, 0x00, 0x06, 0x10, 55];
+    device.emit([0xf0, 0x41, 0x10, 0x00, 0x00, 0x53, 0x12, ...body, rolandChecksum(body), 0xf7]);
+
+    expect(editor.read(reverbLevel)).toEqual({ ok: true, value: 55 });
+    expect(editor.changeCount).toBe(1);
+  });
+
+  test('revert sends the loaded bytes back to the pedal and empties the count', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+    editor.write(common.patchName, 'Scratch');
+    editor.write(reverbLevel, 90);
+    await settle();
+    device.received.length = 0;
+
+    await editor.revert();
+
+    expect(editor.isDirty).toBe(false);
+    expect(editor.patchName).toBe('Simulated Patch');
+    const writes = device.received.filter((message) => message[6] === 0x12);
+    expect(writes.length).toBeGreaterThanOrEqual(2);
+  });
+
+  test('a program change from the pedal discards unsaved edits and records how many', async () => {
+    const { device, editor } = setUp();
+    await editor.readPatch();
+    editor.write(reverbLevel, 90);
+
+    const before = editor.patchSnapshot();
+    device.emit([0xc0, 3]);
+    await vi.waitFor(() => expect(editor.patchSnapshot()).not.toBe(before), { timeout: 3000 });
+
+    expect(editor.isDirty).toBe(false);
+    expect(editor.discardedChanges).toBe(1);
+  });
+});
+
+describe('slot backup files', () => {
+  test('slot images survive the trip through a file and back into the pedal', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+    await editor.writeToUserSlot(4);
+    await editor.writeToUserSlot(5);
+
+    const images: SlotImage[] = [
+      { userPatchNumber: 4, bytes: await editor.readUserPatch(4) },
+      { userPatchNumber: 5, bytes: await editor.readUserPatch(5) },
+    ];
+    const file = encodeSlotBackupSyx(images);
+    const loaded = decodeSlotBackupSyx(file);
+    expect(loaded.map((slot) => slot.userPatchNumber)).toEqual([4, 5]);
+    expect(loaded[0].bytes).toEqual(images[0].bytes);
+
+    // Put the first slot image back into another slot and read it out again.
+    await editor.restoreUserPatch(6, loaded[0].bytes);
+    expect(await editor.readUserPatch(6)).toEqual(images[0].bytes);
+  });
+
+  test('slot files refuse damage and refuse non-slot data', () => {
+    const file = encodeSlotBackupSyx([]);
+    try {
+      decodeSlotBackupSyx(file);
+    } catch (error) {
+      expect(error instanceof SyxError ? error.problem : 'no error').toBe('no-patch-data');
+    }
+  });
+});
+
+describe('slot diff', () => {
+  test('a slot just written matches the working copy, then the diff follows the edits', async () => {
+    const { editor } = setUp();
+    await editor.readPatch();
+    await editor.writeToUserSlot(4);
+
+    expect(await editor.diffUserSlot(4)).toEqual([]);
+
+    editor.write(common.patchName, 'Scratch');
+    const diff = await editor.diffUserSlot(4);
+    expect(diff.some((entry) => entry.current.startsWith('Scratch'))).toBe(true);
+    expect(diff.every((entry) => entry.description && entry.current && entry.slot !== '')).toBe(
+      true,
+    );
+  });
+});
+
+describe('system backup', () => {
+  test('the system bytes survive a file and go back to the pedal', async () => {
+    const { device, editor } = setUp();
+    await editor.readSystem();
+    device.poke(GR55_MAP.system.common.guitarBassSelect.address, [1]);
+    const bytes = await editor.readSystemBytes();
+    expect(bytes.length).toBe(editor.systemSpan());
+
+    const file = encodeSystemSyx(editor.systemAddress(), bytes);
+    const other = setUp();
+    const loaded = decodeSystemSyx(file, other.editor.systemAddress(), other.editor.systemSpan());
+    expect(loaded).toEqual(bytes);
+    await other.editor.writeSystemBytes(loaded);
+    expect(await other.editor.readSystemBytes()).toEqual(bytes);
   });
 });
 
@@ -338,6 +509,28 @@ describe('pages', () => {
     expect(keys('GUITAR').some((key) => key.endsWith('_bass'))).toBe(false);
     expect(keys('BASS').some((key) => key.endsWith('_guitar'))).toBe(false);
     expect(keys('GUITAR')).toContain('level');
+  });
+
+  test('essentials are a curated subset of every section that names them', () => {
+    for (const mode of ['GUITAR', 'BASS'] as const) {
+      for (const page of buildPages(mode)) {
+        for (const section of page.sections) {
+          for (const key of section.essentialKeys ?? []) {
+            expect(section.keys).toContain(key);
+          }
+        }
+      }
+    }
+  });
+
+  test('the density switch opens with a bounded set of unique essential fields', () => {
+    const unique = (mode: 'GUITAR' | 'BASS') =>
+      new Set(
+        buildPages(mode).flatMap((page) => page.sections.flatMap((s) => s.essentialKeys ?? [])),
+      ).size;
+    // Per-section slots repeat (8 assigns, mirrored EXP pages); the unique set is
+    // what the musician meets first.
+    expect(unique('GUITAR')).toBeLessThan(70);
   });
 
   test('rate and time show note names only above the numeric range', () => {

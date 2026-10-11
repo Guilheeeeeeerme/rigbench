@@ -7,3 +7,6 @@ reports/
 AGENTS.md
 # Copied from upstream; keep its formatting so diffs against upstream stay readable
 src/protocol/
+# Reference briefs written by hand; keep their formatting
+docs/
+prompt.md

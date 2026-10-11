@@ -1,19 +1,63 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { en } from '../../copy/en';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { useT } from '../../copy';
 import { requestAccess } from '../../midi/access';
 import { MidiAbortError, MidiSession, MidiTimeoutError, identify } from '../../midi/session';
 import type { MidiInputLike, MidiOutputLike } from '../../midi/session';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
+import { Library } from './Library';
+import { Stage } from './Stage';
+import { Canvas } from './Canvas';
+import { DeviceScreen } from './DeviceScreen';
+import { Studio } from './Studio';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
+import {
+  connectRoute,
+  deviceRoute,
+  gkRoute,
+  libraryRoute,
+  setlistRoute,
+  setupRoute,
+  stageRoute,
+  studioRoute,
+} from './routes';
+import { SetlistScreen } from './SetlistScreen';
+import { GkSetsScreen } from './GkSets';
+import { loadSetup } from './setupState';
+import { SystemProvider } from './SystemParts';
+import { Gr55System } from './systemState';
+import { Wizard } from './Wizard';
 import { PATCH_BLOCKS } from './patchLayout';
+import { DiscardNotice } from './DiscardNotice';
+import { openSyncCache } from './sync/cache';
+import { SyncEngine } from './sync/engine';
+import { SyncBadge, SyncProvider } from './sync/SyncBadge';
+import { MaestroHost } from '../../maestro/MaestroHost';
+
+const PORT_MEMORY = 'rigbench.gr55.ports';
+
+interface RememberedPorts {
+  input: string;
+  output: string;
+}
+
+function readRememberedPorts(): RememberedPorts | undefined {
+  try {
+    const stored = JSON.parse(localStorage.getItem(PORT_MEMORY) ?? '') as RememberedPorts;
+    return stored.input && stored.output ? stored : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 const GR55_PORT_NAME = /gr-?55/i;
 
 interface Connection {
   session: MidiSession;
   editor: Gr55Editor;
+  sync: SyncEngine;
+  system: Gr55System;
 }
 
 type Phase =
@@ -26,6 +70,7 @@ function preferredPort<T extends MIDIPort>(ports: T[]): string {
 }
 
 export default function Gr55Screen() {
+  const t = useT();
   const [access, setAccess] = useState<MIDIAccess>();
   const [inputs, setInputs] = useState<MIDIInput[]>([]);
   const [outputs, setOutputs] = useState<MIDIOutput[]>([]);
@@ -41,6 +86,7 @@ export default function Gr55Screen() {
   const release = () => {
     identifyAbort.current?.abort();
     identifyAbort.current = undefined;
+    live.current?.sync.dispose();
     live.current?.editor.dispose();
     live.current?.session.close();
     live.current = undefined;
@@ -71,11 +117,16 @@ export default function Gr55Screen() {
       const nextOutputs = [...access.outputs.values()];
       setInputs(nextInputs);
       setOutputs(nextOutputs);
+      const remembered = readRememberedPorts();
       setInputId((current) =>
-        nextInputs.some((port) => port.id === current) ? current : preferredPort(nextInputs),
+        nextInputs.some((port) => port.id === current)
+          ? current
+          : (remembered?.input ?? preferredPort(nextInputs)),
       );
       setOutputId((current) =>
-        nextOutputs.some((port) => port.id === current) ? current : preferredPort(nextOutputs),
+        nextOutputs.some((port) => port.id === current)
+          ? current
+          : (remembered?.output ?? preferredPort(nextOutputs)),
       );
     };
     refresh();
@@ -88,7 +139,7 @@ export default function Gr55Screen() {
     try {
       setAccess(await requestAccess());
     } catch {
-      setProblem(en.connection.denied);
+      setProblem(t('connection.denied'));
     }
   };
 
@@ -112,7 +163,7 @@ export default function Gr55Screen() {
         identity.manufacturerId !== config.manufacturerId ||
         identity.deviceFamily !== config.familyCode
       ) {
-        setProblem(en.connection.wrongDevice);
+        setProblem(t('connection.wrongDevice'));
         setPhase({ kind: 'idle' });
         return;
       }
@@ -122,7 +173,9 @@ export default function Gr55Screen() {
           setError(reason);
         }
       });
-      live.current = { session, editor };
+      const sync = new SyncEngine(editor, openSyncCache());
+      const system = new Gr55System(session);
+      live.current = { session, editor, sync, system };
       await editor.readSystem();
       if (!stillHere()) {
         return;
@@ -135,7 +188,19 @@ export default function Gr55Screen() {
       if (!stillHere()) {
         return;
       }
-      setPhase({ kind: 'connected', connection: { session, editor } });
+      localStorage.setItem(
+        PORT_MEMORY,
+        JSON.stringify({
+          input: String((input as unknown as MIDIPort).id),
+          output: String((output as unknown as MIDIPort).id),
+        } satisfies RememberedPorts),
+      );
+      setPhase({ kind: 'connected', connection: { session, editor, sync, system } });
+      // The cache shows at once; the pedal is then read behind whatever screen is open.
+      void sync
+        .load()
+        .catch(() => {})
+        .then(() => sync.start());
     } catch (reason) {
       if (live.current?.session === session) {
         release();
@@ -145,7 +210,9 @@ export default function Gr55Screen() {
       if (!stillHere() || reason instanceof MidiAbortError) {
         return;
       }
-      setProblem(reason instanceof MidiTimeoutError ? en.connection.noReply : en.connection.lost);
+      setProblem(
+        reason instanceof MidiTimeoutError ? t('connection.noReply') : t('connection.lost'),
+      );
       setPhase({ kind: 'idle' });
     }
   };
@@ -168,13 +235,76 @@ export default function Gr55Screen() {
   };
 
   if (phase.kind === 'connected') {
+    const { editor, session, sync, system } = phase.connection;
+    // A pedal met for the first time is walked through the stage setup before anything else.
+    // After that the Stage is the root; the editor and the library are reached from it.
+    const home = loadSetup().complete ? studioRoute : setupRoute;
     return (
-      <Workspace
-        editor={phase.connection.editor}
-        error={error}
-        onError={setError}
-        onDisconnect={disconnect}
-      />
+      <SyncProvider value={sync}>
+        <SystemProvider value={system}>
+          <DiscardNotice editor={editor} />
+          <SyncBadge editor={editor} />
+          <MaestroHost editor={editor} />
+          <Routes>
+            <Route index element={<Navigate to={home} replace />} />
+            <Route
+              path={setupRoute}
+              element={<Wizard editor={editor} session={session} onError={setError} />}
+            />
+            {/* Connecting is done: its address leads on. */}
+            <Route path={connectRoute} element={<Navigate to={`../${home}`} replace />} />
+            {/* Addresses from before the stage-first routes. */}
+            <Route path="setup" element={<Navigate to={`../${setupRoute}`} replace />} />
+            <Route path="device" element={<Navigate to={`../${deviceRoute}`} replace />} />
+            <Route
+              path={studioRoute}
+              element={<Studio editor={editor} error={error} onError={setError} />}
+            />
+            <Route path={libraryRoute} element={<Library editor={editor} onError={setError} />} />
+            <Route
+              path={`${libraryRoute}/:slot`}
+              element={<Library editor={editor} onError={setError} />}
+            />
+            {/* Dense editor / canvas — Advanced escape hatch from Studio. */}
+            <Route path="editor" element={<Canvas editor={editor} />} />
+            <Route
+              path="editor/:pageId/:sectionSlug?"
+              element={
+                <Workspace
+                  editor={editor}
+                  error={error}
+                  onError={setError}
+                  onDisconnect={disconnect}
+                />
+              }
+            />
+            <Route path={stageRoute} element={<Stage editor={editor} onError={setError} />} />
+            <Route
+              path={setlistRoute}
+              element={<SetlistScreen editor={editor} onError={setError} />}
+            />
+            <Route
+              path={deviceRoute}
+              element={<DeviceScreen editor={editor} onError={setError} />}
+            />
+            <Route
+              path={gkRoute}
+              element={<GkSetsScreen editor={editor} session={session} onError={setError} />}
+            />
+            <Route
+              path="*"
+              element={
+                <main className="gate">
+                  <h1>{t('app.notFound')}</h1>
+                  <p>
+                    <Link to={studioRoute}>{t('studio.title')}</Link>
+                  </p>
+                </main>
+              }
+            />
+          </Routes>
+        </SystemProvider>
+      </SyncProvider>
     );
   }
 
@@ -182,21 +312,21 @@ export default function Gr55Screen() {
   return (
     <main className="connect">
       <Link className="brand" to="/">
-        {en.app.name}
+        {t('app.name')}
       </Link>
-      <h1>{en.connection.title}</h1>
-      <p>{en.connection.intro}</p>
+      <h1>{t('connection.title')}</h1>
+      <p>{t('connection.intro')}</p>
 
       {!access ? (
         <button type="button" className="primary" onClick={() => void allow()}>
-          {en.connection.allow}
+          {t('connection.allow')}
         </button>
       ) : inputs.length === 0 || outputs.length === 0 ? (
-        <p className="hint">{en.connection.noPorts}</p>
+        <p className="hint">{t('connection.noPorts')}</p>
       ) : (
         <div className="ports">
           <label>
-            {en.connection.input}
+            {t('connection.input')}
             <select
               value={inputId}
               disabled={connecting}
@@ -210,7 +340,7 @@ export default function Gr55Screen() {
             </select>
           </label>
           <label>
-            {en.connection.output}
+            {t('connection.output')}
             <select
               value={outputId}
               disabled={connecting}
@@ -224,7 +354,7 @@ export default function Gr55Screen() {
             </select>
           </label>
           <button type="button" className="primary" disabled={connecting} onClick={connectSelected}>
-            {en.connection.connect}
+            {t('connection.connect')}
           </button>
         </div>
       )}
@@ -232,8 +362,8 @@ export default function Gr55Screen() {
       {connecting && (
         <p className="status" role="status">
           {phase.done === 0
-            ? en.connection.connecting
-            : en.gr55.reading(phase.done, PATCH_BLOCKS.length)}
+            ? t('connection.connecting')
+            : t('gr55.reading', phase.done, PATCH_BLOCKS.length)}
         </p>
       )}
       {problem && (
@@ -245,7 +375,7 @@ export default function Gr55Screen() {
       {import.meta.env.DEV && (
         <p className="hint">
           <button type="button" disabled={connecting} onClick={() => void connectSimulated()}>
-            {en.connection.simulate}
+            {t('connection.simulate')}
           </button>
         </p>
       )}

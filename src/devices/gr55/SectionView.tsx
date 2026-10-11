@@ -1,5 +1,5 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
-import { en } from '../../copy/en';
+import { useT } from '../../copy';
 import type { FieldReference, NumericField } from '../../protocol/RolandAddressMap';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { FieldControl } from './FieldControl';
@@ -15,7 +15,17 @@ function assignsMapFor(editor: Gr55Editor) {
 }
 
 /** One section of a page: its fields, generated from the address map. */
-export function SectionView({ editor, section }: { editor: Gr55Editor; section: Section }) {
+export function SectionView({
+  editor,
+  section,
+  advanced = true,
+}: {
+  editor: Gr55Editor;
+  section: Section;
+  /** The Advanced switch: without it, only the curated essentials show. */
+  advanced?: boolean;
+}) {
+  const t = useT();
   const [showAll, setShowAll] = useState(false);
   const effects = useMemo(() => effectOfFields(section), [section]);
 
@@ -29,8 +39,17 @@ export function SectionView({ editor, section }: { editor: Gr55Editor; section: 
   const typeValue = typeField && editor.read(typeField);
   const activeEffect = typeValue?.ok ? String(typeValue.value) : undefined;
 
+  const visibleKeys =
+    advanced || section.essentialKeys === undefined
+      ? section.keys
+      : section.keys.filter((key) => section.essentialKeys!.includes(key));
+  // A section with no essentials stays out of the way entirely in Essential mode.
+  if (visibleKeys.length === 0) {
+    return null;
+  }
+
   const groups: { effect: string | undefined; keys: string[] }[] = [];
-  for (const key of section.keys) {
+  for (const key of visibleKeys) {
     const effect = effects.get(key);
     if (effect != null && effect !== activeEffect && !showAll) {
       continue;
@@ -53,7 +72,7 @@ export function SectionView({ editor, section }: { editor: Gr55Editor; section: 
             checked={showAll}
             onChange={(event) => setShowAll(event.target.checked)}
           />
-          {en.gr55.showAllEffects}
+          {t('gr55.showAllEffects')}
         </label>
       )}
       {groups.map((group) => (

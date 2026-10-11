@@ -1,4 +1,5 @@
-// Every string the interface shows. Another language is another file with this shape.
+// Every string the interface shows, in English: the source of truth. Each other language
+// is a file of this exact shape (see pt-BR.ts); `npm run check:copy` holds them to it.
 export const en = {
   app: {
     name: 'Rigbench',
@@ -6,6 +7,10 @@ export const en = {
     footer: 'Runs in your browser. Nothing you edit leaves this computer.',
     notFound: 'There is nothing at this address.',
     backHome: 'All devices',
+  },
+  locale: {
+    label: 'Language',
+    names: { en: 'EN', 'pt-BR': 'PT-BR' },
   },
   gate: {
     noWebMidi: {
@@ -17,7 +22,7 @@ export const en = {
       body: 'Browsers only allow MIDI on pages served over HTTPS or from localhost. Open Rigbench from its https:// address, or from http://localhost when running it yourself.',
     },
     firefoxNotice:
-      'Firefox asks for an extra permission before it lets a page send SysEx. Allow it when prompted, or the editor cannot reach your device.',
+      'Firefox asks for an extra permission before the page can talk MIDI to the pedal. Allow it when prompted, or Rigbench cannot reach the pedal.',
   },
   home: {
     title: 'Pick your device',
@@ -46,16 +51,47 @@ export const en = {
       'Nothing answered on these ports. Check that the pedal is on and that both ports belong to it.',
     wrongDevice: 'The device on these ports answered, but it is not a GR-55.',
     simulate: 'Use a simulated pedal',
-    simulatedPort: 'Simulated GR-55',
     disconnect: 'Disconnect',
     lost: 'The connection to the pedal failed.',
   },
   gr55: {
     reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
     reload: 'Read from pedal',
+    search: {
+      placeholder: 'Find any parameter of this patch…',
+    },
+    navLibrary: 'Library',
+    navStage: 'Stage',
+    navStudio: 'Studio',
+    navEditor: 'Patch',
+    navDevice: 'Device',
+    navMore: 'More',
+    navAdvancedEditor: 'Advanced editor',
+    navRecalibrate: 'Recalibrate instrument',
+    workspace: {
+      /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
+      workingCopy: 'Working copy',
+      workingCopyHint:
+        'This is the patch the pedal is sounding right now. It lives only while this patch is selected: the pedal throws it away when you switch patches.',
+      /** Scope chip: this control is stored permanently in the pedal. */
+      savedSlot: 'Saved slot',
+      /** Scope chip: this control is device-wide, not per patch. */
+      pedal: 'Pedal',
+      pedalHint: 'Pedal-wide setting. The same for every patch.',
+      noUnsavedChanges: 'No unsaved changes',
+      unsavedChanges: (count: number) =>
+        count === 1 ? '1 unsaved change' : `${count} unsaved changes`,
+      confirmDiscard: (count: number) =>
+        `The working copy has ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`}. ` +
+        'Replacing it loses them and the pedal keeps sounding the stored patch. Go ahead?',
+      pedalSwitchedNotice: (count: number) =>
+        `The pedal switched patches on its own. The working copy had ` +
+        `${count === 1 ? 'one unsaved change' : `${count} unsaved changes`}, and it is gone. ` +
+        'The patch below is the one the pedal now holds.',
+      dismissNotice: 'Dismiss',
+    },
     mode: { GUITAR: 'Guitar mode', BASS: 'Bass mode' },
     unnamed: '(unnamed)',
-    librarian: 'Librarian',
     showAllEffects: 'Show the parameters of every effect type',
     unknownValue: (hex: string) => `Unknown value (${hex})`,
     error: (message: string) => `The pedal did not accept or answer the last message: ${message}`,
@@ -77,10 +113,52 @@ export const en = {
       reverb: 'Reverb',
       eq: 'EQ',
       assigns: 'Assigns',
-      pedalGk: 'Pedal / GK',
+      pedalGk: 'Pedals and GK',
       pedalRanges: 'GK set and control ranges',
       master: 'Master',
-      other: 'Other',
+      output: 'Output',
+      tuning: 'Tuning',
+      vlink: 'V-LINK',
+      ez: 'EZ sound',
+    },
+    document: {
+      save: 'Save',
+      saveAs: 'Save as…',
+      revert: 'Revert',
+      revertConfirm: (count: number) =>
+        `Undo all ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`} and go back ` +
+        'to how the pedal had it? The pedal keeps sounding the stored patch in the meantime.',
+      saveHint: (slot: string) => `This patch came from ${slot}. Saving puts it back there.`,
+      saveNoSlot:
+        'This patch came off the pedal’s screen or a file, so there is no slot to save to. Use Save as… to keep it in a slot.',
+      advanced: 'Advanced',
+    },
+    blocks: {
+      title: 'Signal chain',
+      intro:
+        'How the sound travels through this patch. Click a block to set its parameters; greyed blocks are switched off.',
+      input: 'Input',
+      inputHint: 'GK 13-pin and the 1/4" normal pickup feed the patch.',
+      sources: 'Sound sources',
+      pcm1: 'PCM 1',
+      pcm2: 'PCM 2',
+      modeling: 'Modeling',
+      normalPickup: 'Normal pickup',
+      layers: 'Layers',
+      layersHint: 'Level, pan and mute per source.',
+      amp: 'Amp',
+      mod: 'MOD',
+      mfx: 'MFX',
+      chorus: 'Chorus',
+      delay: 'Delay',
+      reverb: 'Reverb',
+      eq: 'EQ',
+      master: 'Master',
+      control: 'Pedals and GK',
+      controlHint: 'What stepping on each pedal does: assigns, CTL, EXP, GK controls.',
+      output: 'Output',
+      off: 'Off',
+      assignCables: 'Cables: stepping on a pedal',
     },
   },
   librarian: {
@@ -89,23 +167,520 @@ export const en = {
       'A .syx file holds one patch. Opening a file replaces the patch you are editing; it does not touch the patches stored in the pedal.',
     download: 'Download patch as .syx',
     open: 'Open .syx file…',
-    opened: (name: string) => `Loaded ${name} into the pedal's edit buffer.`,
+    opened: (name: string) =>
+      `Loaded ${name} as the working copy. Always try it with a click before keeping it.`,
     problems: {
       'no-patch-data': 'This file has no GR-55 patch in it.',
       'bad-checksum': 'This file is damaged: a message in it fails its checksum.',
       'out-of-range': 'This file is damaged: it addresses data outside a GR-55 patch.',
     },
     slotsTitle: 'User patches in the pedal',
-    slotsIntro:
-      'Load a user patch to edit it, or write the patch you are editing into a slot. Writing is the only action here that changes what is stored in the pedal.',
-    readNames: 'Read patch names',
-    readingNames: (done: number, total: number) => `Reading names… ${done}/${total}`,
     stop: 'Stop',
-    load: 'Load',
-    write: 'Write here',
-    notRead: '—',
-    confirmWrite: (slot: string, current: string | undefined, name: string) =>
-      `Overwrite user patch ${slot}${current ? ` (“${current}”)` : ''} with “${name}”? The patch stored there now is lost.`,
-    written: (slot: string) => `Written to user patch ${slot}.`,
+    written: (slot: string) => `Saved to user patch ${slot}.`,
+  },
+  library: {
+    title: 'Library',
+    intro:
+      'Every patch stored in the pedal. Try one with a single click, open it in the editor, or save the patch you are working on into a slot.',
+    workingCopy: 'Working copy',
+    openInEditor: 'Open',
+    changes: (count: number) => (count === 1 ? '1 unsaved change' : `${count} unsaved changes`),
+    test: 'Test',
+    writeTo: 'Save to…',
+    backupTitle: 'Whole-pedal backup',
+    backupIntro:
+      'Save every slot in the pedal to a file, or put a saved backup back into the pedal. Restoring keeps the pedal busy for a while, and is silent while it saves.',
+    backup: 'Save a backup of every slot…',
+    backupProgress: (done: number, total: number) => `Backing up… ${done}/${total} slots`,
+    backupDone: (file: string) => `Backup saved as ${file}.`,
+    backupWrite: 'Put a slot backup back…',
+    backupRestoring: (done: number, total: number) => `Restoring… ${done}/${total} slots`,
+    backupRestored: 'The backup is back in the pedal.',
+    fileIsEmpty: 'This backup file holds no slots.',
+    writeFlowTitle: (slot: string) => `Save to ${slot}`,
+    readDiff: 'Compare with the working copy',
+    writeFlowIntro:
+      'Only the parameters listed below change. Confirming sends them to the slot; the pedal stays silent for a few seconds — do not step on the pedals while it saves.',
+    diffTitle: 'What changes in this slot',
+    diffEmpty: 'Nothing differs; saving is safe.',
+    diffConfirm: 'Save into the slot',
+    choosing: 'Choose a slot',
+    writing: 'Saving to the pedal — do not step on the pedals…',
+    tested: (slot: string) => `${slot} is sounding now.`,
+  },
+  stage: {
+    title: 'Stage',
+    emptyTitle: 'No setlist yet',
+    emptyIntro:
+      'The Stage follows a setlist: one song after another, each on the slot that plays it. Build one and the pedal is a step away from every song.',
+    manage: 'Edit the setlist',
+    now: 'Now',
+    songOf: (number: number, total: number) => `Song ${number} of ${total}`,
+    next: (title: string) => `Next: ${title}`,
+    previous: 'Previous',
+    nextGap: 'Changes patch: the pedal is silent for about a second.',
+    nextNoGap: 'Same patch: no gap.',
+    lastSong: 'Last song of the set.',
+    switching: 'Changing patch — the pedal is silent for a moment…',
+    offSetlist: 'The pedal is on a patch outside the setlist. Pick a song to come back.',
+    otherMode: (mode: string) => `Made in ${mode}`,
+    keys: 'N or → next · P or ← previous · 1–9 jump to a song',
+    playingCopy:
+      'The pedal is sounding your working copy, not the saved slot. Changing songs loses those changes.',
+    pedals: 'What each pedal does',
+    pedalNames: {
+      ctl: 'CTL',
+      exp: 'EXP',
+      expOn: 'EXP, switch on',
+      expSw: 'EXP SW',
+      gkVol: 'GK VOL',
+      gkS1: 'GK S1',
+      gkS2: 'GK S2',
+      fs: 'FS1 · FS2 · FS3',
+    },
+    fixed: 'patch changes, fixed by the pedal',
+    systemRule: 'Pedal-wide rule, the same in every patch',
+    cuts: 'Cuts inside this patch',
+    cutsIntro: 'What a pedal step changes without leaving the patch — and so without a gap.',
+    noCuts: 'This patch has no assign switched on.',
+    cut: (source: string, target: string) => `${source} → ${target}`,
+    cutActive: 'on now',
+    sceneNow: (names: string) => `Scene now: ${names}`,
+    effects: 'Effects now',
+    on: 'On',
+    off: 'Off',
+    edit: 'edit →',
+    footnote:
+      'Nothing on the Stage saves to the pedal. Scene and pedal states are read from what the pedal reports, so take them as a guide.',
+  },
+  device: {
+    title: 'Device',
+    intro:
+      'Pedal-wide rules. Every change here carries the blue chip, because it affects the whole pedal and all 297 slots.',
+    modeTitle: 'Guitar mode / Bass mode',
+    modeIntro:
+      'Pedal-wide. Switching remakes the whole patch list — all 297 slots change meaning. Save your working copy first.',
+    confirmMode: (count: number) =>
+      `Switching Guitar⇄Bass is a pedal-wide change that affects all 297 slots` +
+      `${count ? ` and discards ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`}` : ''}. Switch it?`,
+    modeSwitchBlocked:
+      'The working copy still has unsaved changes. Save, revert, or discard them before switching modes.',
+    modeSwitchedTo: (mode: string) => `The pedal is now in ${mode}.`,
+    systemNotice: 'Pedal-wide settings always ask first.',
+    backupTitle: 'System backup',
+    backupIntro:
+      'Saves the pedal-wide settings Rigbench reads — the ten GK sets, output, pedals, MIDI and mode — into a small .syx file. Restoring asks first.',
+    backup: 'Save the system settings…',
+    backupWrite: 'Put a system backup back…',
+    backupDone: (file: string) => `System backup saved as ${file}.`,
+    confirmSystemWrite:
+      'Put these pedal-wide settings back on the pedal? GK sets, output, pedals, MIDI and mode all go back to what the backup holds.',
+    systemRestored: 'The system settings are back on the pedal.',
+  },
+  sync: {
+    title: 'Pedal sync',
+    intro:
+      'Rigbench keeps a copy of every slot on this computer, so names and patches are there at once. The pedal never sends its memory by itself: Rigbench reads it slot by slot, and never saves anything to the pedal while it does.',
+    badge: {
+      idle: (done: number, total: number) => `Not synced · ${done}/${total}`,
+      syncing: (slot: string, done: number, total: number) => `SYNC ${slot} · ${done}/${total}`,
+      paused: (done: number, total: number) => `Paused · ${done}/${total}`,
+      ready: (total: number) => `READY ✓ ${total}/${total}`,
+      changed: (count: number) => `Δ ${count} changed`,
+      failed: (done: number, total: number) => `Sync stopped · ${done}/${total}`,
+    },
+    percent: (percent: number) => `${percent}% complete`,
+    eta: (minutes: number) =>
+      minutes < 1
+        ? 'less than a minute left'
+        : minutes === 1
+          ? 'about 1 minute left'
+          : `about ${minutes} minutes left`,
+    reading: (slot: string) => `Reading ${slot} now.`,
+    queue: (count: number) =>
+      count === 1 ? '1 slot still to read' : `${count} slots still to read`,
+    finishedAt: (when: string) => `Last synced ${when}.`,
+    readInFull: (count: number) =>
+      count === 1
+        ? '1 slot was read in full this time.'
+        : `${count} slots were read in full this time.`,
+    start: 'Sync now',
+    continue: 'Continue the sync',
+    pause: 'Pause',
+    resume: 'Resume',
+    stop: 'Stop',
+    full: 'Read every slot again',
+    fullHint:
+      'A quick sync checks the name and common settings of each slot and reads again only the slots where those changed. If you edited something deeper on the pedal itself, read every slot again.',
+    close: 'Close',
+    failed: 'The pedal stopped answering. What was read is kept; continue when the pedal is back.',
+    changedTitle: 'Changed on the pedal since the last sync',
+    changedEntry: (slot: string, before: string, after: string, parameters: number) =>
+      `${slot}: “${before}” → “${after}” (${parameters === 1 ? '1 parameter' : `${parameters} parameters`})`,
+    acknowledge: 'Got it',
+    notSynced: 'Not read yet',
+  },
+  // Labels for the pedal's own value lists. A value missing here shows as the pedal words it.
+  enums: {
+    puType: {
+      'GK-3': 'GK-3',
+      'GK-2A': 'GK-2A',
+      PIEZO: 'Piezo',
+      'PIEZO R': 'Piezo R (RMC)',
+      'PIEZO F': 'Piezo F (Fishman)',
+      'PIEZO G': 'Piezo G (Graph Tech)',
+      'PIEZO L': 'Piezo L (L.R. Baggs)',
+      'PIEZO M': 'Piezo M',
+    },
+    puTypeBass: {
+      'GK-3': 'GK-3B',
+      'GK-2A': 'GK-2B',
+      PIEZO: 'Piezo',
+      'PIEZO R': 'Piezo R (RMC)',
+      'PIEZO F': 'Piezo F (Fishman)',
+      'PIEZO G': 'Piezo G (Graph Tech)',
+      'PIEZO L': 'Piezo L (L.R. Baggs)',
+      'PIEZO M': 'Piezo M',
+    },
+    outputSelect: {
+      'LINE/PHONES': 'Line or headphones (mixer, PA, audio interface)',
+      'JC-120': 'JC-120 amp, guitar input',
+      SMALL: 'Small amp, guitar input',
+      COMBO: 'Combo amp, guitar input',
+      STACK: 'Stack amp, guitar input',
+      'JC-120 RETURN': 'JC-120 amp, return jack',
+      'COMBO RETURN': 'Combo amp, return jack',
+      'STACK RETURN': 'Stack amp, return jack',
+      'B-AMP WITH TWEETER': 'Bass amp with a tweeter',
+      'B-AMP NO TWEETER': 'Bass amp without a tweeter',
+    },
+    guitarOut: {
+      PATCH: 'Whatever each patch says',
+      OFF: 'Nothing',
+      'NORMAL PU': 'The normal pickup',
+      MODELING: 'The modeling sound',
+      BOTH: 'Both',
+    },
+    polarity: {
+      NORMAL: 'Normal',
+      INVERSE: 'Inverted',
+      REVERSE: 'Reversed',
+    },
+    midiMode: {
+      MONO: 'Mono: one channel per string',
+      POLY: 'Poly: every string on one channel',
+    },
+    pedalFunction: {
+      OFF: 'Nothing',
+      'PATCH SETTING': 'Whatever each patch says',
+      HOLD: 'Hold',
+      'PATCH VOLUME': 'Patch volume',
+      'TONE VOLUME': 'Tone volume',
+      'PITCH BEND': 'Pitch bend',
+      MODULATION: 'Modulation',
+      'CROSS FADER': 'Cross-fade between tones',
+      'DELAY LEVEL': 'Delay level',
+      'REVERB LEVEL': 'Reverb level',
+      'CHORUS LEVEL': 'Chorus level',
+      'MOD CONTROL': 'MOD effect control',
+      'TAP TEMPO': 'Tap tempo',
+      'TONE SW': 'Tones on/off',
+      'AMP SW': 'Amp on/off',
+      'MOD SW': 'MOD on/off',
+      'MFX SW': 'MFX on/off',
+      'DELAY SW': 'Delay on/off',
+      'REVERB SW': 'Reverb on/off',
+      'CHORUS SW': 'Chorus on/off',
+      'SOUND STYLE INC': 'Next sound style',
+      'SOUND STYLE DEC': 'Previous sound style',
+      'BANK NUMBER INC': 'Next bank',
+      'BANK NUMBER DEC': 'Previous bank',
+      'PATCH NUMBER INC': 'Next patch',
+      'PATCH NUMBER DEC': 'Previous patch',
+      'AUDIO PLAYER PLAY/STOP': 'Audio player: play/stop',
+      'AUDIO PLAYER SONG INC': 'Audio player: next song',
+      'AUDIO PLAYER SONG DEC': 'Audio player: previous song',
+      'AUDIO PLAYER SW': 'Audio player on/off',
+      'V-LINK SW': 'V-LINK on/off',
+    },
+  },
+  system: {
+    reading: 'Reading the pedal-wide settings…',
+    readFailed: 'The pedal-wide settings could not be read.',
+    retry: 'Read again',
+    pending: (count: number) =>
+      count === 1
+        ? '1 pedal-wide change not applied yet'
+        : `${count} pedal-wide changes not applied yet`,
+    pendingHint:
+      'Nothing here reaches the pedal until you apply it. Each change affects every patch.',
+    apply: 'Apply to the pedal',
+    discard: 'Discard',
+    change: (label: string, from: string, to: string) => `${label}: ${from} → ${to}`,
+    inGkSet: (number: number, label: string) => `GK set ${number} · ${label}`,
+    confirmApply: (count: number, list: string) =>
+      `Apply ${count === 1 ? 'this pedal-wide change' : `these ${count} pedal-wide changes`}? ` +
+      `${count === 1 ? 'It affects' : 'They affect'} every patch.\n\n${list}`,
+    applied: (count: number) =>
+      count === 1 ? '1 change applied to the pedal.' : `${count} changes applied to the pedal.`,
+    fields: {
+      activeGkSet: 'GK set in use',
+      outputSelect: 'The pedal’s output goes to',
+      guitarOut: 'The GUITAR OUT jack carries',
+      rxSwitch: 'Change patches when a program change arrives',
+      txSwitch: 'Send a program change when the patch changes',
+      channel: 'MIDI channel for patch changes',
+      guitarToMidi: 'Guitar to MIDI (play other gear from the strings)',
+      guitarToMidiMode: 'Guitar to MIDI mode',
+      stringChannels: 'Channels of the six strings',
+      usbMonitor: 'Hear the pedal directly while recording over USB',
+      ctl: 'CTL pedal',
+      expOff: 'EXP pedal',
+      expOn: 'EXP pedal, with its switch on',
+      expSw: 'EXP pedal switch (press the toe down)',
+      gkVol: 'GK volume knob',
+      gkS1: 'GK switch S1',
+      gkS2: 'GK switch S2',
+    },
+    outputTitle: 'Output',
+    outputIntro:
+      'Tell the pedal what it is plugged into, so its amp models sound right there. The GUITAR OUT jack is separate: choose what it carries for your monitor or second amp.',
+    pedalsTitle: 'Pedals, for every patch',
+    pedalsIntro:
+      'A pedal step is decided in three layers. Here is the first: the pedal-wide rule. “Whatever each patch says” hands the pedal to the second layer, the patch’s own pedal settings; the eight assigns of a patch are the third and finest layer. Anything else chosen here is the same in all 297 slots.',
+    midiTitle: 'MIDI and USB',
+    midiIntro:
+      'Only needed when other gear changes patches on the pedal, or the pedal plays other gear. Rigbench itself works whatever is set here.',
+    notMapped:
+      'Screen contrast, auto power off and MIDI soft thru are set on the pedal itself: EDIT › SYSTEM.',
+    gkTitle: 'GK sets: your instruments',
+    gkIntro:
+      'The pedal keeps ten sets of pickup settings, one per instrument. The set in use decides how the pedal hears your strings in every patch that follows the system.',
+    gkOpen: 'Open the GK sets',
+  },
+  gk: {
+    title: 'GK sets',
+    intro:
+      'One set per instrument: which pickup it has, how long its scale is, how hard each string has to be played. Calibrate once and every patch tracks better.',
+    back: 'Back to Device',
+    set: (number: number) => `GK set ${number}`,
+    unnamed: '(no name)',
+    inUse: 'In use',
+    use: 'Use this set',
+    name: 'Name (8 characters)',
+    puType: 'Pickup',
+    scale: 'Scale length',
+    scaleMm: (mm: number) => `${mm} mm`,
+    scalePresetOnPedal: 'A preset chosen on the pedal (ST or LP)',
+    scaleSt: 'ST · 648 mm',
+    scaleLp: 'LP · 628 mm',
+    puPhase: 'Pickup phase',
+    puPhaseHint: 'If the low end thins out when the normal pickup is mixed in, invert the phase.',
+    puDirection: 'Pickup direction',
+    s1s2: 'S1/S2 switch order',
+    normalGain: 'Normal pickup gain',
+    sensTitle: 'Sensitivity per string',
+    sensIntro:
+      'Play each string as hard as you ever will on stage. Raise its sensitivity until its bar just reaches the top on those hardest notes — and no higher.',
+    string: (number: number) => `String ${number}`,
+    meterNeedsMidi:
+      'The bars listen to the notes the pedal sends over MIDI, and Guitar to MIDI is off on this pedal. Turn it on to see them move.',
+    meterEnable: 'Turn Guitar to MIDI on',
+    meterWaiting: 'Play a string…',
+    meterHint:
+      'The bars show how hard the pedal heard the last note on each string, read from its MIDI notes. In poly mode all strings share one bar.',
+    meterReset: 'Clear the bars',
+    bassLimited:
+      'In bass mode Rigbench names a set and chooses its pickup. Scale, pickup position and sensitivity are set on the pedal: EDIT › SYSTEM › GK SETTING.',
+    patchesFollowing: (count: number) =>
+      count === 1 ? '1 slot follows the set in use.' : `${count} slots follow the set in use.`,
+    patchesFollowingHint: 'The others name a GK set of their own in their Master page.',
+    patchesUnknown: 'Sync the pedal to see which slots follow the set in use.',
+    instrumentNote: 'Note for yourself (kept on this computer)',
+    instrumentNotePlaceholder: 'Red SG with the GK-3',
+  },
+  wizard: {
+    title: 'Stage setup',
+    intro:
+      'Eight steps from a pedal fresh out of the bag to a rig ready for the stage. Nothing changes on the pedal until you apply it.',
+    step: (number: number, total: number) => `Step ${number} of ${total}`,
+    steps: {
+      rig: 'Language and rig name',
+      mode: 'Guitar or bass',
+      instruments: 'Your instruments',
+      output: 'Output',
+      pedals: 'Pedals',
+      midi: 'MIDI and USB',
+      backup: 'Backup',
+      sync: 'Sync everything',
+    },
+    status: { ok: 'Done', warn: 'Skipped', todo: 'To do' },
+    next: 'Next',
+    applyAndNext: 'Apply and continue',
+    back: 'Back',
+    skip: 'Continue anyway',
+    finish: 'Go to the Stage',
+    rigName: 'Name of this rig',
+    rigNamePlaceholder: 'My Saturday rig',
+    rigIntro: 'Pick the language first; everything after follows it.',
+    modeIntro:
+      'The pedal is in one of two modes, and each has its own 297 slots. Check that it matches the instrument you are plugging in.',
+    modeNow: (mode: string) => `The pedal is in ${mode}.`,
+    instrumentsIntro:
+      'One GK set per instrument you bring. Name it, choose its pickup and scale, then calibrate the strings. The set marked “in use” is the one the pedal hears with now.',
+    outputIntro: 'Where does the sound go tonight?',
+    pedalsIntro: 'Check what each pedal does before any patch has its say.',
+    midiIntro: 'Skip this if nothing but this computer is connected to the pedal by MIDI.',
+    backupIntro:
+      'Before a show, keep a copy of the whole pedal on this computer: every slot and the pedal-wide settings in one file. Reading everything takes a few minutes the first time.',
+    backupMinutes: (minutes: number) =>
+      minutes <= 1 ? 'This takes about a minute.' : `This takes about ${minutes} minutes.`,
+    backupStart: 'Read everything and save the backup',
+    backupSave: 'Save the backup file',
+    backupSaved: (file: string) => `Backup saved as ${file}.`,
+    backupWaiting: 'Reading the pedal — the file is saved when it finishes.',
+    syncIntro:
+      'Rigbench now reads every slot, so the Stage has every name and every pedal map at hand. You can watch it here or move on: it carries on behind every screen.',
+    syncReady: 'Everything is read. The rig is ready.',
+    summaryWarn: (steps: string) => `Skipped in setup: ${steps}.`,
+    reopen: 'Open the stage setup',
+  },
+  setlist: {
+    title: 'Setlist',
+    intro:
+      'The songs of the show, in order, each on the slot that plays it. It lives on this computer; nothing here is saved to the pedal.',
+    back: 'Back to the Stage',
+    name: 'Name of the show',
+    namePlaceholder: 'Saturday at the club',
+    empty: 'No songs yet. Add the first one below.',
+    add: 'Add a song',
+    songTitle: 'Song',
+    songTitlePlaceholder: 'Name of the song',
+    slot: 'Slot',
+    slotOption: (label: string, name: string) => `${label} · ${name}`,
+    test: 'Test',
+    edit: 'Name the cuts',
+    done: 'Done',
+    remove: 'Remove',
+    confirmRemove: (title: string) => `Remove “${title}” from the setlist?`,
+    moveUp: 'Move up',
+    moveDown: 'Move down',
+    dragHint: 'Drag a song by its number to reorder, or use the arrows.',
+    gaps: (count: number) =>
+      count === 0
+        ? 'No patch changes in this order: the whole set plays without a gap.'
+        : count === 1
+          ? '1 patch change in this order: about a second of silence there.'
+          : `${count} patch changes in this order: about a second of silence at each.`,
+    gapsHint:
+      'Songs that share a slot switch with no gap. Many players keep one patch per song and move between sounds with the pedals.',
+    gapHere: 'patch change before this song',
+    cutsTitle: 'Names for the cuts of this patch',
+    cutsIntro: 'Call each pedal step what it is in the song: Verse, Solo, Filter opens.',
+    cutPlaceholder: 'Verse, Solo…',
+    cutsNotRead: 'This slot has not been read yet. Its cuts appear when the sync reaches it.',
+    exportFile: 'Save the setlist as a file',
+    importFile: 'Open a setlist file…',
+    importFailed: 'This file is not a Rigbench setlist.',
+    confirmImport: (count: number) =>
+      `Replace the current setlist with the ${count === 1 ? '1 song' : `${count} songs`} in this file?`,
+    tested: (title: string) => `“${title}” is sounding now.`,
+  },
+  studio: {
+    title: 'Studio',
+    sessionSwitcher: 'Craft session',
+    session: {
+      system: 'System',
+      patch: 'Patch',
+      library: 'Library',
+    },
+    panelsTitle: 'Sound',
+    custom: 'Custom',
+    stub: 'Soon',
+    renameHint: 'Rename the working copy in the Advanced editor.',
+    careHint: 'Backup and restore the pedal-wide system from Device.',
+    loadHint: 'Pick a slot in the Library, then confirm Load (Maestro asks too).',
+    saveHint: 'Save stays human-driven — use Library PATCH WRITE.',
+    modeHint: 'Guitar ↔ Bass remakes every slot. Change it from Device with a double confirm.',
+    openAdvanced: 'Open Advanced',
+    openDevice: 'Open Device',
+    openLibrary: 'Open Library',
+    advancedEditor: 'Advanced editor',
+    advancedGk: 'GK sets (Advanced)',
+    goStage: 'Go to Stage',
+    filterActive: (style: string) => `Browsing: ${style}`,
+    applyFailed: 'That sound selector could not be applied.',
+  },
+  maestro: {
+    open: 'Open Maestro',
+    title: 'Maestro',
+    placeholder: 'Ask for a change, or how a control works…',
+    thinking: 'Thinking…',
+    send: 'Send',
+    stop: 'Stop',
+    applyAll: 'Apply all',
+    applyItem: 'Apply',
+    applied: (count: number) =>
+      count === 1 ? 'Applied ✓ (1 unsaved)' : `Applied ✓ (${count} unsaved)`,
+    discard: 'Discard',
+    revert: 'Revert',
+    proposal: (intent: string) => (intent ? `Proposal · ${intent}` : 'Proposal'),
+    current: 'Now',
+    proposed: 'Proposed',
+    rejected: (reason: string) => `Rejected: ${reason}`,
+    clampedNote: 'Truncated to fit the field',
+    staleDivider: (note: string) => note,
+    cleared: 'Conversation cleared',
+    clear: 'Clear conversation',
+    close: 'Close',
+    sourceCopy: (source: string, mode: string, unsaved: number) =>
+      unsaved > 0 ? `copy of ${source} · ${mode} · 🟠 ${unsaved}` : `copy of ${source} · ${mode}`,
+    needsKey: {
+      title: 'Add a Gemini API key',
+      body: 'Maestro talks to Google Gemini with a key you bring. It stays in this browser only.',
+      openSettings: 'Open key settings',
+    },
+    settings: {
+      title: 'Maestro settings',
+      key: 'Gemini API key',
+      remember: 'Remember on this device',
+      test: 'Test key',
+      testOk: 'Key works',
+      forget: 'Forget key',
+      privacy:
+        'Restrict the key by HTTP referrer to this site’s origin, set a budget cap in Google AI Studio, and rotate the key if it was ever exposed. The key is never written into the Rigbench repo.',
+      close: 'Done',
+    },
+    err: {
+      badKey: 'Gemini rejected this key.',
+      rateLimited: 'Gemini rate limit hit. Wait a moment and try again.',
+      unreachable: 'Could not reach Gemini.',
+      timeout: 'Gemini timed out.',
+      stageLive: 'Maestro cannot change the patch while the Stage is full-screen.',
+      generic: 'Something went wrong talking to Maestro.',
+    },
+    voice: {
+      label: 'Voice input',
+      unsupported: 'Voice input needs Chrome or Edge.',
+      listening: 'Listening…',
+    },
+    loadSlot: {
+      confirm: (slot: string, unsaved: number) =>
+        unsaved > 0
+          ? `Load ${slot}? You have ${unsaved} unsaved change(s) that will be lost.`
+          : `Load ${slot}?`,
+      load: 'Load',
+      cancel: 'Cancel',
+      loaded: (slot: string) => `Loaded ${slot}.`,
+    },
+    policy: {
+      systemDenied: 'System settings are not available through Maestro. Open Device instead.',
+      slotDenied: 'Maestro never writes a pedal slot. Use Library to save.',
+      stageLive: 'Editing is paused on the Stage. Leave Stage to change the patch.',
+    },
+    hint: {
+      searchRound: 'Looking up more parameters…',
+    },
+    stopped: 'Stopped.',
   },
 };

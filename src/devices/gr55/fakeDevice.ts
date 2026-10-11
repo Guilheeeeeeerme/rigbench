@@ -6,6 +6,7 @@ import {
   pack7,
   parseDataResponseMessage,
 } from '../../protocol/RolandSysExProtocol';
+import { GK_SET_COUNT, SYSTEM, gkSet } from './systemMap';
 import {
   GR55_MAP,
   PATCH_SPAN,
@@ -15,6 +16,8 @@ import {
 } from './patchLayout';
 
 const DEVICE_ID = 0x10;
+// PATCH SETTING, the second entry of every pedal-wide function list.
+const LEFT_TO_PATCH = 1;
 const COMMAND_RQ1 = 0x11;
 const WRITE_PATCH_COMMAND = pack7(0x0f000000);
 const PATCH_NAME_OFFSET =
@@ -49,6 +52,22 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
 
   constructor() {
     this.setName(TEMPORARY_PATCH_ADDRESS, 'Simulated Patch');
+    // As a pedal leaves the factory: every pedal is left to the patch, GK set names blank.
+    const { pedals } = SYSTEM;
+    for (const pedal of [
+      pedals.ctlFunction,
+      pedals.expOffFunction,
+      pedals.expOnFunction,
+      pedals.expSwFunction,
+      pedals.gkVolFunction,
+      pedals.gkS1Function,
+      pedals.gkS2Function,
+    ]) {
+      this.poke(pedal.address, [LEFT_TO_PATCH]);
+    }
+    for (let number = 1; number <= GK_SET_COUNT; number++) {
+      this.poke(gkSet(number).name.address, Array<number>(8).fill(0x20));
+    }
   }
 
   addEventListener(_type: 'midimessage', listener: MidiMessageListener): void {

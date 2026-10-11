@@ -11,7 +11,8 @@ import { Canvas } from './Canvas';
 import { DeviceScreen } from './DeviceScreen';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
-import { deviceRoute, gkRoute, libraryRoute, setupRoute } from './routes';
+import { deviceRoute, gkRoute, libraryRoute, setlistRoute, setupRoute, stageRoute } from './routes';
+import { SetlistScreen } from './SetlistScreen';
 import { GkSetsScreen } from './GkSets';
 import { loadSetup } from './setupState';
 import { SystemProvider } from './SystemParts';
@@ -225,7 +226,8 @@ export default function Gr55Screen() {
   if (phase.kind === 'connected') {
     const { editor, session, sync, system } = phase.connection;
     // A pedal met for the first time is walked through the stage setup before anything else.
-    const home = loadSetup().complete ? libraryRoute : setupRoute;
+    // After that the Stage is the root; the editor and the library are reached from it.
+    const home = loadSetup().complete ? stageRoute : setupRoute;
     return (
       <SyncProvider value={sync}>
         <SystemProvider value={system}>
@@ -240,8 +242,11 @@ export default function Gr55Screen() {
             {/* Addresses from before the stage-first routes. */}
             <Route path="setup" element={<Navigate to={`../${setupRoute}`} replace />} />
             <Route path="device" element={<Navigate to={`../${deviceRoute}`} replace />} />
-            <Route path="patches" element={<Library editor={editor} onError={setError} />} />
-            <Route path="patches/:slot" element={<Library editor={editor} onError={setError} />} />
+            <Route path={libraryRoute} element={<Library editor={editor} onError={setError} />} />
+            <Route
+              path={`${libraryRoute}/:slot`}
+              element={<Library editor={editor} onError={setError} />}
+            />
             {/* The canvas is the editor's root; each block opens its inspector. */}
             <Route path="editor" element={<Canvas editor={editor} />} />
             <Route
@@ -255,7 +260,11 @@ export default function Gr55Screen() {
                 />
               }
             />
-            <Route path="palco" element={<Stage editor={editor} />} />
+            <Route path={stageRoute} element={<Stage editor={editor} onError={setError} />} />
+            <Route
+              path={setlistRoute}
+              element={<SetlistScreen editor={editor} onError={setError} />}
+            />
             <Route
               path={deviceRoute}
               element={<DeviceScreen editor={editor} onError={setError} />}
@@ -270,7 +279,7 @@ export default function Gr55Screen() {
                 <main className="gate">
                   <h1>{t('app.notFound')}</h1>
                   <p>
-                    <Link to={libraryRoute}>{t('library.title')}</Link>
+                    <Link to={stageRoute}>{t('stage.title')}</Link>
                   </p>
                 </main>
               }

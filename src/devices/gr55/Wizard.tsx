@@ -7,6 +7,7 @@ import { downloadBytes } from './download';
 import type { Gr55Editor } from './editor';
 import { GkSetList } from './GkSets';
 import { stageHref } from './routes';
+import { TopNav } from './TopNav';
 import { SETUP_STEPS, loadSetup, saveSetup } from './setupState';
 import type { SetupState, SetupStep, StepOutcome } from './setupState';
 import { slotsOfMode } from './slots';
@@ -231,6 +232,8 @@ export function Wizard({
   return (
     <div className="wizard">
       <header>
+        {/* A first setup is walked in order; once done, it is a screen like the others. */}
+        {setup.complete && <TopNav current="device" />}
         <h1>{t('wizard.title')}</h1>
         <p className="hint">{t('wizard.intro')}</p>
       </header>

@@ -1,6 +1,7 @@
 import { useSyncExternalStore, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useT } from '../../copy';
+import { TopNav } from './TopNav';
 import type { FieldReference, BooleanField } from '../../protocol/RolandAddressMap';
 import type { Gr55Editor } from './editor';
 import { editorHref } from './pages';
@@ -74,6 +75,7 @@ export function Canvas({ editor }: { editor: Gr55Editor }) {
   return (
     <div className="canvas">
       <div className="canvas-head">
+        <TopNav current="editor" />
         <h1>{t('gr55.blocks.title')}</h1>
         <p className="hint">{t('gr55.blocks.intro')}</p>
       </div>

@@ -10,6 +10,7 @@ import { loadSetup, saveSetup } from './setupState';
 import { slotsOfMode } from './slots';
 import { useSync } from './sync/SyncBadge';
 import { ApplyBar, SystemGate, useSystem, useSystemVersion } from './SystemParts';
+import { TopNav } from './TopNav';
 import {
   GK_SET_COUNT,
   GK_STRING_SENS,
@@ -362,6 +363,7 @@ export function GkSetsScreen({
   const t = useT();
   return (
     <div className="device">
+      <TopNav current="device" />
       <p>
         <Link to={deviceHref}>← {t('gk.back')}</Link>
       </p>

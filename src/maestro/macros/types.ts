@@ -29,7 +29,7 @@ export type LibraryWrite = {
 
 export type MacroWrite = PatchWrite | SystemWrite | LibraryWrite;
 
-export type MacroGroupKind = 'pills' | 'actions' | 'rename' | 'mode';
+export type MacroGroupKind = 'pills' | 'actions' | 'rename' | 'mode' | 'toneBrowse';
 
 export interface MacroOption {
   id: string;

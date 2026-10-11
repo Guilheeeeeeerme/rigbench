@@ -62,6 +62,7 @@ export function Studio({
       onError={onError}
       libraryFilter={libraryFilter}
       onLibraryFilter={setLibraryFilter}
+      onPatchLoaded={() => switchSession('patch')}
     />
   );
 

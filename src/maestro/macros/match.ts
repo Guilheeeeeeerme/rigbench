@@ -73,7 +73,9 @@ export function matchGroup(
   system: Gr55System | undefined,
   index: Map<string, RegistryEntry>,
 ): MatchResult {
-  if (group.kind !== 'pills' || group.options.length === 0) return { kind: 'unknown' };
+  if ((group.kind !== 'pills' && group.kind !== 'toneBrowse') || group.options.length === 0) {
+    return { kind: 'unknown' };
+  }
 
   let best: { optionId: string; score: number; total: number } | undefined;
   for (const option of group.options) {

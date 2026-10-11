@@ -68,7 +68,15 @@ describe('macro registry scaffold', () => {
   });
 
   it('marks priority Patch groups implemented with writes', () => {
-    for (const id of ['layers', 'amp-grit', 'atmosphere', 'synth-voice', 'loudness']) {
+    for (const id of [
+      'layers',
+      'amp-grit',
+      'atmosphere',
+      'synth-voice',
+      'loudness',
+      'front-effect',
+      'color-box',
+    ]) {
       const group = findGroup(id);
       expect(group?.implemented).toBe(true);
       expect(group?.options.some((option) => option.writes.length > 0)).toBe(true);
@@ -78,6 +86,19 @@ describe('macro registry scaffold', () => {
   it('implements System instrument and speakers', () => {
     expect(findGroup('instrument')?.implemented).toBe(true);
     expect(findGroup('speakers')?.implemented).toBe(true);
+  });
+
+  it('implements Library load-craft', () => {
+    expect(findGroup('load-craft')?.implemented).toBe(true);
+  });
+
+  it('exposes accordion, harmonica, and sax tones on Synth voice', () => {
+    const group = findGroup('synth-voice')!;
+    expect(group.kind).toBe('toneBrowse');
+    const ids = new Set(group.options.map((option) => option.id));
+    expect(ids.has('accordion-fr')).toBe(true);
+    expect(ids.has('harmonica-1')).toBe(true);
+    expect(ids.has('alto-sax')).toBe(true);
   });
 });
 
@@ -143,6 +164,53 @@ describe('applyMacroOption', () => {
       policy: { stageLive: false, session: 'patch' },
     });
     expect(result).toEqual({ ok: false, reason: 'stub' });
+  });
+
+  it('writes pcm1 toneSelect for accordion (sanfona)', () => {
+    const values: Record<string, unknown> = {};
+    const editor = fakeEditor(values);
+    const group = findGroup('synth-voice')!;
+    const option = group.options.find((item) => item.id === 'accordion-fr')!;
+    const result = applyMacroOption(group, option, {
+      editor,
+      index,
+      policy: { stageLive: false, session: 'patch' },
+    });
+    expect(result.ok).toBe(true);
+    expect(values['pcm1/tone/toneSelect']).toBe('Accordion Fr');
+    expect(values['pcm1/tone/muteSwitch']).toBe(false);
+    expect(values['pcm2/tone/muteSwitch']).toBe(true);
+  });
+
+  it('writes Front effect COMP bundle', () => {
+    const values: Record<string, unknown> = {};
+    const editor = fakeEditor(values);
+    const group = findGroup('front-effect')!;
+    const option = group.options.find((item) => item.id === 'steady')!;
+    const result = applyMacroOption(group, option, {
+      editor,
+      index,
+      policy: { stageLive: false, session: 'patch' },
+    });
+    expect(result.ok).toBe(true);
+    expect(values['mod/mod/modSwitch']).toBe(true);
+    expect(values['mod/mod/modType']).toBe('COMP');
+    expect(values['mod/mod/compSustain']).toBe(40);
+  });
+
+  it('writes Color box filter bundle', () => {
+    const values: Record<string, unknown> = {};
+    const editor = fakeEditor(values);
+    const group = findGroup('color-box')!;
+    const option = group.options.find((item) => item.id === 'filter')!;
+    const result = applyMacroOption(group, option, {
+      editor,
+      index,
+      policy: { stageLive: false, session: 'patch' },
+    });
+    expect(result.ok).toBe(true);
+    expect(values['mfx/mfx/mfxType']).toBe('SUPER FILTER');
+    expect(values['mfx/mfx/superFilterFilterCutoff']).toBe(60);
   });
 });
 

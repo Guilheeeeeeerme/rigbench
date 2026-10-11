@@ -1,5 +1,6 @@
 import { SCALE_BASE_MM } from '../../devices/gr55/systemMap';
 import type { SessionId } from '../session';
+import { synthVoiceOptions } from './tones';
 import type { MacroGroup, MacroOption, PatchWrite, SystemWrite } from './types';
 
 const p = (key: string, value: unknown): PatchWrite => ({ domain: 'patch', key, value });
@@ -234,57 +235,15 @@ const atmosphere: MacroGroup = pills(
   true,
 );
 
-const synthVoice: MacroGroup = pills(
-  'patch',
-  'synth-voice',
-  'Synth voice',
-  'Voz do synth',
-  [
-    {
-      id: 'off',
-      labelEn: 'Off',
-      labelPt: 'Desligado',
-      writes: [p('pcm1/tone/muteSwitch', MUTE), p('pcm2/tone/muteSwitch', MUTE)],
-    },
-    {
-      id: 'soft-pad',
-      labelEn: 'Soft pad',
-      labelPt: 'Pad suave',
-      writes: [
-        p('pcm1/tone/muteSwitch', SOUND),
-        p('pcm1/tone/partLevel', 55),
-        p('pcm1/tone/partPan', 50),
-        p('pcm2/tone/muteSwitch', MUTE),
-        p('pcm2/tone/partLevel', 20),
-      ],
-    },
-    {
-      id: 'bright-lead',
-      labelEn: 'Bright lead',
-      labelPt: 'Lead brilhante',
-      writes: [
-        p('pcm1/tone/muteSwitch', SOUND),
-        p('pcm1/tone/partLevel', 90),
-        p('pcm1/tone/partPan', 50),
-        p('pcm2/tone/muteSwitch', MUTE),
-      ],
-    },
-    {
-      id: 'dual-layer',
-      labelEn: 'Dual layer',
-      labelPt: 'Duas camadas',
-      writes: [
-        p('pcm1/tone/muteSwitch', SOUND),
-        p('pcm1/tone/partLevel', 70),
-        p('pcm1/tone/partPan', 30),
-        p('pcm2/tone/muteSwitch', SOUND),
-        p('pcm2/tone/partLevel', 65),
-        p('pcm2/tone/partPan', 70),
-      ],
-    },
-  ],
-  true,
-);
+const synthVoice: MacroGroup = {
+  session: 'patch',
+  id: 'synth-voice',
+  kind: 'toneBrowse',
+  titleEn: 'Synth voice',
+  titlePt: 'Voz do synth',
+  options: synthVoiceOptions(),
+  implemented: true,
+};
 
 const guitarBody: MacroGroup = pills(
   'patch',
@@ -400,19 +359,39 @@ const frontEffect: MacroGroup = pills(
       id: 'steady',
       labelEn: 'Steady',
       labelPt: 'Firme',
-      writes: [p('mod/mod/modSwitch', true), p('mod/mod/modType', 'COMP')],
+      writes: [
+        p('mod/mod/modSwitch', true),
+        p('mod/mod/modType', 'COMP'),
+        p('mod/mod/compSustain', 40),
+        p('mod/mod/compAttack', 50),
+        p('mod/mod/compLevel', 70),
+      ],
     },
     {
       id: 'edge',
       labelEn: 'Edge',
       labelPt: 'Distôrce',
-      writes: [p('mod/mod/modSwitch', true), p('mod/mod/modType', 'OD/DS')],
+      writes: [
+        p('mod/mod/modSwitch', true),
+        p('mod/mod/modType', 'OD/DS'),
+        p('mod/mod/odDsType', 'BLUES OD'),
+        p('mod/mod/odDsDrive', 45),
+        p('mod/mod/odDsTone', 55),
+        p('mod/mod/odDsLevel', 65),
+      ],
     },
     {
       id: 'sweep',
       labelEn: 'Sweep',
       labelPt: 'Varredura',
-      writes: [p('mod/mod/modSwitch', true), p('mod/mod/modType', 'WAH')],
+      writes: [
+        p('mod/mod/modSwitch', true),
+        p('mod/mod/modType', 'WAH'),
+        p('mod/mod/wahMode', 'MANUAL'),
+        p('mod/mod/wahType', 'CRY WAH'),
+        p('mod/mod/wahPedalPosition', 45),
+        p('mod/mod/wahLevel', 70),
+      ],
     },
   ],
   true,
@@ -434,19 +413,47 @@ const colorBox: MacroGroup = pills(
       id: 'polish',
       labelEn: 'Polish',
       labelPt: 'Polido',
-      writes: [p('mfx/mfx/mfxSwitch', true), p('mfx/mfx/mfxType', 'EQ')],
+      writes: [
+        p('mfx/mfx/mfxSwitch', true),
+        p('mfx/mfx/mfxType', 'EQ'),
+        p('mfx/mfx/eqLevel', 80),
+        p('mfx/mfx/eqLowGain', 2),
+        p('mfx/mfx/eqHighGain', 2),
+        p('mfx/mfx/mfxChorusSendLevel', 0),
+        p('mfx/mfx/mfxDelaySendLevel', 0),
+        p('mfx/mfx/mfxReverbSendLevel', 10),
+      ],
     },
     {
       id: 'filter',
       labelEn: 'Filter',
       labelPt: 'Filtro',
-      writes: [p('mfx/mfx/mfxSwitch', true), p('mfx/mfx/mfxType', 'SUPER FILTER')],
+      writes: [
+        p('mfx/mfx/mfxSwitch', true),
+        p('mfx/mfx/mfxType', 'SUPER FILTER'),
+        p('mfx/mfx/superFilterFilterType', 'LPF'),
+        p('mfx/mfx/superFilterFilterCutoff', 60),
+        p('mfx/mfx/superFilterFilterResonance', 40),
+        p('mfx/mfx/superFilterLevel', 80),
+        p('mfx/mfx/mfxChorusSendLevel', 0),
+        p('mfx/mfx/mfxDelaySendLevel', 15),
+        p('mfx/mfx/mfxReverbSendLevel', 15),
+      ],
     },
     {
       id: 'wide',
       labelEn: 'Wide',
       labelPt: 'Aberto',
-      writes: [p('mfx/mfx/mfxSwitch', true), p('mfx/mfx/mfxType', 'HEXA-CHORUS')],
+      writes: [
+        p('mfx/mfx/mfxSwitch', true),
+        p('mfx/mfx/mfxType', 'HEXA-CHORUS'),
+        p('mfx/mfx/hexaChorusDepth', 40),
+        p('mfx/mfx/hexaChorusBalance', 50),
+        p('mfx/mfx/hexaChorusLevel', 75),
+        p('mfx/mfx/mfxChorusSendLevel', 0),
+        p('mfx/mfx/mfxDelaySendLevel', 20),
+        p('mfx/mfx/mfxReverbSendLevel', 25),
+      ],
     },
   ],
   true,
@@ -722,7 +729,7 @@ const loadCraft: MacroGroup = {
   titleEn: 'Load into craft',
   titlePt: 'Carregar para editar',
   options: [],
-  implemented: false,
+  implemented: true,
 };
 
 const saveLibrary: MacroGroup = {

@@ -1448,3 +1448,475 @@ a.device-card:hover {
 .library {
   padding: 1rem 1.25rem 5rem;
 }
+
+/* Maestro (Mestre): edge FAB + non-modal right drawer. */
+.maestro-fab {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 40;
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 0.5rem 0 0 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.65rem 0.45rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: -2px 0 8px rgb(0 0 0 / 0.2);
+}
+
+.maestro-fab:hover {
+  border-color: var(--accent);
+}
+
+.maestro-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 45;
+  width: min(24rem, 100vw);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 24px rgb(0 0 0 / 0.25);
+  animation: maestro-slide 160ms ease-out;
+}
+
+@keyframes maestro-slide {
+  from {
+    translate: 100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maestro-drawer {
+    animation: none;
+  }
+}
+
+.maestro-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.maestro-drawer-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.maestro-meta {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.maestro-head-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.maestro-icon {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.maestro-banner,
+.maestro-needs-key {
+  margin: 0.75rem 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--bg);
+}
+
+.maestro-needs-key h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.maestro-messages {
+  flex: 1;
+  overflow: auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.maestro-line p {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+}
+
+.maestro-line-user p {
+  color: var(--accent);
+}
+
+.maestro-stale {
+  color: var(--muted);
+  font-size: 0.8rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.5rem;
+}
+
+.maestro-thinking {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.maestro-card {
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--bg);
+}
+
+.maestro-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.maestro-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.maestro-card li {
+  display: grid;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+
+.maestro-card li em {
+  color: var(--muted);
+  font-style: normal;
+}
+
+.maestro-row-rejected {
+  opacity: 0.85;
+}
+
+.maestro-row-applied {
+  outline: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.maestro-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.maestro-composer {
+  border-top: 1px solid var(--border);
+  padding: 0.65rem 1rem 1rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.maestro-clear {
+  justify-self: start;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.maestro-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.35rem;
+}
+
+.maestro-input-row input {
+  min-width: 0;
+}
+
+.maestro-mic {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+
+.maestro-mic.live {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.maestro-mic-missing {
+  width: 0;
+}
+
+.maestro-policy-links {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.maestro-policy-links a {
+  color: var(--muted);
+}
+
+.maestro-settings-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgb(0 0 0 / 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.maestro-settings {
+  width: min(22rem, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.maestro-settings h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.maestro-settings label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.maestro-remember {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+/* Studio — Maestro-first craft shell */
+.studio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgb(40 70 55 / 0.35), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgb(50 55 40 / 0.25), transparent), var(--bg);
+}
+
+.studio-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.studio-session {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.studio-session-btn {
+  min-height: 2.75rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.studio-session-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.studio-scope {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.studio-error {
+  margin: 0.75rem 1.25rem 0;
+}
+
+.studio-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(18rem, 1fr) minmax(20rem, 1fr);
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .studio-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.studio-agent {
+  min-height: 24rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+
+.studio-agent .maestro-pane {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  animation: none;
+  box-shadow: none;
+}
+
+.studio-macros {
+  overflow: auto;
+  padding: 1rem 1.25rem 2rem;
+}
+
+.studio-panels-head h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.studio-groups {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.studio-group h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.studio-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.studio-stub,
+.studio-custom {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.studio-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.studio-pill,
+.studio-pill-link {
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.studio-pill:disabled {
+  opacity: 0.45;
+}
+
+.studio-pill.selected,
+.studio-pill-link:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.studio-pill:not(:disabled):hover {
+  border-color: var(--accent);
+}
+
+.studio-panels-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.studio-advanced-link {
+  font-size: 0.9rem;
+}
+
+.top-more {
+  position: relative;
+}
+
+.top-more-btn {
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.top-more-menu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  gap: 0.15rem;
+  min-width: 11rem;
+  padding: 0.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+}
+
+.top-more-menu a {
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.35rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.top-more-menu a:hover {
+  background: var(--bg);
+}

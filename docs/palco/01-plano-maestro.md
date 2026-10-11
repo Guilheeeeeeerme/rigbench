@@ -14,7 +14,7 @@
 | # | Decision | Value |
 |---|---|---|
 | D1 | Shape | **Global right drawer**, button on the screen edge + `Ctrl/⌘+M`, everywhere except Stage full-screen (read-only there) |
-| D2 | Provider v1 | **Gemini only** (`gemini-2.5-flash`, REST, BYOK). An `AskProvider` interface exists so Ollama/OpenAI-compatible is a drop-in later — but only Gemini is implemented |
+| D2 | Provider v1 | **Gemini only** (`gemini-3.6-flash`, REST, BYOK). An `AskProvider` interface exists so Ollama/OpenAI-compatible is a drop-in later — but only Gemini is implemented |
 | D3 | Capability | **Edit + explain.** No manual citations in v1 (RAG is gated F3) |
 | D4 | Tools | propose `ChangePlan` + `loadSlot` (with human confirm). **Never** writes a slot, never writes system |
 | D5 | Writability | **🟠 temporary-patch fields only.** System 🔵 is policy-denied and structurally absent from the registry |
@@ -198,7 +198,7 @@ error | needsKey)`.
 ### 5.7 `provider.ts`
 - `interface AskProvider { reply(req: ProviderRequest, signal): Promise<unknown> }`
 - `GeminiProvider implements AskProvider` — `fetch` REST:
-  `POST …/v1beta/models/gemini-2.5-flash:generateContent`, key from
+  `POST …/v1beta/models/gemini-3.6-flash:generateContent`, key from
   `settings.ts`, `generationConfig: { responseMimeType: 'application/json',
   responseSchema }` (§6.2), contents = system (text) + history + user.
 - Error mapping: 400 invalid-key-shape → `needsKey`; 401/403 → `badKey`;
@@ -393,7 +393,7 @@ revert = two reverts, no schema migration anywhere.
 | Long-context cost | 14k-char ladder + 3-round cap + ≤30-message history window; debug counts only |
 | Voice in loud room | editable draft always; send is manual |
 | Patch switched by pedal mid-chat | stale divider + context rebuild; accepted items from old patch shown as history only |
-| Gemini schema drift | responseSchema pinned in code, model constant pinned (`gemini-2.5-flash`), parse repair + graceful degrade |
+| Gemini schema drift | responseSchema pinned in code, model constant pinned (`gemini-3.6-flash`), parse repair + graceful degrade |
 | Stage write hazard | policy `stageLive` deny is enforced in orchestrator, not just UI |
 
 ## 11. Open questions for the user (answerable without code, each blocks a leaf)

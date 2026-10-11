@@ -6,7 +6,7 @@ import { LocaleSwitch } from '../../shell/LocaleSwitch';
 import { downloadBytes } from './download';
 import type { Gr55Editor } from './editor';
 import { GkSetList } from './GkSets';
-import { stageHref } from './routes';
+import { studioHref } from './routes';
 import { TopNav } from './TopNav';
 import { SETUP_STEPS, loadSetup, saveSetup } from './setupState';
 import type { SetupState, SetupStep, StepOutcome } from './setupState';
@@ -216,7 +216,7 @@ export function Wizard({
       const steps = { ...setup.steps, [step]: outcome };
       if (last) {
         keep({ ...setup, steps, complete: true });
-        void navigate(stageHref);
+        void navigate(studioHref);
       } else {
         keep({ ...setup, steps });
         setIndex(index + 1);

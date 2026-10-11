@@ -53,9 +53,32 @@ Pick the device → Connect → Stage setup (first time) → Sync → Stage
   after a confirmation that names each one.
 - **GK sets** (`#/gr55/dispositivo/gk`). Name each set, choose pickup and scale, and set the
   sensitivity of each string beside a meter.
+- **Maestro** (edge button or `Ctrl`/`⌘`+`M`). A chat copilot for the working copy. It proposes
+  temporary-patch (🟠) edits you confirm before they are applied; it never writes a pedal slot
+  or system setting. Hidden on the Stage full-screen view.
 
 Every control carries a chip that says what it changes: 🟠 the working copy, 🟢 a saved slot,
 🔵 the whole pedal.
+
+### Maestro (BYOK Gemini)
+
+Maestro talks to Google Gemini (`gemini-3.6-flash`) with **your** API key. Rigbench never ships a
+key and never puts one in the repository, `.env`, logs, or fixtures.
+
+- **Open.** Floating button on the right edge of every connected screen except Stage, or
+  `Ctrl`/`⌘`+`M`. `Esc` closes the drawer.
+- **Storage.** The key lives in `sessionStorage` by default. Opt in to “Remember on this device”
+  to keep it in `localStorage`. Use **Forget** to clear both. Use **Test** to ping Gemini without
+  sending patch data.
+- **Privacy / rotation.** In Google AI Studio, restrict the key by HTTP referrer to this app’s
+  origin, set a budget cap, and rotate the key if it was ever exposed.
+- **What it can do.** Propose edits to orange temporary-patch fields (you apply them), explain
+  controls, and ask to load a user slot (you confirm). Voice input (Chrome/Edge) fills the draft
+  only — it never auto-sends.
+- **What it cannot do.** Auto-apply, write slots, change system/GK settings, or edit while Stage
+  is open.
+
+`npm run check:secrets` scans the tree for Gemini/Google key-shaped strings.
 
 ### What has not been checked on a real pedal
 
@@ -131,15 +154,16 @@ choose the pedal's input and output ports.
 In the development build the connection screen also offers **Use a simulated pedal**, which lets
 you walk the setup, the sync and the Stage with no hardware attached.
 
-| Script               | What it does                                                       |
-| -------------------- | ------------------------------------------------------------------ |
-| `npm run dev`        | Development server with hot reload                                 |
-| `npm run build`      | Check the dictionaries, type-check, build the site to `dist/`      |
-| `npm run preview`    | Serve the built site locally                                       |
-| `npm test`           | Unit tests (Vitest)                                                |
-| `npm run check:copy` | Fail if `en.ts` and `pt-BR.ts` differ in any key or its parameters |
-| `npm run lint`       | ESLint and Prettier check                                          |
-| `npm run typecheck`  | TypeScript only                                                    |
+| Script                  | What it does                                                       |
+| ----------------------- | ------------------------------------------------------------------ |
+| `npm run dev`           | Development server with hot reload                                 |
+| `npm run build`         | Check the dictionaries, type-check, build the site to `dist/`      |
+| `npm run preview`       | Serve the built site locally                                       |
+| `npm test`              | Unit tests (Vitest)                                                |
+| `npm run check:copy`    | Fail if `en.ts` and `pt-BR.ts` differ in any key or its parameters |
+| `npm run check:secrets` | Fail if Gemini/Google key-shaped strings appear in the tree        |
+| `npm run lint`          | ESLint and Prettier check                                          |
+| `npm run typecheck`     | TypeScript only                                                    |
 
 ## How it is put together
 
@@ -148,6 +172,7 @@ src/
   app/            App shell, routes, styles
   shell/          Browser gate, device picker, language switch
   copy/           en.ts (source of truth) and pt-BR.ts; t() and useT() in index.ts
+  maestro/        Maestro copilot (registry, policy, Gemini BYOK, drawer)
   midi/           Web MIDI access; the session that queues RQ1/DT1 messages 20 ms apart
   protocol/       Roland SysEx and the GR-55 patch address map (see Credits)
   devices/gr55/   Everything the GR-55 screens are made of:

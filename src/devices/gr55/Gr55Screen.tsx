@@ -9,6 +9,7 @@ import { Library } from './Library';
 import { Stage } from './Stage';
 import { Canvas } from './Canvas';
 import { DeviceScreen } from './DeviceScreen';
+import { Studio } from './Studio';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
 import {
@@ -19,6 +20,7 @@ import {
   setlistRoute,
   setupRoute,
   stageRoute,
+  studioRoute,
 } from './routes';
 import { SetlistScreen } from './SetlistScreen';
 import { GkSetsScreen } from './GkSets';
@@ -31,6 +33,7 @@ import { DiscardNotice } from './DiscardNotice';
 import { openSyncCache } from './sync/cache';
 import { SyncEngine } from './sync/engine';
 import { SyncBadge, SyncProvider } from './sync/SyncBadge';
+import { MaestroHost } from '../../maestro/MaestroHost';
 
 const PORT_MEMORY = 'rigbench.gr55.ports';
 
@@ -235,12 +238,13 @@ export default function Gr55Screen() {
     const { editor, session, sync, system } = phase.connection;
     // A pedal met for the first time is walked through the stage setup before anything else.
     // After that the Stage is the root; the editor and the library are reached from it.
-    const home = loadSetup().complete ? stageRoute : setupRoute;
+    const home = loadSetup().complete ? studioRoute : setupRoute;
     return (
       <SyncProvider value={sync}>
         <SystemProvider value={system}>
           <DiscardNotice editor={editor} />
           <SyncBadge editor={editor} />
+          <MaestroHost editor={editor} />
           <Routes>
             <Route index element={<Navigate to={home} replace />} />
             <Route
@@ -252,12 +256,16 @@ export default function Gr55Screen() {
             {/* Addresses from before the stage-first routes. */}
             <Route path="setup" element={<Navigate to={`../${setupRoute}`} replace />} />
             <Route path="device" element={<Navigate to={`../${deviceRoute}`} replace />} />
+            <Route
+              path={studioRoute}
+              element={<Studio editor={editor} error={error} onError={setError} />}
+            />
             <Route path={libraryRoute} element={<Library editor={editor} onError={setError} />} />
             <Route
               path={`${libraryRoute}/:slot`}
               element={<Library editor={editor} onError={setError} />}
             />
-            {/* The canvas is the editor's root; each block opens its inspector. */}
+            {/* Dense editor / canvas — Advanced escape hatch from Studio. */}
             <Route path="editor" element={<Canvas editor={editor} />} />
             <Route
               path="editor/:pageId/:sectionSlug?"
@@ -289,7 +297,7 @@ export default function Gr55Screen() {
                 <main className="gate">
                   <h1>{t('app.notFound')}</h1>
                   <p>
-                    <Link to={stageRoute}>{t('stage.title')}</Link>
+                    <Link to={studioRoute}>{t('studio.title')}</Link>
                   </p>
                 </main>
               }

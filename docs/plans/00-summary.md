@@ -60,3 +60,31 @@ com 5 (essencial/avançado) como camada de densidade e 7 (ledger) phase-2.
 Arquivo auditável por plano, com: modelo mental, árvore de navegação, wireframes,
 personas, casos de uso, tabela de escopo, avançado, Modo Palco, terminologia,
 implementação, trade-offs e critérios de aceite.
+
+---
+
+## Nota — v2 implementada (2026-10-10)
+
+O briefing `prompt.md` ("RigbenchPalco") foi implementado no branch `palco-v2`, nas
+cinco fases previstas:
+
+| Fase | O que entrou | Onde |
+|---|---|---|
+| **A — i18n** | `t()` / `useT()`, `LocaleProvider`, `pt-BR.ts` 1:1 com `en.ts`, alternador EN \| PT-BR em todas as telas, `npm run check:copy` | `src/copy/`, `src/shell/LocaleSwitch.tsx` |
+| **B — Sync** | Motor de sincronização dos 297 slots + sistema, ritmo adaptativo, cache em IndexedDB, retomada, diff incremental, selo fixo no canto | `src/devices/gr55/sync/` |
+| **C — Sistema** | Mapa de sistema (10 GK sets, saída, pedais, MIDI/USB), mudanças preparadas e aplicadas com confirmação, editor de GK sets, wizard de 8 passos | `systemMap.ts`, `systemState.ts`, `GkSets.tsx`, `Wizard.tsx` |
+| **D — Palco raiz** | Palco como tela raiz, setlist, cortes nomeados, mapa de pedais, teclas N/P/1–9, aviso de troca de patch | `Stage.tsx`, `SetlistScreen.tsx`, `setlist.ts`, `stageModel.ts` |
+| **E — Coesão** | Testes de sync (297 slots sobre MIDI simulado com ritmo real), sistema, palco e i18n; README; navegação única | `*.test.ts`, `README.md` |
+
+Rotas finais: `#/gr55/configurar` · `palco` · `agenda` · `patches` · `editor/:bloco/:secao`
+· `dispositivo` · `dispositivo/gk`. Os endereços antigos (`setup`, `device`) redirecionam.
+
+**O que não foi validado em um GR‑55 real** está listado no README, seção
+"What has not been checked on a real pedal": endereços de sistema (seguem o fork MIT
+CASouthEast), ordem do PU TYPE, codificação do SCALE, GK sets em modo baixo, o medidor
+por corda (desenhado a partir das notas Guitar‑to‑MIDI, não do medidor do pedal) e o
+ritmo real da sincronização.
+
+Ficou de fora: contraste do LCD, desligamento automático e MIDI soft thru (não mapeados
+na fonte MIT), bancos de presets somente leitura, e o Web Worker para a sincronização
+(o Web MIDI não existe em workers; a sincronização é E/S assíncrona e não bloqueia a tela).

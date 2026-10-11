@@ -11,7 +11,15 @@ import { Canvas } from './Canvas';
 import { DeviceScreen } from './DeviceScreen';
 import { Workspace } from './Workspace';
 import { Gr55Editor } from './editor';
-import { deviceRoute, gkRoute, libraryRoute, setlistRoute, setupRoute, stageRoute } from './routes';
+import {
+  connectRoute,
+  deviceRoute,
+  gkRoute,
+  libraryRoute,
+  setlistRoute,
+  setupRoute,
+  stageRoute,
+} from './routes';
 import { SetlistScreen } from './SetlistScreen';
 import { GkSetsScreen } from './GkSets';
 import { loadSetup } from './setupState';
@@ -239,6 +247,8 @@ export default function Gr55Screen() {
               path={setupRoute}
               element={<Wizard editor={editor} session={session} onError={setError} />}
             />
+            {/* Connecting is done: its address leads on. */}
+            <Route path={connectRoute} element={<Navigate to={`../${home}`} replace />} />
             {/* Addresses from before the stage-first routes. */}
             <Route path="setup" element={<Navigate to={`../${setupRoute}`} replace />} />
             <Route path="device" element={<Navigate to={`../${deviceRoute}`} replace />} />

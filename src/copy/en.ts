@@ -51,7 +51,6 @@ export const en = {
       'Nothing answered on these ports. Check that the pedal is on and that both ports belong to it.',
     wrongDevice: 'The device on these ports answered, but it is not a GR-55.',
     simulate: 'Use a simulated pedal',
-    simulatedPort: 'Simulated GR-55',
     disconnect: 'Disconnect',
     lost: 'The connection to the pedal failed.',
   },
@@ -72,7 +71,6 @@ export const en = {
         'This is the patch the pedal is sounding right now. It lives only while this patch is selected: the pedal throws it away when you switch patches.',
       /** Scope chip: this control is stored permanently in the pedal. */
       savedSlot: 'Saved slot',
-      savedSlotHint: 'Saved in the pedal. It stays until you save something else there.',
       /** Scope chip: this control is device-wide, not per patch. */
       pedal: 'Pedal',
       pedalHint: 'Pedal-wide setting. The same for every patch.',
@@ -90,7 +88,6 @@ export const en = {
     },
     mode: { GUITAR: 'Guitar mode', BASS: 'Bass mode' },
     unnamed: '(unnamed)',
-    librarian: 'Librarian',
     showAllEffects: 'Show the parameters of every effect type',
     unknownValue: (hex: string) => `Unknown value (${hex})`,
     error: (message: string) => `The pedal did not accept or answer the last message: ${message}`,
@@ -174,16 +171,7 @@ export const en = {
       'out-of-range': 'This file is damaged: it addresses data outside a GR-55 patch.',
     },
     slotsTitle: 'User patches in the pedal',
-    slotsIntro:
-      'Load a user patch to edit it, or save the patch you are editing into a slot. Saving is the only action here that changes what is stored in the pedal.',
-    readNames: 'Read patch names',
-    readingNames: (done: number, total: number) => `Reading names… ${done}/${total}`,
     stop: 'Stop',
-    load: 'Load',
-    write: 'Save here',
-    notRead: '—',
-    confirmWrite: (slot: string, current: string | undefined, name: string) =>
-      `Overwrite user patch ${slot}${current ? ` (“${current}”)` : ''} with “${name}”? The patch stored there now is lost.`,
     written: (slot: string) => `Saved to user patch ${slot}.`,
   },
   library: {
@@ -191,21 +179,16 @@ export const en = {
     intro:
       'Every patch stored in the pedal. Try one with a single click, open it in the editor, or save the patch you are working on into a slot.',
     workingCopy: 'Working copy',
-    workingCopyIntro:
-      'The patch the pedal is sounding right now. The pedal throws it away when it switches patches.',
     openInEditor: 'Open',
     changes: (count: number) => (count === 1 ? '1 unsaved change' : `${count} unsaved changes`),
-    noChanges: 'No unsaved changes',
     test: 'Test',
     writeTo: 'Save to…',
-    namesTitle: 'Slot names',
     backupTitle: 'Whole-pedal backup',
     backupIntro:
-      'Save every slot in the pedal to a file, or put a saved backup back into the pedal. Both keep the pedal busy for a while; names first if you just want an inventory.',
+      'Save every slot in the pedal to a file, or put a saved backup back into the pedal. Restoring keeps the pedal busy for a while, and is silent while it saves.',
     backup: 'Save a backup of every slot…',
     backupProgress: (done: number, total: number) => `Backing up… ${done}/${total} slots`,
     backupDone: (file: string) => `Backup saved as ${file}.`,
-    backupWriteTitle: 'Restore a slot backup',
     backupWrite: 'Put a slot backup back…',
     backupRestoring: (done: number, total: number) => `Restoring… ${done}/${total} slots`,
     backupRestored: 'The backup is back in the pedal.',
@@ -219,10 +202,7 @@ export const en = {
     diffConfirm: 'Save into the slot',
     choosing: 'Choose a slot',
     writing: 'Saving to the pedal — do not step on the pedals…',
-    written: (slot: string) => `Slot ${slot} now holds this patch.`,
     tested: (slot: string) => `${slot} is sounding now.`,
-    emptySlot: '(empty)',
-    memory: (slot: string) => `Slot ${slot}`,
   },
   stage: {
     title: 'Stage',
@@ -439,7 +419,6 @@ export const en = {
       `${count === 1 ? 'It affects' : 'They affect'} every patch.\n\n${list}`,
     applied: (count: number) =>
       count === 1 ? '1 change applied to the pedal.' : `${count} changes applied to the pedal.`,
-    blockedOnStage: 'Close the Stage before changing pedal-wide settings.',
     fields: {
       activeGkSet: 'GK set in use',
       outputSelect: 'The pedal’s output goes to',

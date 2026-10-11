@@ -1,4 +1,5 @@
 /** The routes the GR-55 owns, under /gr55. The Stage is the root once the pedal is set up. */
+export const connectRoute = 'conectar';
 export const setupRoute = 'configurar';
 export const stageRoute = 'palco';
 export const setlistRoute = 'agenda';

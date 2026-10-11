@@ -1443,3 +1443,8 @@ a.device-card:hover {
 .wizard-step progress {
   width: 100%;
 }
+
+/* The library: room at the sides, and at the bottom for the corner seals. */
+.library {
+  padding: 1rem 1.25rem 5rem;
+}

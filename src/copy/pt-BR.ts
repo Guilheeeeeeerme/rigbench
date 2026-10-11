@@ -56,7 +56,6 @@ export const ptBR: typeof en = {
       'Nada respondeu nestas portas. Confira se o pedal está ligado e se as duas portas são dele.',
     wrongDevice: 'O dispositivo nestas portas respondeu, mas não é um GR-55.',
     simulate: 'Usar um pedal simulado',
-    simulatedPort: 'GR-55 simulado',
     disconnect: 'Desconectar',
     lost: 'A conexão com o pedal falhou.',
   },
@@ -75,7 +74,6 @@ export const ptBR: typeof en = {
       workingCopyHint:
         'Este é o patch que o pedal está tocando agora. Ele só existe enquanto este patch está selecionado: o pedal o descarta quando você troca de patch.',
       savedSlot: 'Slot gravado',
-      savedSlotHint: 'Gravado no pedal. Fica lá até você gravar outra coisa no lugar.',
       pedal: 'Sistema',
       pedalHint: 'Ajuste de sistema, do pedal inteiro. O mesmo para todos os patches.',
       noUnsavedChanges: 'Nenhuma alteração não gravada',
@@ -91,7 +89,6 @@ export const ptBR: typeof en = {
     },
     mode: { GUITAR: 'Modo guitarra', BASS: 'Modo baixo' },
     unnamed: '(sem nome)',
-    librarian: 'Bibliotecário',
     showAllEffects: 'Mostrar os parâmetros de todos os tipos de efeito',
     unknownValue: (hex: string) => `Valor desconhecido (${hex})`,
     error: (message: string) =>
@@ -177,16 +174,7 @@ export const ptBR: typeof en = {
         'Este arquivo está danificado: ele aponta para dados fora de um patch de GR-55.',
     },
     slotsTitle: 'Patches de usuário no pedal',
-    slotsIntro:
-      'Carregue um patch de usuário para editá-lo, ou grave o patch que você está editando em um slot. Gravar é a única ação aqui que muda o que está guardado no pedal.',
-    readNames: 'Ler nomes dos patches',
-    readingNames: (done: number, total: number) => `Lendo nomes… ${done}/${total}`,
     stop: 'Parar',
-    load: 'Carregar',
-    write: 'Gravar aqui',
-    notRead: '—',
-    confirmWrite: (slot: string, current: string | undefined, name: string) =>
-      `Sobrescrever o patch de usuário ${slot}${current ? ` (“${current}”)` : ''} com “${name}”? O patch gravado lá hoje se perde.`,
     written: (slot: string) => `Gravado no patch de usuário ${slot}.`,
   },
   library: {
@@ -194,21 +182,16 @@ export const ptBR: typeof en = {
     intro:
       'Todos os patches gravados no pedal. Teste um com um clique, abra-o no editor ou grave em um slot o patch em que você está trabalhando.',
     workingCopy: 'Cópia de trabalho',
-    workingCopyIntro:
-      'O patch que o pedal está tocando agora. O pedal o descarta quando troca de patch.',
     openInEditor: 'Abrir',
     changes: (count: number) => changes(count),
-    noChanges: 'Nenhuma alteração não gravada',
     test: 'Testar',
     writeTo: 'Gravar em…',
-    namesTitle: 'Nomes dos slots',
     backupTitle: 'Backup do pedal inteiro',
     backupIntro:
-      'Salve todos os slots do pedal em um arquivo, ou devolva um backup salvo ao pedal. As duas coisas ocupam o pedal por um tempo; leia só os nomes se você quer apenas um inventário.',
+      'Salve todos os slots do pedal em um arquivo, ou devolva um backup salvo ao pedal. Restaurar ocupa o pedal por um tempo, e ele fica mudo enquanto grava.',
     backup: 'Salvar um backup de todos os slots…',
     backupProgress: (done: number, total: number) => `Fazendo backup… ${done}/${total} slots`,
     backupDone: (file: string) => `Backup salvo como ${file}.`,
-    backupWriteTitle: 'Restaurar um backup de slots',
     backupWrite: 'Devolver um backup de slots…',
     backupRestoring: (done: number, total: number) => `Restaurando… ${done}/${total} slots`,
     backupRestored: 'O backup está de volta no pedal.',
@@ -222,10 +205,7 @@ export const ptBR: typeof en = {
     diffConfirm: 'Gravar no slot',
     choosing: 'Escolha um slot',
     writing: 'Gravando no pedal — não pise nos pedais…',
-    written: (slot: string) => `O slot ${slot} agora guarda este patch.`,
     tested: (slot: string) => `${slot} está tocando agora.`,
-    emptySlot: '(vazio)',
-    memory: (slot: string) => `Slot ${slot}`,
   },
   stage: {
     title: 'Palco',
@@ -440,7 +420,6 @@ export const ptBR: typeof en = {
       `${count === 1 ? 'Ela afeta' : 'Elas afetam'} todos os patches.\n\n${list}`,
     applied: (count: number) =>
       count === 1 ? '1 mudança aplicada no pedal.' : `${count} mudanças aplicadas no pedal.`,
-    blockedOnStage: 'Feche o Palco antes de mudar ajustes de sistema.',
     fields: {
       activeGkSet: 'GK set em uso',
       outputSelect: 'A saída do pedal vai para',

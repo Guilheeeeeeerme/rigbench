@@ -275,7 +275,7 @@ export function Library({
     });
 
   return (
-    <>
+    <div className="library">
       <div className="library-head">
         <TopNav current="library" />
         <h1>{t('library.title')}</h1>
@@ -414,6 +414,6 @@ export function Library({
           }}
         />
       )}
-    </>
+    </div>
   );
 }

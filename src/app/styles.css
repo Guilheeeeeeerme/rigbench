@@ -683,16 +683,17 @@ a.device-card:hover {
   letter-spacing: 0.08em;
 }
 
-/* Connected app shell: Exit · Patch | Global · snapshot. */
+/* Connected app shell: viewport-locked; chat scrolls internally. */
 .app-shell {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
 
 .app-shell-bar {
-  position: sticky;
-  top: 0;
+  flex: 0 0 auto;
   z-index: 50;
   display: flex;
   flex-wrap: wrap;
@@ -711,27 +712,65 @@ a.device-card:hover {
 .app-shell-actions {
   margin-left: auto;
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
 }
 
-.app-shell-body {
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(18rem, 1fr) minmax(22rem, 1.4fr);
-  min-height: 0;
+.app-shell-error {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
 }
 
-@media (max-width: 900px) {
-  .app-shell-body {
-    grid-template-columns: 1fr;
-  }
+.app-shell-body {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: var(--app-chat-width, 360px) 6px minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-shell-body.chat-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.app-shell-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+body.app-shell-resizing iframe {
+  pointer-events: none;
+}
+
+.app-split-handle {
+  grid-column: 2;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-left: 1px solid var(--border-default);
+  border-right: 1px solid var(--border-default);
+  background: var(--surface-raised);
+  cursor: col-resize;
+}
+
+.app-split-handle:hover,
+.app-split-handle:focus-visible {
+  background: color-mix(in srgb, var(--accent) 28%, var(--surface-raised));
 }
 
 .app-maestro {
-  min-height: 24rem;
-  border-right: 1px solid var(--border-default);
+  grid-column: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-maestro .maestro-pane {
@@ -741,15 +780,67 @@ a.device-card:hover {
   max-width: none;
   height: 100%;
   border: none;
+  border-left: none;
   border-radius: 0;
   animation: none;
   box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-maestro .maestro-drawer-head,
+.app-maestro .maestro-banner,
+.app-maestro .maestro-needs-key {
+  flex: 0 0 auto;
+}
+
+.app-maestro .maestro-messages {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.app-maestro .maestro-composer {
+  flex: 0 0 auto;
+  background: var(--surface);
 }
 
 .app-main {
+  grid-column: 3;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
   padding: var(--space-4);
   overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.app-shell-body.chat-collapsed .app-main {
+  grid-column: 1;
+}
+
+@media (max-width: 900px) {
+  .app-shell-body:not(.chat-collapsed) {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(14rem, 42%) minmax(0, 1fr);
+  }
+
+  .app-maestro {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .app-split-handle {
+    display: none;
+  }
+
+  .app-main {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 .app-page-header {

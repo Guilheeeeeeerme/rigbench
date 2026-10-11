@@ -66,9 +66,14 @@ export const ptBR: typeof en = {
       placeholder: 'Encontre qualquer parâmetro deste patch…',
     },
     navConfig: 'Global',
-    navStage: 'Patch',
-    navPatch: 'Patch',
+    navStage: 'Banco',
+    navPatch: 'Banco',
+    navBank: 'Banco',
     navGlobal: 'Global',
+    bankHere: 'Aqui',
+    bankPedals: 'CTL e expression',
+    bankChatHint:
+      'O chat nesta página pode ajustar tudo deste banco — as três teclas, CTL, expression e o patch que está soando.',
     navLibrary: 'Slots e arquivos',
     navDevice: 'Configuração',
     navGk: 'GK sets',
@@ -82,6 +87,9 @@ export const ptBR: typeof en = {
     authorityPedal: 'Espelhando o pedal',
     patchSlot: 'Slot do patch',
     patchSlotUnknown: 'Desconhecido / não é slot de usuário',
+    chatCollapse: 'Ocultar chat',
+    chatExpand: 'Mostrar chat',
+    chatResize: 'Redimensionar o painel do chat',
     workspace: {
       workingCopy: 'Cópia de trabalho',
       workingCopyHint:

@@ -47,9 +47,9 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 | --- | --- | --- |
 | **Home** | `#/` | Pick GR-55 or a placeholder |
 | **Connect** | `#/gr55/conectar` | MIDI ports; silent resume when remembered ports still valid |
-| **Patch** | `#/gr55/patch` | Current-patch parameters + Maestro (patch scope) |
+| **Bank** | `#/gr55/bank` | Three-key bank, CTL/EXP, instruments + chain; Maestro scopes the bank set |
 | **Global** | `#/gr55/global` | SYSTEM / GK + Maestro (system scope) |
 
-Legacy addresses redirect into Patch or Global. `pages.ts` remains field-key SoT for Maestro.
+Legacy addresses redirect into Bank or Global. `pages.ts` remains field-key SoT for Maestro.
 
 Macro / session taxonomy (System · Patch · Library) for Maestro craft: [studio-sessions.md](./studio-sessions.md).

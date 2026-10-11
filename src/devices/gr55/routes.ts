@@ -1,15 +1,17 @@
-/** GR-55 routes under /gr55. Surfaces: Connect · Patch · Global. */
+/** GR-55 routes under /gr55. Surfaces: Connect · Bank · Global. */
 export const connectRoute = 'conectar';
-export const patchRoute = 'patch';
+export const bankRoute = 'bank';
 export const globalRoute = 'global';
 
-/** @deprecated Legacy Stage address — redirects to Patch. */
-export const stageRoute = patchRoute;
-/** @deprecated Legacy Studio address — redirects to Patch. */
+/** @deprecated Use bankRoute. */
+export const patchRoute = bankRoute;
+/** @deprecated Legacy Stage address — redirects to Bank. */
+export const stageRoute = bankRoute;
+/** @deprecated Legacy Studio address — redirects to Bank. */
 export const studioRoute = 'estudio';
 /** @deprecated Legacy Setup address — redirects to Global. */
 export const configRoute = 'configuracao';
-/** @deprecated Legacy Maestro address — redirects to Patch. */
+/** @deprecated Legacy Maestro address — redirects to Bank. */
 export const maestroRoute = 'maestro';
 /** @deprecated Legacy wizard — redirects to Connect. */
 export const setupRoute = 'configurar';
@@ -20,14 +22,16 @@ export const gkRoute = 'dispositivo/gk';
 
 const base = '/gr55';
 export const connectHref = `${base}/${connectRoute}`;
-export const patchHref = `${base}/${patchRoute}`;
+export const bankHref = `${base}/${bankRoute}`;
 export const globalHref = `${base}/${globalRoute}`;
-/** @deprecated Use patchHref. */
-export const stageHref = patchHref;
+/** @deprecated Use bankHref. */
+export const patchHref = bankHref;
+/** @deprecated Use bankHref. */
+export const stageHref = bankHref;
 /** @deprecated Use globalHref. */
 export const configHref = globalHref;
-/** @deprecated Use patchHref. */
-export const maestroHref = patchHref;
+/** @deprecated Use bankHref. */
+export const maestroHref = bankHref;
 /** @deprecated Use globalHref. */
 export const deviceHref = globalHref;
 /** @deprecated Use globalHref. */
@@ -36,7 +40,7 @@ export const gkHref = globalHref;
 export const setupHref = connectHref;
 
 /** Child routes restored after silent reconnect. */
-export const RESUMABLE_ROUTES = [patchRoute, globalRoute] as const;
+export const RESUMABLE_ROUTES = [bankRoute, globalRoute] as const;
 
 export type ResumableRoute = (typeof RESUMABLE_ROUTES)[number];
 
@@ -50,10 +54,10 @@ export function childRouteOfPath(pathname: string): string {
   return parts[0] ?? '';
 }
 
-/** Map legacy first segments onto Patch or Global. */
+/** Map legacy first segments onto Bank or Global. */
 export function normalizeAppRoute(child: string): ResumableRoute {
   if (child === globalRoute || child === configRoute || child === 'dispositivo') {
     return globalRoute;
   }
-  return patchRoute;
+  return bankRoute;
 }

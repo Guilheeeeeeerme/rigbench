@@ -12,9 +12,9 @@ After any IA, connect, route, or surface change: **audit this folder + [AGENTS.m
 | [glossary.md](./glossary.md) | Scope chips, personas, surface names | **SoT** for UI terminology |
 | [recipes.md](./recipes.md) | How to change fields, macros, copy, tests | How-to |
 | [maestro-architecture.md](./maestro-architecture.md) | Maestro registry, policy, Gemini BYOK | **SoT** for Maestro internals |
-| [studio-sessions.md](./studio-sessions.md) | Session taxonomy + macros (System/Patch) | Craft/macros — page scope = Patch\|Global |
-| [mobile-live-control.md](./mobile-live-control.md) | Mobile vision | Vision only; does not redefine Patch/Global |
+| [studio-sessions.md](./studio-sessions.md) | Session taxonomy + macros (System/Patch) | Craft/macros — page scope = Bank\|Global |
+| [mobile-live-control.md](./mobile-live-control.md) | Mobile vision | Vision only; does not redefine Bank/Global |
 
-App navigation and home surface: **[AGENTS.md](../../AGENTS.md)** (Home → Connect → Patch \| Global).
+App navigation and home surface: **[AGENTS.md](../../AGENTS.md)** (Home → Connect → Bank \| Global).
 
 Roland manuals (PDFs): [../manuals/](../manuals/).

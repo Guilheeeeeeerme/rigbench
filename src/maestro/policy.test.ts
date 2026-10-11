@@ -29,8 +29,20 @@ const systemish: RegistryEntry = {
 
 describe('policy.decide', () => {
   it.each([
-    ['changePlan working-copy', working, 'changePlan' as const, { stageLive: false }, 'allow'],
-    ['loadSlot asks', null, 'loadSlot' as const, { stageLive: false }, 'ask'],
+    [
+      'changePlan working-copy on bank',
+      working,
+      'changePlan' as const,
+      { stageLive: false, session: 'bank' as const },
+      'allow',
+    ],
+    [
+      'loadSlot asks on bank',
+      null,
+      'loadSlot' as const,
+      { stageLive: false, session: 'bank' as const },
+      'ask',
+    ],
     ['system scope denied', systemish, 'changePlan' as const, { stageLive: false }, 'deny'],
     ['writeSlot denied', null, 'writeSlot' as const, { stageLive: false }, 'deny'],
     [
@@ -41,10 +53,10 @@ describe('policy.decide', () => {
       'allow',
     ],
     [
-      'writeSystem denied on patch',
+      'writeSystem denied on bank',
       null,
       'writeSystem' as const,
-      { stageLive: false, session: 'patch' as const },
+      { stageLive: false, session: 'bank' as const },
       'deny',
     ],
     ['factoryReset denied', null, 'factoryReset' as const, { stageLive: false }, 'deny'],
@@ -57,10 +69,10 @@ describe('policy.decide', () => {
       'allow',
     ],
     [
-      'stageSystemPlan denied in patch',
+      'stageSystemPlan denied on bank',
       null,
       'stageSystemPlan' as const,
-      { stageLive: false, session: 'patch' as const },
+      { stageLive: false, session: 'bank' as const },
       'deny',
     ],
     [
@@ -71,7 +83,7 @@ describe('policy.decide', () => {
       'deny',
     ],
     [
-      'loadSlot denied in patch session',
+      'loadSlot denied without bank/library session',
       null,
       'loadSlot' as const,
       { stageLive: false, session: 'patch' as const },

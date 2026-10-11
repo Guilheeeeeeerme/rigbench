@@ -11,7 +11,7 @@ The UI is a dark Linear-inspired shell (Inter, indigo accent) — see
 
 | Device       | Status                                             |
 | ------------ | -------------------------------------------------- |
-| Roland GR-55 | Home → Connect → Patch \| Global (WIP); silent MIDI resume |
+| Roland GR-55 | Home → Connect → Bank \| Global (WIP); silent MIDI resume |
 | Roland VG-99 | Coming soon                                        |
 | BOSS GT-10   | Coming soon                                        |
 
@@ -20,16 +20,18 @@ Contributors and coding agents: start at [AGENTS.md](./AGENTS.md) and [docs/](./
 ## GR-55 (WIP)
 
 ```
-Home → Connect (resumes when ports still work) → Patch | Global
-         Maestro chat (left) · parameters (right)
+Home → Connect (resumes when ports still work) → Bank | Global
+         Maestro chat (left) · bank / global UI (right)
          Exit purges connection memory → Home
 ```
 
 - **Home.** Pick GR-55 (or a placeholder device).
 - **Connect.** Remembers MIDI ports only (not pedal settings). Silent resume when those ports
   still answer as a GR-55. DEV: simulated pedal.
-- **Patch** (`#/gr55/patch`). All current-patch parameters. Maestro acts on the patch only.
-  Writes go to the temporary working copy immediately, then the app re-reads a full snapshot.
+- **Bank** (`#/gr55/bank`). Where you are (`USER xx-y`), the three keys of the bank (instrument
+  icons), CTL / expression, mixer and chain. Maestro on this page can configure the whole bank
+  set — not only the sounding key. Writes go to the temporary working copy immediately, then a
+  full snapshot.
 - **Global** (`#/gr55/global`). SYSTEM / GK settings. Maestro acts on global only. Same
   immediate-write + snapshot rule (no staging / Apply bar).
 - **Authority.** While you edit, the app ignores pedal churn; when idle, it mirrors the pedal
@@ -45,18 +47,16 @@ Every control carries a chip that says what it changes: 🟠 the working copy, �
 Maestro talks to Google Gemini (`gemini-3.6-flash`) with **your** API key. Rigbench never ships a
 key and never puts one in the repository, `.env`, logs, or fixtures.
 
-- **Open.** From the Maestro nav item (`#/gr55/maestro`), or `Ctrl`/`⌘`+`M` where the host
-  exposes a drawer. `Esc` closes the drawer when it is a drawer.
+- **Open.** Chat pane on Bank or Global (collapsible). Legacy `#/gr55/maestro` redirects to Bank.
 - **Storage.** The key lives in `sessionStorage` by default. Opt in to “Remember on this device”
   to keep it in `localStorage`. Use **Forget** to clear both. Use **Test** to ping Gemini without
   sending patch data.
 - **Privacy / rotation.** In Google AI Studio, restrict the key by HTTP referrer to this app’s
   origin, set a budget cap, and rotate the key if it was ever exposed.
-- **What it can do.** Propose edits to orange temporary-patch fields (you apply them), stage
-  blue system changes into the same Apply confirmation as Device, explain controls, and ask to
-  load a user slot (you confirm). Voice input (Chrome/Edge) fills the draft only — it never
-  auto-sends.
-- **What it cannot do.** Auto-apply, write slots directly, or edit while Stage is open.
+- **What it can do.** On Bank: edit orange temporary-patch fields and ask to switch keys across
+  the bank set (you confirm). On Global: write blue system fields. Voice input (Chrome/Edge)
+  fills the draft only — it never auto-sends.
+- **What it cannot do.** Auto-apply without policy, or write USER slots directly.
 
 `npm run check:secrets` scans the tree for Gemini/Google key-shaped strings.
 

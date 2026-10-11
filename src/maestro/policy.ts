@@ -16,16 +16,15 @@ export interface PolicyContext {
   route?: string;
   /** @deprecated Always false in the two-page app; kept for call-site compatibility. */
   stageLive: boolean;
-  /** Active page scope: patch | system. */
+  /** Active page scope: bank | system. */
   session?: SessionId;
 }
 
 /**
  * What Maestro may do. Deny is final.
  *
- * Patch page: working-copy field edits only.
- * Global page: system macros / stageSystemPlan path (immediate write via system host).
- * Never writeSlot / factoryReset.
+ * Bank page: working-copy field edits + ask to switch any patch (whole bank set).
+ * Global page: system immediate writes.
  */
 export function decide(
   entry: RegistryEntry | null,
@@ -35,21 +34,19 @@ export function decide(
   if (action === 'writeSlot' || action === 'factoryReset') {
     return 'deny';
   }
-  // Direct SYSTEM DT1 is allowed on the Global page (immediate apply + snapshot).
-  if (action === 'writeSystem') {
-    return ctx.session === 'system' ? 'allow' : 'deny';
-  }
-  if (action === 'stageSystemPlan') {
+  if (action === 'writeSystem' || action === 'stageSystemPlan') {
     return ctx.session === 'system' ? 'allow' : 'deny';
   }
   if (action === 'loadSlot') {
-    if (ctx.session === 'system' || ctx.session === 'patch') return 'deny';
-    return 'ask';
+    // Bank chat may move across the three keys (and other slots) with confirm.
+    if (ctx.session === 'bank' || ctx.session === 'library') return 'ask';
+    return 'deny';
   }
   if (action === 'changePlan') {
     if (ctx.session === 'system' || ctx.session === 'library') return 'deny';
     if (!entry) return 'deny';
     if (scopeOf(entry.ref.address) !== 'working-copy') return 'deny';
+    // bank and patch both edit the sounding temporary patch.
     return 'allow';
   }
   return 'deny';

@@ -35,7 +35,8 @@ function applySystemWrite(
   targets: ApplyTargets,
 ): 'ok' | 'denied' | 'missing' {
   if (!targets.system) return 'missing';
-  if (decide(null, 'stageSystemPlan', targets.policy) !== 'ask') return 'denied';
+  // Immediate DT1 on Global — no staging layer.
+  if (decide(null, 'writeSystem', targets.policy) !== 'allow') return 'denied';
   const field = resolveSystemRef(targets.system, write.ref);
   if (!field) return 'missing';
   targets.system.write(field, write.value as never);
@@ -43,8 +44,7 @@ function applySystemWrite(
 }
 
 /**
- * Applies one macro option. Patch writes go through `editor.write` (🟠 immediate).
- * System writes stage on `Gr55System` (🔵); caller shows ApplyBar confirm.
+ * Applies one macro option. Patch and system writes go through immediately (DT1).
  * Library filter updates UI state only.
  */
 export function applyMacroOption(
@@ -76,7 +76,7 @@ export function applyMacroOption(
       const result = applySystemWrite(write, targets);
       if (result === 'denied') return { ok: false, reason: 'denied' };
       if (result === 'missing') return { ok: false, reason: 'missing-field' };
-      staged += 1;
+      wrote += 1;
     } else if (write.domain === 'library') {
       filter = write.style;
       targets.onLibraryFilter?.(write.style);

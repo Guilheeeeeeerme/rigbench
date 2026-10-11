@@ -8,8 +8,9 @@
 ## Product rule
 
 If remembered MIDI ports still exist and identify as a GR-55, **reconnect silently** and land on
-the **last app page** (`patch` or `global`). Prompt only when permission, ports, device identity,
-or the connect handshake fails.
+the **last app page** (`bank` or `global`). Prompt only when permission, ports, device identity,
+or the connect handshake fails. Legacy persisted `lastRoute` values (e.g. `patch`) normalize to
+Bank or Global.
 
 On a successful connect the app reads a **full snapshot**: system + temporary patch + patch
 location. The UI shows that snapshot. Pedal configuration is **never** stored in localStorage.
@@ -21,7 +22,7 @@ location. The UI shows that snapshot. Pedal configuration is **never** stored in
 
 | Layer | Owns | Persist? |
 | --- | --- | --- |
-| Redux `sessionPrefs` | `rememberedPorts`, `lastRoute` (`patch`\|`global`), DEV `preferSimulated` | Yes (`redux-persist`, key `rigbench.redux`) |
+| Redux `sessionPrefs` | `rememberedPorts`, `lastRoute` (`bank`\|`global`), DEV `preferSimulated` | Yes (`redux-persist`, key `rigbench.redux`) |
 | Redux `connection` | phase, progress, port lists, selection, problems | No |
 | `connectionRuntime` | `MIDIAccess`, live `MidiSession` / `Gr55Editor` / `Gr55System` | No (in-memory) |
 
@@ -40,7 +41,7 @@ Open /gr55/*
        no remembered ports → needsPrompt (ConnectScreen)
        ports missing from MIDIAccess → clear prefs, needsPrompt
        ports present → identify → readSystem → readPatch → readPatchLocation
-                    → phase connected → restore lastRoute or patch
+                    → phase connected → restore lastRoute or bank
 Exit → disconnect + purge connection prefs → Home
 ```
 

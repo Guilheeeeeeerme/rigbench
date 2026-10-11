@@ -1,5 +1,5 @@
 import { SCALE_BASE_MM } from '../../devices/gr55/systemMap';
-import type { SessionId } from '../session';
+import { macroSessionOf, type SessionId } from '../session';
 import type { MacroGroup, MacroOption, PatchWrite, SystemWrite } from './types';
 
 const p = (key: string, value: unknown): PatchWrite => ({ domain: 'patch', key, value });
@@ -764,7 +764,8 @@ export const MACRO_GROUPS: readonly MacroGroup[] = [
 ];
 
 export function groupsForSession(session: SessionId): MacroGroup[] {
-  return MACRO_GROUPS.filter((group) => group.session === session);
+  const key = macroSessionOf(session);
+  return MACRO_GROUPS.filter((group) => group.session === key);
 }
 
 export function findGroup(id: string): MacroGroup | undefined {

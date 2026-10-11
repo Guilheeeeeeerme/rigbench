@@ -1,6 +1,6 @@
 # GR-55 configuration scope report
 
-**Status:** Live taxonomy SoT for Patch vs Global (WIP two-page app).  
+**Status:** Live taxonomy SoT for SYSTEM vs patch memory. App surfaces: Bank \| Global (see AGENTS.md).  
 **Date:** 2026-10-11  
 **Primary source:** Roland GR-55 Owner’s Manual EN (`docs/manuals/GR-55_OM.pdf`), Parameter List SYSTEM pp.74–80, MASTER pp.54–59, TONE pp.25–37, EFFECT pp.38–53.  
 **Also used:** `GR-55_PT.pdf` (PT OM), online Roland PDFs + VGuitar Forums; `src/devices/gr55/systemMap.ts` as app cross-check only.

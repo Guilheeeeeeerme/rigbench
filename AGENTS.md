@@ -21,22 +21,22 @@ EN + PT-BR via `src/copy/`.
 ```
 Home (GR-55 + placeholders)
   → Connect (silent resume if ports still valid; else prompt)
-  → App: Patch | Global
-       Maestro chat (left) · full parameter UI (right)
+  → App: Bank | Global
+       Maestro chat (left) · bank / global UI (right)
        Exit (top-left) purges connection prefs → Home
 ```
 
 Connect / resume: [docs/current/connection-resume.md](./docs/current/connection-resume.md).  
-Config scope (global vs patch): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
+Config scope (global vs patch memory): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
 | Route | Role |
 | --- | --- |
 | `#/` | **Home** — pick GR-55 or a placeholder device |
 | `#/gr55/conectar` | **Connect** — MIDI ports / simulated pedal |
-| `#/gr55/patch` | **Patch** — all current-patch parameters + Maestro (patch scope only) |
+| `#/gr55/bank` | **Bank** — here (USER xx-y), three keys with instrument icons, CTL/expression, mixer + chain; Maestro scopes the whole bank set |
 | `#/gr55/global` | **Global** — SYSTEM / GK + Maestro (system scope only) |
 
-Legacy hashes (`palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …) redirect into Patch or Global.
+Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …) redirect into Bank or Global.
 
 ### Authority model
 
@@ -45,7 +45,7 @@ Legacy hashes (`palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …
 - When idle → **mirror the pedal** (remote DT1 / program change).
 - Explicit **Request snapshot** control.
 - Slot WRITE (save to USER) is out of this WIP cut.
-- localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` Patch|Global). Never pedal field values.
+- localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` Bank|Global). Never pedal field values.
 
 ## Hard rules
 
@@ -53,7 +53,7 @@ Legacy hashes (`palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …
 - **No GPL FloorBoard** material (text, XML, skins) in the repo. Address facts only; MIT fork CASouthEast is the system-map reference (see README credits).
 - **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
 - **Writes**: patch and system parameters DT1 immediately; then full snapshot. No ApplyBar / staging.
-- **Maestro**: BYOK Gemini only; never commit API keys or put them in `.env`/fixtures/logs. Model never sees raw SysEx addresses. Policy SoT: `src/maestro/policy.ts`. Scoped by page (patch vs system).
+- **Maestro**: BYOK Gemini only; never commit API keys or put them in `.env`/fixtures/logs. Model never sees raw SysEx addresses. Policy SoT: `src/maestro/policy.ts`. Scoped by page (bank vs system). On Bank, chat may edit the sounding working copy and ask to switch any key in the bank set.
 - **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
 - Prefer targeted reads and the smallest sufficient change. Do not run broad refactors or the full test matrix unless asked.
 
@@ -63,7 +63,8 @@ Legacy hashes (`palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …
 | --- | --- |
 | App Redux store (connection resume) | `src/app/store/**` |
 | Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
-| GR-55 shell / pages | `Gr55Screen.tsx`, `AppShell.tsx`, `PatchPage.tsx`, `GlobalPage.tsx`, `ConnectScreen.tsx` |
+| GR-55 shell / pages | `Gr55Screen.tsx`, `AppShell.tsx`, `BankPage.tsx`, `GlobalPage.tsx`, `ConnectScreen.tsx` |
+| Icons / voices | `Icons.tsx`, `voices.ts` |
 | Authority + snapshot | `sessionAuthority.ts`, `snapshotHost.ts` |
 | Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |
 | System map / immediate system writes | `systemMap.ts`, `systemState.ts` |

@@ -61,9 +61,14 @@ export const en = {
       placeholder: 'Find any parameter of this patch…',
     },
     navConfig: 'Global',
-    navStage: 'Patch',
-    navPatch: 'Patch',
+    navStage: 'Bank',
+    navPatch: 'Bank',
+    navBank: 'Bank',
     navGlobal: 'Global',
+    bankHere: 'Here',
+    bankPedals: 'CTL and expression',
+    bankChatHint:
+      'Chat on this page can set anything in this bank — the three keys, CTL, expression, and the sounding patch.',
     navLibrary: 'Slots & files',
     navDevice: 'Configuration',
     navGk: 'GK sets',
@@ -77,6 +82,9 @@ export const en = {
     authorityPedal: 'Mirroring the pedal',
     patchSlot: 'Patch slot',
     patchSlotUnknown: 'Unknown / not a user slot',
+    chatCollapse: 'Hide chat',
+    chatExpand: 'Show chat',
+    chatResize: 'Resize chat panel',
     workspace: {
       /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
       workingCopy: 'Working copy',

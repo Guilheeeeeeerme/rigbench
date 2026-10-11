@@ -2,7 +2,7 @@
 
 - Precedence: **code** → `AGENTS.md` + `docs/current/` → `README.md` → `docs/archive/` (never overrides).
 - Ignore `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
-- App after connect: **Patch** (`#/gr55/patch`) · **Global** (`#/gr55/global`). Home + Connect only otherwise.
+- App after connect: **Bank** (`#/gr55/bank`) · **Global** (`#/gr55/global`). Home + Connect only otherwise.
 - Connect/resume/Exit SoT: `docs/current/connection-resume.md` (persist ports only; Exit purges).
 - Authority: app write → DT1 → full snapshot; idle → mirror pedal (`sessionAuthority.ts`).
 - Do not rewrite `src/protocol/**` or `src/midi/**` unless the task explicitly requires it.

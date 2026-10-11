@@ -6,13 +6,13 @@ import { setPhase } from '../../app/store/slices/connectionSlice';
 import { setLastRoute } from '../../app/store/slices/sessionPrefsSlice';
 import { AppShell } from './AppShell';
 import {
+  bankHref,
+  bankRoute,
   childRouteOfPath,
   connectRoute,
   globalRoute,
   isResumableRoute,
   normalizeAppRoute,
-  patchHref,
-  patchRoute,
 } from './routes';
 import { SystemProvider } from './SystemParts';
 import { ConnectScreen } from './ConnectScreen';
@@ -25,7 +25,7 @@ import { resumeIfPossible } from './connectionThunks';
 
 /**
  * GR-55 shell: silent resume when remembered ports still work, otherwise Connect.
- * Connected app is Patch | Global only.
+ * Connected app is Bank | Global only.
  */
 export default function Gr55Screen() {
   const t = useT();
@@ -62,7 +62,9 @@ export default function Gr55Screen() {
   const { editor, system } = live;
   const resumeTarget = isResumableRoute(lastRoute)
     ? lastRoute
-    : normalizeAppRoute(childRouteOfPath(location.pathname));
+    : lastRoute
+      ? normalizeAppRoute(lastRoute)
+      : normalizeAppRoute(childRouteOfPath(location.pathname));
 
   return (
     <ConnectionProvider value={live}>
@@ -70,13 +72,14 @@ export default function Gr55Screen() {
         <Routes>
           <Route index element={<Navigate to={resumeTarget} replace />} />
           <Route path={connectRoute} element={<Navigate to={`../${resumeTarget}`} replace />} />
-          <Route path={patchRoute} element={<AppShell editor={editor} page="patch" />} />
+          <Route path={bankRoute} element={<AppShell editor={editor} page="bank" />} />
           <Route path={globalRoute} element={<AppShell editor={editor} page="global" />} />
-          {/* Legacy addresses → Patch or Global */}
-          <Route path="palco" element={<Navigate to={`../${patchRoute}`} replace />} />
-          <Route path="estudio" element={<Navigate to={`../${patchRoute}`} replace />} />
-          <Route path="maestro" element={<Navigate to={`../${patchRoute}`} replace />} />
-          <Route path="editor/*" element={<Navigate to={`../${patchRoute}`} replace />} />
+          {/* Legacy addresses → Bank or Global */}
+          <Route path="patch" element={<Navigate to={`../${bankRoute}`} replace />} />
+          <Route path="palco" element={<Navigate to={`../${bankRoute}`} replace />} />
+          <Route path="estudio" element={<Navigate to={`../${bankRoute}`} replace />} />
+          <Route path="maestro" element={<Navigate to={`../${bankRoute}`} replace />} />
+          <Route path="editor/*" element={<Navigate to={`../${bankRoute}`} replace />} />
           <Route path="configuracao" element={<Navigate to={`../${globalRoute}`} replace />} />
           <Route path="configurar" element={<Navigate to={`../${globalRoute}`} replace />} />
           <Route path="dispositivo/*" element={<Navigate to={`../${globalRoute}`} replace />} />
@@ -88,7 +91,7 @@ export default function Gr55Screen() {
               <main className="gate">
                 <h1>{t('app.notFound')}</h1>
                 <p>
-                  <Link to={patchHref}>{t('gr55.navPatch')}</Link>
+                  <Link to={bankHref}>{t('gr55.navBank')}</Link>
                 </p>
               </main>
             }

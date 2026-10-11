@@ -1,10 +1,11 @@
 # Maestro craft — session-scoped macros
 
 > **Status:** ACTIVE for **session taxonomy + macros only**.
-> **Superseded for app home / top nav:** the live product is **Stage · Maestro · Setup**
-> ([AGENTS.md](../../AGENTS.md)). `#/gr55/estudio` redirects to Stage. Do **not** treat
-> “Studio home” or “TopNav Studio · Stage · ⋯” in older sections of this file as current IA.
-> **SoT for:** System / Patch / Library session model, macro groups, Stage write boundary for craft.
+> **Superseded for app home / top nav:** the live product is **Bank · Global**
+> ([AGENTS.md](../../AGENTS.md)). Bank page session id is `bank`; macros keyed as `patch`
+> apply via `macroSessionOf`. Do **not** treat “Studio home” or “TopNav Studio · Stage · ⋯”
+> in older sections of this file as current IA.
+> **SoT for:** System / Patch / Library session model, macro groups (Bank maps to patch macros).
 > Precedence: code → [AGENTS.md](../../AGENTS.md) → this file (craft sections) → archive.
 > Connect / resume: [connection-resume.md](./connection-resume.md).
 > Grounded in: `docs/manuals/GR-55_OM.pdf` (Owner’s Manual EN),

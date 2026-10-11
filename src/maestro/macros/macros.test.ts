@@ -63,6 +63,7 @@ describe('macro registry scaffold', () => {
   it('lists every session group from the UX doc', () => {
     expect(groupsForSession('system')).toHaveLength(7);
     expect(groupsForSession('patch')).toHaveLength(14);
+    expect(groupsForSession('bank')).toHaveLength(14);
     expect(groupsForSession('library')).toHaveLength(3);
     expect(MACRO_GROUPS).toHaveLength(24);
   });
@@ -111,7 +112,7 @@ describe('applyMacroOption', () => {
     expect(result).toEqual({ ok: false, reason: 'denied' });
   });
 
-  it('stages Speakers onto the system image', () => {
+  it('writes Speakers onto the system image immediately', () => {
     const staged: Record<string, unknown> = {};
     const system = fakeSystem(staged);
     const group = findGroup('speakers')!;
@@ -121,16 +122,16 @@ describe('applyMacroOption', () => {
       index,
       policy: { stageLive: false, session: 'system' },
     });
-    expect(result).toEqual({ ok: true, wrote: 0, staged: 1, filter: undefined });
+    expect(result).toEqual({ ok: true, wrote: 1, staged: 0, filter: undefined });
     expect(staged['common.outputSelect']).toBe('JC-120');
   });
 
-  it('denies system staging from the Patch session', () => {
+  it('denies system writes from the Bank session', () => {
     const group = findGroup('speakers')!;
     const result = applyMacroOption(group, group.options[0], {
       system: fakeSystem({}),
       index,
-      policy: { stageLive: false, session: 'patch' },
+      policy: { stageLive: false, session: 'bank' },
     });
     expect(result).toEqual({ ok: false, reason: 'denied' });
   });

@@ -9,5 +9,7 @@ Living documents. If these disagree with code, **fix the docs** (or the code if 
 | [mobile-live-control.md](./mobile-live-control.md) | Mobile / Stage Live Simplify vision (reconciled; does not rename Maestro) |
 | [glossary.md](./glossary.md) | Scope chips, personas, UI terminology |
 | [recipes.md](./recipes.md) | Add patch/system fields, macros, copy, tests |
+| [ringbench-saas-discovery.md](./ringbench-saas-discovery.md) | Ringbench metered AI SaaS discovery (GCP, wallet, pricing) — **not** Rigbench MIDI IA |
+| [gcp-sandbox-bootstrap.md](./gcp-sandbox-bootstrap.md) | GCP `ringbench-sandbox` bootstrap checklist (no deploy from docs alone) |
 
 Roland manuals (PDFs): [../manuals/](../manuals/).

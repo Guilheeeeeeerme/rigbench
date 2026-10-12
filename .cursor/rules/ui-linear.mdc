@@ -1,0 +1,18 @@
+---
+description: Linear dark UI constraints for Rigbench chrome and layouts
+globs: src/app/**/*.{css,tsx,html}, index.html, src/shell/**/*.{tsx,css}, src/devices/gr55/**/*.{tsx,css}
+alwaysApply: false
+---
+
+# UI — Linear dark
+
+SoT: [docs/current/ui-guidelines.md](../../docs/current/ui-guidelines.md).
+
+- Dark only: `--surface-base` `#080A0A`. No light theme.
+- Font: **Inter** (via `index.html`). Body ~17px.
+- Accent / focus: `#5E6AD2`. Not orange for chrome.
+- Scope chips stay `--scope-working` / `--scope-slot` / `--scope-system`.
+- Radius 6px / 8px; 1px borders; 4px spacing scale (`--space-*`).
+- Focus: 2px outline + 2px offset. Disabled: opacity 0.5.
+- `100dvh`, not `100vh`. No new animation unless asked.
+- Prefer CSS tokens over new hex. Update `ui-guidelines.md` if you add a token.

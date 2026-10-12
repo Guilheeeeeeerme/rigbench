@@ -1,16 +1,17 @@
 # Maestro — architecture reference
 
-> **Status: SHIPPED (v1)** under `src/maestro/**`. This file is the design record
-> for registry / policy / BYOK / prompts — not a “plan only” backlog.
-> **Supersedes for craft UX:** [studio-sessions.md](./studio-sessions.md)
-> (Studio home, session-scoped chat, macros; FAB demoted on Studio).
-> **Policy evolution:** D5 below is historical. Live SoT is `src/maestro/policy.ts`:
-> `changePlan` = 🟠 working-copy only; `stageSystemPlan` = ask (queues into
-> `Gr55System` staging); direct `writeSystem` / `writeSlot` always deny;
-> `stageLive` denies everything.
-> Read-with: [glossary.md](./glossary.md),
-> [../archive/research/00-pesquisa-configuracao-pre-palco.md](../archive/research/00-pesquisa-configuracao-pre-palco.md),
-> [../archive/plans/01-fundacoes.md](../archive/plans/01-fundacoes.md).
+> **Status: SHIPPED (v1)** under `src/maestro/**`. Design record for registry /
+> policy / BYOK / prompts — not a “plan only” backlog.
+> **App shell:** Bank · Global ([AGENTS.md](../../AGENTS.md)). Chat pane on those
+> pages; `#/gr55/maestro` redirects to Bank. Craft macros:
+> [studio-sessions.md](./studio-sessions.md).
+> **Policy:** Live SoT is `src/maestro/policy.ts`. Prompt/manual SoT:
+> `manualCanon.ts` (OM p.55–56 / p.60 + PCM Tone List + registry keys).
+> Solo+guitar recipes: `recipePlan.ts` → select USER slot and apply to the **temporary**
+> patch (await patch-change settle ~1.2s + sequential DT1 + read-back under one app-authority
+> lock). Nothing hits USER memory until the user presses **WRITE**. Three-key bank sets walk
+> keys the same way: temp → test → WRITE → next. `writeSlot` allow on Bank for that button only.
+> Read-with: [glossary.md](./glossary.md), [connection-resume.md](./connection-resume.md).
 
 ---
 
@@ -137,13 +138,12 @@ Plain guards (no new deps). Types:
   (§5.6), then degrades to an explain-only turn.
 
 ### 5.4 `policy.ts`
-- `decide(entry | null, action, ctx {route, stageLive}): 'allow'|'ask'|'deny'`
-  - `allow`: action `changePlan` on entry with scope `working-copy`;
-  - `ask`: action `loadSlot` (drawer shows confirm card with unsaved count);
-  - `deny`: anything whose scope resolves to `system` (defense in depth:
-    registry already excludes it; validator re-checks `scopeOf(address)`);
-  - `deny`: actions `writeSlot`, `writeSystem`, `factoryReset` (not even
-    exposed to the model as vocabulary);
+- `decide(entry | null, action, ctx {route, stageLive, session}): 'allow'|'ask'|'deny'`
+  - `allow`: action `changePlan` on entry with scope `working-copy` (Bank);
+  - `allow`: action `writeSlot` on Bank (recipe PATCH WRITE after temp edits);
+  - `ask`: action `loadSlot` on Bank (drawer may confirm; recipes auto-select);
+  - `deny`: anything whose scope resolves to `system` outside Global;
+  - `deny`: actions `factoryReset`; `writeSlot` outside Bank;
   - `deny`: while Stage full-screen is open (`stageLive`).
 - Exported as a pure function + unit-tested table; the UI renders denied paths
   as unavailable, and the orchestrator treats policy as the single source of

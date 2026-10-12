@@ -166,6 +166,16 @@ export class MidiSession {
   }
 
   /**
+   * Wait until every DT1 already queued (and the one in flight) has been sent.
+   * Enqueues a no-op on the write queue so prior writes finish first.
+   */
+  drainWriteQueue(): Promise<void> {
+    return this.scheduler.enqueue(async () => {
+      /* barrier */
+    }, 'write');
+  }
+
+  /**
    * DT1: writes bytes at a packed 7-bit address, sliced into messages the device accepts.
    * With `coalesce`, a write still waiting in the queue for the same address is replaced
    * by this one, so dragging a slider does not flood the pedal with stale values.

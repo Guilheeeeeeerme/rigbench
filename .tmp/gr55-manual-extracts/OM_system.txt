@@ -1,0 +1,863 @@
+     Settings for the Entire GR-55 (SYSTEM)
+     Settings that affect the overall operation of the entire GR-55, such as     5.   Edit the parameter settings.
+     tuning and pedal assignments, are called “system settings.” This section
+     explains the procedure for setting system parameters, and how each                 Use the PAGE [   ][   ] buttons to move between tabs.
+     system parameter operates.
+
+
+Basic procedure
+1.   Press the [EDIT] button to access the EDIT screen.
+
+
+
+
+                                                                                          Use the cursor [ ] [ ] buttons to select the parameter that you
+                                                                                          want to edit, and use the dial to edit the value of the parameter.
+
+
+2.   Use the PAGE [ ] [ ] buttons to select the SYSTEM tab.                           For details on each parameter, refer to “Parameter List (SYSTEM)” (p. 74).
+                                                                                 6.   When you’ve finished editing, press the [EXIT] button.
+
+
+                                                                                  Setting the GK Pickups (GK SETTING)
+                                                                                      To ensure that the GR-55 will perform optimally, it’s important to make
+                                                                                      settings for the divided pickup (GK settings). These settings must be
+3.   Use the cursor [ ] [ ] buttons to select the icon for the                        made when you newly attach a divided pickup to a guitar, or when
+     settings you want to edit.                                                       you’ve adjusted the height of the divided pickup.
+      Icon                                Description                    Page         The GR-55 lets you create and store ten sets of GK settings (GK set). If
+      GK SETTING                          GK pickup settings.            p. 69
+                                                                                      you’re using the GR-55 with more than one guitar, you should prepare
+                                                                                      and store GK sets for each guitar, so that you can quickly switch to the
+                                          Specify the device (amp)                    appropriate settings for a particular guitar when you switch guitars.
+      OUTPUT SELECT                       connected to the OUTPUT        p. 70
+                                          jacks.                                      These settings are remembered even while the power is turned off.
+      PEDAL/GK CTL                        Pedal-related settings.        p. 70
+                                                                                      Once you’ve made them, there’s no need to make them again each
+                                                                                      time you perform; simply choose the appropriate GK set.
+      MIDI/USB                            MIDI and USB settings.         p. 70
+                                                                                 1.   Press the [EDIT] button to access the EDIT screen.
+                     GUITAR OUT           GUITAR OUT jack settings.      p. 70
+                     TUNER                Tune your guitar.              p. 71   2.   Use the PAGE [ ] [ ] buttons to access the SYSTEM tab.
+                                          Play back audio files (WAV,            3.   Use the cursor [ ] [ ] buttons to select the GK SETTING
+      OTHER          AUDIO PLAYER                                        p. 65
+                                          AIFF).                                      icon, and press the [ENTER] button.
+                     LCD                  Adjust the display contrast.   p. 71
+                     POWER                Auto Power Off settings.       p. 71
+                                          Back up the GR-55’s
+                     BACKUP/              settings to USB memory,
+                                                                         p. 72
+                     RESTORE              or restore these settings to
+                                          the GR-55.
+                                          Calibrate the sensitivity of
+                     PEDAL CALIB
+                                          the pedal.
+                                                                         p. 73   4.   Use the cursor buttons to move the cursor to the position
+      BACKUP
+      /INIT
+                                                                                      shown in the illustration.
+                                          Return the GR-55’s
+                     FACTORY RESET        settings to the factory-set    p. 73
+                                          condition.
+                                          Specify whether you’re
+                     GUITAR<->BASS        using the GR-55 with a         p. 71
+                                          guitar or a bass.
+
+
+4.   Press the [ENTER] button.
+                                                                                 5.   Use the dial to select a GK SET (1–10).
+     The editing screen for the selected parameters will appear.
+                                                                                 6.   Edit the GK setting.
+                                                                                      The edited values are saved directly in the GK set you selected.
+                                                                                      For details on each parameter, refer to “GK SETTING” (p. 74).
+
+
+
+
+                                                                                                                                                               69
+Settings for the Entire GR-55 (SYSTEM)
+
+7.     Press the [EXIT] button to return to the top screen.
+       The GK set you selected will be enabled.                                     Specifying the Output Device
+     * If the MASTER parameter GK SET (p. 58) is set to “SYSTEM,” the setting
+       you specified for the SYSTEM parameter “GK SET SELECT” (p. 74) will          (OUTPUT SELECT)
+       take priority.
+                                                                                        You can specify the device (amp) that’s connected to the OUTPUT
+                                                                                        jacks. The tone will be adjusted inside the GR-55 to ensure that the
+ Switching GK Sets                                                                      optimal sound will be heard on the specified device.
+                                                                                        For details on this setting, refer to “Specifying the Output System
+       Select a GK set (1–10) as described in steps 1–5 of “Setting the GK              (OUTPUT SELECT)” (p. 12) in the editing section.
+       Pickups (GK SETTING)” (p. 69).
+     * If the MASTER parameter GK SET (p. 58) is set to “SYSTEM,” the GK
+       setting that’s selected in this screen will take priority. You can also
+       select “1–10” to specify a GK set for each patch.
+
+
+ Renaming a GK Set
+       You can assign a name to each GK set.
+       By naming each GK set to identify the guitar that it’s for, you can avoid
+                                                                                    Pedal and GK Control Settings
+       selecting the wrong GK set when switching guitars.                           (PEDAL/GK CTL)
+1.     Select a GK set (1–10) as described in steps 1–5 of “Setting
+                                                                                        You can make the pedal assignments operate identically regardless of
+       the GK Pickups (GK SETTING)” (p. 69).
+                                                                                        the patch that is selected.
+2.     Press the [ENTER] button.                                                        For details, refer to “Controller Assignments” (p. 61).
+
+
+                                                                                    MIDI and USB Settings (MIDI/USB)
+                                                                                        You can make settings for MIDI and USB.
+                                                                                        For details, refer to “Connecting the GR-55 to MIDI Devices” (p. 67) and
+3.     Use the cursor [ ] [ ] buttons to move the cursor to the                         “Connecting a Computer via USB” (p. 66).
+       character that you want to change.
+4.     Use the dial and the following buttons to change the                         GUITAR OUT Jack Settings
+       character.
+       As you continue turning the dial, the type of character will change in       (GUITAR OUT)
+       the order of uppercase → lowercase → numerals → symbols.
+                                                                                        The GUITAR OUT jack can output the normal pickup sound and the
+        Button                        Description                                       modeling tone sound.
+
+        Cursor [    ] (INSERT)        Inserts a space at the cursor location.           For example, you can play the normal pickup sound and the modeling
+                                                                                        tone sound through your guitar amp, and play the other synthesizer
+                                      Deletes the character, and moves                  sounds through the PA equipment connected to the OUTPUT jacks.
+        Cursor [    ] (DELETE)        subsequent characters forward.
+                                      Switches between letters, numerals, and
+        PAGE [     ] (A0!)
+                                      symbols.
+                                      Switches between uppercase and
+        PAGE [     ] (A<=>a)
+                                      lowercase letters.
+
+
+5.     Repeat steps 3 and 4 to rename the GK set.
+
+
+6.
+       You can specify up to eight characters.
+       Press the [ENTER] button.
+                                                                                    Always Outputting the Normal Pickup Sound
+       The name will be finalized.                                                  from the GUITAR OUT Jack for All Patches
+                                                                                   1.   Set the system parameter GUITAR OUT–SOURCE (p. 80) to
+                                                                                        “NORMAL PU.”
+                                                                                        For details on setting the system parameters, refer to “Settings for the
+                                                                                        Entire GR-55 (SYSTEM)” (p. 69).
+
+
+                                                                                    Always Outputting the Modeling Tone Sound
+                                                                                    from the GUITAR OUT Jack for All Patches
+                                                                                   1.   Set the system parameter GUITAR OUT–SOURCE (p. 80) to
+                                                                                        “MODELING.”
+                                                                                        For details on setting the system parameters, refer to “Settings for the
+                                                                                        Entire GR-55 (SYSTEM)” (p. 69).
+
+
+70
+                                                                                                             Settings for the Entire GR-55 (SYSTEM)
+
+ Changing the Output Sound from the                                              Auto Power Off Settings
+ GUITAR OUT Jack for Each Patch                                                  (POWER)
+1.   Set the system parameter GUITAR OUT–SOURCE (p. 80) to                           The GR-55 can turn off its power automatically. The power will turn
+     “PATCH.”                                                                        off automatically when 10 hours have passed since you last played or
+     For details on setting the system parameters, refer to “Settings for the        operated the unit. The display will show a message approximately 15
+     Entire GR-55 (SYSTEM)” (p. 69).                                                 minutes before the power turns off.
+
+2.   Set the master parameter GUITAR OUT–SOURCE (p. 59) to the                       With the factory settings, this function is turned “ON” (power-off in 10
+                                                                                     hours). If you want to turn it “OFF,” change the setting as follows.
+     setting you want to use.
+     For details on editing the master parameters, refer to “Patch Settings          NOTE!
+     (MASTER)” (p. 54).                                                                 When the power is turned off, any settings you were editing will be
+                                                                                        lost. You must save settings that you want to keep.
+     MEMO
+      • The setting of the GUITAR OUT jack does not affect the output from      1.   Press the [EDIT] button to access the EDIT screen.
+        the OUTPUT jacks.                                                       2.   Use the PAGE [ ] [ ] buttons to access the SYSTEM tab.
+        If you don’t want the output from the GUITAR OUT jack to be
+        included in the sound that’s output from the OUTPUT jacks, you          3.   Use the cursor [ ] [ ] buttons to select the OTHER icon, and
+        must separately set each of the patch’s tone settings to “OFF.”              press the [ENTER] button.
+      • If the GUITAR OUT–SOURCE setting is “BOTH,” the normal pickup
+        sound and the modeling tone sound will be mixed and output.
+      • The OUTPUT SELECT (p. 70) setting does not apply to the sound that’s
+        output from the GUITAR OUT jack.
+
+
+ Tuning Your Guitar (TUNER)                                                     4.   Use the cursor [ ] [ ] buttons to select “POWER.”
+
+     You can use the GR-55’s tuner function to tune your guitar.
+     For details on how to set system parameters, refer to “Settings for the
+     Entire GR-55 (SYSTEM)” (p. 69).
+     For details on each parameter, refer to “OTHER” (p. 80).
+
+
+ Adjusting the Display Contrast                                                 5.   Turn the dial to specify the time until shutdown.
+                                                                                      Value      Description
+ (LCD)                                                                                ON
+                                                                                                 The power will automatically turn off when 10 hours have passed
+                                                                                                 since you last played or operated the GR-55.
+     Here’s how to adjust the contrast of the display.                                OFF        The power will not turn off automatically.
+1.   Press the [EDIT] button to access the EDIT screen.
+2.
+3.
+     Use the PAGE [ ] [ ] buttons to select the SYSTEM tab.
+     Use the cursor [ ] [ ] buttons to select the OTHER icon, and
+                                                                                 Switching Between Guitar and Bass
+     press the [ENTER] button.
+                                                                                 (GUITAR<->BASS)
+                                                                                     Before you use the GR-55, you must specify whether you’re playing a
+                                                                                     guitar or a bass. For details, refer to “Selecting Guitar or Bass (GUITAR<-
+                                                                                     >BASS)” (p. 9).
+
+
+
+4.   Use the cursor [ ] [ ] buttons to select “LCD.”
+
+
+
+
+5.   Turn the dial to adjust the contrast of the display.
+
+
+
+
+                                                                                                                                                              71
+Settings for the Entire GR-55 (SYSTEM)
+
+
+ Saving GR-55 Settings to USB                                                     Restoring GR-55 Settings from USB Memory
+ Memory (BACKUP)                                                                  (RESTORE)
+                                                                                      Here’s how data that you backed up to USB memory can be restored to
+       Here’s how to save (back up) all of the GR-55’s settings to USB memory.
+                                                                                      the GR-55.
+     * One set of backup data can be saved to each USB memory device.
+                                                                                 1.   Press the [EDIT] button to access the EDIT screen.
+     * Pedal calibration settings are not saved.
+                                                                                 2.   Use the PAGE [ ] [ ] buttons to select the SYSTEM tab.
+1.     Connect your USB memory to the GR-55.                                     3.   Use the cursor [ ] [ ] buttons to select the BACKUP/INIT
+       For details, refer to “Inserting the USB Memory” (p. 65).                      icon, and press the [ENTER] button.
+2.     Press the [EDIT] button to access the EDIT screen.
+3.     Use the PAGE [ ] [ ] buttons to select the SYSTEM tab.
+4.     Use the cursor [ ] [ ] buttons to select the BACKUP/INIT
+       icon, and press the [ENTER] button.
+
+                                                                                 4.   Use the cursor [ ] [ ] buttons to select the BACKUP/
+                                                                                      RESTORE icon, and press the [ENTER] button.
+
+
+
+5.     Use the cursor [ ] [ ] buttons to select the BACKUP/
+       RESTORE icon, and press the [ENTER] button.
+
+                                                                                 5.   Use the cursor [ ] [ ] buttons to select “RESTORE,” and
+                                                                                      press the [ENTER] button.
+
+
+
+6.     Use the cursor [ ] [ ] buttons to select “BACKUP,” and press
+       the [ENTER] button.
+
+                                                                                 6.   Use the cursor [ ] [ ] buttons to select “OK,” and press the
+                                                                                      [ENTER] button.
+
+
+
+7.     Use the cursor [ ] [ ] buttons to select “OK,” and press the
+       [ENTER] button.
+
+
+                                                                                 7.   When the following screen appears, turn off the power.
+
+
+
+
+                                                                                      The next time you turn on the GR-55’s power, the backup data will
+                                                                                      have been restored.
+
+                                                                                      NOTE!
+                                                                                         This operation will rewrite all of the GR-55’s settings. If you’ve stored
+                                                                                         important data in the GR-55, be sure to save the data to separate
+                                                                                         USB memory before you execute this operation.
+
+
+
+
+72
+                                                                                                            Settings for the Entire GR-55 (SYSTEM)
+
+
+ Adjusting the Pedal Sensitivity                                                Restoring the Factory Settings
+ (CALIB)                                                                        (FACTORY RESET)
+     Here’s how to calibrate the sensitivity of the pedal.                            Here’s how the settings stored in the GR-55 can be returned to their
+                                                                                      factory-set condition.
+1.   Press the [EDIT] button to access the EDIT screen.
+2.   Use the PAGE [ ] [ ] buttons to select the SYSTEM tab.                           NOTE!
+                                                                                         If important data you’ve created has been stored in the GR-55, be
+3.   Use the cursor [ ] [ ] buttons to select the BACKUP/INIT                            aware that the data you’ve edited or created will all be lost if you
+     icon, and press the [ENTER] button.                                                 execute a factory reset. If you want to keep this data, you must save
+                                                                                         it to USB memory (p. 72).
+                                                                                    * The pedal calibration settings will not be reset.
+
+                                                                               1.     Press the [EDIT] button to access the EDIT screen.
+                                                                               2.     Use the PAGE [ ] [ ] buttons to select the SYSTEM tab.
+                                                                               3.     Use the cursor [ ] [ ] buttons to select the BACKUP/INIT
+4.   Use the cursor [ ] [ ] buttons to select the PEDAL CALIB                         icon, and press the [ENTER] button.
+     icon, and press the [ENTER] button.
+
+
+
+
+                                                                               4.     Use the cursor [ ] [ ] buttons to select the FACTORY RESET
+     The PEDAL CALIBRATION screen will appear.
+                                                                                      icon, and press the [ENTER] button.
+
+
+
+
+5.   Move the expression pedal to the heel-down position, and
+                                                                               5.     Use the cursor [ ] [ ] buttons to select “OK,” and press the
+     press the [ENTER] button.
+                                                                                      [ENTER] button.
+     The display will indicate “OK,” and then the following screen will
+     appear.
+
+
+
+
+                                                                                      The factory reset will be executed.
+                                                                                    * Never turn off the power while the factory reset is being carried out.
+6.   Move the expression pedal to the fully depressed (toe down)
+     position, and press the [ENTER] button.
+                                                                               6.     When the following screen appears, turn off the power.
+     The display will indicate “OK,” and then the following screen will
+     appear.
+
+
+
+
+                                                                                      The next time you power up the GR-55, it will start up in the factory-set
+                                                                                      condition.
+7.   Apply strong pressure to the toe area of the expression pedal.
+                                                                                      NOTE!
+     Verify that the EXP PEDAL SW indicator lights when you apply pressure
+                                                                                         If the GR-55 is set to “BASS MODE,” it will return to “GUITAR MODE”
+     to the toe area. If you want to change the sensitivity at which the EXP
+                                                                                         (p. 9).
+     PEDAL SW indicator lights, adjust the THRESHOLD setting.
+
+
+
+
+8.   When you’ve finished making calibration settings, press the
+     [ENTER] button.
+     The screen will indicate “COMPLETE!”
+
+                                                                                                                                                           73
+Settings for the Entire GR-55 (SYSTEM)
+
+
+ Parameter List (SYSTEM)
+ GK SETTING
+     Tab             Parameter           Value                       Description
+                                                                     Selects the GK SET that will be used when the master parameter “GK SET” (p. 58) is set
+                     GK SET SELECT       1–10                        to “SYSTEM.” This is also where you’ll select the GK SET whose GK settings you want
+     GK SET SELECT                                                   to edit.
+                     NAME                Edits the name of the GK set (up to eight characters).
+                                         Specifies the type of GK pickup on the guitar or bass you’re using.
+                                         If GUITAR<->BASS is set to “GUITAR” (p. 9)
+                                         GK-3                        Choose this if you’re using a GK-3.
+                                         GK-2A                       Choose this if you’re using a GK-2A.
+                                         PIEZO                       This setting is appropriate when using a piezo pickup with a flat response.
+                                         PIEZO F                     This setting is appropriate for a Fishman piezo pickup.
+                                         PIEZO G                     This setting is appropriate for a Graph Tech piezo pickup.
+                     PU TYPE             PIEZO L                     This setting is appropriate for a L.R. Baggs piezo pickup.
+                                         PIEZO R                     This setting is appropriate for an RMC piezo pickup.
+                                         If GUITAR<->BASS is set to “BASS” (p. 9)
+                                         GK-3B                       Choose this if you’re using a GK-3B.
+                                         GK-2B                       Choose this if you’re using a GK-2B.
+                                         PIEZO                       This setting is appropriate when using a piezo pickup with a flat response.
+                                         PIEZO G                     This setting is appropriate for a Graph Tech piezo pickup.
+                                         PIEZO R                     This setting is appropriate for an RMC piezo pickup.
+                                         If GUITAR<->BASS is set to “GUITAR” (p. 9)
+                                         500–660 mm,
+                                         ST (648 mm),                Specify the scale length of the guitar you’re using.
+                                         LP (628 mm)
+
+                     SCALE               If GUITAR<->BASS is set to “BASS” (p. 9)
+                                         710–940 mm,
+     PICKUP
+                                         SHORT (760 mm),
+                                         MEDIUM (812 mm),            Specify the scale length of the bass you’re using.
+                                         LONG JB/PB (864 mm),
+                                         EXTRA LONG (914 mm)
+                                         Specifies the position of the divided pickup.
+                                         * This setting applies only if GUITAR<->BASS is set to “BASS” (p. 9).
+                                         4STR-1
+
+                                         4STR-2                      Position for a 4-string bass.
+
+                                         4STR-3
+                     GK PU POS
+                                         5STR Lo1
+                                                                     Position for a 5-string bass (Low B–G).
+                                         5STR Lo2
+
+                                         5STR Hi1
+                                                                     Position for a 5-string bass (E–Hi C).
+                                         5STR Hi2
+
+                                         6STR                        Position for a 6-string bass.
+                                         Specifies the phase of the divided pickup and the guitar’s normal pickup.
+                                         Set this to “NORMAL,” and if the low-frequency range is cut, change it to the “INVERSE” setting.
+
+                                          MEMO
+                     PU PHASE            The phase will be easier to detect if the divided pickup sound is mixed with the normal pickup sound.
+                                         NORMAL                      The phase will be normal.
+
+                                         INVERSE                     The phase will be inverted.
+
+
+
+
+74
+                                                                                                                    Settings for the Entire GR-55 (SYSTEM)
+
+  Tab             Parameter                          Value                        Description
+                                                     Specifies the direction in which the divided pickup is attached.
+                  PU DIRECTION                       NORMAL                       The cable extends from the side of the 6th string.
+                                                     REVERSE                      The cable extends from the side of the 1st string.
+                                                     Swaps the functions of the [S1] and [S2] buttons of the GK-3 or GK-2A.
+                  S1/S2 POSITION                     NORMAL                       The switches will not be swapped.
+                                                     REVERSE                      The functions of the [S1] and [S2] buttons will be swapped.
+  PICKUP                                                                          Adjusts the input level of the normal pickup.
+                  NORM PU GAIN                       -20–+20 dB
+                                                                                  When making this setting, set the GK pickup’s select switch to “MIX.”
+                                                                                  Adjusts the low-frequency range
+                  PIEZO TONE LOW                     -10–+10 dB                    * This setting applies if the PU TYPE is set to “PIEZO,” “PIEZO F,” “PIEZO G,” “PIEZO
+                                                                                     L,” or “PIEZO R.”
+                                                                                  Adjusts the high-frequency range.
+                  PIEZO TONE HIGH                    -10–+10 dB                    * This setting applies if the PU TYPE is set to “PIEZO,” “PIEZO F,” “PIEZO G,” “PIEZO
+                                                                                     L,” or “PIEZO R.”
+                                                     If GUITAR<->BASS is set to “GUITAR” (p. 9)
+                                                                                  Specifies the distance between the divided pickup and the bridge.
+                                                     10.0–30.0 mm                 This setting is ignored if the PU TYPE is set to “PIEZO,” “PIEZO F,” “PIEZO G,” “PIEZO L,” or
+                                                                                  “PIEZO R.”
+  DISTANCE        PU<->BRIDGE
+                                                     If GUITAR<->BASS is set to “BASS” (p. 9)
+                                                                                  Specifies the distance between the divided pickup and the bridge.
+                                                     5.5–55.5 mm
+                                                                                  This setting is ignored if the PU TYPE is set to “PIEZO,” “PIEZO G,” or “PIEZO R.”
+  SENSITIVITY     SENS                               0–100                        Specifies the input sensitivity of the divided pickup.
+                                                                                  Adjusts the sensitivity of the PCM tone’s volume (velocity) change.
+                  VELOCITY DYNAMICS                  1–10                         The further you raise this setting, the more easy it becomes to produce higher values
+                                                                                  for velocity.
+                                                                                  Adjusts the volume (velocity) change curve of the PCM tone.
+                                                                                  The lower-numbered settings give you a wider range of volume change in response
+  VELOCITY                                                                        to your picking dynamics.
+                  PLAY FEEL                          1–5
+                                                                                  With higher-numbered settings, the volume becomes more consistent regardless of
+                                                                                  your picking dynamics.
+                                                                                  The “5” setting gives you a completely fixed velocity.
+                                                                                  Adjust this if simply touching a string causes a note to be unintentionally triggered.
+                  LOW VELOCITY CUT                   0–10
+                                                                                  Raising this value will make it more difficult to trigger notes.
+
+                  These settings adjust the way in which Nuance (p. 28) responds to your playing.
+                  Adjust these settings so that the level meter reaches the maximum position when you play with the softest touch, and so that the level meter does
+                  not move very much when you play normally.
+  NUANCE
+                                                                                  Adjusts the sensitivity at which Nuance occurs. Higher settings will make it easier to
+                  NUANCE DYNAMICS                    0–10
+                                                                                  produce the Nuance effect.
+                                                                                  Specifies the threshold value at which Nuance occurs. If the Nuance effect occurs
+                  NUANCE TRIM                        0–10
+                                                                                  more often than you would like with normal playing, lower this value.
+                                                                                  If the guitar/bass you’re using has been tuned down, specify the number of
+  DOWN TUNE       SHIFT                              0– -5
+                                                                                  chromatic steps by which it has been down-tuned.
+
+
+
+OUTPUT SELECT
+  Parameter                    Value                         Description
+                                                             Choose this setting if you’re using headphones, or if the GR-55 is connected to a keyboard amp, bass amp,
+                               LINE/PHONES
+                                                             mixer, or digital recorder.
+                               JC-120                        Choose this setting if the GR-55 is connected to the guitar input of a Roland JC-120 guitar amp.
+                               SMALL                         Choose this setting if the GR-55 is connected to a small guitar amp.
+                                                             Choose this setting if the GR-55 is connected to the guitar input of a combo-type guitar amp (a type in
+                               COMBO                         which the amp and speaker are in a single unit) other than the JC-120. Depending on the amp you’re
+                                                             using, the “JC-120” setting might produce better results.
+                                                             Choose this setting if the GR-55 is connected to the guitar input of a stack-type guitar amp (a type in which
+                               STACK
+  OUTPUT SELECT                                              the amp and speaker are separate units).
+                               JC-120 RETURN                 Choose this setting if the GR-55 is connected to the JC-120’s RETURN jack.
+                               COMBO RETURN                  Choose this setting if the GR-55 is connected to a combo-type guitar amp’s RETURN jack.
+                                                             Choose this setting if the GR-55 is connected to the RETURN jack of a stack-type guitar amp. You should
+                               STACK RETURN                  also choose the “STACK RETURN” setting if you’re using a guitar power amp together with a speaker
+                                                             cabinet.
+                               B-AMP WITH TWEETER            Choose this setting if the GR-55 is connected to a bass amp that has a tweeter.
+                                                             Choose this setting if the GR-55 is connected to a bass amp that does not have a tweeter. The high-
+                               B-AMP NO TWEETER
+                                                             frequency range will be corrected.
+
+
+                                                                                                                                                                             75
+Settings for the Entire GR-55 (SYSTEM)
+
+ PEDAL/GK CTL
+     Tab        Parameter   Value                     Description
+                            Here you can specify the function that will be assigned to the [CTL] pedal, the expression pedal switch, or the GK [S1]/[S2] buttons.
+                            OFF                       No function will be assigned to the above pedal or switch.
+                            PATCH SETTING             Choose this if you want the function of the pedals and switches to change for each patch.
+                                                      HOLD parameter              Value              Description
+                                                                                                     Notes that were sounding when you pressed the pedal will be
+                                                                                                     held, and successive notes that are played while you continue
+                                                                                                     holding down the pedal will also be held. This differs from
+                                                                                  1                  “HOLD TYPE 4” in that if a note is already sounding on the
+                                                                                                     same string, the previous note will be silenced, and the note
+                                                                                                     newly played on that string will take its place. This allows you
+                                                                                                     to play without a break even if the note is on a distant fret.
+                                                                                                     Notes that were sounding when you pressed the pedal will
+                                                                                                     be held as long as you continue holding down the pedal.
+                                                      HOLD TYPE                   2
+                                                                                                     Notes played after you started holding down the pedal will
+                                                                                                     not sound.
+                            HOLD
+                            (CTL only)                                                               Notes that were sounding when you pressed the pedal will be
+                                                                                                     held as long as you continue holding down the pedal. Notes
+                                                                                  3
+                                                                                                     played after you started holding down the pedal will sound,
+                                                                                                     but will not be held.
+                                                                                                     Notes that were sounding when you pressed the pedal will be
+                                                                                  4                  held, and successive notes that are played while you continue
+                                                                                                     holding down the pedal will also be held.
+                                                                                  LATCH              Hold will turn on/off each time you press the pedal.
+                                                      SWITCH MODE
+                                                                                  MOMENT             Hold will be on only while you hold down the pedal.
+                                                      PCM TONE 1                  OFF, ON
+                                                                                                     Choose the “OFF” setting if you don’t want the tone to be held.
+                                                      PCM TONE 2                  OFF, ON
+                            TAP TEMPO                 Sets the tempo to the timing at which you press the pedal.
+                                                      Controls the on/off switch for each tone and the normal pickup.
+
+     CTL,                                             TONE SW parameter           Value              Description
+     EXP SW,                                                                      PCM TONE 1
+                FUNCTION                                                          OFF/ON
+     GK S1,
+     GK S2                                                                        PCM TONE 2         These settings are for when the STATUS of each controller
+                                                                                  OFF/ON             ([CTL] pedal, expression pedal switch) is “OFF.”
+                                                      SW OFF
+                                                                                  MODELING           GK S1/S2 are the settings for the default state (i.e., before
+                                                                                  TONE OFF/ON        you’ve pressed a switch).
+
+                            TONE SW                                               NORMAL PU
+                                                                                  OFF/ON
+                                                                                  PCM TONE 1
+                                                                                  OFF/ON
+                                                                                  PCM TONE 2         These settings are for when the STATUS of each controller
+                                                                                  OFF/ON             ([CTL] pedal, expression pedal switch) is “ON.”
+                                                      SW ON
+                                                                                  MODELING           GK S1/S2 are the settings for when the switch has been
+                                                                                  TONE OFF/ON        pressed once.
+                                                                                  NORMAL PU
+                                                                                  OFF/ON
+                            AMP SW                    Switches AMP on/off.
+                            MOD SW                    Switches MOD on/off.
+                            MFX SW                    Switches MFX on/off.
+
+                            DELAY SW                  Switches DELAY on/off.
+
+                            REVERB SW                 Switches REVERB on/off.
+
+                            CHORUS SW                 Switches CHORUS on/off.
+
+                            SOUND STYLE INC
+                                                      Switches the sound style.
+                            SOUND STYLE DEC
+
+                            BANK NUMBER INC
+                                                      Switches the bank number.
+                            BANK NUMBER DEC
+
+                            PATCH NUMBER INC
+                                                      Switches the patch number.
+                            PATCH NUMBER DEC
+
+
+
+
+76
+                                                                                                      Settings for the Entire GR-55 (SYSTEM)
+
+Tab       Parameter   Value                     Description
+                      AUDIO PLAYER PLAY/
+                                                Starts/stops the audio player.
+                      STOP
+
+CTL,                  AUDIO PLAYER SONG
+                      INC
+EXP SW,                                         Selects the audio file in USB memory played by the audio player.
+          FUNCTION    AUDIO PLAYER SONG
+GK S1,
+                      DEC
+GK S2
+                      AUDIO PLAYER SW           Performs the same operation as when the panel’s [AUDIO PLAYER] button is pressed.
+
+                      V-LINK SW                 Performs the same operation as when the panel’s [V-LINK] button is pressed.
+                      Here you can specify the functions that will be assigned to the expression pedal or to the GK volume knob.
+                      Two different functions can be assigned separately to the expression pedal; one function for when the expression pedal switch is on,
+                      and another function for when it is off.
+                      OFF                       No function will be assigned to the above pedal or knob.
+                      PATCH SETTING             Choose this if you want the function of the pedals and switches to change for each patch.
+
+                      PATCH VOLUME              Adjusts the volume of the patch.
+
+                                                Adjusts the volume of the tones and the normal pickup.
+                                                TONE VOLUME
+                                                                          Value              Description
+                                                parameter
+                                                PCM TONE 1                OFF, ON
+                      TONE VOLUME
+                                                PCM TONE 2                OFF, ON
+                                                                                             If you don’t want the control to adjust the volume of the
+                                                MODELING TONE             OFF, ON            respective tone or pickup, choose “OFF.”
+
+                                                NORMAL PU                 OFF, ON
+
+                                                Changes the pitch of PCM tone 1, PCM tone 2, and the modeling tone.
+                                                PITCH BEND
+                                                                          Value              Description
+                                                parameter
+                                                                                             Specifies the maximum pitch change that will occur when you
+                                                DEPTH                     -12–+12
+                                                                                             fully depress the pedal.
+                      PITCH BEND                                                             Choose “OFF” if you don’t want to change the pitch of PCM
+                                                PCM TONE 1                OFF, ON
+                                                                                             tone 1.
+                                                                                             Choose “OFF” if you don’t want to change the pitch of PCM
+                                                PCM TONE 2                OFF, ON
+                                                                                             tone 2.
+                                                                                             Choose “OFF” if you don’t want to change the pitch of the
+                                                MODELING TONE             OFF, ON
+EXP,                                                                                         modeling tone.
+
+EXP ON,   FUNCTION                              Controls the depth of modulation for PCM tone 1 and PCM tone 2.
+                                                The effect will differ depending on the PCM tone that’s selected.
+GK VOL
+                                                MODULATION
+                                                                          Value              Description
+                                                parameter
+                                                                                             Specifies the depth of modulation when the pedal is fully
+                                                MIN                       0–100
+                                                                                             released.
+                      MODULATION
+                                                                                             Specifies the depth of modulation when the pedal is fully
+                                                MAX                       0–100
+                                                                                             depressed.
+                                                                                             Choose “OFF” if you don’t want to apply modulation to PCM
+                                                PCM TONE 1                OFF, ON
+                                                                                             tone 1.
+                                                                                             Choose “OFF” if you don’t want to apply modulation to PCM
+                                                PCM TONE 2                OFF, ON
+                                                                                             tone 2.
+                                                Controls the volume balance of the tones.
+                                                CROSS FADER
+                                                                          Value              Description
+                                                parameter
+                                                PCM TONE 1                OFF                The volume of the tone will not change.
+                                                POLARITY
+                      CROSS FADER                                         TOE                The volume of the tone will increase as you depress the pedal.
+                                                PCM TONE 2
+                                                POLARITY
+                                                MODELING TONE
+                                                                                             The volume of the tone will increase as you lift up on the
+                                                POLARITY                  HEEL
+                                                                                             pedal.
+                                                NORMAL PU
+                                                POLARITY
+                                                Controls the DELAY/REVERB/CHORUS effect level.
+                      DELAY LEVEL
+                                                Parameter                 Value              Description
+                      REVERB LEVEL
+                                                MIN                       0–120 (DELAY)      Specifies the effect level when the pedal is fully released.
+                      CHORUS LEVEL                                        0–100 (REVERB,
+                                                MAX                       CHORUS)            Specifies the effect level when the pedal is fully depressed.
+
+
+
+
+                                                                                                                                                             77
+Settings for the Entire GR-55 (SYSTEM)
+
+      Tab           Parameter      Value                Description
+                                                        Controls the principal parameter for each type of MOD effect.
+                                                        This is valid if MOD SWITCH is ON.
+                                                        MOD CONTROL
+                                                                                 Value               Description
+                                                        Parameter
+                                                        MIN                      Specifies the range of change for the parameter. The values will depend on the
+                                                        MAX                      parameter that’s assigned by MOD type.
+
+                                                        Type of MOD effect        Parameter                   Type of MOD effect         Parameter
+      EXP,
+      EXP ON,       FUNCTION       MOD CONTROL          OD/DS                     DRIVE                       TREMOLO                    RATE
+      GK VOL                                            WAH (*1)                  PEDAL POSITION              ROTARY                     SPEED SELECT
+
+                                                        COMP                      SUSTAIN                     UNI-V                      RATE
+
+                                                        LIMITER                   THRESHOLD                   PAN                        RATE
+
+                                                        OCTAVE                    OCTAVE LEVEL                DELAY                      EFFECT LEVEL
+
+                                                        PHASER                    RATE                        CHORUS                     EFFECT LEVEL
+
+                                                        FLANGER                   RATE                        EQ                         HI-MID FREQ
+                                                        When you switch patches, this setting specifies whether the state of the expression pedal and GK volume
+      ASSIGN HOLD                  OFF, ON
+                                                        will be applied to the next patch (ON) or will not be applied to the next patch (OFF).
+
+     (*1) Set the MODE parameter (p. 43) to “MANUAL.”
+
+
+
+
+78
+                                                                                                             Settings for the Entire GR-55 (SYSTEM)
+
+MIDI/USB
+  Tab         Parameter        Value                  Description
+                                                      Specifies the MIDI channel that will control patches.
+                                                      To switch patches on the GR-55, send a program change message on this MIDI channel.
+              PATCH CH         1–16
+                                                      MIDI messages from an external device are also received on this MIDI channel. Received control changes
+                                                      are sent to ASSIGN SOURCE (p. 57).
+                                                      Turn this “ON” if you want program change messages from an external device to switch patches. You can
+              PC RX SWITCH     OFF, ON                use the RX BANK/PC MAP to change the correspondence between incoming program change numbers
+                                                      and the GR-55’s patches.
+  GENERAL                                             Turn this “ON” if you want program change messages to be transmitted when you switch patches on the
+              PC TX SWITCH     OFF, ON
+                                                      GR-55.
+                                                      Turn this “ON” if you want the tempo of tempo-synchronized effects to synchronize with an external
+              MIDI SYNC        OFF, ON
+                                                      device.
+                                                      If this is “ON,” MIDI clock data will be transmitted to an external MIDI device.
+              MIDI CLOCK OUT   OFF, ON
+                                                      This data will not be transmitted if MIDI SYNC is “ON.”
+              V-LINK TX CH     1–16                   Specifies the MIDI channel used to control V-LINK devices.
+              SWITCH           OFF, ON                If this is “OFF,” guitar performance data will not be transmitted from MIDI OUT.
+                               This sets the transmission mode for the MIDI messages.
+                                                      In this mode, one channel per string is used, thus using a total of six channels.
+                                                      Since each string uses a different MIDI channel, you can select a different tone for each string, using string
+                               MONO
+                                                      bending or continuously varying the pitch on a specific string; however, this requires use of a multitimbral
+              MODE                                    sound module.
+                                                      In this mode, the messages for all six strings are transmitted over a single channel.
+                                                      While transmitting the MIDI messages for all of the strings over one channel does simplify the settings
+                               POLY
+                                                      needed for the sound module and reduces the number of MIDI channels used, it does impose certain
+                                                      limitations; for example, permitting only one tone to be selected for all of the strings.
+              CHROMATIC        OFF, ON                Turn this ON if you want to play an external sound module chromatically.
+                                                      Specifies the MIDI channel used to transmit guitar performance data. If MODE is set to “MONO,” the data
+  GTR-MIDI
+              STRING CH        1–11                   will be transmitted using six channels starting with the channel you specify here. If it is set to “POLY,”
+                                                      performance data for all strings will be sent on the channel you specify here.
+              DATA THIN        OFF, ON                If this is “ON,” pitch bend data will be thinned-out to reduce the volume of MIDI data.
+              CTL PDL CC       OFF, 1–31, 64–95       Specifies the control change numbers that are transmitted when you operate a pedal. Turn this “OFF” if
+              EXP PDL CC       OFF, 1–31, 64–95       you don’t want the pedals to transmit data.
+
+                                                      Specifies the maximum pitch change amount when transmitting pitch bend data from the expression
+              EXP PDL BEND
+                               -24–+24                pedal to an external sound module. Set this to “0” if you don’t want the expression pedal to transmit pitch
+              RANGE
+                                                      bend data.
+              GK VOL CC        OFF, 1–31, 64–95
+                                                      Determine the control change numbers that will be transmitted when you operate the GK pickup’s
+              GK S1 CC         OFF, 1–31, 64–95       volume knob or [S1]/[S2] buttons.
+                                                      Turn this “OFF” if you don’t want these controls to transmit data.
+              GK S2 CC         OFF, 1–31, 64–95
+                               When using program change data transmitted from an external MIDI device to switch patches on the GR-55, this setting specifies
+                               whether the correspondence between the received program number and the patch will be fixed, or whether it can be specified
+                               freely.
+              MAP SELECT
+                                                      The incoming program change data will select the predetermined patch regardless of the BANK/PC
+                               FIX
+                                                      settings.
+                               PROG                   The patch specified by BANK/PC will be selected.
+  RX PC MAP   BANK             0–63                   Select the bank number (MSB 0–63) of the program change shown in the RX PC MAP (the LSB is fixed at 0).
+                               Here you can edit the correspondence between the incoming program change numbers and the patch that will be selected for
+                               each number.
+
+              PC               [LEAD] **-*
+                               [RHYTHM] **-*          Specify the patch number ([LEAD] 01-1–[USER] 99-3) that will correspond to each incoming program
+                               [OTHER] **-*           change number (bank number).
+                               [USER] **-*
+
+
+
+
+                                                                                                                                                                   79
+Settings for the Entire GR-55 (SYSTEM)
+
+     Tab            Parameter          Value          Description
+                    AUDIO IN LEVEL     0–200          Adjusts the volume of the digital audio signal from USB (computer).
+                    AUDIO OUT LEVEL    0–200          Adjusts the volume of the digital audio signal output to USB (computer).
+                                                      Turn this setting off if the audio data is      Audio signal
+                                                      being passed through by the computer.                                           AUDIO IN
+                                       OFF            In this case, you won’t hear sound                                              AUDIO OUT
+                                                      unless the computer is passing the                                                              Computer
+                                                      audio through.
+     USB                                                                                                     USB OUT      USB IN
+                                                                                                                   DIRECT
+                    DIRECT MONITOR                                                                                 MONITOR
+                                                      The sound of the GR-55 will be output                                                           Guitar amp
+                                                      directly. Turn this setting “ON” if you’re       The GR-55’s
+                                                                                                       sound
+                                       ON             using the GR-55 by itself. (If this is “OFF,”
+                                                      only the sound being input via USB will                                              OUTPUT      Headphones
+                                                                                                                                           L/R
+                                                      be output.)
+                                                                                                                                          PHONES
+
+
+
+
+ OTHER
+     Group            Parameter                Value                           Description
+                                               Specifies the signal that is output from the GUITAR OUT jack.
+                                               If you choose “PATCH,” the GUITAR OUT setting (p. 59) of each patch will be used. If you choose any other setting,
+                                               that setting will apply at all times. For details, refer to “GUITAR OUT Jack Settings (GUITAR OUT)” (p. 70).
+                                               PATCH                           The GUITAR OUT setting (p. 59) of each patch will be used.
+     GUITAR OUT       SOURCE                   OFF                             Nothing will be output from the GUITAR OUT jack.
+                                               NORMAL PU                       The normal pickup sound will be output.
+                                               MODELING                        The modeling tone sound will be output.
+                                               BOTH                            Both the normal pickup sound and the modeling tone sound will be output.
+                                                                               Specifies the reference pitch.
+                      MASTER TUNE              435 Hz–445 Hz
+                                                                               * With the factory settings this is set to “440 Hz.”
+
+     TUNER                                                                     Turn this setting “OFF“ if you want sound will be output while you tune your
+                                                                               instrument. If you set this “ON,” sound will not be output while you tune your
+                      TUNER MUTE               OFF, ON                         instrument
+                                                                               * With the factory settings this is turned “ON.”
+     AUDIO PLAYER     LEVEL                    0–200                           Adjusts the volume of the audio player.
+
+     LCD              CONTRAST                 1–10                            Adjusts the contrast of the display.
+
+                                                                               The GR-55 is able to turn off its power automatically. The power will automatically
+                                                                               turn off when 10 hours have passed since you last played or operated the unit. A
+                                                                               message will appear in the display approximately 15 minutes before the power
+     POWER            AUTO POWER OFF           OFF, ON                         turns off.
+                                                                               With the factory settings, this function is turned “ON” (power switches off after 10
+                                                                               hours elapses). Turn this setting “OFF” if you want the power to stay on.
+
+
+
+ BACKUP/INITIALIZE
+     Icon                                      Description
+     BACKUP/RESTORE                            Refer to “Saving GR-55 Settings to USB Memory (BACKUP)” (p. 72).
+     PEDAL CALIBRATION                         Refer to “Adjusting the Pedal Sensitivity (CALIB)” (p. 73).
+     FACTORY RESET                             Refer to “Restoring the Factory Settings (FACTORY RESET)” (p. 73).
+     GUITAR-BASS SELECT                        Refer to “Selecting Guitar or Bass (GUITAR<->BASS)” (p. 9).
+
+
+
+
+80
+Appendix
+

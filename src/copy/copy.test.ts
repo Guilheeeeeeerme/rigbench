@@ -57,9 +57,9 @@ describe('t', () => {
 
   it('follows the chosen language without a reload', () => {
     setLocale('en');
-    expect(t('library.title')).toBe('Library');
+    expect(t('stage.title')).toBe('Stage');
     setLocale('pt-BR');
-    expect(t('library.title')).toBe('Biblioteca');
+    expect(t('stage.title')).toBe('Palco');
   });
 
   it('fills parameters and pluralises per language', () => {

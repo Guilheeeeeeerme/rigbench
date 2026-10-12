@@ -1,0 +1,1452 @@
+     Effect Settings (EFFECT)
+     The GR-55 contains seven effects processors (AMP, MFX, MOD, CHORUS, DELAY, REVERB, EQ), which are organized as shown in the illustration below.
+     (The illustration is for Structure 1.)
+
+
+      PCM TONE 1                                                                   MFX
+                                                                                                                                                     EQ
+                                                                                   Multi-effect
+                                                                                                                                                     Equalizer
+
+
+      PCM TONE 2
+
+                                                                          AMP                     MOD
+                                                                          Preamp                  Guitar effects
+                                                                                                                                   CHORUS             DELAY          REVERB
+      MODELING TONE
+
+
+
+
+      NORMAL PICKUP
+
+
+
+     By internally connecting effects to the PCM tones and the modeling tone that make up the patch, you can create a broad range of sounds.
+
+
+
+
+                                                                                           5.       Switch the effect type.
+ Switching the Effect Type                                                                             Use the cursor buttons to select the effect whose type you
+     Effects are already applied to the patches built into the GR-55. By                               want to change, and use the dial to switch the effect type.
+     editing these settings, you can change the sound to your taste.
+1.   Select the patch whose effect settings you want to edit (p. 16).
+2.   Press the [EDIT] button to access the EDIT screen.
+
+
+
+
+                                                                                                    The effect types are listed as shown in the illustration.
+
+
+3.   Use the PAGE [ ] [ ] buttons to select the EFFECT tab.
+     The screen shows the effects that are applied to the currently selected
+     patch.
+
+
+                                                                                           6.       Press the [ENTER] button.
+                                                                                           7.       When you’ve finished editing, press the [EXIT] button.
+                                                                                           8.       If you want to keep the changes you made, save the patch
+                                                                                                    (p. 60).
+4.   Turn an effect on/off.
+
+        Use the cursor buttons to select an effect, and use the dial to
+        turn that effect on /off .
+
+
+
+
+38
+                                                                                                                                             Effect Settings (EFFECT)
+
+
+ Editing the Effects                                                                         Effect Editing (Detailed Settings)
+     Here’s how to edit the effect settings.                                                     Here’s how to make detailed changes to the effect settings.
+     For details on these settings, refer to “Effect Editing (Detailed Settings)”
+     (p. 39).                                                                               Basic operation
+Basic operation                                                                             1.   In step 5 of “Switching the Effect Type,” select the effect that
+                                                                                                 you want to edit.
+1.   In step 3 of “Switching the Effect Type,” move the cursor to                           2.   Press the [ENTER] button.
+     the EFFECT LEVEL field.
+                                                                                                 The EFFECT EDIT screen will appear.
+     You can use the dial to adjust the volume of the effect.
+                                                                                            3.   Edit the parameters.
+
+                                                                                                   Use the PAGE [ ] [ ] buttons
+                                                                                                   to switch between tabs.
+
+
+
+
+2.   Press the cursor [ ] button.
+     The editable parameters for each effect are displayed.
+3.   Edit the parameters.
+                                                                                                       Use the cursor [ ] [ ] buttons to select the parameter that you want
+       Use the cursor buttons to select the effect parameter that you want                             to edit, and use the dial to edit the value of the parameter.
+       to edit.                                                                                        By holding down the cursor [   ][   ] buttons simultaneously you can
+       Use the dial to edit the value.                                                                 make the cursor move faster.
+
+
+                                                                                                 For details on each parameter, refer to “Parameter List (EFFECT)” (p. 41).
+                                                                                            4.   When you’ve finished editing, press the [EXIT] button.
+                                                                                            5.   If you want to keep the changes you made, save the patch
+                                                                                                 (p. 60).
+
+     MEMO
+     This screen shows the parameters that are marked with a “#” symbol in the
+     parameter list (p. 41 –). The parameters that can be edited will differ depending on
+     the effect.
+
+4.   When you’ve finished editing, press the [EXIT] button.
+5.   If you want to keep the changes you made, save the patch
+     (p. 60).
+     MEMO
+     If you want to adjust the overall volume of the patch, use the cursor
+     buttons to select the PATCH LEVEL field, and use the dial to edit the
+     value.
+     Value: 0–200
+
+
+
+
+                                                                                                                                                                              39
+Effect Settings (EFFECT)
+
+                                                                                 Specifying the connection destination of the tones
+ Changing the Structure/Specifying                                               6.   Use the cursor buttons to move the cursor to the position
+ the Connection Destination                                                           shown in the illustration.
+
+     If you want to change the way in which the effects are arranged, you
+     can switch the structure.
+     The GR-55 provides two structures, which have the following features.
+
+                      This structure uses AMP+MOD and MFX in parallel.
+                      Use this structure when you want to apply the effects                   If the border is a dashed line, the tone switch is
+                      separately; the MFX effect to the synthesizer sound, and                turned off. You can set the tone switch in the TONE
+                      the AMP+MOD effects to the guitar modeling sound.                       tab of the EDIT screen (p. 23).
+      STRUCTURE 1
+
+                                                                                 7.   Use the dial to change the connection destination of the
+                                                                                      tone.
+                                                                                       Setting          Description
+                      This structure connects AMP+MOD and MFX in series.               BYPS             The tone will not use MFX, AMP, or MOD.
+                      Use this structure when you want to apply the MFX effect         AMP              The tone is connected to AMP.
+                      to the entire patch, and both the AMP+MOD effects and
+                      the MFX effect to the guitar modeling sound.                     MFX              The tone is connected to MFX.
+      STRUCTURE 2
+                                                                                 8.   When you’ve finished editing, press the [EXIT] button.
+                                                                                 9.   If you want to keep the changes you made, save the patch
+                                                                                      (p. 60).
+
+                                                                                 10.
+1.   In step 5 of “Switching the Effect Type,” select the effect that
+     you want to edit.
+2.   Press the [ENTER] button.
+     The EFFECT EDIT screen will appear.
+
+Changing the structure
+3.   Use the PAGE [ ] [ ] buttons to select the STRUCT tab.
+
+
+
+
+4.   Use the cursor buttons to move the cursor to the position
+     shown in the illustration.
+
+
+
+
+5.   Use the dial to change the structure.
+
+
+
+
+40
+                                                                                                                          Effect Settings (EFFECT)
+
+
+Parameter List (EFFECT)                                                              Group    Parameter      Value          Description
+                                                                                                             Selects the speaker type.
+
+ * Company names and product names appearing in this document                                                OFF            Turns off the speaker simulator.
+   are the registered trademarks or trademarks of their respective                                                          The built-in speaker of the amp
+                                                                                                             ORIGIN
+   owners. This document uses these names in order to appropriately                                                         you selected with AMP TYPE.
+   describe the sounds simulated by COSM technology.                                                                        An open-back speaker cabinet
+                                                                                                             1x8”
+                                                                                                                            with one 8-inch speaker.
+
+  About the RATE and DELAY TIME parameters                                                                   1x10”
+                                                                                                                            An open-back speaker cabinet
+                                                                                                                            with one 10-inch speaker.
+ If you choose “BPM” for these parameters, the value of the parameter will be
+ determined by the “PATCH TEMPO” (p. 58) specified for each patch. This makes it                                            An open-back speaker cabinet
+                                                                                              SPEAKER TYPE   1x12”
+ easy to create an effect sound that is synchronized to the tempo of the song.                                              with one 12-inch speaker.
+                                                                                                                            An open-back speaker cabinet
+                                                                                                             2x12”
+                                                                                                                            with two 12-inch speakers.
+                                                                                                                            A closed-back speaker cabinet
+AMP                                                                                                          4x10”
+                                                                                                                            with four 10-inch speakers.
+                                                                                                                            A closed-back speaker cabinet
+                                                                                                             4x12”
+Group          Parameter            Value          Description                                                              with four 12-inch speakers.
+
+               SWITCH               OFF, ON        Turns the AMP OFF/ON.                                                    A double stack of two closed-
+                                                                                                             8x12”          back cabinets, each with four
+                                    Refer to                                                                                12-inch speakers.
+               TYPE                                Specifies the AMP type.
+                                    “AMP Type“
+                                                                                                             This setting selects the simulated microphone
+                                                   Adjusts the distortion of the                             type.
+               GAIN #               0–120
+                                                   amp.
+                                                                                                                            Models the Shure SM57,
+                                                   Adjusts the overall volume of                                            a general-use dynamic
+               LEVEL                0–100          the preamp. Take care not to                                             microphone used for
+                                                   raise LEVEL excessively.                                  DYN57
+                                                                                                                            instruments and vocals.
+TYPE                                                                                                                        Optimal for use in miking
+                                                   Switches the amount of the
+                                                                                                                            guitar amps.
+                                    LOW,           amp’s distortion in three         SP/MIC
+               GAIN SW              MIDDLE,        levels. LOW, MIDDLE, and HIGH                                            Models the Sennheiser MD421,
+                                    HIGH           provide progressively greater                             DYN421         a dynamic microphone with
+                                                   distortion.                                MIC TYPE                      extended low end.
+                                                   Switches to a sound suitable                                             Models the AKG C451B, a
+               SOLO SW              OFF, ON
+                                                   for solos.                                                               small-diaphragm condenser
+                                                                                                             CND451
+                                                                                                                            microphone for use with
+                                                   Adjusts the volume when SOLO
+               SOLO LEVEL           0–100                                                                                   instruments.
+                                                   SW is “ON.”
+                                                                                                                            Models the Neumann U 87, a
+                                                   Adjusts the tone for the low
+               BASS #               0–100                                                                    CND87          condenser microphone with
+                                                   frequency range.
+                                                                                                                            flat response.
+                                                   Adjusts the tone for the middle
+               MIDDLE #             0–100                                                                                   Simulates a microphone with
+                                                   frequency range.                                          FLAT
+                                                                                                                            perfectly flat response.
+                                                   Adjusts the tone for the high
+               TREBLE #             0–100                                                                    Simulates the distance between the
+                                                   frequency range.
+                                                                                                             microphone and speaker.
+                                                   Adjusts the tone for the ultra
+                                                                                                                            Microphone is placed at a
+                                                   high frequency range.                      MIC DISTANCE   OFF MIC
+                                                                                                                            distance from the speaker.
+                                                   When VO DRIVE, VO LEAD,
+                                                   VO CLEAN, MATCH DRIVE,                                                   Microphone is placed so it’s
+               PRESENCE             0–100                                                                    ON MIC
+                                                   FAT MATCH, or MATCH LEAD                                                 near the speaker.
+TONE
+                                                   is selected for TYPE, the                                 This simulates the microphone position.
+                                                   PRESENCE parameter functions
+                                                   as a high cut filter.                                                    Microphone is set up so it’s
+                                                                                                             CENTER         pointed at the center of the
+                                    The BRIGHT parameter setting is only available            MIC POSITION                  speaker’s cone.
+                                    when BOSS CLEAN, JC-120, JAZZ COMBO,
+                                    CLEAN TWIN, PRO CRUNCH, TWEED, BOSS                                                     Microphone is positioned at
+                                    CRUNCH, BLUES, STACK CRUNCH, BG LEAD, BG                                 1–10           the specified distance from the
+               BRIGHT               DRIVE, or BG RHYTHM is selected.                                                        center of the speaker’s cone.
+
+                                    OFF            BRIGHT is not used.                                                      Adjusts the volume of the
+                                                                                              MIC LEVEL      0–100
+                                                                                                                            microphone.
+                                                   BRIGHT is switched on to create
+                                    ON
+                                                   a lighter and crisper tone.
+
+
+
+
+                                                                                                                                                           41
+Effect Settings (EFFECT)
+
+AMP TYPE                                                                        Value                  Description
+                                                                                                       A crunch sound with natural distortion that sounds
+                                                                                41: BASS CRUNCH
+ Value                Description                                                                      great with bass guitars.
+
+ 01: BOSS CLEAN       A clean sound that is smooth and warm.                    42: BASS HIGAIN        A high-gain sound suitable for use with bass guitars.
+
+ 02: JC-120           The sound of the Roland JC-120.
+ 03: JAZZ COMBO       A sound suited to jazz.
+                      A sound with flat response.
+                                                                                MOD
+ 04: FULL RANGE
+                      Good for acoustic guitar.
+                                                                                Group    Parameter     Value            Description
+ 05: CLEAN TWIN       Models a Fender Twin Reverb.
+                                                                                         SWITCH        OFF, ON          Turns MOD OFF/ON.
+ 06: PRO CRUNCH       Models a Fender Pro Reverb.
+                                                                                                                        Adjusts the pan position.
+ 07: TWEED            Models a Fender Bassman 4 x 10” Combo.                             PAN           L50–R50          The PAN parameter is valid even if
+                                                                                TYPE
+ 08: DELUXE CRUNCH    Models a Fender Deluxe Reverb.                                                                    SWITCH is “OFF.”
+
+                      A crunch sound that faithfully reproduces picking                                Refer to
+ 09: BOSS CRUNCH                                                                         EFFECT TYPE                    Specifies the MOD type.
+                      nuances.                                                                         “MOD Type“
+
+ 10: BLUES            A sound suited to blues.                                           SWITCH        OFF, ON          Turns the noise suppressor on/off.
+
+ 11: WILD CRUNCH      A crunch sound with wild distortion.                                                              Adjusts the effect in response to the
+                                                                                                                        level of noise.
+ 12: STACK CRUNCH     A crunch sound with high gain.
+                                                                                                                        A value of 0 switches off the noise
+                      Models the drive sound of a VOX AC-30TB. This is a                                                suppressor.
+ 13: VO DRIVE                                                                            THRESHOLD     0–100
+                      sound that it suited to sixties-style British rock.
+                                                                                NS                                      Setting this higher than necessary
+ 14: VO LEAD          Models the lead sound of the VOX AC-30TB.                                                         may cause no sound to be produced
+                                                                                                                        when the guitar is played at low
+ 15: VO CLEAN         Models the clean sound of the VOX AC-30TB.
+                                                                                                                        volume.
+                      Models the sound produced using the left input on a
+                                                                                                                        Adjusts the time from when the noise
+ 16: MATCH DRIVE      Matchless D/C-30, a modern tube amp widely used in
+                                                                                         RELEASE       0–100            suppressor begins to function until
+                      styles from blues to rock.
+                                                                                                                        the noise level reaches “0.”
+                      Models the sound of a Matchless modified for high
+ 17: FAT MATCH
+                      gain.
+                      Models the sound produced using the right input on a
+ 18: MATCH LEAD
+                      Matchless D/C-30.
+                      Models the lead sound of the Mesa/Boogie combo
+ 19: BG LEAD          amp, a tube amp that was very popular in the late ‘70s
+                      and ‘80s.
+ 20: BG DRIVE         Models a Mesa/Boogie with Treble Shift Switch on.
+                      Models the rhythm channel of a Mesa/Boogie combo
+ 21: BG RHYTHM
+                      amp.
+                      Models the sound produced using Input I on a
+ 22: MS1959 I         Marshall 1959 Super Lead amp. This is a trebly sound
+                      suited to hard rock.
+                      The sound of connecting Inputs I and II of the Marshall
+ 23: MS1959 I+II      1959 amp in parallel, creating a sound with a stronger
+                      low end than I.
+                      Models the sound of a Marshall modified with a
+ 24: MS HIGAIN
+                      midrange boost.
+
+                      This is a Marshall sound that’s been tweaked for a
+ 25: MS SCOOP
+                      metal sound.
+
+                      Models the sound of the Channel 2 VINTAGE Mode on
+ 26: R-FIER VINTAGE
+                      the Mesa/Boogie DUAL Rectifier.
+                      Models the sound of the Channel 2 MODERN Mode on
+ 27: R-FIER MODERN
+                      the Mesa/Boogie DUAL Rectifier.
+                      Models the sound of the Channel 1 CLEAN Mode on
+ 28: R-FIER CLEAN
+                      the Mesa/Boogie DUAL Rectifier.
+ 29: T-AMP LEAD       Models AMP3 on a Hughes & Kettner TriAmp.
+ 30: T-AMP CRUNCH     Models AMP2 on a Hughes & Kettner TriAmp.
+ 31: T-AMP CLEAN      Models AMP1 on a Hughes & Kettner TriAmp.
+ 32: BOSS DRIVE       A drive sound producing awesome distortion.
+                      Models a Soldano SLO-100, a very popular tube amp
+ 33: SLDN
+                      in the 1980s.
+ 34: LEAD STACK       A lead sound with high gain.
+ 35: HEAVY LEAD       A powerful lead sound featuring extreme distortion.
+ 36: BOSS METAL       A metal sound suited to heavy riffs.
+ 37: 5150 DRIVE       Models the lead channel of a Peavey EVH 5150.
+ 38: METAL LEAD       A lead sound suited to metal.
+ 39: EDGE LEAD        A sharp sound suited for lead play.
+ 40: BASS CLEAN       A clean sound that is great for use with bass guitars.
+
+
+42
+                                                                                                                                     Effect Settings (EFFECT)
+
+MOD Type                                                                       02: WAH
+                                                                                Parameter            Value             Description
+
+01: OD/DS                                                                                            Selects the wah mode.
+                                                                                                                       You can use an expression pedal to control
+Parameter   Value              Description                                                           MANUAL (*3)
+                                                                                MODE #                                 wah.
+            Selects the type of effect.                                                              T.UP              Produces a wah effect matched to the
+                               A booster with unique characteristics in the                          T.DOWN            intensity of picking.
+            MID BOOST          midrange. This produces a great sound for
+                               solos.                                                                Selects the type of wah.
+
+                               This can be used not only as a booster, but                                             Models the sound of the CRY BABY wah
+                                                                                                     CRY WAH
+            CLEAN BOOST        also can be used by itself to provide clean                                             pedal popular in the ‘70s.
+                               tones with punch.
+                                                                                                     VO WAH            Models the sound of the VOX V846.
+                               A booster that has bright sound
+            TREBLE BOOST                                                                             FAT WAH           This is a wah sound featuring a bold tone.
+                               characteristics.
+                                                                                TYPE (*1)                              This wah has a refined sound with no
+                               The crunch sound of the BOSS BD-2.                                    LIGHT WAH
+                                                                                                                       unusual characteristics.
+            BLUES OD           A unique overdrive that faithfully reproduces
+                               the nuances of picking.                                                                 This expanded wah features a variable range
+                                                                                                     7STRING WAH       compatible with seven-string and baritone
+                               A brilliant crunch sound to which the
+                                                                                                                       guitars.
+            CRUNCH             distortion elements of an amp have been
+                               added.                                                                                  This completely original effect offers
+                                                                                                     RESO WAH          enhancements on the characteristic
+                               Produces the natural sounding distortion of
+            NATURAL OD                                                                                                 resonances produced by analog synth filters.
+                               a slightly overdriven amp.
+                                                                                                                       Adjusts the position of the wah pedal.
+                               The sound of the BOSS OD-1. It produces          PEDAL POSITION
+            OD-1                                                                                     0–100             This parameter will change when you
+                               sweet, mild distortion.                          (*1)
+                                                                                                                       operate the expression pedal.
+            T-SCREAM           Models an Ibanez TS-808.
+                                                                                                                       Adjusts the sensitivity of response to the
+                               The high-gain overdrive sound of the BOSS        SENS (*2)            0–100
+            TURBO OD                                                                                                   input sound.
+                               OD-2.
+            WARM OD            A warm overdrive.                                                                       Adjusts the center frequency of the Wah
+                                                                                FREQUENCY (*2)       0–100
+                                                                                                                       effect.
+            DISTORTION         A basic, traditional distortion sound.
+TYPE
+            MILD DS            Produces a mild distortion.
+                                                                                PEAK (*2)            0–100             Adjusts the intensity of the wah sound.
+            MID DS             Distortion that emphasizes the midrange.
+
+            RAT                Models a ProCo RAT.
+                                                                                LEVEL                0–100             Adjusts the volume level of the effect.
+            GUV DS             Models a Marshall Guv’nor.
+
+            DST+               Models an MXR Distortion Plus.                  (*1) Setting available with MODE set to “MANUAL.”
+                                                                               (*2) Setting available with MODE set to “T.UP” or “T.DOWN.”
+                               The deep distortion sound of a large
+            MODERN DS                                                          (*3) Assign the controller to the expression pedal.
+                               stack-type amp.
+                                                                               As the assigned parameter, set the PEDAL/GK CTL setting EXP-FUNCTION to“MOD
+            SOLID DS           A distortion sound that has a lot of edge.      CONTROL” (p. 57).
+                               A fat sound to which the distortion elements
+            STACK
+                               of a stack amp have been added.                 03: COMP
+                               This distortion sound is ideal for performing
+            LOUD                                                                Parameter            Value             Description
+                               heavy riffs.
+                                                                                SUSTAIN #            0–100             Adjusts the sustain for the sound.
+                               The sound of the BOSS MT-2. It produces a
+            METAL ZONE         wide range of metal sounds, from old style       ATTACK #             0–100             Adjusts the attack (onset) of the sound.
+                               to slash metal.
+                                                                                LEVEL                0–100             Adjusts the volume level of the effect.
+                               Produces a distortion sound with the
+            LEAD               smoothness of an overdrive along with a
+                               deep distortion.                                04: LIMITER
+                               Models a Fuzz Face. It produces a fat fuzz
+            60S FUZZ                                                            Parameter            Value             Description
+                               sound.
+                                                                                                                       When the input signal level exceeds the level
+            OCT FUZZ           Models an Ace Tone FUZZ.                         THRESHOLD #          0–100
+                                                                                                                       set here, limiting will be applied.
+            MUFF FUZZ          Models an Electro-Harmonix Big Muff π.           RELEASE #            0–100             Adjusts the release time.
+DRIVE #     0–120              Adjusts the intensity of the distortion.         LEVEL                0–100             Adjusts the volume level of the effect.
+TONE #      -50– +50           Adjusts the brightness of the sound.
+LEVEL       0–100              Adjusts the volume level for OD/DS.             05: OCTAVE
+                                                                                Parameter           Value            Description
+                                                                                                                     Adds sound one octave lower than the input,
+                                                                                                                     giving a weighty feel to the sound. Play single
+                                                                                OCTAVE LEVEL        0–100            notes, with the other strings muted completely.
+                                                                                                                     This parameter specifies the volume of the
+                                                                                                                     octave-lowered sound.
+                                                                                DIRECT LEVEL #      0–100            Adjusts the volume level of the direct sound.
+
+
+
+
+                                                                                                                                                                     43
+Effect Settings (EFFECT)
+
+06: PHASER                                                                           11: PAN
+ Parameter          Value               Description                                  Parameter      Value            Description
+                    Selects the number of stages that the phaser effect uses.                       0–100,
+                                                                                     RATE #                          Adjusts the rate of change in the pan position.
+                                        A four-phase effect. A light phaser effect                  BPM –
+                    4 STAGE
+                                        is obtained.                                                                 Adjusts the intensity of the change in the pan
+                                                                                     DEPTH #        0–100
+                                        An eight-phase effect. This is the most                                      position.
+                    8 STAGE
+ TYPE                                   common phaser effect.                                                        Adjusts the curve for pan position changes.
+                                                                                     WAVE SHAPE #   0–100
+                                        A twelve-phase effect. A deep phase                                          Higher values produce steeper change.
+                    12 STAGE
+                                        effect is obtained.                          LEVEL          0–100            Adjusts the volume level of the effect.
+                                        A phaser with two phase-shift circuits
+                    BI-PHASE
+                                        connected in series.
+
+ RATE #                                 Adjusts the speed of the effect.
+                                                                                     12: DELAY
+                    0–100, BPM –
+                                                                                     Parameter      Value            Description
+ DEPTH #            0–100               Adjusts the richness of the effect.
+                                                                                                    Use this to choose the type of delay.
+ RESONANCE #        0–100               Adjusts the intensity of the effect.
+                                                                                                    SINGLE           A simple monaural delay.
+ LEVEL              0–100               Adjusts the volume level of the effect.
+                                                                                                                     Provides a tap delay effect that divides the
+                                                                                                    PAN
+                                                                                                                     delay time between the left and right channels.
+07: FLANGER                                                                                                          The direct sound is output from the left
+                                                                                                    STEREO           channel, and the effect sound is output from
+ Parameter      Value           Description                                                                          the right channel.
+                0–100,                                                               TYPE           REVERSE          Produces the effect of playback in reverse.
+ RATE #                         Adjusts the speed of the effect.
+                BPM –
+                                                                                                    ANALOG           Produces a mild analog delay sound.
+ DEPTH #        0–100           Adjusts the richness of the effect.
+                                                                                                                     Provides the characteristic wavering sound of
+                                                                                                    TAPE
+                                Adjusts the modulation frequency of the                                              a tape echo.
+ MANUAL #       0–100
+                                flanger effect.
+                                                                                                                     A delay with a pleasant amount of modulation
+                                                                                                    MODULATE
+ RESONANCE #    0–100           Adjusts the intensity of the effect.                                                 added.
+ LEVEL          0–100           Adjusts the volume level of the effect.                                              Produces a warm-sounding delay with the high
+                                                                                                    HICUT
+                                                                                                                     frequencies attenuated.
+                                                                                                    1–3400 msec,
+08: TREMOLO                                                                          TIME #
+                                                                                                    BPM –
+                                                                                                                     Adjusts the delay time.
+
+ Parameter      Value          Description                                           FEEDBACK #     0–100            Adjusts the number of repetitions for the delay.
+                0–100,                                                                                               Adjusts the volume level of the effect.
+ RATE #                        Adjusts the speed of the effect.
+                BPM –                                                                EFFECT LEVEL   0–120            When TYPE is set to “REVERSE,” this adjusts the
+ DEPTH #        0–100          Adjusts the intensity of the effect.                                                  balance of direct and effect sound.
+
+                               Adjusts the curve for changes in the volume
+ WAVE SHAPE #   0–100          level. A higher value makes the change more
+                               abrupt.
+                                                                                     13: CHORUS
+ LEVEL          0–100          Adjusts the volume level of the effect.               Parameter      Value            Description
+                                                                                                    Use this to choose the type of chorus.
+
+09: ROTARY                                                                                          MONO
+                                                                                                                     This chorus effect outputs the same sound from
+                                                                                                                     the left and right channels.
+ Parameter      Value          Description                                                                           A stereo chorus effect that adds different
+                                                                                                    STEREO 1
+                0–100,                                                                                               chorus sounds to the left and right channels.
+                               Adjusts the rate of modulation when SPEED
+ RATE SLOW #
+                BPM –          SELECT is “SLOW.”                                                                     This stereo chorus uses spatial synthesis, with
+                                                                                                    STEREO 2         the direct sound output in the left channel and
+                0–100,         Adjusts the rate of modulation when SPEED             TYPE
+ RATE FAST #                                                                                                         the effect sound output in the right channel.
+                BPM –          SELECT is “FAST.”
+                                                                                                                     Features a more suppressed high end than
+ DEPTH #        0–100          Adjusts the richness of the effect.                                  MONO MILD
+                                                                                                                     MONO.
+ SPEED SELECT                  Changes the rotation speed of the simulated                          STEREO 1         Features a more suppressed high end than
+                SLOW, FAST
+ #                             speaker.                                                             MILD             STEREO 1.
+ LEVEL          0–100          Adjusts the volume level of the effect.                              STEREO 2         Features a more suppressed high end than
+                                                                                                    MILD             STEREO 2.
+
+10: UNI-V                                                                            RATE #
+                                                                                                    0–100,
+                                                                                                    BPM –
+                                                                                                                     Adjusts the speed of the effect.
+
+ Parameter      Value          Description                                           DEPTH #        0–100            Adjusts the richness of the effect.
+                0–100,                                                               EFFECT LEVEL   0–100            Adjusts the volume level of the effect.
+ RATE #                        Adjusts the speed of the effect.
+                BPM –
+ DEPTH #        0–100          Adjusts the richness of the effect.
+ LEVEL          0–100          Adjusts the volume level of the effect.
+
+
+
+
+44
+                                                                                                                                            Effect Settings (EFFECT)
+
+14: EQ                                                                                MFX
+    LOW GAIN      LO-MID GAIN    HI-MID GAIN       HIGH GAIN
+
+                                                                                      Group        Parameter         Value               Description
+                                                                                                   SWITCH            OFF, ON             Turns MFX OFF/ON.
+                                                                                                                                         Adjusts the pan position.
+                                                         Frequency                    Name of
+                                                                                                   PAN               L50–R50             The PAN parameter is valid even if
+                                                                                      MFX type
+                                                                                      indicated                                          SWITCH is “OFF.”
+                                                                                                                     Refer to “MFX
+                                                                                                   EFFECT TYPE                           Specifies the MFX type.
+                                                                                                                     Type”
+                  LO-MID FREQ    HI-MID FREQ
+
+ Parameter       Value          Description                                          MFX Type
+                                Specifies the frequency at which the low
+                 FLAT,
+ LOW CUT                        cut filter begins to take effect. When FLAT is
+                 55–800 Hz
+                                selected, the low cut filter will have no effect.    01: EQ
+ LOW GAIN #      -20–+20 dB     Adjusts the low frequency range tone.                This EQ lets you modify the tone quality by adjusting the low range, two mid-ranges,
+                                                                                     and the high range.
+                 20.0 Hz–       Specifies the center of the frequency range that
+ LO-MID FREQ
+                 10.0 kHz       will be adjusted by the LO-MID GAIN.                 L in                   4-Band EQ                           L out
+                                Adjusts the width of the area affected by the EQ
+ LO-MID Q        0.5–16         centered at the LO-MID FREQ. Higher values will
+                                narrow the area.
+                                                                                     R in                   4-Band EQ                           R out
+ LO-MID GAIN #   -20–+20 dB     Adjusts the low-middle frequency range tone.
+                 20.0 Hz–       Specifies the center of the frequency range that
+ HI-MID FREQ                                                                          Parameter                Value                        Description
+                 10.0 kHz       will be adjusted by the HI-MID GAIN.
+                                Adjusts the width of the area affected by the EQ                                                            Specifies the frequency of the
+                                                                                      LOW FREQ                 200, 400 Hz
+ HI-MID Q        0.5–16         centered at the HI-MID FREQ. Higher values will                                                             low range.
+                                narrow the area.                                                                                            Adjusts the gain of the low
+                                                                                      LOW GAIN #               -15–+15 dB
+ HI-MID GAIN #   -20–+20 dB     Adjusts the high-middle frequency range tone.                                                               range.
+
+ HIGH GAIN #     -20–+20 dB     Adjusts the high frequency range tone.                                                                      Adjusts the frequency of middle
+                                                                                      MID1 FREQ                200–8000 Hz
+                                                                                                                                            range 1.
+                 700 Hz–        Specifies the frequency at which the high
+ HIGH CUT        11.0 kHz,      cut filter begins to take effect. When FLAT is                                                              Adjusts the gain of middle
+                                                                                      MID1 GAIN #              -15–+15 dB
+                 FLAT           selected, the high cut filter will have no effect.                                                          range 1.
+
+ LEVEL           -20–+20 dB     Adjusts the overall volume of the equalizer.                                                                Specifies the width of middle
+                                                                                                                                            range 1.
+                                                                                      MID1 Q                   0.5, 1.0, 2.0, 4.0, 8.0
+                                                                                                                                            Set a higher value for Q to
+                                                                                                                                            narrow the range to be affected.
+                                                                                                                                            Adjusts the frequency of middle
+                                                                                      MID2 FREQ                200–8000 Hz
+                                                                                                                                            range 2.
+                                                                                                                                            Adjusts the gain of middle
+                                                                                      MID2 GAIN #              -15–+15 dB
+                                                                                                                                            range 2.
+                                                                                                                                            Specifies the width of middle
+                                                                                                                                            range 2.
+                                                                                      MID2 Q                   0.5, 1.0, 2.0, 4.0, 8.0
+                                                                                                                                            Set a higher value for Q to
+                                                                                                                                            narrow the range to be affected.
+                                                                                                                                            Specifies the frequency of the
+                                                                                      HIGH FREQ                2000, 4000, 8000 Hz
+                                                                                                                                            high range.
+                                                                                                                                            Adjusts the gain of the high
+                                                                                      HIGH GAIN #              -15–+15 dB
+                                                                                                                                            range.
+                                                                                      LEVEL                    0–100                        Adjusts the output volume.
+
+
+
+
+                                                                                                                                                                              45
+Effect Settings (EFFECT)
+
+02: SUPER FILTER                                                                                03: PHASER
+This is a filter with an extremely sharp slope. The cutoff frequency can be varied              This is a stereo phaser. A phase-shifted sound is added to the original sound and
+cyclically.                                                                                     modulated.
+
+L in                   Super Filter                          L out
+                                                                                                L in                                                 2-Band            L out
+                                                                                                                        Phaser
+                                                                                                                                                       EQ
+R in                   Super Filter                          R out                                                                     Mix
+
+
+ Parameter                 Value                         Description                                                                   Mix
+                                                                                                R in                    Phaser                       2-Band            R out
+                           Selects the type of filter.                                                                                                 EQ
+                           Specifies the frequencies allowed to pass through the
+                           filter.
+                           LPF                           Frequencies below the cutoff            Parameter                  Value                      Description
+ FILTER TYPE #                                           Frequencies in the region of the                                   4-STAGE,
+                           BPF                                                                                                                         This sets the number of stages in
+                                                         cutoff                                  MODE                       8-STAGE,
+                                                                                                                                                       the phaser.
+                                                                                                                            12-STAGE
+                           HPF                           Frequencies above the cutoff
+                                                                                                                                                       Adjusts the basic frequency
+                                                         Frequencies other than the              MANUAL #                   0–100                      from which the sound will be
+                           NOTCH
+                                                         region of the cutoff                                                                          modulated.
+                           Specifies the slope of the filter (steepness, in terms of the                                                               Adjusts the rate of the
+                           attenuation per octave).                                              RATE #                     0–100, BPM –               modulation.
+ FILTER SLOPE              -12 dB                        Gentle                                  DEPTH #                    0–100                      Adjusts the depth of modulation.
+                           -24 dB                        Steep                                                              Selects whether the left and right phase of the modulation
+                           -36 dB                        Extremely steep                                                    will be the same or the opposite.
+
+                                                         Adjusts the cutoff frequency of                                                               The left and right phase will be
+                                                         the filter.                                                        INVERSE                    opposite. When using a mono
+ FILTER CUTOFF #           0–100                                                                 POLARITY
+                                                         Increasing this value will raise the                                                          source, this spreads the sound.
+                                                         cutoff frequency.                                                                             The left and right phase will
+                                                         Adjusts the filter resonance level.                                SYNCHRO                    be the same. Select this when
+ FILTER                                                  Increasing this value will                                                                    inputting a stereo source.
+                           0–100
+ RESONANCE #                                             emphasize the region near the           RESONANCE #                0–100                      Adjusts the amount of feedback.
+                                                         cutoff frequency.
+                                                                                                                                                       Adjusts the proportion of the
+                                                         Adjusts the amount of boost for         CROSS                                                 phaser sound that is fed back
+ FILTER GAIN #             0–+12 dB                                                                                         -98–+98%
+                                                         the filter output.                      FEEDBACK                                              into the effect. Negative (-)
+                                                         This is the on/off switch for cyclic                                                          settings will invert the phase.
+ MODULATION SW             OFF, ON
+                                                         change.                                                                                       Adjusts the level of the phase-
+                                                                                                 MIX                        0–100
+                           Specifies how the cutoff frequency will be modulated.                                                                       shifted sound.
+
+                           TRI                           Triangle wave                           LOW GAIN                   -15–+15 dB                 Adjusts the gain of the low range.
+
+                           SQR                           Square wave                                                                                   Adjusts the gain of the high
+                                                                                                 HIGH GAIN                  -15–+15 dB
+                                                                                                                                                       range.
+                           SIN                           Sine wave
+                                                                                                 LEVEL                      0–100                      Adjusts the output volume.
+                           SAW1                          Sawtooth wave (upward)
+ MODULATION WAVE
+                           SAW2                          Sawtooth wave (downward)
+
+                           SAW1                                SAW2
+                                                                                                04: STEP PHASER
+                                                                                                This is a stereo phaser. The phaser effect will be varied gradually.
+
+
+
+                                                                                                L in                                                     2-Band          L out
+                                                                                                                      Step Phaser
+                                                                                                                                                           EQ
+ RATE                                                    Adjusts the rate of modulation.                                                   Mix
+                           0–100, BPM –
+ DEPTH                     0–100                         Adjusts the depth of modulation.                                                  Mix
+                                                         Adjusts the speed at which the         R in                  Step Phaser                        2-Band          R out
+                                                         cutoff frequency will change.                                                                     EQ
+ ATTACK                    0–100
+                                                         This is effective if MODULATION
+                                                         WAVE is SQR, SAW1, or SAW2.
+                                                                                                 Parameter                  Value                      Description
+ LEVEL                     0–100                         Adjusts the output volume.
+                                                                                                                            4-STAGE,
+                                                                                                                                                       Specifies the number of stages in
+                                                                                                 MODE                       8-STAGE,
+                                                                                                                                                       the phaser.
+                                                                                                                            12-STAGE
+                                                                                                                                                       Adjusts the basic frequency
+                                                                                                 MANUAL #                   0–100                      from which the sound will be
+                                                                                                                                                       modulated.
+                                                                                                                                                       Adjusts the rate of the
+                                                                                                 RATE #                     0–100, BPM –               modulation.
+                                                                                                 DEPTH                      0–100                      Adjusts the depth of modulation.
+
+
+
+
+46
+                                                                                                                                                Effect Settings (EFFECT)
+
+ Parameter                 Value                    Description                           06: TREMOLO
+                           Selects whether the left and right phase of the modulation     Cyclically alters the volume.
+                           will be the same or the opposite.
+                                                                                          L in         Tremolo                2-Band EQ             L out
+                                                    The left and right phase will be
+                           INVERSE                  opposite. When using a mono
+ POLARITY
+                                                    source, this spreads the sound.       R in                                                      R out
+                                                                                                       Tremolo                2-Band EQ
+                                                    The left and right phase will
+                           SYNCHRO                  be the same. Select this when
+                                                    inputting a stereo source.             Parameter                  Value                     Description
+
+ RESONANCE #               0–100                    Adjusts the amount of feedback.                                   Specifies how the volume will be modulated.
+
+                                                    Adjusts the proportion of the                                     TRI                       Triangle wave
+ CROSS                                              phaser sound that is fed back                                     SQR                       Square wave
+                           -98–+98%
+ FEEDBACK                                           into the effect. Negative (-)
+                                                    settings will invert the phase.                                   SIN                       Sine wave
+
+                                                    Adjusts the rate of the stepwise       MOD WAVE #                 SAW1/2                    Sawtooth wave
+ STEP RATE #               0–100, BPM –             change in the phaser effect.
+                                                                                                                      SAW1                            SAW2
+                                                    Adjusts the level of the phase-
+ MIX                       0–100
+                                                    shifted sound.
+                                                    Adjusts the gain of the low
+ LOW GAIN                  -15–+15 dB
+                                                    range.
+                                                                                                                                                Adjusts the frequency of the
+                                                    Adjusts the gain of the high           RATE #                     0–100, BPM –
+ HIGH GAIN                 -15–+15 dB                                                                                                           change.
+                                                    range.
+                                                                                           DEPTH #                    0–100                     Adjusts the depth of the effect.
+ LEVEL                     0–100                    Adjusts the output volume.
+                                                                                           LOW GAIN                   -15–+15 dB                Adjusts the gain of the low range.
+                                                                                                                                                Adjusts the gain of the high
+05: RING MODULATOR                                                                         HIGH GAIN                  -15–+15 dB
+                                                                                                                                                range.
+This is an effect that applies amplitude modulation (AM) to the input signal, producing
+                                                                                           LEVEL                      0–100                     Adjusts the output volume.
+bell-like sounds. You can also change the modulation frequency in response to
+changes in the volume of the sound sent into the effect.
+
+L in        Ring Mod               2-Band EQ            L out                             07: AUTO PAN
+                                                                                          Cyclically varies the stereo location of the sound.
+
+                                                                                          L in        Auto Pan                2-Band EQ             L out
+R in       Ring Mod                2-Band EQ            R out
+
+                                                                                          R in        Auto Pan                2-Band EQ             R out
+ Parameter                 Value                    Description
+                                                    Adjusts the frequency at which
+ FREQUENCY #               0–127                                                           Parameter                  Value                     Description
+                                                    modulation is applied.
+                                                    Adjusts the amount of frequency                                   Specifies how the pan position will be varied.
+ SENS #                    0–100
+                                                    modulation applied.                                               TRI                       Triangle wave
+                           Determines whether the frequency modulation moves                                          SQR                       Square wave
+                           towards higher frequencies or lower frequencies.
+ POLARITY                                                                                                             SIN                       Sine wave
+                           UP                       Higher frequencies
+                                                                                                                      SAW1/2                    Sawtooth wave
+                           DOWN                     Lower frequencies                      MOD WAVE
+                                                                                                                      SAW1                           SAW2
+                                                    Adjusts the gain of the low
+ LOW GAIN                  -15–+15 dB                                                                                 R                              R
+                                                    frequency range.
+                                                    Adjusts the gain of the high
+ HIGH GAIN                 -15–+15 dB
+                                                    frequency range.
+                                                    Adjusts the volume balance                                        L                               L
+ BALANCE #                 D100:0W–D0:100W          between the direct sound (D)
+                                                    and the effect sound (W).                                                                   Adjusts the frequency of the
+                                                                                           RATE #                     0–100, BPM –              change.
+ LEVEL                     0–100                    Adjusts the output volume.
+                                                                                           DEPTH #                    0–100                     Adjusts the depth of the effect.
+                                                                                           LOW GAIN                   -15–+15 dB                Adjusts the gain of the low range.
+                                                                                                                                                Adjusts the gain of the high
+                                                                                           HIGH GAIN                  -15–+15 dB
+                                                                                                                                                range.
+                                                                                           LEVEL                      0–100                     Adjusts the output volume.
+
+
+
+
+                                                                                                                                                                               47
+Effect Settings (EFFECT)
+
+08: SLICER                                                                                   Parameter                 Value                     Description
+By applying successive cuts to the sound, this effect turns a conventional sound into a                                                          Specifies how the sound of the
+sound that appears to be played as a backing phrase. This is especially effective when       SPREAD                    0–10
+                                                                                                                                                 rotary speaker will be spread.
+applied to sustain-type sounds.
+                                                                                             LOW GAIN                  -15–+15 dB                Adjusts the gain of the low range.
+       L in                    Slicer                           L out                                                                            Adjusts the gain of the high
+                                                                                             HIGH GAIN                 -15–+15 dB
+                                                                                                                                                 range.
+                                                                                             LEVEL                     0–100                     Adjusts the output volume.
+       R in                    Slicer                           R out
+                                                                                            10: HEXA-CHORUS
+ Parameter                 Value                      Description                           This type uses a six-phase chorus (six layers of chorused sound) to give richness and
+                                                      Selects the slice pattern used to     spatial spread to the sound.
+ PATTERN #                 P01–P20
+                                                      cut the sound.
+                                                                                            L in                                                 L out
+ RATE #
+                                                      Specifies the rate at which the                                   Balance D
+                           0–100, BPM –               16-step sequence will repeat.                                                       Balance W
+                                                      Adjusts the speed at which the                           Hexa Chorus
+ ATTACK #                  0–100
+                                                      level changes between steps.                                                        Balance W
+                                                      Specifies whether an input            R in                                                  R out
+                                                      note will cause the sequence to                                   Balance D
+ INPUT SYNC SW             OFF, ON
+                                                      resume from the first step of the
+                                                      sequence (ON) or not (OFF).
+                                                                                             Parameter                 Value                     Description
+ INPUT SYNC                                           Adjusts the volume at which an
+                           0–100                                                                                                                 Adjusts the delay time from the
+ THRESHOLD                                            input note will be detected.
+                                                                                             PRE DELAY                 0.0–100 msec              direct sound until the chorus
+ LEVEL                     0–100                      Adjusts the output volume.                                                                 sound is heard.
+                                                                                                                                                 Adjusts the rate of the
+                                                                                             RATE #                    0–100, BPM –              modulation.
+09: VK ROTARY                                                                                DEPTH #                   0–100                     Adjusts the depth of modulation.
+This type provides modified response for the rotary speaker, with the low end boosted
+further.                                                                                                                                         Adjusts the deviation with
+                                                                                             PRE DELAY
+This effect features the same specifications as Roland VK-7 organ’s built-in rotary                                    0–20                      respect to the sounding of the
+                                                                                             DEVIATION
+speaker.                                                                                                                                         various chorus sounds.
+                                                                                                                                                 Adjusts the difference in
+L in                                               2-Band EQ               L out             DEPTH DEVIATION           -20–+20                   modulation depth between each
+                                                                                                                                                 chorus sound.
+                        Rotary                                                                                                                   Adjusts the difference in stereo
+                                                                                                                                                 location between each chorus
+R in                                               2-Band EQ               R out                                                                 sound.
+                                                                                                                                                 With a setting of “0,” all of the
+                                                                                             PAN DEVIATION             0–20                      sounds will be panned to the
+ Parameter                 Value                      Description
+                                                                                                                                                 center. With a setting of “20,” each
+                           This sets the rotational speed of the rotating speaker.                                                               of the chorused sounds will be
+ SPEED                     SLOW                       Slow                                                                                       spread apart at 60 degree angles
+                                                                                                                                                 relative to the center.
+                           FAST                       Fast
+                                                                                                                                                 Adjusts the volume balance
+                                                      Switches the rotation of the           BALANCE #                 D100:0W–D0:100W           between the direct sound (D)
+                                                      rotary speaker.                                                                            and the chorus sound (W).
+ BRAKE                     OFF, ON                    When this is turned on, the            LEVEL                     0–100                     Adjusts the output volume.
+                                                      rotation will gradually stop. When
+                                                      it is turned off, the rotation will
+                                                      gradually resume.
+ WOOFER SLOW                                          Adjusts the low-speed rotation
+                           0–100
+ SPEED #                                              speed of the woofer.
+ WOOFER FAST                                          Adjusts the high-speed rotation
+                           0–100
+ SPEED #                                              speed of the woofer.
+                                                      Adjusts the rate at which the
+                                                      woofer rotation speeds up when
+ WOOFER TRANS UP           0–100
+                                                      the rotation is switched from
+                                                      SLOW to FAST.
+                                                      Adjusts the rate at which the
+ WOOFER TRANS                                         woofer rotation speeds up when
+                           0–100
+ DOWN                                                 the rotation is switched from
+                                                      FAST to SLOW.
+ WOOFER LEVEL              0–100                      Adjusts the volume of the woofer.
+ TWEETER SLOW
+                           0–100
+ SPEED #
+ TWEETER FAST
+                           0–100
+ SPEED #                                              These are the settings of the
+                                                      tweeter. The parameters are the
+ TWEETER TRANS UP          0–100
+                                                      same as for the woofer.
+ TWEETER TRANS
+                           0–100
+ DOWN
+ TWEETER LEVEL             0–100
+
+
+
+48
+                                                                                                                                                        Effect Settings (EFFECT)
+
+11: SPACE-D                                                                                    Parameter                 Value                         Description
+This is a multiple chorus that applies two-phase modulation in stereo. It gives no                                                                     Adjusts the proportion of the
+impression of modulation, but produces a transparent chorus effect.                                                                                    flanger sound that is fed back
+                                                                                               FEEDBACK #                -98–+98%
+                                                                                                                                                       into the effect. Negative (-)
+                            Balance D
+L in                                                     2-Band           L out
+                                                                                                                                                       settings will invert the phase.
+                                                           EQ                                  LOW GAIN                  -15–+15 dB                    Adjusts the gain of the low range.
+                  Space D                    Balance W
+                                                                                                                                                       Adjusts the gain of the high
+                                                                                               HIGH GAIN                 -15–+15 dB
+                                                                                                                                                       range.
+                  Space D                    Balance W
+                                                                                                                                                       Adjusts the volume balance
+R in                                                     2-Band           R out                BALANCE #                 D100:0W–D0:100W               between the direct sound (D)
+                            Balance D                      EQ                                                                                          and the chorus sound (W).
+                                                                                               LEVEL                     0–100                         Adjusts the output volume.
+ Parameter                 Value                         Description
+                                                         Adjusts the delay time from the
+ PRE DELAY                 0.0–100 msec                  direct sound until the chorus        13: STEP FLANGER
+                                                         sound is heard.                      This is a flanger in which the flanger pitch changes in steps. The speed at which the
+                                                                                              pitch changes can also be specified in terms of a note-value of a specified tempo.
+                                                         Adjusts the rate of the
+ RATE #                    0–100, BPM –                  modulation.                                                        Balance D
+                                                                                              L in                                                 2-Band            L out
+                                                         Adjusts the depth of the
+ DEPTH #                   0–100                                                                                                                     EQ
+                                                         modulation.
+                                                                                                                 Step Flanger                 Balance W
+                                                         Adjusts the spatial spread of the
+ PHASE                     0–180 deg
+                                                         sound.
+                                                                                                                    Feedback
+ LOW GAIN                  -15–+15 dB                    Adjusts the gain of the low range.                         Feedback
+                                                         Adjusts the gain of the high
+ HIGH GAIN                 -15–+15 dB
+                                                         range.                                                  Step Flanger                 Balance W
+
+                                                         Adjusts the volume balance           R in                                                     2-Band        R out
+ BALANCE #                 D100:0W–D0:100W               between the direct sound (D)                                        Balance D                   EQ
+                                                         and the chorus sound (W).
+ LEVEL                     0–100                         Adjusts the output volume.            Parameter                 Value                         Description
+                                                                                                                         Selects the type of filter.
+12: FLANGER                                                                                                              OFF                           No filter is used.
+This is a stereo flanger.                                                                      FILTER TYPE                                             Cuts the frequency range above
+                                                                                                                         LPF
+It produces a metallic resonance that’s comparable to the sound a jet plane makes                                                                      the CUTOFF FREQ.
+when ascending/descending. A filter is provided so that you can adjust the timbre of
+                                                                                                                                                       Cuts the frequency range below
+the flanged sound.                                                                                                       HPF
+                                                                                                                                                       the CUTOFF FREQ.
+                              Balance D
+                                                     2-Band                                                                                            Adjusts the center frequency
+L in                                                                   L out                   CUTOFF FREQ               200–8000 Hz                   when using the filter to cut a
+                                                       EQ
+                                                                                                                                                       specific frequency range.
+                      Flanger                   Balance W
+                                                                                                                                                       Adjusts the delay time from
+                      Feedback                                                                 PRE DELAY                 0.0–100 msec                  when the direct sound begins
+                                                                                                                                                       until the flanger sound is heard.
+                      Feedback
+                                                                                                                                                       Adjusts the rate of the
+                                                                                               RATE #                    0–100, BPM –
+                       Flanger                  Balance W                                                                                              modulation.
+
+R in                                                     2-Band        R out                   DEPTH                     0–100
+                                                                                                                                                       Adjusts the depth of the
+                                                           EQ                                                                                          modulation.
+                               Balance D
+                                                                                                                                                       Adjusts the spatial spread of the
+                                                                                               PHASE                     0–180 deg
+                                                                                                                                                       sound.
+ Parameter                 Value                         Description
+                                                                                                                                                       Adjusts the proportion of the
+                           Selects the type of filter.
+                                                                                                                                                       flanger sound that is fed back
+                                                                                               FEEDBACK #                -98–+98%
+                           OFF                           No filter is used.                                                                            into the effect. Negative (-)
+                                                                                                                                                       settings will invert the phase.
+ FILTER TYPE                                             Cuts the frequency range above
+                           LPF
+                                                         the CUTOFF FREQ.                                                                              Adjusts the rate (period) of pitch
+                                                                                               STEP RATE #               0–100, BPM –                  change.
+                                                         Cuts the frequency range below
+                           HPF
+                                                         the CUTOFF FREQ.                      LOW GAIN                  -15–+15 dB                    Adjusts the gain of the low range.
+                                                         Adjusts the center frequency                                                                  Adjusts the gain of the high
+                                                                                               HIGH GAIN                 -15–+15 dB
+ CUTOFF FREQ               200–8000 Hz                   when using the filter to cut a                                                                range.
+                                                         specific frequency range.
+                                                                                                                                                       Adjusts the volume balance
+                                                         Adjusts the delay time from           BALANCE #                 D100:0W–D0:100W               between the direct sound (D)
+ PRE DELAY                 0.0–100 msec                  when the direct sound begins                                                                  and the chorus sound (W).
+                                                         until the flanger sound is heard.
+                                                                                               LEVEL                     0–100                         Adjusts the output volume.
+                                                         Adjusts the rate of the
+ RATE #                    0–100, BPM –                  modulation.
+                                                         Adjusts the depth of the
+ DEPTH #                   0–100
+                                                         modulation.
+                                                         Adjusts the spatial spread of the
+ PHASE                     0–180 deg
+                                                         sound.
+
+
+
+
+                                                                                                                                                                                         49
+Effect Settings (EFFECT)
+
+14: GUITAR AMP SIMULATOR                                                                    Specifications for Each Speaker Type
+This is an effect that simulates the sound of a guitar amplifier.                           The “Speaker” column indicates the diameter of each speaker unit (in inches) and the
+                                                                                            number of units.
+L in                                                                       L out
+                                                                      Pan L                  Type               Cabinet                         Speaker        Microphone
+                       Pre Amp               Speaker                                         SMALL 1            Small open-back enclosure       10             Dynamic
+                                                                      Pan R
+R in                                                                       R out             SMALL 2            Small open-back enclosure       10             Dynamic
+                                                                                             MIDDLE             Open-back enclosure             12 x 1         Dynamic
+ Parameter                  Value                      Description                           JC-120             Open-back enclosure             12 x 2         Dynamic
+ PRE AMP SW                 OFF, ON                    Turns the amp switch on/off.          BUILT-IN 1         Open-back enclosure             12 x 2         Dynamic
+                            JC-120,                                                          BUILT-IN 2         Open-back enclosure             12 x 2         Condenser
+                            CLEAN TWIN,
+                            MATCH DRIVE,                                                     BUILT-IN 3         Open-back enclosure             12 x 2         Condenser
+                            BG LEAD,                                                         BUILT-IN 4         Open-back enclosure             12 x 2         Condenser
+                            MS1959I,
+                            MS1959II,                                                        BUILT-IN 5         Open-back enclosure             12 x 2         Condenser
+                            MS1959I+II,                                                      BG STACK 1         Sealed enclosure                12 x 2         Condenser
+ PRE AMP TYPE #                                        Specifies the type of guitar amp.
+                            SLDN LEAD,
+                            METAL 5150,                                                      BG STACK 2         Large sealed enclosure          12 x 2         Condenser
+                            METAL LEAD,                                                      MS STACK 1         Large sealed enclosure          12 x 4         Condenser
+                            OD-1,
+                            OD-2 TURBO,                                                      MS STACK 2         Large sealed enclosure          12 x 4         Condenser
+                            DISTORTION,                                                      METAL STACK        Large double stack              12 x 4         Condenser
+                            FUZZ
+                                                                                             2-STACK            Large double stack              12 x 4         Condenser
+                                                       Adjusts the volume and amount
+ PRE AMP VOLUME #           0–100                                                            3-STACK            Large triple stack              12 x 4         Condenser
+                                                       of distortion of the amp.
+                                                       Adjusts the volume of the entire
+ PRE AMP MASTER #           0–100
+                                                       pre-amp.
+                                                                                            15: COMPRESSOR
+                                                       Specifies the amount of pre-amp
+ PRE AMP GAIN               LOW, MIDDLE, HIGH                                               Flattens out high levels and boosts low levels, smoothing out fluctuations in volume.
+                                                       distortion.
+
+ PRE AMP BASS                                          Adjust the tone of the bass/mid/     L in       Compressor              2-Band EQ             L out
+                                                       treble frequency ranges.
+ PRE AMP MIDDLE             0–100                      PRE AMP MIDDLE cannot be set
+                                                       if MATCH DRIVE is selected as the
+ PRE AMP TREBLE                                        PRE AMP TYPE.                        R in      Compressor               2-Band EQ             R out
+                                                       Adjusts the tone of the ultra-high
+ PRE AMP PRESENCE           0–100
+                                                       frequency range.
+                                                                                             Parameter                 Value                    Description
+                                                       Turning this ON produces a
+                                                                                                                                                Adjusts the time from when the
+                                                       sharper and brighter sound.
+                                                                                                                                                input exceeds the THRESHOLD
+ PRE AMP BRIGHT             OFF, ON                    This is available only if PRE AMP     ATTACK #                  0–100
+                                                                                                                                                until the volume starts being
+                                                       TYPE is set to “JC-120,” “CLEAN
+                                                                                                                                                compressed.
+                                                       TWIN,” or “BGLEAD.”
+                                                                                                                                                Adjusts the volume at which
+                                                       Determines whether the signal         THRESHOLD #               0–100
+                                                                                                                                                compression begins.
+ SPEAKER SW                 OFF, ON                    passes through the speaker (ON),
+                                                       or not (OFF).                         POST GAIN #               0–+18 dB                 Adjusts the output gain.
+ SPEAKER TYPE #             (See the table below.)     Selects the type of speaker.          LOW GAIN                  -15–+15 dB               Adjusts the gain of the low range.
+                                                       Adjusts the location of the                                                              Adjusts the gain of the high
+                                                                                             HIGH GAIN                 -15–+15 dB
+                                                       microphone that’s capturing the                                                          range.
+                                                       sound of the speaker.
+                                                                                             LEVEL                     0–100                    Adjusts the output volume.
+ MIC SETTING                1, 2, 3                    This can be adjusted in three
+                                                       steps, from 1 to 3, with the
+                                                       microphone becoming more
+                                                       distant as the value increases.
+                                                       Adjusts the volume of the
+ MIC LEVEL                  0–100
+                                                       microphone.
+                                                       Adjusts the volume of the direct
+ DIRECT LEVEL               0–100
+                                                       sound.
+                                                       Adjusts the stereo location of the
+ PAN                        L50–R50
+                                                       output sound.
+ LEVEL                      0–100                      Adjusts the output volume.
+
+
+
+
+50
+                                                                                                                                                  Effect Settings (EFFECT)
+
+16: LIMITER                                                                                   18: TIME CTRL DELAY
+Compresses signals that exceed a specified volume level, preventing distortion from           A stereo delay in which the delay time can be varied smoothly.
+occurring.
+                                                                                              L in                                                   2-Band EQ           L out
+L in          Limiter              2-Band EQ               L out
+                                                                                                                 Time Ctrl Delay             Pan L
+
+                                                                                                                     Feedback
+R in         Limiter               2-Band EQ               R out                                                     Feedback
+
+
+ Parameter                 Value                       Description
+                                                                                                                 Time Ctrl Delay              Pan R
+
+                                                       Adjusts the time after the             R in                                                   2-Band EQ           R out
+                                                       signal volume falls below
+ RELEASE #                 0–100                       the THRESHOLD level until
+                                                       compression is no longer                Parameter                Value                    Description
+                                                       applied.                                                         1–1300 msec,             Adjusts the time until the delay
+                                                                                               DELAY TIME #
+                                                       Adjusts the volume at which                                      BPM –                    sounds are heard.
+ THRESHOLD #               0–100
+                                                       compression begins.
+                                                                                                                                                 Adjusts the speed at which the
+ RATIO #                   1.5:1, 2:1, 4:1, 100:1      This sets the compression ratio.                                                          delay time changes from the
+                                                                                                                                                 current setting to a specified new
+ POST GAIN #               0–+18 dB                    Adjusts the output gain.                ACCELERATION #           0–15
+                                                                                                                                                 setting. The rate of change for
+ LOW GAIN                  -15–+15 dB                  Adjusts the gain of the low range.                                                        the delay time directly affects the
+                                                                                                                                                 rate of pitch change.
+                                                       Adjusts the gain of the high
+ HIGH GAIN                 -15–+15 dB                                                                                                            Adjusts the amount of the delay
+                                                       range.
+                                                                                                                                                 that’s fed back into the effect.
+ LEVEL                     0–100                       Adjusts the output volume.              FEEDBACK #               -98–+98%
+                                                                                                                                                 Negative (-) settings invert the
+                                                                                                                                                 phase.
+
+17: 3TAP PAN DELAY                                                                                                                               Adjusts the frequency above
+                                                                                                                                                 which sound fed back to the
+Produces three delay sounds; center, left and right.                                                                                             effect is filtered out. If you do
+                                                                                               HF DAMP                  200–8000 Hz, BYPASS
+                                                                                                                                                 not want to filter out any high
+                                           Balance D
+                                                               2-Band                                                                            frequencies, set this parameter
+L in                                                             EQ           L out                                                              to BYPASS.
+                                Left Tap                   Balance W                           LOW GAIN                 -15–+15 dB               Adjusts the gain of the low range.
+                                                                                                                                                 Adjusts the gain of the high
+                                                                                               HIGH GAIN                -15–+15 dB
+                Triple Tap Delay        Center Tap                                                                                               range.
+                                                                                                                                                 Adjusts the volume balance
+             Feedback           Right Tap                  Balance W                           BALANCE #                D100:0W–D0:100W          between the direct sound (D)
+                                                                                                                                                 and the chorus sound (W).
+R in                                                           2-Band         R out
+                                           Balance D             EQ                            LEVEL                    0–100                    Adjusts the output volume.
+
+
+ Parameter                 Value                       Description
+                                                       Adjusts the time from the
+ DELAY LEFT/RIGHT/         1–2600 msec,                original sound until the left,
+ CENTER #                  BPM –                       right, and center delayed sounds
+                                                       are heard.
+                                                       Adjusts the amount of the delay
+                                                       sound that’s fed back into the
+ CENTER FEEDBACK #         -98–+98%
+                                                       effect. Negative (-) settings invert
+                                                       the phase.
+                                                       Adjusts the frequency above
+                                                       which sound fed back to the
+                                                       effect is filtered out. If you do
+ HF DAMP                   200–8000 Hz, BYPASS
+                                                       not want to filter out any high
+                                                       frequencies, set this parameter
+                                                       to BYPASS.
+ LEFT/RIGHT/CENTER                                     Adjusts the volume of each
+                           0–100
+ LEVEL                                                 delay.
+                                                       Adjusts the gain of the low
+ LOW GAIN                  -15–+15 dB
+                                                       range.
+                                                       Adjusts the gain of the high
+ HIGH GAIN                 -15–+15 dB
+                                                       range.
+                                                       Adjusts the volume balance
+ BALANCE                   D100:0W–D0:100W             between the direct sound (D)
+                                                       and the chorus sound (W).
+ LEVEL                     0–100                       Adjusts the output volume.
+
+
+
+
+                                                                                                                                                                                     51
+Effect Settings (EFFECT)
+
+19: LOFI COMPRESS                                                                             DELAY
+This is an effect that intentionally degrades the sound quality for creative purposes.
+
+L in                                                         2-Band              L out
+                                                                                              Group   Parameter   Value           Description
+           Compressor                    Lo-Fi
+                                                               EQ                                     SWITCH      OFF, ON         Turns the DELAY OFF/ON.
+                                                                                                                  Use this to choose the type of delay.
+R in                                                         2-Band              R out
+           Compressor                    Lo-Fi                                                                    01:SINGLE       A simple monaural delay.
+                                                               EQ
+                                                                                                                                  Provides a tap delay effect that divides
+                                                                                                                  02: PAN         the delay time between the left and
+ Parameter                    Value                      Description                                                              right channels.
+                              Selects the type of filter applied to the sound before it                                           Produces the effect of playback in
+                              passes through the Lo-Fi effect.                                                    03: REVERSE
+                                                                                                                                  reverse.
+ PRE FILTER TYPE #                                                                                    TYPE
+                              1                          The compressor will be off.                              04: ANALOG      Produces a mild analog delay sound.
+                              2–6                        The compressor will be on.                                               This setting provides the characteristic
+                                                                                              TYPE                05: TAPE
+                                                         Degrades the sound quality. The                                          wavering sound of a tape echo.
+ LOFI TYPE #                  1–9                        sound quality grows poorer as                            06:             A delay with a pleasant amount of
+                                                         this value is increased.                                 MODULATE        modulation added.
+                              Selects the type of filter applied to the sound after it                                            Produces a warm-sounding delay with
+                              passes through the Lo-Fi effect.                                                    07: HICUT
+                                                                                                                                  the high frequencies attenuated.
+                              OFF                        No filter is used.                                       1–3400 msec,
+                                                                                                      DELAY
+ POST FILTER TYPE                                                                                                                 Adjusts the delay time.
+                                                         Cuts the frequency range above               TIME #      BPM –
+                              LPF
+                                                         the Cutoff.
+                                                                                                      FEEDBACK                    Adjusts the number of repetitions for
+                                                                                                                  0–100
+                                                         Cuts the frequency range below               #                           the delay.
+                              HPF
+                                                         the Cutoff.
+                                                                                                      EFFECT
+                                                                                                                  0–120           Adjusts the volume level of the effect.
+                                                         Adjusts the basic frequency of               LEVEL
+ POST FILTER CUTOFF           200–8000 Hz
+                                                         the POST FILTER.
+                                                                                                                                  Adjusts the volume of the signal sent
+                                                                                                      MFX SEND    0–100
+                                                         Adjusts the gain of the low                                              from the MFX output to DELAY.
+ LOW GAIN                     -15–+15 dB
+                                                         range.
+                                                                                                      MOD                         Adjusts the volume of the signal sent
+                                                                                                                  0–100
+                                                         Adjusts the gain of the high         SEND    SEND                        from the AMP-MOD output to DELAY.
+ HIGH GAIN                    -15–+15 dB
+                                                         range.
+                                                                                                                                  Adjusts the volume of the signal sent
+                                                                                                      BYPASS
+                                                         Adjusts the volume balance                               0–100           from the bypass channel (unprocessed
+                                                                                                      SEND
+ BALANCE #                    D100:0W–D0:100W            between the direct sound (D)                                             by the effect) to DELAY.
+                                                         and the chorus sound (W).
+ LEVEL                        0–100                      Adjusts the output volume.
+                                                                                              REVERB
+20: PITCH SHIFTER                                                                             Group   Parameter   Value          Description
+This is a stereo pitch shifter.
+                                                                                                      SWITCH      OFF, ON        Turns the REVERB OFF/ON.
+L in                                                   2-Band EQ                L out                             Use this to choose the type of reverb.
+                                                                                                                                 Simulates an ambience microphone (off-
+                    Pitch Shifter
+                                                                                                                                 mic, placed at a distance from the sound
+                                                                                                                  01:            source) used in recording and other
+                    Pitch Shifter
+                                                                                                                  AMBIENCE       applications. Rather than emphasizing
+R in                                                                            R out                                            the reverberation, this reverb is used to
+                                                       2-Band EQ
+                                                                                                                                 produce a sense of openness and depth.
+                                                                                                                                 Simulates the reverberation of a small
+ Parameter                    Value                      Description                                              02: ROOM
+                                                                                                                                 room. Provides warm reverberations.
+                                                         Adjusts the pitch of the pitch               TYPE                       Simulates the reverberation of a concert
+ COARSE #                     -24–+12 semi
+                                                         shifted sound in semitone steps.                         03: HALL 1     hall. Provides clear and spacious
+                                                         Adjusts the pitch of the pitch                                          reverberations.
+ FINE #                       -100–+100 cent
+                                                         shifted sound in 2-cent steps.                                          Simulates the reverberation of a concert
+                                                                                              TYPE                04: HALL 2
+                                                         Adjusts the delay time from                                             hall. Provides mild reverberations.
+                              1–1300 msec,
+ DELAY TIME                                              the direct sound until the pitch                                        Simulates plate reverberation (a studio
+                              BPM –                      shifted sound is heard.                                                 effect unit that uses the vibration
+                                                         Adjusts the proportion of the                            05: PLATE      of a large metal plate to produce
+                                                         pitch shifted sound that is fed                                         reverberation). Provides a metallic sound
+ FEEDBACK                     -98–+98%                                                                                           with a distinct upper range.
+                                                         back into the effect. Negative (-)
+                                                         settings will invert the phase.              REVERB                     Adjusts the length (time) of
+                                                                                                                  0.1 s–10.0 s
+                                                         Adjusts the gain of the low                  TIME #                     reverberation.
+ LOW GAIN                     -15–+15 dB
+                                                         range.                                                                  The high cut filter adjusts the amount
+                                                                                                                  700 Hz–
+                                                         Adjusts the gain of the high                 HIGH                       of high frequencies in the reverb sound.
+ HIGH GAIN                    -15–+15 dB                                                                          11.0 kHz,
+                                                         range.                                       CUT #                      When FLAT is selected, the high cut filter
+                                                                                                                  FLAT
+                                                                                                                                 will have no effect.
+                                                         Adjusts the volume balance
+ BALANCE #                    D100:0W–D0:100W            between the direct sound (D)                 EFFECT
+                                                                                                                  0–100          Adjusts the volume level of the effect.
+                                                         and the chorus sound (W).                    LEVEL
+
+ LEVEL                        0–100                      Adjusts the output volume.
+
+
+
+
+52
+                                                                                                                    Effect Settings (EFFECT)
+
+Group   Parameter   Value          Description
+                                   Adjusts the volume of the signal sent
+                                                                              EQ
+        MFX SEND    0–100
+                                   from the MFX output to REVERB.
+                                                                              Group   Parameter     Value                Description
+        MOD                        Adjusts the volume of the signal sent
+                    0–100                                                             LOW GAIN      LO-MID GAIN        HI-MID GAIN      HIGH GAIN
+SEND    SEND                       from the AMP-MOD output to REVERB.
+                                   Adjusts the volume of the signal sent
+        BYPASS
+                    0–100          from the bypass channel (unprocessed
+        SEND
+                                   by the effect) to REVERB.
+
+                                                                                                                                              Frequency
+
+CHORUS
+Group   Parameter   Value          Description
+                                                                                                    LO-MID FREQ        HI-MID FREQ
+        SWITCH      OFF, ON        Turns the CHORUS OFF/ON.
+                                                                                      EQ SWITCH     OFF, ON              Turns the EQ OFF/ON.
+                    Use this to choose the type of chorus.
+                                                                                                                         Sets the frequency at which
+                                   This chorus effect outputs the same
+                    01: MONO                                                                                             the low cut filter begins to
+                                   sound from the left and right channels.                          FLAT,
+                                                                                      LOW CUT                            take effect. When FLAT is
+                                                                                                    55–800 Hz
+                                   This is a stereo chorus effect that adds                                              selected, the low cut filter will
+                    02: STEREO     different chorus sounds to L channel and                                              have no effect.
+        TYPE
+                                   R channel.
+                                                                                                                         Adjusts the low frequency
+                                                                                      LOW GAIN #    -20 dB–+20 dB
+                    03: MONO       This features a more suppressed high                                                  range tone.
+TYPE                MILD           end than MONO.
+                                                                                                                         Specifies the center of the
+                    04: STEREO     This features a more suppressed high               LO-MID                             frequency range that will
+                                                                                                    20 Hz–10 kHz
+                    MILD           end than STEREO.                                   FREQ                               be adjusted by the LO-MID
+                                                                                                                         GAIN.
+                    0–100,
+        RATE #                     Adjusts the speed of the effect.           EQ                                         Adjusts the width of the area
+                    BPM –
+                                                                                                                         affected by the EQ centered
+        DEPTH #     0–100          Adjusts the richness of the effect.                LO-MID Q      0.5–16
+                                                                                                                         at the LO-MID FREQ. Higher
+        EFFECT                                                                                                           values will narrow the area.
+                    0–100          Adjusts the volume level of the effect.
+        LEVEL                                                                         LO-MID                             Adjusts the low-middle
+                                                                                                    -20 dB–+20 dB
+                                   Adjusts the volume of the signal sent              GAIN #                             frequency range tone.
+        MFX SEND    0–100
+                                   from the MFX output to CHORUS.                                                        Specifies the center of the
+        MOD                        Adjusts the volume of the signal sent              HI-MID FREQ   20 Hz–10 kHz         frequency range that will be
+                    0–100                                                                                                adjusted by the HI-MID GAIN.
+SEND    SEND                       from the AMP-MOD output to CHORUS.
+                                   Adjusts the volume of the signal sent                                                 Adjusts the width of the area
+        BYPASS                                                                                                           affected by the EQ centered
+                    0–100          from the bypass channel (unprocessed               HI-MID Q      0.5–16
+        SEND                                                                                                             at the HI-MID FREQ. Higher
+                                   by the effect) to CHORUS.
+                                                                                                                         values will narrow the area.
+                                                                                      HI-MID                             Adjusts the high-middle
+                                                                                                    -20 dB–+20 dB
+                                                                                      GAIN #                             frequency range tone.
+                                                                                                                         Adjusts the high frequency
+                                                                                      HIGH GAIN #   -20 dB–+20 dB
+                                                                                                                         range tone.
+                                                                                                                         Sets the frequency at which
+                                                                                                                         the high cut filter begins to
+                                                                                                    700 Hz–11.0 kHz,
+                                                                                      HIGH CUT                           take effect. When FLAT is
+                                                                                                    FLAT
+                                                                                                                         selected, the high cut filter
+                                                                                                                         will have no effect.
+                                                                                                                         Adjusts the overall volume of
+                                                                                      LEVEL         -20 dB–+20 dB
+                                                                                                                         the equalizer.
+                                                                                                                         Determines whether the
+                                                                                                                         sound will have clear
+                                                                              CHAR    CHARACTER     -3–0–+3
+                                                                                                                         definition (+3) or be more
+                                                                                                                         mellow (-3).
+
+
+
+
+                                                                                                                                                       53
+

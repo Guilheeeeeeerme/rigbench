@@ -1,5 +1,5 @@
 import { SCALE_BASE_MM } from '../../devices/gr55/systemMap';
-import type { SessionId } from '../session';
+import { macroSessionOf, type SessionId } from '../session';
 import type { MacroGroup, MacroOption, PatchWrite, SystemWrite } from './types';
 
 const p = (key: string, value: unknown): PatchWrite => ({ domain: 'patch', key, value });
@@ -470,19 +470,125 @@ function stubPills(
   );
 }
 
-const toneShape = stubPills('patch', 'tone-shape', 'Tone shape', 'Forma do tom', [
-  { id: 'dark', labelEn: 'Dark', labelPt: 'Escuro' },
-  { id: 'natural', labelEn: 'Natural', labelPt: 'Natural' },
-  { id: 'bright', labelEn: 'Bright', labelPt: 'Brilhante' },
-  { id: 'scooped', labelEn: 'Scooped', labelPt: 'Escavado' },
-]);
+const toneShape: MacroGroup = pills(
+  'patch',
+  'tone-shape',
+  'Tone shape',
+  'Forma do tom',
+  [
+    {
+      id: 'dark',
+      labelEn: 'Dark',
+      labelPt: 'Escuro',
+      writes: [
+        p('eq/eq/eqSwitch', true),
+        p('eq/eq/eqLowGain', 4),
+        p('eq/eq/eqLowMidGain', 0),
+        p('eq/eq/eqHighMidGain', -2),
+        p('eq/eq/eqHighGain', -6),
+        p('eq/eq/eqLevel', 0),
+      ],
+    },
+    {
+      id: 'natural',
+      labelEn: 'Natural',
+      labelPt: 'Natural',
+      writes: [
+        p('eq/eq/eqSwitch', true),
+        p('eq/eq/eqLowGain', 0),
+        p('eq/eq/eqLowMidGain', 0),
+        p('eq/eq/eqHighMidGain', 0),
+        p('eq/eq/eqHighGain', 0),
+        p('eq/eq/eqLevel', 0),
+      ],
+    },
+    {
+      id: 'bright',
+      labelEn: 'Bright',
+      labelPt: 'Brilhante',
+      writes: [
+        p('eq/eq/eqSwitch', true),
+        p('eq/eq/eqLowGain', -2),
+        p('eq/eq/eqLowMidGain', 0),
+        p('eq/eq/eqHighMidGain', 3),
+        p('eq/eq/eqHighGain', 5),
+        p('eq/eq/eqLevel', 0),
+      ],
+    },
+    {
+      id: 'scooped',
+      labelEn: 'Scooped',
+      labelPt: 'Escavado',
+      writes: [
+        p('eq/eq/eqSwitch', true),
+        p('eq/eq/eqLowGain', 5),
+        p('eq/eq/eqLowMidGain', -6),
+        p('eq/eq/eqHighMidGain', -4),
+        p('eq/eq/eqHighGain', 4),
+        p('eq/eq/eqLevel', 0),
+      ],
+    },
+  ],
+  true,
+);
 
-const chainPath = stubPills('patch', 'chain-path', 'Chain path', 'Caminho', [
-  { id: 'guitar-amp', labelEn: 'Guitar amp path', labelPt: 'Caminho do amp' },
-  { id: 'synth-mfx', labelEn: 'Synth through MFX', labelPt: 'Synth no MFX' },
-  { id: 'series', labelEn: 'Everything in series', labelPt: 'Tudo em série' },
-  { id: 'bypass', labelEn: 'Bypass coloring', labelPt: 'Sem colorir' },
-]);
+const chainPath: MacroGroup = pills(
+  'patch',
+  'chain-path',
+  'Chain path',
+  'Caminho',
+  [
+    {
+      id: 'guitar-amp',
+      labelEn: 'Guitar amp path',
+      labelPt: 'Caminho do amp',
+      writes: [
+        p('master/output/effectStructure', '1'),
+        p('pcm1/tone/partOutputMFXSelect', 'BYPS'),
+        p('pcm2/tone/partOutputMFXSelect', 'BYPS'),
+        p('master/output/lineSelectModel', 'AMP'),
+        p('normal-pickup/level/lineSelectNormalPU', 'AMP'),
+      ],
+    },
+    {
+      id: 'synth-mfx',
+      labelEn: 'Synth through MFX',
+      labelPt: 'Synth no MFX',
+      writes: [
+        p('master/output/effectStructure', '1'),
+        p('pcm1/tone/partOutputMFXSelect', 'MFX'),
+        p('pcm2/tone/partOutputMFXSelect', 'MFX'),
+        p('master/output/lineSelectModel', 'BYPS'),
+        p('normal-pickup/level/lineSelectNormalPU', 'BYPS'),
+      ],
+    },
+    {
+      id: 'series',
+      labelEn: 'Everything in series',
+      labelPt: 'Tudo em série',
+      writes: [
+        p('master/output/effectStructure', '2'),
+        p('pcm1/tone/partOutputMFXSelect', 'MFX'),
+        p('pcm2/tone/partOutputMFXSelect', 'MFX'),
+        p('master/output/lineSelectModel', 'AMP'),
+        p('normal-pickup/level/lineSelectNormalPU', 'AMP'),
+      ],
+    },
+    {
+      id: 'bypass',
+      labelEn: 'Bypass coloring',
+      labelPt: 'Sem colorir',
+      writes: [
+        p('master/output/effectStructure', '1'),
+        p('pcm1/tone/partOutputMFXSelect', 'BYPS'),
+        p('pcm2/tone/partOutputMFXSelect', 'BYPS'),
+        p('master/output/lineSelectModel', 'BYPS'),
+        p('normal-pickup/level/lineSelectNormalPU', 'BYPS'),
+      ],
+    },
+  ],
+  true,
+);
 
 const patchMonitor = stubPills('patch', 'patch-monitor', 'Patch monitor', 'Monitor do patch', [
   { id: 'off', labelEn: 'Jack off', labelPt: 'Jack off' },
@@ -491,19 +597,110 @@ const patchMonitor = stubPills('patch', 'patch-monitor', 'Patch monitor', 'Monit
   { id: 'both', labelEn: 'Both', labelPt: 'Ambos' },
 ]);
 
-const tuning = stubPills('patch', 'tuning', 'Tuning', 'Afinação', [
-  { id: 'standard', labelEn: 'Standard', labelPt: 'Padrão' },
-  { id: 'drop', labelEn: 'Drop feel', labelPt: 'Drop' },
-  { id: 'open', labelEn: 'Open', labelPt: 'Aberta' },
-  { id: 'custom', labelEn: 'Custom', labelPt: 'Personalizada' },
-]);
+const tuning: MacroGroup = pills(
+  'patch',
+  'tuning',
+  'Tuning',
+  'Afinação',
+  [
+    {
+      id: 'standard',
+      labelEn: 'Standard',
+      labelPt: 'Padrão',
+      writes: [p('master/tuning/altTuneSwitch', false)],
+    },
+    {
+      id: 'drop',
+      labelEn: 'Drop feel',
+      labelPt: 'Drop',
+      writes: [
+        p('master/tuning/altTuneSwitch', true),
+        p('master/tuning/altTuneType', 'DROP-D'),
+      ],
+    },
+    {
+      id: 'open',
+      labelEn: 'Open',
+      labelPt: 'Aberta',
+      writes: [
+        p('master/tuning/altTuneSwitch', true),
+        p('master/tuning/altTuneType', 'OPEN-G'),
+      ],
+    },
+    {
+      id: 'custom',
+      labelEn: 'Custom',
+      labelPt: 'Personalizada',
+      writes: [],
+      opensAdvanced: true,
+    },
+  ],
+  true,
+);
 
-const patchFeet = stubPills('patch', 'patch-feet', 'Patch feet', 'Pés do patch', [
-  { id: 'volume', labelEn: 'Volume swell', labelPt: 'Volume' },
-  { id: 'morph', labelEn: 'Expression morph', labelPt: 'Morfagem' },
-  { id: 'solo', labelEn: 'Solo boost', labelPt: 'Boost de solo' },
-  { id: 'safe', labelEn: 'Safe default', labelPt: 'Seguro' },
-]);
+const patchFeet: MacroGroup = pills(
+  'patch',
+  'patch-feet',
+  'Patch feet',
+  'Pés do patch',
+  [
+    {
+      id: 'volume',
+      labelEn: 'Volume swell',
+      labelPt: 'Volume',
+      writes: [
+        p('pedal-gk/ctl/status', true),
+        p('pedal-gk/ctl/function', 'OFF'),
+        p('pedal-gk/exp-off/function', 'PATCH VOLUME'),
+        p('pedal-gk/exp-on/function', 'PATCH VOLUME'),
+        p('pedal-gk/exp-switch/status', true),
+        p('pedal-gk/exp-switch/function', 'OFF'),
+      ],
+    },
+    {
+      id: 'morph',
+      labelEn: 'Expression morph',
+      labelPt: 'Morfagem',
+      writes: [
+        p('pedal-gk/ctl/status', true),
+        p('pedal-gk/ctl/function', 'TONE SW'),
+        p('pedal-gk/ctl/holdSwitchMode', 'LATCH'),
+        p('pedal-gk/exp-off/function', 'CROSS FADER'),
+        p('pedal-gk/exp-on/function', 'CROSS FADER'),
+        p('pedal-gk/exp-switch/status', true),
+        p('pedal-gk/exp-switch/function', 'OFF'),
+      ],
+    },
+    {
+      id: 'solo',
+      labelEn: 'Solo boost',
+      labelPt: 'Boost de solo',
+      writes: [
+        p('pedal-gk/ctl/status', true),
+        p('pedal-gk/ctl/function', 'AMP SW'),
+        p('pedal-gk/exp-off/function', 'PATCH VOLUME'),
+        p('pedal-gk/exp-on/function', 'PATCH VOLUME'),
+        p('pedal-gk/exp-switch/status', true),
+        p('pedal-gk/exp-switch/function', 'OFF'),
+      ],
+    },
+    {
+      id: 'safe',
+      labelEn: 'Safe default',
+      labelPt: 'Seguro',
+      writes: [
+        p('pedal-gk/ctl/status', true),
+        p('pedal-gk/ctl/function', 'HOLD'),
+        p('pedal-gk/ctl/holdSwitchMode', 'LATCH'),
+        p('pedal-gk/exp-off/function', 'PATCH VOLUME'),
+        p('pedal-gk/exp-on/function', 'PATCH VOLUME'),
+        p('pedal-gk/exp-switch/status', true),
+        p('pedal-gk/exp-switch/function', 'OFF'),
+      ],
+    },
+  ],
+  true,
+);
 
 const patchName: MacroGroup = {
   session: 'patch',
@@ -764,7 +961,8 @@ export const MACRO_GROUPS: readonly MacroGroup[] = [
 ];
 
 export function groupsForSession(session: SessionId): MacroGroup[] {
-  return MACRO_GROUPS.filter((group) => group.session === session);
+  const key = macroSessionOf(session);
+  return MACRO_GROUPS.filter((group) => group.session === key);
 }
 
 export function findGroup(id: string): MacroGroup | undefined {

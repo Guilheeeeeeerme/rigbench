@@ -1,15 +1,13 @@
----
-description: Rigbench hard rules and source-of-truth precedence for every session
-alwaysApply: true
----
-
 # Rigbench core
 
 - Precedence: **code** → `AGENTS.md` + `docs/current/` → `README.md` → `docs/archive/` (never overrides).
 - Ignore `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
-- Craft home is **Studio** (`#/gr55/estudio`), not Stage. Stage is perform-only.
+- App after connect: **Bank** (`#/gr55/bank`) · **Global** (`#/gr55/global`). Home + Connect only otherwise.
+- Connect/resume/Exit SoT: `docs/current/connection-resume.md` (persist ports only; Exit purges).
+- Authority: app write → DT1 → full snapshot; idle → mirror pedal (`sessionAuthority.ts`).
 - Do not rewrite `src/protocol/**` or `src/midi/**` unless the task explicitly requires it.
 - No Gemini/Google API keys in the repo, `.env`, logs, or fixtures.
 - UI strings only via `t()` / `useT()`; update both `en.ts` and `pt-BR.ts`.
 - Smallest sufficient change; prefer focused tests over the full matrix unless asked.
 - Read `AGENTS.md` and the matching `docs/current/` file before large GR-55 or Maestro work.
+- **Docs audit (every IA/behavior change):** update or retire drift in `docs/current/`, `AGENTS.md`, `README.md`, `.cursor/rules/`; dedupe — one SoT, pointers elsewhere; never leave a second conflicting “home” story.

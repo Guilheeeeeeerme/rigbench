@@ -2,14 +2,22 @@
 
 Living documents. If these disagree with code, **fix the docs** (or the code if the code is wrong) — do not invent a third story in chat.
 
-| File | Topic |
-| --- | --- |
-| [studio-sessions.md](./studio-sessions.md) | Studio home, System/Patch/Library sessions, macros, Stage boundary |
-| [maestro-architecture.md](./maestro-architecture.md) | Maestro registry, policy, Gemini BYOK, drawer/host |
-| [mobile-live-control.md](./mobile-live-control.md) | Mobile / Stage Live Simplify vision (reconciled; does not rename Maestro) |
-| [glossary.md](./glossary.md) | Scope chips, personas, UI terminology |
-| [recipes.md](./recipes.md) | Add patch/system fields, macros, copy, tests |
-| [ringbench-saas-discovery.md](./ringbench-saas-discovery.md) | Ringbench metered AI SaaS discovery (GCP, wallet, pricing) — **not** Rigbench MIDI IA |
-| [gcp-sandbox-bootstrap.md](./gcp-sandbox-bootstrap.md) | GCP `ringbench-sandbox` bootstrap checklist (no deploy from docs alone) |
+After any IA, connect, route, or surface change: **audit this folder + [AGENTS.md](../../AGENTS.md) + root [README.md](../../README.md) + `.cursor/rules/`** — dedupe, fix drift, prefer one SoT with pointers elsewhere. See [AGENTS.md § Documentation](../../AGENTS.md#documentation).
+
+| File | Topic | Authority |
+| --- | --- | --- |
+| [ui-guidelines.md](./ui-guidelines.md) | Linear dark UI: tokens, Inter, spacing, focus | **SoT** for visual design |
+| [bank-patch-config.md](./bank-patch-config.md) | Bank Tone Deck + Simple / Advanced | **SoT** for Bank patch UI |
+| [connection-resume.md](./connection-resume.md) | MIDI connect, silent resume, Exit purge | **SoT** for connect/resume |
+| [gr55-config-scope.md](./gr55-config-scope.md) | Global vs current-patch parameter inventory (OM) | Discovery / taxonomy SoT |
+| [glossary.md](./glossary.md) | Scope chips, personas, surface names | **SoT** for UI terminology |
+| [recipes.md](./recipes.md) | How to change fields, macros, copy, tests | How-to |
+| [maestro-architecture.md](./maestro-architecture.md) | Maestro registry, policy, Gemini BYOK | **SoT** for Maestro internals |
+| [studio-sessions.md](./studio-sessions.md) | Session taxonomy + macros (System/Patch) | Craft/macros — page scope = Bank\|Global |
+| [mobile-live-control.md](./mobile-live-control.md) | Mobile vision (Stage-era) | Vision only; Bank UI SoT is [bank-patch-config.md](./bank-patch-config.md) |
+| [ringbench-saas-discovery.md](./ringbench-saas-discovery.md) | Ringbench metered AI SaaS discovery (GCP, wallet, pricing) | **Not** Rigbench MIDI IA |
+| [gcp-sandbox-bootstrap.md](./gcp-sandbox-bootstrap.md) | GCP `ringbench-sandbox` bootstrap checklist | Research only; no deploy from docs alone |
+
+App navigation and home surface: **[AGENTS.md](../../AGENTS.md)** (Home → Connect → Bank \| Global).
 
 Roland manuals (PDFs): [../manuals/](../manuals/).

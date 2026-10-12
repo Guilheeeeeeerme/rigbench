@@ -1,20 +1,63 @@
-/** The routes the GR-55 owns, under /gr55. Studio is craft home once the pedal is set up. */
+/** GR-55 routes under /gr55. Surfaces: Connect · Bank · Global. */
 export const connectRoute = 'conectar';
-export const setupRoute = 'configurar';
+export const bankRoute = 'bank';
+export const globalRoute = 'global';
+
+/** @deprecated Use bankRoute. */
+export const patchRoute = bankRoute;
+/** @deprecated Legacy Stage address — redirects to Bank. */
+export const stageRoute = bankRoute;
+/** @deprecated Legacy Studio address — redirects to Bank. */
 export const studioRoute = 'estudio';
-export const stageRoute = 'palco';
-export const setlistRoute = 'agenda';
-export const libraryRoute = 'patches';
-export const editorRoute = 'editor';
+/** @deprecated Legacy Setup address — redirects to Global. */
+export const configRoute = 'configuracao';
+/** @deprecated Legacy Maestro address — redirects to Bank. */
+export const maestroRoute = 'maestro';
+/** @deprecated Legacy wizard — redirects to Connect. */
+export const setupRoute = 'configurar';
+/** @deprecated Legacy device — redirects to Global. */
 export const deviceRoute = 'dispositivo';
+/** @deprecated Legacy GK — redirects to Global. */
 export const gkRoute = 'dispositivo/gk';
 
 const base = '/gr55';
-export const setupHref = `${base}/${setupRoute}`;
-export const studioHref = `${base}/${studioRoute}`;
-export const stageHref = `${base}/${stageRoute}`;
-export const setlistHref = `${base}/${setlistRoute}`;
-export const libraryHref = `${base}/${libraryRoute}`;
-export const editorRootHref = `${base}/${editorRoute}`;
-export const deviceHref = `${base}/${deviceRoute}`;
-export const gkHref = `${base}/${gkRoute}`;
+export const connectHref = `${base}/${connectRoute}`;
+export const bankHref = `${base}/${bankRoute}`;
+export const globalHref = `${base}/${globalRoute}`;
+/** @deprecated Use bankHref. */
+export const patchHref = bankHref;
+/** @deprecated Use bankHref. */
+export const stageHref = bankHref;
+/** @deprecated Use globalHref. */
+export const configHref = globalHref;
+/** @deprecated Use bankHref. */
+export const maestroHref = bankHref;
+/** @deprecated Use globalHref. */
+export const deviceHref = globalHref;
+/** @deprecated Use globalHref. */
+export const gkHref = globalHref;
+/** @deprecated Use connectHref. */
+export const setupHref = connectHref;
+
+/** Child routes restored after silent reconnect. */
+export const RESUMABLE_ROUTES = [bankRoute, globalRoute] as const;
+
+export type ResumableRoute = (typeof RESUMABLE_ROUTES)[number];
+
+export function isResumableRoute(route: string): route is ResumableRoute {
+  return (RESUMABLE_ROUTES as readonly string[]).includes(route as ResumableRoute);
+}
+
+/** First path segment under `/gr55/…`. */
+export function childRouteOfPath(pathname: string): string {
+  const parts = pathname.replace(/^\/gr55\/?/, '').split('/').filter(Boolean);
+  return parts[0] ?? '';
+}
+
+/** Map legacy first segments onto Bank or Global. */
+export function normalizeAppRoute(child: string): ResumableRoute {
+  if (child === globalRoute || child === configRoute || child === 'dispositivo') {
+    return globalRoute;
+  }
+  return bankRoute;
+}

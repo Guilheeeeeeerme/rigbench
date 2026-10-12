@@ -1,0 +1,569 @@
+     Saving a Patch (PATCH WRITE)
+
+ Saving a Patch (PATCH WRITE)                                                  Changing the Order of Patches
+     If you edit a patch and then select another patch before saving the
+     edited patch, the changes you made will be lost. If you want to keep
+                                                                               (PATCH EXCHANGE)
+     the changes for future use, you must save the patch.                            Here’s how to exchange a user patch with another user patch. If you
+     Patches are saved as “user patches.” You can’t save by overwriting a            bring frequently used patches together in consecutive locations,
+     preset patch.                                                                   you’ll be able to conveniently select them using the foot pedals.
+1.   Press the [WRITE] button.                                                     * You can’t change the order of the preset patches.
+     The WRITE screen will appear.
+                                                                              1.     Select a user patch (p. 16).
+                                                                              2.     Press the [WRITE] button.
+                                                                              3.     Use the PAGE [ ] [ ] buttons to select the EXCHANGE tab.
+                                                                                     The screen shows the number and name of the exchange-
+                                                                                     destination patch.
+
+2.   Use the dial to select the write-destination user patch number.
+3.   To save the patch, press the [WRITE] button.
+     The screen will indicate “NOW WRITING...” and the patch will be saved.
+
+
+                                                                              4.     Use the dial to specify the desired exchange-destination
+                                                                                     patch.
+                                                                              5.     Press the [WRITE] button.
+                                                                                     The screen will indicate “NOW EXCHANGING...” and the current patch
+     If you decide not to save the patch, press the [EXIT] button.                   will be exchanged with the patch you specified.
+                                                                                     If you decide not to exchange, press the [EXIT] button.
+ Renaming a Patch
+     Here’s how to rename a user patch (p. 16).                                Initializing the Settings of a Patch
+1.   Select the patch that you want to rename, and press the
+     [WRITE] button.                                                           (PATCH INITIALIZE)
+     The WRITE screen will appear.                                                   Here’s how to initialize all parameters of a user patch. This is
+                                                                                     convenient when you want to create a patch from scratch.
+2.   Press the [ENTER] button.
+                                                                                   * You can’t initialize a preset patch.
+
+                                                                              1.     Select the user patch that you want to initialize (p. 16).
+                                                                              2.     Press the [WRITE] button.
+                                                                              3.     Use the PAGE [ ] [ ] buttons to select the INITIALIZE tab.
+                                                                                     The screen shows the number and name of the patch to be
+3.   Use the cursor [ ] [ ] buttons to move the cursor to the                        initialized.
+     character that you want to change.
+4.   Use the dial and the following buttons to change the
+     character.
+     As you continue turning the dial, the type of character will change in
+     the order of uppercase → lowercase → numerals → symbols.
+
+      Button                   Description                                    4.     Press the [WRITE] button.
+      Cursor [    ] (INSERT)   Inserts a space at the cursor location.               The screen will indicate “NOW INITIALIZING...” and the patch will be
+                               Deletes the character, and moves subsequent           initialized.
+      Cursor [    ] (DELETE)   characters forward.                                   If you decide not to initialize, press the [EXIT] button.
+                               Switches between letters, numerals, and
+      PAGE [     ] (A0!)
+                               symbols.
+                               Switches between uppercase and lowercase
+      PAGE [     ] (A<=>a)
+                               letters.
+
+
+5.   Repeat steps 3–4 to rename the patch.
+     You can specify up to 16 characters.
+6.   Press the [ENTER] button.
+     The name will be finalized.
+
+
+
+
+60
+       Controller Assignments
+
+ Controllers Whose Assignment Can                                                 Changing the Pedal Assignments for Each
+ Be Changed                                                                       Patch
+      For the following controllers, you are free to change the operation that   1.    In the system parameter PEDAL/GK CTL section, change the
+      will occur when they are pressed.                                                setting of the desired controller (CTL, EXP, EXP ON, EXP SW,
+                                                                                       GK S1/S2, GK VOL) to “PATCH SETTING.”
+        [S1]/[S2] buttons,                                                             For details on how to set system parameters, refer to “Settings for the
+        GK volume                                                                      Entire GR-55 (SYSTEM)” (p. 69)
+                                                                                 2.    Select the patch whose pedal assignment you want to
+                                                                                       change (p. 16).
+                                                                                 3.    In the EDIT screen, choose the MASTER tab and then the
+                                                                                       PEDAL/GK CTL icon, and change the assignment of the
+                                                                                       desired controller (CTL, EXP, EXP ON, EXP SW, GK S1/S2, GK
+                                                                                       VOL) to the desired setting.
+                                                                                       For details on how to set master parameters, refer to “Patch Settings
+                                                                                       (MASTER)” (p. 54).
+                                                                                 4.    Save the patch (p. 60).
+                                   Expression pedal
+
+                                                                                 Example setting
+                                                                                 When a specific patch is selected, use the expression pedal
+                                                                                 to control the volume of the modeling tone
+                                                                                       Select the patch whose settings you want to edit, then make the
+                                                                                       following parameter settings.
+                                [CTL] pedal                                            Also be sure to verify that the tone switch (p. 23) of the modeling tone is
+                                                                                       turned on.
+                                                                                      • SYSTEM
+ Making a Pedal Have the Same Operation                                                 PEDAL/GK CTL
+ for All Patches                                                                        Tab             Parameter            Value                       Page
+                                                                                        EXP             FUNCTION             PATCH SETTING               p. 77
+      When the GR-55 is shipped, each patch assigns the pedals to the
+      functions that are most useful for that particular patch. If you want
+                                                                                      • MASTER
+      a pedal to have the same function regardless of the patch that is
+      selected, proceed as follows.                                                     PEDAL/GK CTL
+1.    In the system parameter PEDAL/GK CTL section, change the                          Tab             Parameter            Value                       Page
+      setting of the desired controller (CTL, EXP, EXP ON, EXP SW,                                                           TONE VOLUME
+      GK S1/S2, GK VOL) to other than “PATCH SETTING.”                                                                       PCM TONE 1: OFF
+      For details on how to set system parameters, refer to “Settings for the           EXP             FUNCTION             PCM TONE 2: OFF             p. 56
+      Entire GR-55 (SYSTEM)” (p. 69).
+                                                                                                                             MODELING TONE: ON
+
+
+Example setting
+                                                                                                                             NORMAL PU: OFF
+
+
+
+
+Switch delay on/off by pressing the [CTL] pedal
+      Make the following parameter settings.
+     • SYSTEM
+
+       PEDAL/GK CTL
+       Tab             Parameter            Value                      Page
+       CTL             FUNCTION             DELAY SW                   p. 76
+
+
+      MEMO
+         You should first raise the “EFFECT LEVEL” (p. 52) setting for DELAY.
+
+
+
+
+                                                                                                                                                                 61
+Controller Assignments
+
+ Specifying the Parameter to be Controlled                                      Example setting 1
+ by the Controller                                                              Make PCM tone 1 smoothly bend up one octave when you
+      For each parameter, you can specify, in detail, which controller will     press the [CTL] pedal
+      control which parameter.                                                     Select the patch whose settings you want to edit, and then make the
+      You can create eight sets of such assignments.                               following parameter settings.
+
+1.    In the system parameter PEDAL/GK CTL section, set the                       • SYSTEM
+      assignment of each controller (CTL, EXP, EXP ON, EXP SW, GK                   PEDAL/GK CTL
+      S1/S2, GK VOL) to “PATCH SETTING.”
+                                                                                    Tab            Parameter          Value                         Page
+      For details on how to set system parameters, refer to “Settings for the       CTL            FUNCTION           PATCH SETTING                 p. 76
+      Entire GR-55 (SYSTEM)” (p. 69).
+2.    Select the patch whose assignments you want to change                       • MASTER
+      (p. 16).
+                                                                                    ASSIGN
+3.    In the EDIT screen, choose the MASTER tab and set ASSIGN                      Tab            Parameter          Value                         Page
+      1–8 (p. 57).
+                                                                                                   SWITCH             ON
+      For details on how to set master parameters, refer to “Patch Settings                        TARGET             PCM1 TONE1 BEND
+      (MASTER)” (p. 54).
+                                                                                                   TARGET MIN         0
+4.    If you want to keep the settings, save the patch (p. 60).                                    TARGET MAX         +12
+                                                                                                   SOURCE             INT PDL
+
+     Virtual expression pedal system                                                               SOURCE MODE        MOMENT
+
+
+     (Internal Pedal / Wave Pedal)                                                  ASSIGN 1
+                                                                                                   ACT RANGE LO
+                                                                                                   ACT RANGE HI
+                                                                                                                      0
+                                                                                                                      127                           p. 57
+         By assigning a desired parameter to the virtual expression                                INT TRIG           CTL
+         pedal, you can produce an effect as though you were                                                          20
+         operating a physical expression pedal to change the volume                                                   (Adjust the time over
+                                                                                                   INT TIME
+         or tone quality in real time.                                                                                which the pitch rises an
+                                                                                                                      octave.)
+         The virtual expression pedal system provides the following
+         two types of functions, and you can use the SOURCE (p. 57)                                                   LINEAR
+                                                                                                                      (You can select a different
+         setting for ASSIGN 1–8 to choose the desired type.                                        INT CURVE
+                                                                                                                      curve to modify the way in
+       * If you want to use the internal pedal or wave pedal, set the                                                 which the change occurs.)
+         ASSIGN parameter SOURCE MODE to “MOMENT.”
+                                                                                   If you use ASSIGN2 and ASSIGN3 to make the same settings for PCM
+                                                                                   TONE 2 and MODELING TONE, you’ll be able to bend up all tones.
+     Internal pedal
+                                                         The value changes in
+         If SOURCE is set to “INT PDL,” the              a curve
+         virtual expression pedal will begin
+         operating when started by the
+         specified trigger (INT TRIG, p. 58),
+         modifying the parameter specified
+         by TARGET (p. 57).
+         For details on the parameters that When the trigger occurs
+         can be assigned to the internal
+         pedal, refer to “INT TIME” (p. 58) and
+         “INT CURVE” (p. 58).
+
+     Wave pedal
+         If SOURCE is set to “WAVE PDL,” the virtual expression pedal
+         will cyclically modify the parameter specified by TARGET (p. 57)
+         in a fixed wave form.
+
+
+
+
+         Always changes in a fixed curve regardless of the
+         actual pedal
+
+         For details on the parameters that can be assigned to the
+         wave pedal, refer to“WAVE RATE”(p. 58) and “WAVE FORM”(p. 58).
+
+
+
+
+62
+                                                                                                                   Controller Assignments
+
+Example setting 2                                                         NOTE!
+                                                                            If you edit the value of a parameter that’s assigned to a controller,
+                                                                            and then save the patch, some parameters will be overwritten with
+For guitar solos, you want to be able to step on the [CTL]                  the initial state of the controller. This will make it seem as though
+                                                                            the edited value has not been saved.
+pedal to switch AMP to solo mode
+                                                                            To avoid this situation, choose the OFF setting for the PEDAL/GK
+    Select the patch whose settings you want to edit, and then make the     CTL parameter FUNCTION (p. 55, p. 76) and for the ASSIGN parameter
+    following parameter settings.                                           SWITCH (p. 57) of the function being assigned.
+  • SYSTEM
+
+     PEDAL/GK CTL
+     Tab            Parameter          Value                     Page
+     CTL            FUNCTION           PATCH SETTING             p. 76
+
+  • MASTER
+
+     ASSIGN
+     Tab            Parameter          Value                     Page
+                    SWITCH             ON
+                    TARGET             AMP “SOLO SW”
+                    TARGET MIN         OFF
+                    TARGET MAX         ON
+     ASSIGN 1                                                    p. 57
+                    SOURCE             CTL
+                    SOURCE MODE        TOGGLE
+                    ACT RANGE LO       0
+                    ACT RANGE HI       127
+                    SWITCH             ON
+                    TARGET             AMP “GAIN SW”
+                    TARGET MIN         LOW
+                    TARGET MAX         MID
+     ASSIGN 2                                                    p. 57
+                    SOURCE             CTL
+                    SOURCE MODE        TOGGLE
+                    ACT RANGE LO       0
+                    ACT RANGE HI       127
+
+
+
+
+                                                                                                                                              63
+       Using Phrase Loop
+       You can record up to 20 seconds of a performance and play back the recorded section over and over.
+       You can also layer additional performances with the recording as it plays back (overdubbing).
+
+       When playback stops, the recorded data is deleted.
+
+
+        1. Press & hold                                          2.
+                                             STANDBY                                           REC
+
+        6.
+
+
+                                 5.                   5.                                    3.
+
+
+                                                                  4.
+                                              OVERDUB                                         PLAY
+
+          [3] pedal indicator
+
+                       Lit                                        4.
+                       Off
+
+
+
+
+1.     Press the [3] pedal and [CTL] pedal simultaneously (recording-standby mode).
+       Phrase Loop goes into recording standby and the [3] pedal’s indicator flashes at a fixed interval.
+
+
+
+
+2.     Press the [CTL] pedal (REC).
+       Recording starts as soon as you press the [CTL] pedal, and the [CTL] pedal’s indicator flashes rapidly.
+3.     Press the [CTL] pedal again (PLAY).
+       Recording ends. As soon as recording stops, repeated playback of what you’ve recorded starts, and the [CTL] pedal’s indicator lights continuously.
+
+       NOTE
+          An oscillating sound may be audible when the recording time is extremely short.
+4.     To layer additional recordings (overdubbing), repeat steps 2 and 3 (OVERDUB).
+       You can switch patches even during phrase loop play, which lets you record a variety of overdubbed sounds.
+5.     To stop loop playback, press the [CTL] pedal twice in quick succession (STANDBY).
+       Loop playback/recording stops.
+     * When playback stops, the recorded data is deleted.
+
+6.     Press the [3] pedal and [CTL] pedal simultaneously.
+       This exits Phrase Loop mode.
+
+
+
+
+64
+     Using the GR-55 as an Audio Player
+     Audio files (WAV, AIFF) copied from your computer to
+     USB memory can be played back on the GR-55.                                 Playing Back Audio
+                                                                                1.   Press the [AUDIO PLAYER] button to access the AUDIO
+                                                                                     PLAYER screen.
+     Audio files that can be played                                                                      File name
+         File format                WAV, AIFF
+         Sampling frequency         44.1 kHz
+         Bit depth                  8/16/24 bits
+
+
+
+
+                                                                                2.   Use the cursor buttons to select the file name, and turn the
+ Copying Audio Files From Your                                                       dial to choose the file that you want to play back.
+
+ Computer to USB Memory
+     Before you continue, you’ll need to copy audio files from your
+     computer to the root directory (the top level) of your USB memory.
+
+        Copy to USB memory                                                           The songs are shown in the order of their file name (sorted by number,
+                                                                                     uppercase letters, and lowercase letters).
+                                                                                3.   Press the [ENTER] button to confirm the audio file you
+                                                                                     choose.
+             WAV, AIFF
+                                                                                4.   Press the [ENTER] button once again to start playback.
+                                                                                     MEMO
+                                                                                        During playback, you can use the PAGE [ ] [ ] buttons to rewind
+ Inserting the USB Memory                                                       5.
+                                                                                        or fast-forward.
+                                                                                     Use the cursor buttons to select “AUDIO LEVEL,” and use the
+1.   As shown in the illustration below, insert your USB memory                      dial to adjust the volume.
+     into the USB MEMORY connector.
+                                                                                6.   Press the [ENTER] button to stop playback.
+                                                                                7.   Press the [AUDIO PLAYER] button to return to the top screen.
+
+
+
+                          Open the cover and insert the USB
+                                                                                 Using the Pedal to Control the Audio
+                          memory.
+                                                                                 Player
+                                                                                     When you’re in the AUDIO PLAYER screen, the pedals will perform the
+                                                                                     following operations.
+
+                                                                                      Pedal             Description
+                                                                                      [1] pedal
+     NOTE!                                                                                              Select an audio file.
+      • Never insert or remove a USB memory while this unit’s power is                [2] pedal
+        on. Doing so may corrupt the unit’s data or the data on the USB               [3] pedal         Starts/stops audio file playback.
+        memories.                                                                                       Closes the AUDIO PLAYER screen (*1). Closing the AUDIO
+      • Carefully insert the USB memory all the way in-until it is firmly in                            PLAYER screen will not stop playback. From the top
+        place.                                                                                          screen, you can return to the AUDIO PLAYER screen by
+                                                                                                        pressing the [CTL] pedal once again.
+      • If the GR-55 is connected to your computer via a USB cable, you
+        won’t be able to use USB memory to play audio files.                          [CTL] pedal
+      • Dimensions of USB memory that can be installed: 60 (length: including
+        connector) x 26 (width) x 13.5 (thickness) mm or smaller
+
+                                                                                                        (*1) The Phrase Loop function is not available while
+                                                                                                        you’re using the audio player.
+
+
+
+
+                                                                                                                                                               65
+       Connecting External Equipment
+                                                                                  2.   Use a USB cable (sold separately) to connect the GR-55 to
+ Connecting a Computer via USB                                                         your computer.
+
+
+     If you use a commercially available USB cable to connect the
+     GR-55’s rear panel USB connector to a USB connector on your
+     computer, you’ll be able to do the following things.
+                                                                                                                       Computer’s USB connector
+     USB audio                                                                                                         (Supports USB 2.0 Hi-Speed)
+
+
+        • The sound of the GR-55 can be brought into your computer
+          and played. Sound from your computer can also be played
+          through the equipment connected to the GR-55’s OUTPUT                                                                       USB cable
+          jacks.                                                                                                    (Supports USB 2.0 Hi-Speed)
+
+                                                                                                                                 USB connector
+
+     USB MIDI
+        • Performance information from the GR-55 can be input via
+          MIDI to your DAW software.
+        * It’s not possible to play the GR-55’s sound generator
+          via input from the MIDI IN connector or the USB-MIDI
+          connector.
+        • You can use “GR-55 Librarian” software to back up and
+          manage GR-55 patches on your computer.
+          “GR-55 Librarian” can be downloaded from the Roland                          NOTE!
+          website.                                                                      • This might not work correctly for some types of computers. Refer
+                                                                                          to the Roland website for details on the operating systems that
+          Roland website                                                                  are supported.
+          http://www.roland.com/products/en/GR-55/                                      • Before connecting the GR-55 to other devices, you must minimize
+                                                                                          the volume of all devices and turn off their power in order to
+                                                                                          prevent malfunctions and speaker damage.
+                                                                                        • Use a USB cable that supports USB 2.0 Hi-Speed operation.
+
+ Connecting the GR-55 to a Computer                                                     • Use a USB connector on your computer that supports USB 2.0
+                                                                                          Hi-Speed operation.
+1.    Install the USB driver in your computer.                                          • Turn on the GR-55’s power before you start up your DAW software
+                                                                                          on the computer. Do not turn the GR-55’s power on/off while the
+      In order to use the GR-55’s USB functionality, you must first install the
+                                                                                          DAW software is running.
+      USB driver in your computer.
+      Download the dedicated GR-55 driver from the Roland website.
+      Roland website                                                                   What is the USB driver?
+      http://www.roland.com/products/en/GR-55/
+                                                                                          The USB driver is software that transfers data between the
+      Refer to the Roland website for details on the operating                            GR-55 and the application (e.g., DAW software) on your
+      requirements. The program and procedure for installing the driver                   computer when the GR-55 is connected via USB to your
+      will differ depending on your system. Carefully read the Readme.htm                 computer.
+      file included with the downloaded file.
+                                                                                          The USB driver sends data from your application to the GR-55,
+                                                                                          and data from the GR-55 to your application.
+
+
+
+
+                                                                                   USB function settings
+                                                                                       You can make various settings for the USB functionality, such as the
+                                                                                       volume of USB audio. For the procedure, refer to “Settings for the
+                                                                                       Entire GR-55 (SYSTEM)” (p. 69). For details on each parameter, refer to
+                                                                                       “MIDI/USB” (p. 79).
+
+
+
+
+66
+                                                                                                           Connecting External Equipment
+
+
+Connecting the GR-55 to MIDI Devices                                      About the MIDI Connectors
+
+ What is MIDI?                                                           MIDI IN connector
+                                                                             This connector receives MIDI data sent from an external MIDI device.
+     MIDI (Musical Instrument Digital Interface) is a standard               The GR-55 can switch patches in response to the incoming MIDI data.
+     specification that allows musical data to be transferred
+     between electronic musical instruments and computers. If              * It’s not possible to play the GR-55’s sound generator via input from
+     a MIDI cable is connected between devices equipped with                 the MIDI IN connector or the USB-MIDI connector.
+     MIDI connectors, you’ll be able to play multiple devices from a
+     single MIDI keyboard, perform ensembles using multiple MIDI
+     instruments, program the settings to change automatically as        MIDI OUT connector
+     the song progresses, and more.
+                                                                             This connector transmits MIDI data to an external MIDI device. You
+                                                                             can use this to control an external MIDI device.
+
+  The GR-55 has the following two types of MIDI connectors, which        Example connection
+  operate in different ways.                                                                                                 MIDI Foot Controller
+                                                                                 Synthesizer etc.
+  External MIDI sound        Computer
+
+                                                                                                         MIDI IN
+                                                                                                         connector
+                                                                                                                                          MIDI OUT
+                                                                                                                                          connector
+
+
+
+                  MIDI OUT             USB (MIDI)
+
+
+
+
+              +
+
+                                                                          MIDI Settings
+                                            MIDI RX
+      Guitar to MIDI               +        PC MAP
+                                                            Patch No.
+      conversion
+
+                                                                             You can make MIDI settings that apply to the entire GR-55, such as
+                                                                             specifying the MIDI channel. For the procedure, refer to “Settings for
+                                         MIDI IN                             the Entire GR-55 (SYSTEM)” (p. 69). For details on each setting, refer to
+                                                                             “MIDI/USB” (p. 79).
+      GK IN
+
+
+
+
+          Guitar                MIDI Controller
+                                FC-300 etc.
+
+* It’s not possible to play the GR-55’s sound generator via input from
+  the MIDI IN connector or the USB-MIDI connector.
+
+
+
+
+                                                                                                                                                    67
+Connecting External Equipment
+
+
+ Connecting the GR-55 to V-LINK
+ Devices (V-LINK)
+      What is V-LINK?
+          V-LINK (               ) is a function that allows music and
+          images to be performed together. By using MIDI to connect
+          two or more V-LINK compatible devices, you can easily enjoy
+          performing a wide range of visual effects that are linked to the
+          expressive elements of a music performance.
+
+
+
+      For example, if the GR-55 is connected to a Roland P-10 Visual Sampler,
+      you would be able to switch images and control the brightness or hue
+      of the image.
+
+Example connection
+      This example shows connections with a Roland P-10.
+      Use a MIDI cable (sold separately) to connect the GR-55’s MIDI OUT
+      connector to the MIDI IN connector of the Roland P-10.
+                 Roland P-10
+                               MIDI IN
+                               connector
+
+
+
+
+                                                         MIDI OUT connector
+
+
+
+
+     * V-LINK communication is not possible via USB.
+
+
+ Turning V-LINK On/Off
+1.    Press the [V-LINK] button so it’s lit.
+      V-LINK will turn on.
+2.    Press the [V-LINK] button once again.
+      The [V-LINK] button will go dark, and V-LINK will turn off.
+
+
+ V-LINK Settings
+V-LINK settings for the system
+(SYSTEM-MIDI)
+      You can specify the MIDI transmit channel used for V-LINK. For the
+      procedure, refer to “Settings for the Entire GR-55 (SYSTEM)” (p. 69). For
+      details on each parameter, refer to “V-LINK TX CH” (p. 79).
+
+
+V-LINK settings for a patch
+(PATCH-MIDI/GK SET)
+      You can specify the V-LINK effect (switching images, or controlling
+      the brightness or hue) for each patch. For the procedure, refer to
+      “Patch Settings (MASTER)” (p. 54). For details on each parameter, refer to
+      “V-LINK” (p. 59).
+
+
+68
+

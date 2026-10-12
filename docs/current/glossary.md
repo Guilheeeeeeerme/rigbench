@@ -1,6 +1,6 @@
 # Glossary & product truths
 
-Extracted from the redesign foundations; IA updated for Studio. Keep UI copy aligned with this language.
+Keep UI copy aligned with this language. Surfaces match [AGENTS.md](../../AGENTS.md).
 
 ## Scope chips (required)
 
@@ -37,13 +37,19 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 - Changing **patches** mutes the pedal ~1 s — warn on Stage before cross-slot moves.
 - **Saving a slot** locks the pedal several seconds; queue must wait for the reply.
 - The pedal does **not** push memory; sync is RQ1 poll only and must never write during sync.
-- Temporary-patch edits disappear when another patch is selected — that is why Library save exists.
+- Temporary-patch edits disappear when another patch is selected — that is why slot save exists.
+- On connect, the app reads the sounding temporary patch **and** which user slot is selected
+  (setup BS MSB + PC). See [connection-resume.md](./connection-resume.md).
 
-## Surfaces (current IA)
+## Surfaces (current IA — WIP)
 
-| Surface | Role |
-| --- | --- |
-| **Studio** | Craft home — sessions System / Patch / Library + Maestro |
-| **Stage** | Live/show — setlist, cuts, pedal map; no destructive writes |
-| **Advanced** | Dense editor, Device, GK — under ⋯ or session Advanced links |
-| **Setup wizard** | First-run gate + “Recalibrate” from System / More |
+| Surface | Route | Role |
+| --- | --- | --- |
+| **Home** | `#/` | Pick GR-55 or a placeholder |
+| **Connect** | `#/gr55/conectar` | MIDI ports; silent resume when remembered ports still valid |
+| **Bank** | `#/gr55/bank` | Three-key bank, Tone Deck + Simple/Advanced; Maestro scopes the bank set |
+| **Global** | `#/gr55/global` | SYSTEM / GK + Maestro (system scope) |
+
+Legacy addresses redirect into Bank or Global. `pages.ts` remains field-key SoT for Maestro.
+
+Macro / session taxonomy (System · Patch · Library) for Maestro craft: [studio-sessions.md](./studio-sessions.md).

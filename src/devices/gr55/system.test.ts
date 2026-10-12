@@ -29,6 +29,10 @@ const GK_SET_1 = [
   0x05, 0x05, 0x00,
 ];
 
+function settle(ms = 20) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function setUp() {
   const device = new FakeGr55();
   const session = new MidiSession(device, device, RolandGR55SysExConfig, 0x10, {
@@ -81,7 +85,7 @@ describe('system map', () => {
 });
 
 describe('Gr55System', () => {
-  test('a change is staged and listed, and reaches the pedal only when applied', async () => {
+  test('a write reaches the pedal immediately with no pending changes', async () => {
     const { device, system } = setUp();
     await system.load();
     const field = SYSTEM.common.outputSelect;
@@ -89,45 +93,21 @@ describe('Gr55System', () => {
 
     system.write(field, 'STACK');
     system.write(gkSet(2).string1Sens, 80);
+    await settle();
     expect(system.read(field)).toEqual({ ok: true, value: 'STACK' });
-    expect(system.readApplied(field)).toEqual({ ok: true, value: 'LINE/PHONES' });
-    expect(device.received.length).toBe(sent);
-    expect(system.changes.map(({ from, to, gkSet: set }) => ({ from, to, set }))).toEqual([
-      { from: 'LINE/PHONES', to: 'STACK', set: undefined },
-      { from: '0', to: '80', set: 2 },
-    ]);
-
-    await system.apply();
+    expect(system.readApplied(field)).toEqual({ ok: true, value: 'STACK' });
     expect(system.changeCount).toBe(0);
+    expect(system.changes).toEqual([]);
     expect([...device.peek(field.address, 1)]).toEqual([4]);
     expect([...device.peek(gkSet(2).string1Sens.address, 1)]).toEqual([80]);
-    // One message per changed field, and nothing else.
     expect(device.received.length).toBe(sent + 2);
-  });
-
-  test('discarding drops what was staged', async () => {
-    const { device, system } = setUp();
-    await system.load();
-    system.write(SYSTEM.common.rxSwitch, true);
-    expect(system.changeCount).toBe(1);
-    system.discard();
-    expect(system.changeCount).toBe(0);
-    expect([...device.peek(SYSTEM.common.rxSwitch.address, 1)]).toEqual([0]);
-  });
-
-  test('a change set back to what the pedal has is no change', async () => {
-    const { system } = setUp();
-    await system.load();
-    system.write(gkSet(1).puType, 'PIEZO');
-    system.write(gkSet(1).puType, 'GK-3');
-    expect(system.changeCount).toBe(0);
   });
 
   test('scale is written as a plain length, never as a preset', async () => {
     const { device, system } = setUp();
     await system.load();
     system.write(gkSet(1).scale, 648 - 500);
-    await system.apply();
+    await settle();
     expect([...device.peek(gkSet(1).scale.address, 2)]).toEqual([0x09, 0x04]);
   });
 });
@@ -138,7 +118,6 @@ describe('system backup files', () => {
     await system.load();
     system.write(SYSTEM.common.outputSelect, 'COMBO');
     system.write(gkSet(7).name, 'GODIN');
-    await system.apply();
 
     const file = encodeSystemBlocksSyx(SYSTEM_ADDRESS, system.appliedBytes(), SYSTEM_BLOCKS);
     const writes = decodeSystemBlocksSyx(file, SYSTEM_ADDRESS, SYSTEM_SPAN);

@@ -1,0 +1,224 @@
+        Contents
+    USING THE UNIT SAFELY. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4                       Reference                                                                                                                      19
+
+    IMPORTANT NOTES. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5                  Panel Descriptions. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+                                                                                                                                               Front Panel. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
+    Main Features . .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6                   About the Top Screen . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
+                                                                                                                                                         About the EDIT Screen. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
+                                                                                                                                               Rear Panel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  21
+Settings                                                                                                                           7
+                                                                                                                                               Side Panel. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  21
+    Preparations for Using the GR-55. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+          Connections. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8        How the GR-55 Works. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 22
+          Turning the Power On/Off. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+          Selecting Guitar or Bass (GUITAR<->BASS). . . . . . . . . . . . . . . . . . . . . . . . . 9                                     Editing the Tones (TONE). .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 23
+          Adjusting the Pickups (GK SETTING). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9                                    Changing the Tone. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  23
+                     Adjusting Your Guitar Pickup . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  10                                        Tone Category . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  23
+                     Adjusting Your Bass Pickup . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  11                            Editing the Tone. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  24
+          Specifying the Output System (OUTPUT SELECT). . . . . . . . . . . . . . . . .  12                                                    Editing a Tone (Detailed Settings). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  24
+          Tuning Your Instrument (the Tuner Function). . . . . . . . . . . . . . . . . . . . .  13                                             Parameter List (PCM TONE 1/PCM TONE 2) . . . . . . . . . . . . . . . . . . . . . . .  25
+                                                                                                                                               Parameter List (MODELING TONE). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  29
+
+Quick Guide                                                                                                                      15       Effect Settings (EFFECT). .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 38
+                                                                                                                                               Switching the Effect Type. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  38
+    Selecting and Playing Sounds. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 16
+                                                                                                                                               Editing the Effects. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  39
+          Adjusting the Output Level. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  16
+                                                                                                                                               Effect Editing (Detailed Settings). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  39
+          Selecting a Sound (Patch) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  16
+                                                                                                                                               Changing the Structure/Specifying the Connection Destination . .  40
+          Playing Your Guitar. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+                                                                                                                                               Parameter List (EFFECT) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  41
+          Creating an Original Sound. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  18
+                                                                                                                                                         AMP. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  41
+                     Using the EZ EDIT Function to Create a Sound. . . . . . . . . . . . . .  18
+                                                                                                                                                         MOD. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  42
+                     Saving the Sound You Created. . . . . . . . . . . . . . . . . . . . . . . . . . . . .  18
+                                                                                                                                                         MFX . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  45
+                                                                                                                                                         DELAY . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  52
+                                                                                                                                                         REVERB . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  52
+                                                                                                                                                         CHORUS. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  53
+                                                                                                                                                         EQ. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  53
+
+                                                                                                                                          Patch Settings (MASTER). .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                               Pedal and GK Control Settings (PEDAL/GK CTL). . . . . . . . . . . . . . . . . . .  54
+                                                                                                                                               Controller Settings (ASSIGN). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  54
+                                                                                                                                               Patch Tempo Setting (PATCH TEMPO) . . . . . . . . . . . . . . . . . . . . . . . . . . . .  54
+                                                                                                                                               GK Pickup Settings for Each Patch (GK SET). . . . . . . . . . . . . . . . . . . . . . .  54
+                                                                                                                                               GUITAR OUT Jack Settings (GUITAR OUT). . . . . . . . . . . . . . . . . . . . . . . . .  54
+                                                                                                                                               Changing the Tuning of Each String (ALT-TUNING). . . . . . . . . . . . . . . .  54
+                                                                                                                                               V-LINK Settings (V-LINK). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  54
+                                                                                                                                               Parameter List (MASTER). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  55
+                                                                                                                                                         PEDAL/GK CTL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  55
+                                                                                                                                                         ASSIGN . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  57
+                                                                                                                                                         PATCH TEMPO. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  58
+                                                                                                                                                         GK SET. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  58
+                                                                                                                                                         GUITAR OUT. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  59
+                                                                                                                                                         ALT-TUNING. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  59
+                                                                                                                                                         V-LINK. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  59
+
+
+
+
+    Before using this unit, carefully read the sections entitled: “USING THE UNIT SAFELY” (p. 4) and “IMPORTANT NOTES” (p. 5). These sections provide
+    important information concerning the proper operation of the unit. Additionally, in order to feel assured that you have gained a good grasp of every
+    feature provided by your new unit, Owner’s manual should be read in its entirety. The manual should be saved and kept on hand as a convenient
+    reference.
+             Copyright © 2011 ROLAND CORPORATION All rights reserved. No part of this publication may be reproduced in any form without the
+             written permission of ROLAND CORPORATION.
+             Roland and COSM are registered trademarks of Roland Corporation in the United States and/or other countries.
+
+
+2
+                                                                                                                                                                                                                                                             Contents
+
+Saving a Patch (PATCH WRITE). .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 60                                       Parameter List (SYSTEM). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  74
+     Saving a Patch (PATCH WRITE) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  60                                         GK SETTING. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  74
+               Renaming a Patch. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  60                                OUTPUT SELECT. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  75
+     Changing the Order of Patches (PATCH EXCHANGE) . . . . . . . . . . . . . .  60                                                                 PEDAL/GK CTL . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  76
+     Initializing the Settings of a Patch (PATCH INITIALIZE). . . . . . . . . . . . .  60                                                           MIDI/USB . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  79
+                                                                                                                                                    OTHER. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  80
+Controller Assignments. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 61                                       BACKUP/INITIALIZE. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  80
+     Controllers Whose Assignment Can Be Changed . . . . . . . . . . . . . . . . .  61
+               Making a Pedal Have the Same Operation for All Patches . . .  61
+                                                                                                                                 Appendix                                                                                                                                   81
+               Changing the Pedal Assignments for Each Patch. . . . . . . . . . . .  61
+               Specifying the Parameter to be Controlled by the                                                                   GR-55 Patch List . .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 82
+               Controller. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  62                      GUITAR MODE. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  82
+                                                                                                                                                    BASS MODE. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  88
+Using Phrase Loop. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 64
+                                                                                                                                  Troubleshooting. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 90
+Using the GR-55 as an Audio Player. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 65
+     Copying Audio Files From Your Computer to USB Memory. . . . . . . .  65                                                      Error Messages. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 92
+     Inserting the USB Memory. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  65
+     Playing Back Audio. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  65            Signal Flow. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 93
+     Using the Pedal to Control the Audio Player. . . . . . . . . . . . . . . . . . . . . .  65
+                                                                                                                                  MIDI Implementation Chart. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 94
+Connecting External Equipment. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 66
+     Connecting a Computer via USB. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  66                           Main Specifications. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 95
+               Connecting the GR-55 to a Computer. . . . . . . . . . . . . . . . . . . . . .  66
+               USB function settings. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 66                Index . .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 96
+     Connecting the GR-55 to MIDI Devices. . . . . . . . . . . . . . . . . . . . . . . . . . .  67
+               About the MIDI Connectors. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  67
+               MIDI Settings. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  67
+     Connecting the GR-55 to V-LINK Devices (V-LINK) . . . . . . . . . . . . . . . .  68
+               Turning V-LINK On/Off. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  68
+               V-LINK Settings. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  68
+
+Settings for the Entire GR-55 (SYSTEM). .  .  .  .  .  .  .  .  .  .  .  .  .  . 69
+     Setting the GK Pickups (GK SETTING). . . . . . . . . . . . . . . . . . . . . . . . . . . . .  69
+               Switching GK Sets. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  70
+               Renaming a GK Set. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  70
+     Specifying the Output Device (OUTPUT SELECT) . . . . . . . . . . . . . . . . .  70
+     Pedal and GK Control Settings (PEDAL/GK CTL). . . . . . . . . . . . . . . . . . .  70
+     MIDI and USB Settings (MIDI/USB) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  70
+     GUITAR OUT Jack Settings (GUITAR OUT). . . . . . . . . . . . . . . . . . . . . . . . .  70
+               Always Outputting the Normal Pickup Sound from the
+               GUITAR OUT Jack for All Patches . . . . . . . . . . . . . . . . . . . . . . . . . . .  70
+               Always Outputting the Modeling Tone Sound from the
+               GUITAR OUT Jack for All Patches . . . . . . . . . . . . . . . . . . . . . . . . . . .  70
+               Changing the Output Sound from the GUITAR OUT Jack for
+               Each Patch. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  71
+     Tuning Your Guitar (TUNER). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  71
+     Adjusting the Display Contrast (LCD). . . . . . . . . . . . . . . . . . . . . . . . . . . . .  71
+     Auto Power Off Settings (POWER). . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  71
+     Switching Between Guitar and Bass (GUITAR<->BASS). . . . . . . . . . . .  71
+     Saving GR-55 Settings to USB Memory (BACKUP). . . . . . . . . . . . . . . . .  72
+               Restoring GR-55 Settings from USB Memory (RESTORE). . . . .  72
+     Adjusting the Pedal Sensitivity (CALIB) . . . . . . . . . . . . . . . . . . . . . . . . . .  73
+     Restoring the Factory Settings (FACTORY RESET). . . . . . . . . . . . . . . . .  73
+
+
+
+
+                                                                                                                                                                                                                                                                                3
+      USING THE UNIT SAFELY
+
+    About         WARNING and                CAUTION Notices                      About the Symbols
+                                                                                          The symbol alerts the user to important instructions or
+                              Used for instructions intended to alert the                 warnings. The specific meaning of the symbol is
+                              user to the risk of death or severe injury                  determined by the design contained within the triangle. In
+                              should the unit be used improperly.                         the case of the symbol at left, it is used for general
+                                                                                          cautions, warnings, or alerts to danger.
+                              Used for instructions intended to alert the
+                              user to the risk of injury or material                      The symbol alerts the user to items that must never be
+                              damage should the unit be used                              carried out (are forbidden). The specific thing that must
+                              improperly.                                                 not be done is indicated by the design contained within
+                                                                                          the circle. In the case of the symbol at left, it means that
+                              * Material damage refers to damage or                       the unit must never be disassembled.
+                                other adverse effects caused with
+                                respect to the home and all its                           The symbol alerts the user to things that must be
+                                furnishings, as well to domestic animals                  carried out. The specific thing that must be done is
+                                or pets.                                                  indicated by the design contained within the circle. In the
+                                                                                          case of the symbol at left, it means that the power-cord
+                                                                                          plug must be unplugged from the outlet.
+
+                                                            ALWAYS OBSERVE THE FOLLOWING
+
+                                        WARNING                                                                            WARNING
+Do not attempt to repair the unit, or replace parts within it (except when         In households with small children, an adult should provide supervision
+this manual provides specific instructions directing you to do so). Refer all      until the child is capable of following all the rules essential for the safe
+servicing to your retailer, the nearest Roland Service Center, or an autho-        operation of the unit.
+rized Roland distributor, as listed on the “Information” page.
+                                                                                   Protect the unit from strong impact. (Do not drop it!)
+Never install the unit in any of the following locations.
+• Subject to temperature extremes (e.g., direct sunlight in an enclosed            Do not force the unit’s power-supply cord to share an outlet with an
+  vehicle, near a heating duct, on top of heat-generating equipment); or are       unreasonable number of other devices. Be especially careful when using
+• Damp (e.g., baths, washrooms, on wet floors); or are                             extension cords–the total power used by all devices you have connected
+                                                                                   to the extension cord’s outlet must never exceed the power rating (watts/
+• Exposed to steam or smoke; or are
+                                                                                   amperes) for the extension cord. Excessive loads can cause the insulation
+• Subject to salt exposure; or are                                                 on the cord to heat up and eventually melt through.
+• Humid; or are                                                                    Before using the unit in a foreign country, consult with your retailer, the
+• Exposed to rain; or are                                                          nearest Roland Service Center, or an authorized Roland distributor, as listed
+• Dusty or sandy; or are                                                           on the “Information” page.
+
+• Subject to high levels of vibration and shakiness.
+Make sure you always have the unit placed so it is level and sure to remain                                                 CAUTION
+stable. Never place it on stands that could wobble, or on inclined surfaces.
+                                                                                   The unit and the AC adaptor should be located so their location or position
+Be sure to use only the AC adaptor supplied with the unit. Also, make sure         does not interfere with their proper ventilation.
+the line voltage at the installation matches the input voltage specified on
+                                                                                   Always grasp only the plug on the AC adaptor cord when plugging into, or
+the AC adaptor’s body. Other AC adaptors may use a different polarity, or
+                                                                                   unplugging from, an outlet or this unit.
+be designed for a different voltage, so their use could result in damage,
+malfunction, or electric shock.                                                    At regular intervals, you should unplug the AC adaptor and clean it by
+                                                                                   using a dry cloth to wipe all dust and other accumulations away from its
+Use only the attached power-supply cord. Also, the supplied power cord
+                                                                                   prongs. Also, disconnect the power plug from the power outlet whenever
+must not be used with any other device.
+                                                                                   the unit is to remain unused for an extended period of time. Any accumula-
+Do not excessively twist or bend the power cord, nor place heavy objects           tion of dust between the power plug and the power outlet can result in
+on it. Doing so can damage the cord, producing severed elements and                poor insulation and lead to fire.
+short circuits. Damaged cords are fire and shock hazards!
+                                                                                   Try to prevent cords and cables from becoming entangled. Also, all cords
+This unit, either alone or in combination with an amplifier and headphones         and cables should be placed so they are out of the reach of children.
+or speakers, may be capable of producing sound levels that could cause
+permanent hearing loss. Do not operate for a long period of time at a high         Never climb on top of, nor place heavy objects on the unit.
+volume level, or at a level that is uncomfortable. If you experience any
+hearing loss or ringing in the ears, you should immediately stop using the         Never handle the AC adaptor or its plugs with wet hands when plugging
+unit, and consult an audiologist.                                                  into, or unplugging from, an outlet or this unit.
+Do not place containers containing liquid on this product. Never allow             Before moving the unit, disconnect the AC adaptor and all cords coming
+foreign objects (e.g., flammable objects, coins, wires) or liquids (e.g., water    from external devices.
+or juice) to enter this product. Doing so may cause short circuits, faulty
+                                                                                   Before cleaning the unit, turn off the power and unplug the AC adaptor
+operation, or other malfunctions.
+                                                                                   from the outlet (p. 8).
+Immediately turn the power off, remove the AC adaptor from the outlet,             Whenever you suspect the possibility of lightning in your area, disconnect
+and request servicing by your retailer, the nearest Roland Service Center, or      the AC adaptor from the outlet.
+an authorized Roland distributor, as listed on the “Information” page when:
+                                                                                   Keep the ground terminal screw and/or USB connector cap you may
+• The AC adaptor, the power-supply cord, or the plug has been damaged;
+                                                                                   remove in a safe place out of children’s reach, so there is no chance of them
+  or
+                                                                                   being swallowed accidentally.
+• If smoke or unusual odor occurs
+• Objects have fallen into, or liquid has been spilled onto the unit; or
+• The unit has been exposed to rain (or otherwise has become wet); or
+• The unit does not appear to operate normally or exhibits a marked
+  change in performance.
+
+
+4
+

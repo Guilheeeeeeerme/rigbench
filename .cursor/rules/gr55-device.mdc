@@ -1,17 +1,13 @@
----
-description: GR-55 device layer — routes, writes, sync, editor pages
-globs: src/devices/gr55/**/*
-alwaysApply: false
----
-
 # GR-55 device layer
 
-- Routes SoT: `routes.ts`. Post-setup home: `studioRoute` (`estudio`).
-- Top chrome: Studio · Stage · ⋯ (`TopNav.tsx`). Deep Device/editor under More.
-- **Patch writes**: `Gr55Editor.write` → immediate DT1 to temporary patch (🟠).
-- **System writes**: stage in `Gr55System` → confirm → Apply (🔵). Never bypass ApplyBar.
-- **Sync**: `sync/engine.ts` polls RQ1; never writes the pedal. Resume + IndexedDB cache.
-- Editor pages: `pages.ts` — every patch field on exactly one page (`PAGE_IDS` frozen).
-- Prefer `essentialKeys` / `typeKey` / `readOnlyKeys` over dumping every knob.
-- Fake pedal: `fakeDevice.ts` for tests and the dev “simulated pedal” path.
-- Recipes: `docs/current/recipes.md`. IA: `docs/current/studio-sessions.md`.
+- Routes SoT: `routes.ts`. Connected surfaces: `bankRoute`, `globalRoute`. Legacy paths redirect.
+- Shell: `AppShell.tsx` — Exit · Bank | Global · snapshot; Maestro left, parameters right.
+- Bank UI: `BankPage.tsx` — here + 3 keys (instrument icons) + CTL/EXP + mixer/chain (`Icons.tsx`, `voices.ts`).
+- Connect / silent resume / Exit: `connectionThunks.ts` + Redux `sessionPrefs` — SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
+- On connect: `readSystem` → `readPatch` → `readPatchLocation`.
+- **Writes**: patch + system DT1 immediately; then `runAppMutation` / full snapshot. No system staging.
+- **Authority**: `sessionAuthority.ts` — `app` while writing/snapshotting, `pedal` when idle.
+- Maestro session: `bank` | `system` (`session.ts`). Bank chat may `loadSlot` (ask) across the bank set; macros keyed as `patch` apply via `macroSessionOf`.
+- Field keys for Maestro: `pages.ts` (`PAGE_IDS` frozen).
+- Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path.
+- Config taxonomy: `docs/current/gr55-config-scope.md`.

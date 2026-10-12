@@ -1,16 +1,11 @@
----
-description: Maestro copilot — policy, macros, BYOK, session scope
-globs: src/maestro/**/*
-alwaysApply: false
----
-
 # Maestro
 
 - Policy SoT: `decide()` in `policy.ts`. Deny is final (no confirm).
-- `stageLive` → deny all. Never `writeSlot` / direct `writeSystem` / factory reset.
-- `stageSystemPlan` → ask (queues into system staging). Denied in patch/library sessions.
-- `changePlan` → working-copy fields only; denied in system/library sessions.
+- Page scope via `session`: `patch` on Patch page, `system` on Global page.
+- `changePlan` → working-copy fields only (Patch page).
+- `writeSystem` / `stageSystemPlan` → Global page only; system host writes DT1 immediately + snapshot.
+- Never `writeSlot` / factory reset.
 - Model never sees SysEx addresses; registry keys / human labels only (`fieldRegistry.ts`).
 - Macros: `macros/registry.ts` — set `implemented: true` only when writes are real.
 - Keys: sessionStorage by default; optional localStorage; `npm run check:secrets`.
-- Architecture notes: `docs/current/maestro-architecture.md`. UX: `docs/current/studio-sessions.md`.
+- Architecture notes: `docs/current/maestro-architecture.md`.

@@ -245,18 +245,6 @@ describe('SyncEngine', () => {
     expect(engine.snapshot().phase).toBe('ready');
   });
 
-  test('a slot the app saved into is read again and is not reported as changed', async () => {
-    const { pedal, cache, engine } = setUp();
-    await engine.start();
-    pedal.image(12)[NAME_OFFSET] = 0x7a;
-    await engine.refreshSlot(12);
-    expect(engine.slot(12)?.name).toBe('z');
-
-    const later = new SyncEngine(pedal, cache, { safePaceMs: 0 });
-    await later.start();
-    expect(later.snapshot().phase).toBe('ready');
-  });
-
   test('each GK mode keeps its own cache', async () => {
     const { pedal, cache, engine } = setUp();
     await engine.start();

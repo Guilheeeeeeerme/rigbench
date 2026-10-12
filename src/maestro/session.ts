@@ -1,43 +1,45 @@
-/** Craft sessions shared by Studio chat and macro panels. */
-export type SessionId = 'system' | 'patch' | 'library';
+/** Page scope for Maestro: Bank page, Global page, or legacy library. */
+export type SessionId = 'system' | 'patch' | 'bank' | 'library';
 
-export const SESSION_IDS: readonly SessionId[] = ['system', 'patch', 'library'] as const;
+export const SESSION_IDS: readonly SessionId[] = ['system', 'bank'] as const;
 
-export const DEFAULT_SESSION: SessionId = 'patch';
+export const DEFAULT_SESSION: SessionId = 'bank';
 
-const STORAGE_KEY = 'rigbench.gr55.studioSession';
-
-export function isSessionId(value: unknown): value is SessionId {
-  return value === 'system' || value === 'patch' || value === 'library';
+export function isSessionId(value: unknown): boolean {
+  return value === 'system' || value === 'patch' || value === 'bank';
 }
 
-/** Last session for this browser; defaults to Patch (craft-first). */
+/** In-memory only — never persist pedal or session config to localStorage. */
+let current: SessionId = DEFAULT_SESSION;
+
 export function loadSession(): SessionId {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (isSessionId(raw)) return raw;
-  } catch {
-    // Private mode / tests.
-  }
-  return DEFAULT_SESSION;
+  return current;
 }
 
 export function saveSession(session: SessionId): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, session);
-  } catch {
-    // Choice still holds for this visit via React state.
-  }
+  current = session;
 }
 
-/** Scope chip glyph used in chrome (manual SYSTEM / PATCH / Library). */
+/** Scope chip glyph used in chrome. */
 export function sessionChip(session: SessionId): '🔵' | '🟠' | '🟢' {
   switch (session) {
     case 'system':
       return '🔵';
     case 'patch':
+    case 'bank':
       return '🟠';
     case 'library':
       return '🟢';
   }
+}
+
+/** Macro groups keyed as patch also apply on the Bank page. */
+export function macroSessionOf(session: SessionId): 'system' | 'patch' | 'library' {
+  if (session === 'bank' || session === 'patch') {
+    return 'patch';
+  }
+  if (session === 'system') {
+    return 'system';
+  }
+  return 'library';
 }

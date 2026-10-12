@@ -63,6 +63,7 @@ describe('macro registry scaffold', () => {
   it('lists every session group from the UX doc', () => {
     expect(groupsForSession('system')).toHaveLength(7);
     expect(groupsForSession('patch')).toHaveLength(14);
+    expect(groupsForSession('bank')).toHaveLength(14);
     expect(groupsForSession('library')).toHaveLength(3);
     expect(MACRO_GROUPS).toHaveLength(24);
   });
@@ -111,7 +112,7 @@ describe('applyMacroOption', () => {
     expect(result).toEqual({ ok: false, reason: 'denied' });
   });
 
-  it('stages Speakers onto the system image', () => {
+  it('writes Speakers onto the system image immediately', () => {
     const staged: Record<string, unknown> = {};
     const system = fakeSystem(staged);
     const group = findGroup('speakers')!;
@@ -121,28 +122,58 @@ describe('applyMacroOption', () => {
       index,
       policy: { stageLive: false, session: 'system' },
     });
-    expect(result).toEqual({ ok: true, wrote: 0, staged: 1, filter: undefined });
+    expect(result).toEqual({ ok: true, wrote: 1, staged: 0, filter: undefined });
     expect(staged['common.outputSelect']).toBe('JC-120');
   });
 
-  it('denies system staging from the Patch session', () => {
+  it('denies system writes from the Bank session', () => {
     const group = findGroup('speakers')!;
     const result = applyMacroOption(group, group.options[0], {
       system: fakeSystem({}),
       index,
-      policy: { stageLive: false, session: 'patch' },
+      policy: { stageLive: false, session: 'bank' },
     });
     expect(result).toEqual({ ok: false, reason: 'denied' });
   });
 
   it('returns stub for unimplemented groups', () => {
-    const group = findGroup('tone-shape')!;
+    const group = findGroup('patch-monitor')!;
     const result = applyMacroOption(group, group.options[0], {
       editor: fakeEditor({}),
       index,
       policy: { stageLive: false, session: 'patch' },
     });
     expect(result).toEqual({ ok: false, reason: 'stub' });
+  });
+
+  it('writes a Tone shape bundle through the editor', () => {
+    const values: Record<string, unknown> = {};
+    const editor = fakeEditor(values);
+    const group = findGroup('tone-shape')!;
+    const option = group.options.find((item) => item.id === 'bright')!;
+    const result = applyMacroOption(group, option, {
+      editor,
+      index,
+      policy: { stageLive: false, session: 'bank' },
+    });
+    expect(result).toEqual({ ok: true, wrote: 6, staged: 0, filter: undefined });
+    expect(values['eq/eq/eqSwitch']).toBe(true);
+    expect(values['eq/eq/eqHighGain']).toBe(5);
+  });
+
+  it('writes a Chain path bundle through the editor', () => {
+    const values: Record<string, unknown> = {};
+    const editor = fakeEditor(values);
+    const group = findGroup('chain-path')!;
+    const option = group.options.find((item) => item.id === 'synth-mfx')!;
+    const result = applyMacroOption(group, option, {
+      editor,
+      index,
+      policy: { stageLive: false, session: 'patch' },
+    });
+    expect(result).toEqual({ ok: true, wrote: 5, staged: 0, filter: undefined });
+    expect(values['pcm1/tone/partOutputMFXSelect']).toBe('MFX');
+    expect(values['master/output/effectStructure']).toBe('1');
   });
 });
 

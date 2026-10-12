@@ -439,7 +439,23 @@ export function buildPages(mode: GkMode, t: Translate = currentT): Page[] {
       sections: [
         ...(
           [
-            [common.ctl, 'ctl', ['status', 'function'] as const],
+            [
+              common.ctl,
+              'ctl',
+              [
+                'status',
+                'function',
+                'holdSwitchMode',
+                'offPcmTone1Switch',
+                'offPcmTone2Switch',
+                'offModelingToneSwitch',
+                'offNormalPuSwitch',
+                'onPcmTone1Switch',
+                'onPcmTone2Switch',
+                'onModelingToneSwitch',
+                'onNormalPuSwitch',
+              ] as const,
+            ],
             [
               common.expPdlOff,
               'exp-off',

@@ -7,10 +7,12 @@ import {
   PATCH_BLOCKS,
   PATCH_SPAN,
   TEMPORARY_PATCH_ADDRESS,
+  USER_PATCH_COUNT,
   userPatchAddress,
 } from './patchLayout';
 import { temporaryPatchFields, spansOverlapping, spanMatches } from './changeTracking';
 import type { PatchFieldSpan } from './changeTracking';
+import { isPedalAuthority } from './sessionAuthority';
 import { decodePatchSyx, encodePatchSyx } from './syx';
 
 export type GkMode = 'GUITAR' | 'BASS';
@@ -33,8 +35,9 @@ const GUITAR_BASS_SELECT = GR55_MAP.system.common.guitarBassSelect;
 const WRITE_PATCH_COMMAND = pack7(0x0f000000);
 const WRITE_PATCH_REPLIES = [pack7(0x0f000001), pack7(0x0f000002)];
 
-// Time the pedal is given to switch patches before the new one is read back.
-const PATCH_CHANGE_SETTLE_MS = 150;
+// Real GR-55 patch changes mute and reload the temp buffer for ~1s. 150ms was
+// short enough that Maestro DT1s landed mid-reload and were overwritten.
+const DEFAULT_PATCH_CHANGE_SETTLE_MS = 1200;
 
 // The system bytes the app knows: offsets 00..1a of the system area, mode included.
 const SYSTEM_BACKUP_SPAN = 0x1b;
@@ -102,6 +105,7 @@ export class Gr55Editor {
   private dirtyEpoch = 0;
   private reloadTimer: ReturnType<typeof setTimeout> | undefined;
   private readonly unsubscribe: (() => void)[];
+  private readonly patchChangeSettleMs: number;
 
   gkMode: GkMode = 'GUITAR';
   /** Where the current working copy came from, if the app knows. */
@@ -114,7 +118,9 @@ export class Gr55Editor {
   constructor(
     private readonly session: MidiSession,
     private readonly onBackgroundError: (error: unknown) => void = () => {},
+    options?: { patchChangeSettleMs?: number },
   ) {
+    this.patchChangeSettleMs = options?.patchChangeSettleMs ?? DEFAULT_PATCH_CHANGE_SETTLE_MS;
     this.changeIndex = temporaryPatchFields();
     this.unsubscribe = [
       // A parameter changed on the pedal itself.
@@ -241,14 +247,30 @@ export class Gr55Editor {
   }
 
   write<T>(field: FieldReference<FieldType<T>>, value: T): void {
+    void this.writeAsync(field, value).catch(this.onBackgroundError);
+  }
+
+  /**
+   * Same as {@link write}, but the promise resolves only after the DT1 has been
+   * sent on the MIDI wire (or coalesced into a later send for the same address).
+   */
+  writeAsync<T>(field: FieldReference<FieldType<T>>, value: T): Promise<void> {
     const offset = field.address - TEMPORARY_PATCH_ADDRESS;
     const { type, size } = field.definition;
     const bytes = new Uint8Array(size);
     type.encode(value, bytes, 0, size);
     this.image.set(bytes, offset);
-    this.reconcile(offset, size);
+    // Align baseline so the app has no “pending” local dirty state; snapshot follows.
+    this.baseline.set(bytes, offset);
+    this.dirty.delete(field.address);
+    this.dirtyEpoch++;
     this.bumpField(field.address);
-    this.session.writeData(field.address, bytes, { coalesce: true }).catch(this.onBackgroundError);
+    return this.session.writeData(field.address, bytes, { coalesce: true });
+  }
+
+  /** Block until every pending coalesced DT1 has left the session write queue. */
+  drainWrites(): Promise<void> {
+    return this.session.drainWriteQueue();
   }
 
   /** The working copy now lives in a slot as-is: reuse it as the new diff baseline. */
@@ -282,15 +304,61 @@ export class Gr55Editor {
     return decodeName(this.image, PATCH_NAME_OFFSET);
   }
 
+  /**
+   * Reads which user slot the pedal has selected (setup BS MSB + PC) and sets
+   * patchSource when that pair maps onto a user slot.
+   */
+  async readPatchLocation(): Promise<void> {
+    const [msb] = await this.session.requestData(GR55_MAP.setup.patchBsMsb.address, 1);
+    const [programChange] = await this.session.requestData(GR55_MAP.setup.patchPc.address, 1);
+    const userPatchNumber = msb * 128 + programChange;
+    if (msb <= 2 && userPatchNumber < USER_PATCH_COUNT) {
+      this.patchSource = { kind: 'slot', userPatchNumber };
+    } else {
+      this.patchSource = undefined;
+    }
+    this.notify();
+  }
+
   /** Makes the pedal switch patches, then reads the new temporary patch. */
   async selectPatch(bankMsb: number, programChange: number): Promise<void> {
     // A write to the setup page instead of a program change: it works whatever screen
     // the pedal is on and whatever its PC RX switch says.
     await this.session.writeData(GR55_MAP.setup.patchBsMsb.address, [bankMsb]);
     await this.session.writeData(GR55_MAP.setup.patchPc.address, [programChange]);
-    await delay(PATCH_CHANGE_SETTLE_MS);
+    await delay(this.patchChangeSettleMs);
     // User slots select this exact way; anything else (a screen switch) is unknowable.
     this.patchSource = { kind: 'slot', userPatchNumber: bankMsb * 128 + programChange };
+    await this.readPatch();
+  }
+
+  /**
+   * Replaces the temporary working copy with what USER memory has stored for a slot.
+   *
+   * Re-selecting the same PC often does nothing on a real GR-55 (temp edits stay).
+   * Sync must copy USER → temporary explicitly, then read the sounding buffer back.
+   */
+  async loadUserSlotIntoWorkingCopy(userPatchNumber: number): Promise<void> {
+    if (userPatchNumber < 0 || userPatchNumber >= USER_PATCH_COUNT) {
+      throw new Error(`USER slot out of range: ${userPatchNumber}`);
+    }
+    const patch = await this.readUserPatch(userPatchNumber);
+    const size = BULK_DATA_TRANSFER_SIZE_PER_MESSAGE;
+    for (const block of PATCH_BLOCKS) {
+      for (let done = 0; done < block.length; done += size) {
+        const start = block.offset + done;
+        const end = Math.min(start + size, block.offset + block.length);
+        await this.session.writeData(
+          TEMPORARY_PATCH_ADDRESS + start,
+          patch.slice(start, end),
+        );
+      }
+    }
+    const msb = Math.floor(userPatchNumber / 128);
+    const programChange = userPatchNumber % 128;
+    await this.session.writeData(GR55_MAP.setup.patchBsMsb.address, [msb]);
+    await this.session.writeData(GR55_MAP.setup.patchPc.address, [programChange]);
+    this.patchSource = { kind: 'slot', userPatchNumber };
     await this.readPatch();
   }
 
@@ -397,28 +465,30 @@ export class Gr55Editor {
   }
 
   private applyRemoteData(address: number, bytes: Uint8Array): void {
+    if (!isPedalAuthority()) {
+      return;
+    }
     const offset = address - TEMPORARY_PATCH_ADDRESS;
     if (offset < 0 || offset + bytes.length > PATCH_SPAN) {
       return;
     }
     this.image.set(bytes, offset);
+    this.baseline.set(bytes, offset);
     this.reconcile(offset, bytes.length);
     this.bumpEpoch();
   }
 
   private scheduleReload(): void {
+    if (!isPedalAuthority()) {
+      return;
+    }
     clearTimeout(this.reloadTimer);
     this.reloadTimer = setTimeout(() => {
-      // The pedal has already left the old working copy behind; record how much was
-      // in it so the app can say what was lost.
-      if (this.isDirty) {
-        this.discardedChanges = this.changeCount;
-        this.discardSequence++;
-      }
-      // The pedal picked a patch by itself; the app cannot say where it came from.
-      this.patchSource = undefined;
-      this.readPatch().catch(this.onBackgroundError);
-    }, PATCH_CHANGE_SETTLE_MS);
+      // Re-read the sounding patch, then ask the setup page which slot it is.
+      this.readPatch()
+        .then(() => this.readPatchLocation())
+        .catch(this.onBackgroundError);
+    }, this.patchChangeSettleMs);
   }
 
   /** Re-evaluates which fields in a byte range now differ from the baseline. */

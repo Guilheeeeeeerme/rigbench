@@ -214,26 +214,6 @@ export class SyncEngine {
     }
   }
 
-  /** The app saved into this slot: read it again now, and never trust the old record. */
-  async refreshSlot(userPatchNumber: number): Promise<void> {
-    const record = this.records.get(userPatchNumber);
-    if (record) {
-      record.stale = true;
-      await this.cache.putSlot(record);
-    }
-    const bytes = await this.source.readUserPatch(userPatchNumber);
-    await this.store(userPatchNumber, bytes, this.meta?.run ?? 0);
-  }
-
-  /** The app is about to overwrite this slot: the next sync must read it in full. */
-  async markStale(userPatchNumber: number): Promise<void> {
-    const record = this.records.get(userPatchNumber);
-    if (record) {
-      record.stale = true;
-      await this.cache.putSlot(record);
-    }
-  }
-
   /** Clears the list of slots the last sync found changed, once the musician has seen it. */
   async acknowledgeChanges(): Promise<void> {
     if (!this.meta || this.state.phase !== 'changed') {

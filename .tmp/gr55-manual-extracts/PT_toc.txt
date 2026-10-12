@@ -1,0 +1,446 @@
+        Sumário
+    Uso seguro do aparelho  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4                                                                           Referência                                                                                                                                                                                19
+
+    Notas importantes  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5                                                                  Descrição dos painéis  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+                                                                                                                                                                                                    Painel frontal  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+    Recursos principais  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6                                                                                       Sobre a tela principal  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+                                                                                                                                                                                                                   Sobre a tela EDIT  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 20
+                                                                                                                                                                                                    Painel traseiro  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 21
+Ajustes                                                                                                                                                                                7
+                                                                                                                                                                                                    Painel lateral  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 21
+    Preparações para usar o GR-55  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+         Conexões  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8    Como o GR-55 funciona  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 22
+         Para ligar/desligar o aparelho  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+         Escolha guitarra ou contrabaixo (GUITAR<->BASS)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9                                                                                     Edição de tones (TONE)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 23
+         Ajuste os captadores (GK SETTING)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9                                                           Mudança de Tone  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 23
+                        Ajuste os captadores de guitarra  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10                                                                       Categoria de Tone  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 23
+                        Ajuste os captadores de contrabaixo  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11                                                                 Edição de Tone  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 24
+         Indique o sistema de amplificação (OUTPUT SELECT)  .  .  .  .  .  .  .  .  .  .  .  .  . 12                                                                                                Edição de um Tone (ajustes detalhados)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 24
+         Afine seu instrumento (função Tuner)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 13                                                                Lista de parâmetros (TONE PCM 1/TONE PCM 2)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 25
+                                                                                                                                                                                                    Lista de parâmetros (MODELING TONES)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 29
+
+Guia rápido                                                                                                                                                                         15         Ajustes de efeitos (EFFECT)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 38
+                                                                                                                                                                                                    Escolha o tipo de efeito  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 38
+    Escolha e toque os sons  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 16
+                                                                                                                                                                                                    Edição de efeitos  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 39
+         Ajuste o volume de saída  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 16
+                                                                                                                                                                                                    Edição de efeitos (ajustes detalhados) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 39
+         Escolha o som (Patch)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 16
+                                                                                                                                                                                                    Mudança de estrutura/Determinando o destino das conexões  .  .  .  . 40
+         Toque a guitarra .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 17
+                                                                                                                                                                                                    Lista de parâmetros (EFFECT)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 41
+         Crie um som original  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 18
+                                                                                                                                                                                                                   AMP  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 41
+                        Use a função EZ EDIT para criar um som  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 18
+                                                                                                                                                                                                                   MOD  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 42
+                        Salve os sons que você criou  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 18
+                                                                                                                                                                                                                   MFX  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 45
+                                                                                                                                                                                                                   DELAY  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 52
+                                                                                                                                                                                                                   REVERB  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 52
+                                                                                                                                                                                                                   CHORUS  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 53
+                                                                                                                                                                                                                   EQ  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 53
+
+                                                                                                                                                                                               Ajustes de patches (MASTER)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Ajustes de pedais e controle GK (PEDAL/GK CTL)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Ajustes de controles (ASSIGN)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Ajustes do andamento do patch (PATCH TEMPO)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Ajuste do captador GK em cada Patch (GK SET)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Ajustes do conector GUITAR OUT (GUITAR OUT)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Mudança da afinação de cada corda (ALT-TUNING)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Ajustes V-LINK (V-LINK)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 54
+                                                                                                                                                                                                    Lista de parâmetros (MASTER)  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 55
+                                                                                                                                                                                                                   PEDAL/GK CTL  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 55
+                                                                                                                                                                                                                   ASSIGN  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 57
+                                                                                                                                                                                                                   PATCH TEMPO  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 58
+                                                                                                                                                                                                                   GK SET  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 58
+                                                                                                                                                                                                                   GUITAR OUT .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 59
+                                                                                                                                                                                                                   ALT-TUNING  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 59
+                                                                                                                                                                                                                   V-LINK  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 59
+
+
+
+
+    Antes de usar este aparelho, leia as seções: “Uso seguro do aparelho” (p . 4) e “Notas importantes” (p . 5) . Estas seções tem informações sobre o
+    uso seguro deste aparelho . Além destas seções, leia este manual por completo, para conhecer todos os recursos do seu equipamento . Depois de ler
+    este material, guarde em local de fácil acesso, para consultas .
+           Copyright © 2011 ROLAND CORPORATION Todos os direitos reservados. Nenhuma parte desta publicação pode ser reproduzida sem
+           autorização expressa da ROLAND CORPORATION.
+           Roland e COSM são marcas da Roland Corporation no Brasil e em outros países.
+
+
+
+
+2
+                                                                                                                                                                                                                                                                                                                                                       Sumário
+
+Salvamento de um Patch (PATCH WRITE) .  .  .  .  .  .  .  .  .  .  .  .  . 60                                                                                                                                 OTHER.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 80
+     Salvamento de um Patch (PATCH WRITE) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 60                                                                                        BACKUP/INITIALIZE. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 80
+                  Renomeando um Patch. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 60
+     Mudança da ordem dos Patches (PATCH EXCHANGE) .  .  .  .  .  .  .  .  .  .  .  .  . 60                                                                                                Apêndice                                                                                                                                                                      81
+     Inicializando os ajustes de um Patch (PATCH INITIALIZE) .  .  .  .  .  .  .  .  .  . 60
+                                                                                                                                                                                            Lista de patches GR-55.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 82
+Endereçamento de controles.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 61                                                                                                           GUITAR MODE. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 82
+     Controles que podem ter o endereçamento alterado.  .  .  .  .  .  .  .  .  .  .  .  . 61                                                                                                                 BASS MODE.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 88
+                  Para que um pedal tenha a mesma função
+                  em todos os Patches. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 61                                  Solução de problemas .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 90
+                  Mudança do endereçamento do pedal em cada Patch.  .  .  .  .  . 61
+                  Escolha o parâmetro a ser controlado pelo controle .  .  .  .  .  .  .  . 62                                                                                              Mensagens de erro .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 92
+
+Uso de “Phrase Loop” .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 64                                                                         Fluxo de sinais.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 93
+
+Usando o GR-55 como um reprodutor de áudio. .  .  .  .  .  . 65                                                                                                                             Tabela de implementação MIDI.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 94
+     Cópia de arquivos de áudio do computador para a memória USB.  65
+     Inserção da memória USB .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 65                                         Especificações principais.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 95
+     Reprodução de áudio .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 65
+     Usando o pedal no controle do reprodutor de áudio .  .  .  .  .  .  .  .  .  .  .  .  . 65                                                                                             Índice.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 96
+
+Conexão de equipamento externo. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 66
+     Conexão de computador por USB. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 66
+                  Conexão do GR-55 em um computador.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 66
+                  Ajuste da função USB. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 66
+     Conectando o GR-55 em aparelhos MIDI .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 67
+                  Sobre os conectores MIDI. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 67
+                  Ajustes MIDI .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 67
+     Conectando o GR-55 em aparelhos V-LINK (V-LINK). .  .  .  .  .  .  .  .  .  .  .  .  .  . 68
+                  Como ligar e desligar o V-LINK.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 68
+                  Ajustes V-LINK. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 68
+
+Ajustes gerais do GR-55 (SYSTEM) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 69
+     Ajuste dos captadores GK (GK SETTING). .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 69
+                  Mudança entre sets GK.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 70
+                  Renomeando um Set GK. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 70
+     Indique o equipamento de saída (OUTPUT SELECT) .  .  .  .  .  .  .  .  .  .  .  .  .  . 70
+     Ajustes de pedais e controle GK (PEDAL/GK CTL) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 70
+     Ajustes MIDI e USB (MIDI/USB).  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 70
+     Ajustes do conector GUITAR OUT (GUITAR OUT).  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 70
+                  Mandar o som do captador normal para o conector GUITAR
+                  OUT em todos os patches. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
+                  Mandar o som da modelagem de tone no conector GUITAR
+                  OUT em todos os patches. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
+                  Mudança do som mandado no conector GUITAR OUT em cada
+                  patch .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 71
+     Afinação da guitarra (TUNER).  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 71
+     Ajuste o contraste do display (LCD) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 71
+     Ajuste do desligamento automático (POWER).  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 71
+     Alternando entre guitarra e contrabaixo (GUITAR<->BASS) .  .  .  .  .  .  . 71
+     Salvando ajustes do GR-55 na memória USB (BACKUP) .  .  .  .  .  .  .  .  .  .  . 72
+                  Recarregando ajustes do GR-55 da memória USB (RESTORE).72
+     Ajustando a sensibilidade do pedal (CALIB) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 73
+     Recuperando os ajustes de fábrica (FACTORY RESET) .  .  .  .  .  .  .  .  .  .  .  .  . 73
+     Lista de parâmetros (SYSTEM) .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 74
+                  GK SETTING.  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 74
+                  OUTPUT SELECT. .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 75
+                  PEDAL/GK CTL .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 76
+                  MIDI/USB .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 79
+
+
+                                                                                                                                                                                                                                                                                                                                                                              3
+     Uso seguro do aparelho
+
+
+
+
+                                         AVISO                                                                          AVISO
+Não tente fazer reparos, troca de partes (exceto quando indicado no
+                                                                               Proteja o aparelho de impactos. (Não deixe que caia!)
+manual). Procure o Serviço Técnico Autorizado Roland, ou um Distribuidor
+Autorizado Roland (veja a lista de endereços no final do manual).
+                                                                               Não conecte muitos aparelho na mesma tomada. Cuidado quando usar
+Nunca guarde ou coloque o aparelho nos seguintes locais:                       extensões. A carga total dos equipamentos conectados em tomadas ou
+• Sujeito a extremo de temperatura (em carro ao sol, próximo de um             extensões não pode ultrapassar a especificação da tomada ou extensão.
+  aquecedor, sobre aparelhos que aquecem); ou                                  Carga excessiva produz aquecimento e pode derreter os cabos.
+
+• Molhados (banheiros, lavanderias, chão molhado); ou                          Antes de usar o equipamento em locais desconhecidos, verifique as
+                                                                               especificações da instalação. Se tiver dúvidas, consulte o Serviço Técnico
+• Exposto a vapor ou fumaça; ou
+                                                                               Autorizado Roland (veja a lista de endereços no final do manual).
+• Com risco de exposição a sal; ou
+• Umidade; ou
+• Exposto a chuva; ou                                                                                                 CUIDADO
+• Exposto a areia ou poeiras; ou                                               Este aparelho e seu adaptador AC devem ser colocados de forma a receber
+                                                                               boa ventilação, sem interferências.
+• Sujeito a vibrações ou movimentos.
+                                                                               Sempre segure pelo plug e pelo adaptador AC ao fazer e desfazer cone-
+Verifique sempre se o aparelho está em superfícies planas e estáveis. Não
+                                                                               xões.
+deixe em locais inclinados ou em em estantes que possam tombar.
+                                                                               Em intervalos regulares, desconecte o adaptador AC da tomada e limpe os
+USe apenas o adaptador AC que acompanha o aparelho. Verifique se a
+                                                                               contatos, retirando o acumulo de poeira. A poeira pode criar resistência e
+instalação está de acordo com a voltagem indicada no corpo do adaptador
+                                                                               provocar aquecimento, com risco de fogo. Se o aparelho for ficar sem uso
+AC. O uso de adaptadores com outra voltagem ou polaridade pode levara
+                                                                               por algum tempo, desconecte da tomada.
+danos, mau funcionamento e choque elétrico.
+                                                                               Evite que cabos fiquem embaraçados. Deixe cabos fora de passagens e
+Use apenas o cabo de força fornecido. Este cabo não deve ser usado em
+                                                                               longe do alcance de crianças.
+outros aparelhos.
+                                                                               Nunca suba sobre o aparelho; não coloque objetos pesados sobre o
+Não dobre ou torça o cabo de força, não coloque objetos pesados sobre
+                                                                               aparelho.
+o cabo de força. Isto pode danificar o cabo, com risco de curto circuito,
+levando a risco de fogo e choque elétrico!                                     Não toque no adaptador AC ou nos plugs com as mãos úmidas ou molha-
+                                                                               das, especialmente ao fazer ou desfazer conexões.
+Este aparelho, só, ou combinado com alto-falantes, fones de ouvido e
+outros equipamentos pode produzir volumes sonoros que levam a perda            Antes de mover o aparelho, desconecte o adaptador AC e todos os cabos
+permanente da audição. Não use em volume desconfortável ou por tempo           de conexão com aparelhos externos.
+prolongado. Se perceber alteração na sua audição, interrompa o uso e
+procure um médico especialista.                                                Antes de limpar o aparelho, desligue-o e desconecte o adaptador AC da
+                                                                               tomada (p. 8).
+Não coloque recipientes com líquidos próximos a este aparelho. Não deixe
+                                                                               Quando houver a possibilidade de raios no local em que você estiver,
+que objetos estranhos (moedas, cabos, material inflamável) ou líquidos
+                                                                               desconecte o adaptador AC da tomada.
+(água, suco) penetrem no aparelho. Isto leva a curto circuitos, mau funcio-
+namento e outros danos.                                                        Mantenha o parafuso do terminal de aterramento e/ou da tampa do co-
+                                                                               nector USB parafusado. Se retirar estes parafusos, deixe longe de crianças,
+Desligue o aparelho e desconecte o adaptador AC da tomada, e procure o         que podem engolir estas partes pequenas acidentalmente.
+seu Distribuidor Roland ou o Serviço Técnico Autorizado Roland (veja a lista
+de endereços no final do manual) nos seguintes casos:
+• Se o adaptador AC, cabo de força ou plug fica danificado; ou
+• Se perceber a presença de fumaça ou cheiro estranho; ou
+• Se ocorrer entrada de objetos ou líquidos no aparelho; ou
+• Se o aparelho ficar na chuva (ou ficar úmido por qualquer motivo); ou
+• Se o aparelho não funcionar como esperado, ou tiver variações no
+  funcionamento.
+Em casas com crianças, um adulto deve supervisionar o uso deste
+equipamento, para assegurar que estas instruções de segurança sejam
+observadas.
+
+
+4
+       Notas importantes
+Alimentação                                                   Reparos e dados                                            • Para não incomodar vizinhos e pessoas ao seu redor,
+                                                                                                                           toque com volume adequado . Use fones de ouvido se
+• Não conecte este aparelho na mesma instalação               • Lembre-se que todos os dados da memória deste              for tocar de noite ou muito cedo .
+  que esteja sendo usada por aparelhos com                      aparelho podem ser perdidos quando o aparelho vai
+                                                                                                                         • Para transportar este equipamento, use a embalagem
+  inversores ou motores (refrigeradores, máquinas               para reparos . Dados importantes devem ter cópia de
+                                                                                                                           original completa, ou uma embalagem equivalente .
+  de lavar, ar condicionado, micro-ondas) . Dependo             segurança (backup) em memórias USB, ou os dados
+  do funcionamento destes equipamentos, ocorre                  devem ser anotados em papel (se possível) . Durante      • As explicações deste manual tem imagens do que
+  interferência e ruídos na alimentação, o que                  os reparos, os cuidados para evitar perda de dados         aparece normalmente no display . Caso seu aparelho
+  pode gerar ruído no áudio e problemas de mau                  são observados, mas muitas vezes, se o circuito de         tenha novas versões do sistema, novos sons, e outras
+  funcionamento . Se não for possível separar a                 memória tiver com problemas, os dados não são              atualizações, a imagem do manual pode não ser
+  instalação, use um filtro de linha entre este aparelho        conservados . A Roland não assume responsabilidades        exatamente igual ao que aparece no seu aparelho .
+  e a tomada .                                                  quanto a perda de dados .
+• O adaptador AC aquece com o uso prolongado . Isto é
+  normal e não deve preocupar .                               Uso de memórias externas
+• Antes de conectar este aparelho a outros aparelhos,         • Insira com cuidado a memória USB até o fim—deve
+  desconecte todos os aparelhos . Isto evita danos              ficar firme no encaixe .
+  e mau funcionamento em alto-falantes ou outros
+  componentes .
+
+
+Posicionamento
+• O uso próximo de um amplificador de potência ou
+  outros aparelhos com grandes transformadores pode
+  induzir ruído no áudio . Para reduzir o problema, mude
+  a orientação dos aparelhos . De preferência, afaste a
+  fonte de interferência .
+• Este aparelho pode interferir com a recepção de rádio
+                                                              • Nunca toque os terminais da memória USB . Evite que
+  e TV e não deve ser usado próximo a estes receptores .
+                                                                os terminais fiquem sujos .
+• Aparelhos de comunicação sem fio, como telefones
+                                                              • As memórias USB são fabricadas com precisão . Maneje
+  celulares não devem ser usados próximos a este
+                                                                com cuidado, e observe os cuidados a seguir:
+  aparelho . Ruídos são produzidos quando o aparelho
+  recebe chamadas ou está em uso . Para evitar estes            • Para evitar danos por eletricidade estática,
+  problemas, deixe afastados ou desligados os aparelhos           descarregue a energia do seu corpo antes de tocar
+  de comunicação sem fio .                                        na memória .
+• Não exponha este aparelho diretamente ao sol, não             • Não toque nem permita que metais entrem em
+  deixe próximo de aparelhos que aquecem, não deixe               contato com a memória .
+  em um carro fechado, ou em qualquer situação                  • Não dobre, não deixe cair, não submeta a memória
+  de risco de altas temperaturas . O calor excessivo              a choques ou vibrações .
+  descolore e deforma este aparelho .
+                                                                • Não deixe a memória no sol, em um carro fechado
+• Ao mover este aparelho entre ambientes com                      ou em outras condições de calor .
+  diferença de temperatura e/ou umidade, gotas
+                                                                • Não permita que a memória fique úmida .
+  de condensação podem se formar no interior do
+  aparelho . Se o aparelho é usado nestas condições,            • Não desmonte nem modifique a memória .
+  leva a danos e mau funcionamento . Aguarde algumas
+  horas antes do uso para que toda a umidade possa
+  evaporar antes do uso do equipamento .
+                                                              Cuidados adicionais
+                                                              • Lembre-se que o conteúdo da memória pode ser
+• Dependendo do material e temperatura da superfície
+                                                                perdido por uso incorreto ou mau funcionamento .
+  em que este aparelho é colocado, os pés de borracha
+                                                                Para se proteger contra perda de dados importantes,
+  do aparelho podem descolorir e marcar a superfície .
+                                                                faça cópias de seus dados periodicamente, usando
+  Você pode colocar um pedaço de feltro ou outro
+  tecido sob os pés de borracha para evitar que isto            memórias USB .
+  aconteça . Se fizer isto, cuidado para que o aparelho       • Mesmo que você tenha cópias de segurança, os dados
+  não escorregue acidentalmente .                               podem ser perdidos se a memória USB também
+• Não coloque recipientes com água próximos ou sobre            tiver problemas . A Roland Corporation não assume
+  o aparelho . Evite o uso de inseticidas, perfumes, álcool     qualquer responsabilidades quanto a perda de dados .
+  e outros líquidos próximo a este aparelho . Remova          • Seja cuidadoso ao acionar botões e controles do
+  qualquer líquido que espirre no aparelho usando um            aparelho, e ao fazer e desfazer conexões . Desta forma
+  pano limpo, seco e macio .                                    a vida útil do seu equipamento é estendida e você
+                                                                evita mau funcionamento .
+Manutenção                                                    • Nunca bata ou aplique pressão sobre o display .
+                                                                                                                         • Microsoft e Windows são marcas da Microsoft
+• Para a limpeza diária, esfregue um pano limpo seco e        • Ao conectar/desconectar cabos, segure pelos plugs .        Corporation .
+  macio (ou um pano levemente umedecido com água) .             Nunca tracione os cabos . Assim, você evita curto
+                                                                                                                         • A imagens da tela são usadas de acordo com as
+  Para remover manchas, use um pano impregnado com              circuitos nos elementos internos dos cabos .
+                                                                                                                           instruções da Microsoft Corporation .
+  um detergente suave, e seque completamente depois,          • No uso do pedal de expressão, cuidado para não
+                                                                                                                         • Windows® tem nome oficial de: “Microsoft® Windows®
+  usando um pano limpo, seco e macio .                          prender os dedos entre a parte móvel e o painel do
+                                                                                                                           operating system .”
+• Nunca use benzina, álcool ou outros solventes,                pedal .
+                                                                Em casas com crianças pequenas, um adulto deve           • Apple e Macintosh são marcas da Apple Inc .
+  evitando o risco de descolorir ou deformar o aparelho .
+                                                                supervisionar o uso, para que as regras de segurança     • Mac OS é marca da Apple Inc .
+                                                                sejam observadas, no uso deste equipamento .
+                                                                                                                         • MMP (Moore Microprocessor Portfolio) é um
+                                                                                                                           portfólio de patentes de arquitetura microprocessada
+                                                                                                                           desenvolvidas pela Technology Properties Limited
+                                                                                                                           (TPL) . A Roland tem licença de uso da tecnologia da
+                                                                                                                           TPL Group .
+                                                                                                                         • Todos os nomes de produtos mencionados são marcas
+                                                                                                                           de seus respectivos proprietários .
+
+
+
+
+                                                                                                                                                                              5
+     Recursos principais
+Som: Fusão sofisticada de um sintetizador PCM e gerador de modelagem de som COSM
+     Os sons produzidos por um sintetizador PCM de alta qualidade e a modelagem sonora realista de um gerador COSM
+     podem ser combinados, para se conseguir as vantagens características e particulares de cada método de produção
+     sonora .
+     Você pode criar intuitivamente novas combinações de som com amplas liberdades . Por exemplo, você pode criar
+     um novo som de solo de guitarra baseado em uma guitarra distorcida padrão combinada com um som de solo de
+     sintetizador ou órgão . Ou pode sobrepor sons de flauta ou sino sintetizado com um violão para criar sons novos e
+     fantásticos .
+     Amplificadores COSM e diversos efeitos estão presentes e podem ser usados de forma independente, para criar uma
+     grande variedade de sons, desde uma amplificador de guitarra tradicional até ruídos e sons desconhecidos .
+
+
+
+
+Expressividade: Nova tecnologia, para detecção da afinação da guitarra
+     O sinal do captador independente para cada uma das seis cordas é analisado em alta velocidade por um algorítmo
+     novo, desenvolvido para permitir resposta rápida e precisa pelo gerador de som .
+     Além disso, a posição em que a nota é tocada e as diferenças de técnica do toque com palheta ou com os dedos são
+     percebidas e transmitidas para o gerador de som, permitindo que o GR-55 tenha um alcance expressivo mais natural
+     que qualquer sintetizador de guitarra anterior .
+
+
+
+
+Facilidade de uso: Use :SOUND STYLE” na escolha do som, e use EZ EDIT na edição do som
+     Os três botões SOUND STYLE, “LEAD,” “RHYTHM,” e “OTHER” tem sons prontos para tocar em uma ampla variedade de
+     estilos musicais . A tela de LCD é ampla, e com excelente visibilidade aos seus pés .
+     Pressione o botão [EZ EDIT] para fazer facilmente ajustes gráficos no som; esta é uma conveniência especial quando
+     você estiver tocando ao vivo .
+
+
+
+
+    O que é COSM?
+        A tecnologia que simula as estruturas físicas existentes, os materiais, e usa meios virtuais recriando as estruturas é chamada de “tecnologia de
+        modelagem .” COSM (Composite Object Sound Modeling) é uma inovação técnica da Roland que combina diversas tecnologias de modelagem
+        para criar sons novos e únicos .
+
+
+
+
+6
+                    Ajustes
+                         Este capítulo explica como fazer os ajustes necessários para usar o GR-55 pela primeira vez .
+
+
+
+
+Primeiro, apronte a guitarra e/ou o contrabaixo
+ • Para usar o GR-55, você vai precisar de uma guitarra ou contrabaixo com um captador dividido (captador GK),
+   que manda sinais separados para cada corda .
+   Você deve usar captadores GK, como por exemplo o captador Roland GK-3, para guitarra, ou o captador GK-3B
+   para contrabaixo .
+ • Para detalhes de como instalar o captador GK, consulte o manual que acompanha o captador GK .
+
+   MEMO
+    • Atenção, ruídos produzidos em virtude de problemas com trastes ou com o braço do violão, ajuste incorreto
+      de oitava, e outros ajustes podem causar problemas, como por exemplo, notas erradas sejam tocadas .
+    • Este aparelho não suporta violão/guitarra de 7 cordas ou baixos e guitarras fora de padrão .
+
+
+Verifique na Web os detalhes para a instalação de captadores GK
+ • No website da Roland, a página “GK-3/3B Installation Tips” tem uma explicação e fotos de como prender o
+   captador GK . Dê uma olhada!
+
+        http://www.roland.com/GK/
+       Preparações para usar o GR-55
+
+ Conexões
+Guitarra equipada com                                                Amplificador ou PA (line)          Fone de ouvido   Adaptador AC    Coloque o adaptador AC
+captador GK-3/GK-2A,
+                                                                                                                                         com o indicador (veja
+contrabaixo com captador        O conector GUITAR                                                                                        ilustração) para cima e o
+GK-3B/GK-2B, ou guitarra/       OUT tem a saída de                                                                                       texto para baixo .
+contrabaixo com GK pré--        som do captador                                                                                          O indicador acende
+instalado .                     normal e som da                                                                                          quando o adaptador AC
+                                modelagem (p . 22) .                                                                                      estiver conectado na
+                                Para detalhes, veja                                                                                       tomada .
+                                “Ajustes do conector
+                                GUITAR OUT (GUITAR
+                                OUT)” (p . 54) .
+                                                                                                                                         Para evitar interrupção
+                                                                                                                                         do funcionamento (pela
+                                                                                                                                         desconexão acidental
+                                                                                                                                         do plug), e evitar
+                                                                        Para saída mono, use apenas o                                    desgaste no conector do
+                                                                        conector L/MONO .                                                adaptador AC, prenda
+                                                                                                                                         o cabo na trava, como
+                                                                                                                                         mostrado na figura .
+
+
+
+
+       NOTA!
+        • Para prevenir mau funcionamento e/ou danos em alto-falantes ou outros aparelhos, sempre reduza o volume, e desligue todos os aparelhos antes
+          de fazer conexões .
+        • Ligue todos os equipamentos antes de aumentar o volume da amplificação .
+
+
+ Para ligar/desligar o aparelho
+Para ligar
+       Depois de fazer as conexões, ligue os diversos aparelhos na ordem indicada . Ligando os aparelhos em outra ordem, existe risco de danos e/ou mau
+       funcionamento em alto-falantes e outros equipamentos .
+     * Sempre verifique se o volume foi abaixado antes de ligar os aparelhos . Mesmo com o volume no mínimo, você ainda ouve algum som quando o
+       aparelho é ligado, isto é normal, e não indica mau funcionamento .
+     * Este aparelho tem um circuito de proteção . Um intervalo de tempo curto, de alguns segundos, é necessário entre ligar o aparelho e o começo do
+       funcionamento normal .
+1.     Pressione o botão [POWER] do GR-55 para ligar .
+2.     Ligue o sistema de amplificação .
+
+
+Para desligar
+1.     Antes de desligar, verifique os itens listados abaixo .
+     • O volume dos equipamentos conectados foi colocado no ajuste mínimo?
+     • Os dados de programação (ajustes, sons, etc) foram salvos?
+2.     Desligue primeiro o amplificador de guitarra ou outros equipamentos conectados .
+3.     Pressione o botão [POWER] do GR-55 desligando-o .
+
+
+
+      Se não quiser o desligamento automático, desligue a função “AUTO POWER OFF”!
+          Com os ajustes de fábrica, o GR-55 desliga automaticamente após 10 horas sem uso do equipamento .
+          Se não quiser que o aparelho desligue nunca, mude o ajuste de “AUTO POWER OFF” para a opção “OFF” como descrito na p . 71 .
+
+          NOTA!
+             Os ajustes de edição são perdidos ao desligar o aparelho . Se quiser conservar seus ajustes, salve os ajustes antes de desligar o aparelho .
+
+
+
+
+8
+

@@ -37,6 +37,13 @@ Run the verification commands in [AGENTS.md](../../AGENTS.md) after each recipe.
 3. Consume with `t('namespace.key', { param })` or `useT()`.
 4. `npm run check:copy`.
 
+## Change visual chrome
+
+1. Follow [ui-guidelines.md](./ui-guidelines.md) — tokens in `src/app/styles.css` only.
+2. Do not introduce a light theme, Inter alternatives, or a second chrome accent.
+3. Keep scope-chip colors on `--scope-*`.
+4. After visual changes, run the docs audit in [AGENTS.md](../../AGENTS.md#documentation).
+
 ## Touch Maestro safely
 
 1. Policy changes go only through `decide()` in `policy.ts` (+ `policy.test.ts`).
@@ -50,3 +57,12 @@ Run the verification commands in [AGENTS.md](../../AGENTS.md) after each recipe.
 - Read-only toward the pedal. Adaptive RQ1 pacing lives in `sync/engine.ts`.
 - Cache in IndexedDB; resume after reload; quick sync probes then full-reads diffs.
 - UI progress: `SyncBadge` on all connected screens — do not add a blocking modal except first-run setup.
+
+## Connect / silent resume
+
+Do not re-implement port memory in components. Use Redux `sessionPrefs` +
+`resumeIfPossible` / `connectWithPorts` in `connectionThunks.ts`. Live MIDI stays
+in `connectionRuntime`. Full SoT: [connection-resume.md](./connection-resume.md).
+
+After changing connect or Stage “where am I” behavior, run the docs audit in
+[AGENTS.md](../../AGENTS.md#documentation).

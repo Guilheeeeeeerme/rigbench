@@ -1,9 +1,13 @@
 # Mobile / live simplified control — Rigbench vision
 
-> **Status:** Vision + research. Not a second app. Not a rename of Maestro.
-> **Precedence:** code → [AGENTS.md](../../AGENTS.md) + [studio-sessions.md](./studio-sessions.md)
-> → this file → [archive research](../archive/research/mobile-gr55-system-prompt.md).
-> If this doc disagrees with `routes.ts`, `policy.ts`, `systemMap.ts`, or Studio IA, **fix this doc**.
+> **Status:** Vision + research (Stage-era). **Superseded for Bank UI** by
+> [bank-patch-config.md](./bank-patch-config.md) (Tone Deck + Simple/Advanced).
+> Not a second app. Not a rename of Maestro.
+> **Precedence:** code → [AGENTS.md](../../AGENTS.md) → [bank-patch-config.md](./bank-patch-config.md)
+> for Bank → this file (vision only) →
+> [archive research](../archive/research/mobile-gr55-system-prompt.md).
+> If this doc disagrees with shipped IA (`routes.ts`, Bank \| Global), **fix code / AGENTS**.
+> Connect/resume on desktop: [connection-resume.md](./connection-resume.md).
 
 External brief (archived): “Roland GR-55 Mobile Web/Native Control Interface”
 ([raw prompt](../archive/research/mobile-gr55-system-prompt.md)). This file reconciles that
@@ -15,7 +19,7 @@ brief with Rigbench as it ships today.
 
 **Hands-off the pedal, hands-on the screen** for live GR-55 control over USB MIDI (SysEx RQ1/DT1).
 
-Rigbench already owns the protocol stack, sync, Studio craft, Stage perform, and Advanced editor.
+Rigbench already owns the protocol stack, sync, Stage (app home), Maestro craft, and Setup.
 This vision adds a **mobile-aware, Stage-first simplify surface** and documents platform truth —
 it does not invent a parallel WebMIDI stack or redefine product names.
 
@@ -46,20 +50,27 @@ Additional constraints:
 The external brief used “Maestro” for setlist/gig. In Rigbench **Maestro means the Gemini
 copilot** ([maestro-architecture.md](./maestro-architecture.md)). Keep that name.
 
-| Vision section | Rigbench surface | Fit today |
-| --- | --- | --- |
-| §1 Gig / setlist / bank jumper | **Stage** `#/gr55/palco` + setlist `#/gr55/agenda` | Partial — setlist and cuts exist; not bank tiles / meters |
-| §2 Simplified live (Pure Guitar, large faders, quick knobs) | Proposed **Stage Live Simplify** (+ reuse Studio macros) | Missing on Stage; craft macro `layers/guitar-only` exists |
-| §3 Advanced deep edit / system / GK | Advanced editor `#/gr55/editor/…`, Device / GK under ⋯ | Shipped |
+The simple-first IA shipped (Advanced editor removed):
 
-Canonical chrome: **Studio · Stage · ⋯** ([glossary.md](./glossary.md)). Studio remains craft home
-after setup; Stage remains perform. Maestro AI stays write-denied when `stageLive`.
+| Surface | Rigbench | Role |
+| --- | --- | --- |
+| **Stage** `#/gr55/palco` | Now only: the patch sounding, its instruments (icons, mute, level), master, chain switches | How it must sound, without thinking |
+| **Maestro** `#/gr55/maestro` | The AI does any configuration by conversation | Any craft, including what Stage shows |
+| **Setup** `#/gr55/configuracao` (rare) | Cards: Device / GK (global, set once) · recalibrate | Global configuration at low frequency |
+
+No setlist in the MVP; the patch comes from Maestro or the pedal itself. Nav is one `AppNav`
+bar, three items.
+
+Instrument icons: `Icons.tsx` (own free SVGs); voice mix derived in `voices.ts`
+(`voicesOf(read)`), over the working copy on Stage and over sync-cached slot bytes
+on the patch board. Patch switching stays `Gr55Editor.selectPatch` (setup SysEx), as §6.3.
+Maestro AI stays write-denied when `stageLive`.
 
 ```
-Connect → Setup (first time) → Sync → Studio (craft)
-                                      ├─ System | Patch | Library + Maestro AI
-                                      └─ Stage (perform)  ← Live Simplify backlog lives here
-                                           └─ Advanced under ⋯
+Connect (silent resume when ports valid) → Setup (first time) → Stage (now)
+                                              ├─ Maestro (AI craft)
+                                              └─ Setup (Device · GK)
+Live Simplify backlog lives on Stage (mobile layout / thumb targets).
 ```
 
 ---
@@ -70,6 +81,8 @@ Proposed evolution of Stage for thumb-friendly live use (minimum ~48px targets).
 in P1; responsive layout follows in P2.
 
 ### 4.1 Connect (existing flow, mobile-sized)
+
+Prompt only when silent resume cannot run ([connection-resume.md](./connection-resume.md)).
 
 ```
 ┌─────────────────────────────┐
@@ -85,12 +98,10 @@ in P1; responsive layout follows in P2.
 
 ```
 ┌─────────────────────────────┐
-│ Studio │ Stage │ ⋯     SINC │
+│ Stage │ Maestro │ Setup SINC│
 ├─────────────────────────────┤
-│ Song 3/8 · U14:2 Blues Riff │
-│ [◀ P]  [ N ▶ ]   gap warn   │
-├─────────────────────────────┤
-│ [ PURE GUITAR ]             │  ← layers/guitar-only (+ opt. GUITAR OUT)
+│ USER 14-2 · Blues Riff      │
+│ [◀ bank] [1][2][3] [bank ▶] │
 ├─────────────────────────────┤
 │ PCM1  ═══════●────  72      │
 │ PCM2  ════●────────  40      │
@@ -98,18 +109,14 @@ in P1; responsive layout follows in P2.
 │ Norm  ═════════●──  80      │
 │ Master═══════●────  75      │  ← 🟠 working copy via Gr55Editor.write
 ├─────────────────────────────┤
-│ Cutoff ○   Gain ○           │
-│ DlyMix ○   Rev  ○           │
-├─────────────────────────────┤
-│ Cuts: Verso · Solo · …      │
-│ Pedals: CTL EXP …           │
-│ [ Edit setlist ] [ Advanced ]│
+│ Amp ○  Chorus ○  Delay ○    │
+│ Reverb ○  EQ ○              │
 └─────────────────────────────┘
 ```
 
-Tablet landscape: same controls in two columns (mix | setlist/cuts); no new IA.
+Tablet landscape: same mixer in a wider row; no new IA.
 
-Escape hatches: **Advanced** → dense editor; **Studio** → craft/macros/Maestro AI.
+Escape hatch: **Maestro** → AI craft / macros.
 
 ---
 
@@ -117,7 +124,7 @@ Escape hatches: **Advanced** → dense editor; **Studio** → craft/macros/Maest
 
 **Product name:** Pure Guitar (EN) / guitar-only craft label already exists in macros.
 
-**Patch bundle (🟠, immediate DT1)** — already implemented as Studio macro
+**Patch bundle (🟠, immediate DT1)** — already implemented as Maestro macro
 `layers` → `guitar-only` in `src/maestro/macros/registry.ts`:
 
 | Registry key | Intent |
@@ -177,8 +184,17 @@ field keys** over hand-maintained offset tables when implementing UI.
 | Normal PU mute / level | `normal-pickup/level/normalPuMute`, `normal-pickup/level/normalPuLevel` |
 | Master patch level | `master/output/patchLevel` |
 
-Quick knobs (vision): cutoff / amp gain / delay mix / reverb level — map to existing page fields
-in `pages.ts` / address map; do not invent addresses.
+Quick knobs (vision) — implemented mapping (all over existing fields; no new addresses):
+
+| Knob | Field (temporary patch) | Range |
+| --- | --- | --- |
+| Cutoff | `sendsAndEq.eqHighCutoffFreq` (EQ High Cutoff Freq) | preset frequency list (stepped) |
+| Amp gain | `ampModNs.ampGain` | 0–120 |
+| Delay mix | `sendsAndEq.delayEffectLevel` | 0–120 |
+| Reverb | `sendsAndEq.reverbEffectLevel` | 0–100 |
+
+`eqHighCutoffFreq` is the one cutoff every patch carries; deep per-model cutoffs
+(GR-300, TVF offsets) stay Maestro craft / macros — Advanced editor UI was removed.
 
 ### 6.3 Patch switching
 
@@ -243,7 +259,7 @@ From the Owner’s Manual / Studio IA (not a new protocol):
 - **Structure 2 (series):** Modeling & Normal PU through AMP + MOD into MFX; PCM1 & PCM2 into MFX
   with the amp path.
 
-Live Simplify exposes levels/mutes; deep structure stays Advanced / Studio.
+Live Simplify exposes levels/mutes; deep structure stays Maestro craft.
 
 ---
 
@@ -252,9 +268,9 @@ Live Simplify exposes levels/mutes; deep structure stays Advanced / Studio.
 | Phase | Work | Notes |
 | --- | --- | --- |
 | **P0** | This doc + index links | Done when accepted |
-| **P1** | Stage Live Simplify on **desktop** | Pure Guitar button, five faders, four knobs; `Gr55Editor.write`; setlist/cuts kept; no Maestro policy change |
+| **P1** | Simple-first IA | Done: MVP = Stage (now-only mixer, `Stage.tsx` + `Icons.tsx` + `voices.ts`) · Maestro (any config with AI) · Setup (`Setup.tsx`, global cards); setlist and patch-picker removed; one `AppNav` bar with three items; Advanced editor removed (deep links redirect to Stage) |
 | **P2** | Responsive layout + Android Chrome WebMIDI spike | Update BrowserGate/README only after evidence |
-| **P3** | Preset-bank browse / alternate PC path | Only if hardware-proven; Library remains user-slot SoT until then |
+| **P3** | Preset-bank browse / alternate PC path | Only if hardware-proven; user slots stay the product SoT until then |
 | **P4** | iOS native MIDI shell | Separate product decision; not a Vite-only change |
 
 ---

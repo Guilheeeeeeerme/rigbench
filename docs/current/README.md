@@ -15,6 +15,8 @@ After any IA, connect, route, or surface change: **audit this folder + [AGENTS.m
 | [maestro-architecture.md](./maestro-architecture.md) | Maestro registry, policy, Gemini BYOK | **SoT** for Maestro internals |
 | [studio-sessions.md](./studio-sessions.md) | Session taxonomy + macros (System/Patch) | Craft/macros — page scope = Bank\|Global |
 | [mobile-live-control.md](./mobile-live-control.md) | Mobile vision (Stage-era) | Vision only; Bank UI SoT is [bank-patch-config.md](./bank-patch-config.md) |
+| [ringbench-saas-discovery.md](./ringbench-saas-discovery.md) | Ringbench metered AI SaaS discovery (GCP, wallet, pricing) | **Not** Rigbench MIDI IA |
+| [gcp-sandbox-bootstrap.md](./gcp-sandbox-bootstrap.md) | GCP `ringbench-sandbox` bootstrap checklist | Research only; no deploy from docs alone |
 
 App navigation and home surface: **[AGENTS.md](../../AGENTS.md)** (Home → Connect → Bank \| Global).
 

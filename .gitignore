@@ -9,6 +9,9 @@ coverage/
 research_notes/
 reports/
 
+# Linked git worktrees (local agent checkouts)
+.worktrees/
+
 # Local agent tooling (AGENTS.md and .cursor/rules are tracked)
 .claude/
 .opencode/

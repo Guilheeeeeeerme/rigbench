@@ -48,6 +48,8 @@ Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `disposit
 - Slot WRITE: Bank Maestro applies recipes to the temporary patch only; the user presses **WRITE** to call `writeToUserSlot`.
 - localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` Bank|Global). Never pedal field values.
 
+[docs/current/ringbench-saas-discovery.md](./docs/current/ringbench-saas-discovery.md) and [docs/current/gcp-sandbox-bootstrap.md](./docs/current/gcp-sandbox-bootstrap.md) capture **optional** Ringbench metered-AI / GCP sandbox research. They are **non-authoritative** for Rigbench MIDI product IA. **Maestro** remains the AI copilot name in this app (BYOK Gemini); do not rename routes or copy from those docs unless a product decision explicitly says so.
+
 ## Hard rules
 
 - **Do not rewrite** `src/protocol/**` or `src/midi/**` unless the task explicitly requires a protocol/MIDI fix. Prefer `systemMap.ts` and device-layer types for system extensions.

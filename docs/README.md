@@ -11,7 +11,7 @@
 
 | Path | Audience | Contents |
 | --- | --- | --- |
-| [current/](./current/) | Agents + contributors | Live specs (connect, glossary, Maestro, recipes, vision) |
+| [current/](./current/) | Agents + contributors | Live specs (connect, glossary, Maestro, recipes, vision); optional Ringbench SaaS discovery |
 | [manuals/](./manuals/) | Anyone | Official GR-55 PDFs (read-only reference) |
 | [archive/](./archive/) | Research | Superseded briefings and redesign plans |
 | `Jev-Engineering-for-Coding-Agents.pdf` | Meta | Notes on conditional agent instructions (not product IA) |
@@ -28,6 +28,7 @@
 - Session macros (craft) → [current/studio-sessions.md](./current/studio-sessions.md)
 - Mobile / Stage Live Simplify vision → [current/mobile-live-control.md](./current/mobile-live-control.md)
 - How to change fields safely → [current/recipes.md](./current/recipes.md)
+- Ringbench SaaS / GCP sandbox research → [current/ringbench-saas-discovery.md](./current/ringbench-saas-discovery.md), [current/gcp-sandbox-bootstrap.md](./current/gcp-sandbox-bootstrap.md) (non-authoritative for MIDI product IA)
 
 ## Docs audit (required after IA/behavior changes)
 

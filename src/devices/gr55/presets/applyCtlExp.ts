@@ -18,17 +18,11 @@ export interface CtlExpApplyResult {
  * Patch-layer CTL/EXP functions and ASSIGN wipe live in `applyPresetToTemp`.
  * Full ASSIGN target programming is not done here (remaining gap).
  */
-export function applyCtlExpForPreset(
-  system: Gr55System,
-  preset: MusicalPreset,
-): CtlExpApplyResult {
+export function applyCtlExpForPreset(system: Gr55System, preset: MusicalPreset): CtlExpApplyResult {
   let wrote = 0;
   let warnedPatchSetting = false;
 
-  const ensurePatchSetting = (
-    field: typeof SYSTEM.pedals.ctlFunction,
-    currentNeeds: boolean,
-  ) => {
+  const ensurePatchSetting = (field: typeof SYSTEM.pedals.ctlFunction, currentNeeds: boolean) => {
     if (!currentNeeds) return;
     const read = system.read(field);
     if (read.ok && read.value !== 'PATCH SETTING') {

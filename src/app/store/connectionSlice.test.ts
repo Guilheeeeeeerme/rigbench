@@ -1,14 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import {
-  connectionReducer,
-  initialConnectionState,
-  setPhase,
-} from './slices/connectionSlice';
-import {
-  sessionPrefsReducer,
-  setLastRoute,
-  setRememberedPorts,
-} from './slices/sessionPrefsSlice';
+import { connectionReducer, initialConnectionState, setPhase } from './slices/connectionSlice';
+import { sessionPrefsReducer, setLastRoute, setRememberedPorts } from './slices/sessionPrefsSlice';
 
 describe('sessionPrefs + connection slices', () => {
   test('persisted prefs hold ports and last route', () => {

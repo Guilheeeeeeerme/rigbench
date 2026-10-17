@@ -48,6 +48,5 @@ const sessionPrefsSlice = createSlice({
   },
 });
 
-export const { setRememberedPorts, setLastRoute, setPreferSimulated } =
-  sessionPrefsSlice.actions;
+export const { setRememberedPorts, setLastRoute, setPreferSimulated } = sessionPrefsSlice.actions;
 export const sessionPrefsReducer = sessionPrefsSlice.reducer;

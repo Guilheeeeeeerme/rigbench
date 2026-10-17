@@ -180,8 +180,7 @@ export function applyPresetToTemp(
   }
 
   const pcm1Level = preset.pcm1Level ?? (pcm1On ? 100 : 0);
-  const pcm2Level =
-    preset.pcm2Level ?? (pcm2On ? (pcm2Standby ? 45 : 85) : 0);
+  const pcm2Level = preset.pcm2Level ?? (pcm2On ? (pcm2Standby ? 45 : 85) : 0);
   const modelingLevel = preset.modelingLevel ?? (modelingOn ? 100 : 0);
   const normalLevel = preset.normalLevel ?? (normalOn ? 80 : 0);
 
@@ -193,16 +192,12 @@ export function applyPresetToTemp(
 
   write(patch.patchPCMTone1.muteSwitch, pcm1On && pcm1Level > 0 ? SOUND : MUTE);
   // Standby PCM2: installed (tone + level) but muted until CTL enables layer.
-  write(
-    patch.patchPCMTone2.muteSwitch,
-    pcm2On && !pcm2Standby && pcm2Level > 0 ? SOUND : MUTE,
-  );
+  write(patch.patchPCMTone2.muteSwitch, pcm2On && !pcm2Standby && pcm2Level > 0 ? SOUND : MUTE);
   write(patch.modelingTone.muteSwitch, modelingOn && modelingLevel > 0 ? SOUND : MUTE);
   write(patch.common.normalPuMute, normalOn && normalLevel > 0 ? SOUND : MUTE);
 
   const pitchShift = clampPitchShift(pitch.pitchShift ?? 0);
-  const chromatic =
-    pitch.chromatic !== undefined ? pitch.chromatic : Boolean(preset.chromatic);
+  const chromatic = pitch.chromatic !== undefined ? pitch.chromatic : Boolean(preset.chromatic);
   wrote += applyPitchToTemp(editor, { pitchShift, chromatic });
 
   if (pcm1On && preset.legato && chromatic) {
@@ -268,11 +263,7 @@ interface SourceFlags {
  * Write patch-layer CTL / EXP / EXP SW for the preset.
  * Does not touch SYSTEM (see applyCtlExpForPreset) or ASSIGN targets beyond switch-off wipe above.
  */
-function applyPatchPedals(
-  editor: Gr55Editor,
-  preset: MusicalPreset,
-  sources: SourceFlags,
-): number {
+function applyPatchPedals(editor: Gr55Editor, preset: MusicalPreset, sources: SourceFlags): number {
   const patch = TEMPORARY_PATCH;
   let wrote = 0;
   const write = (field: Parameters<Gr55Editor['write']>[0], value: unknown) => {

@@ -1,10 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import {
-  childRouteOfPath,
-  isResumableRoute,
-  normalizeAppRoute,
-  patchRoute,
-} from './routes';
+import { childRouteOfPath, isResumableRoute, normalizeAppRoute, patchRoute } from './routes';
 
 describe('GR-55 route helpers', () => {
   test('childRouteOfPath reads the segment under /gr55', () => {

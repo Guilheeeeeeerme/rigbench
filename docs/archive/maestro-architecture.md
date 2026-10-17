@@ -1,10 +1,10 @@
-# Maestro — architecture reference
+# Maestro — architecture reference (ARCHIVE)
 
-> **Status: SUPERSEDED for product shell.** MVP has **no AI**. Live product SoT:
-> [simple-patch-editor.md](./simple-patch-editor.md). Non-AI craft helpers moved to
-> `src/craft/` (macros, fieldRegistry, toneMatch, policy). `src/maestro/**` may still
-> exist as legacy code; do not mount Gemini chat in the app shell.
-> Read-with: [glossary.md](./glossary.md), [connection-resume.md](./connection-resume.md).
+> **Status: ARCHIVED — superseded for product shell.** MVP has **no AI**. Live product SoT:
+> [../current/simple-patch-editor.md](../current/simple-patch-editor.md). Non-AI craft helpers
+> live in `src/craft/` (macros, fieldRegistry, toneMatch, policy). `src/maestro/**` remains as
+> unused legacy code; do not mount Gemini chat in the app shell.
+> Read-with: [../current/glossary.md](../current/glossary.md), [../current/connection-resume.md](../current/connection-resume.md).
 
 ---
 

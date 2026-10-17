@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useT } from '../../copy';
-import { matchPcmTones } from '../../craft/toneMatch';
+import { matchPcmTones } from './toneMatch';
 
 const RECENT_KEY = 'rigbench.recentTones';
 const RECENT_LIMIT = 8;
@@ -75,9 +75,7 @@ export function TonePicker({ open, title, labels, current, onPick, onClose }: To
 
   const filtered = useMemo(() => filterToneLabels(query, labels), [query, labels]);
   const shown = query.trim() ? filtered : filtered.slice(0, EMPTY_PAGE);
-  const recentShown = query.trim()
-    ? []
-    : recent.filter((label) => labels.includes(label));
+  const recentShown = query.trim() ? [] : recent.filter((label) => labels.includes(label));
 
   if (!open) return null;
 
@@ -89,7 +87,12 @@ export function TonePicker({ open, title, labels, current, onPick, onClose }: To
   };
 
   return (
-    <div className="tone-picker" role="dialog" aria-modal="true" aria-labelledby={`${searchId}-title`}>
+    <div
+      className="tone-picker"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`${searchId}-title`}
+    >
       <div className="tone-picker-sheet">
         <header className="tone-picker-head">
           <h2 id={`${searchId}-title`}>{title}</h2>

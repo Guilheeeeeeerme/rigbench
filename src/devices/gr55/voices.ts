@@ -75,11 +75,8 @@ export const POWER_SWITCHES: readonly PowerSwitch[] = [
   { id: 'eq', field: patch.sendsAndEq.eqSwitch },
 ];
 
-
 /** A reader over any patch image, the working copy or an encoded slot: decode by field. */
-export function readerOf(
-  bytes: Uint8Array,
-): (field: FieldReference<FieldType<never>>) => unknown {
+export function readerOf(bytes: Uint8Array): (field: FieldReference<FieldType<never>>) => unknown {
   return (field) => {
     const offset = field.address - TEMPORARY_PATCH_ADDRESS;
     const { type, size } = field.definition;

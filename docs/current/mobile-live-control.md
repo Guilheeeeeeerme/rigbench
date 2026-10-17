@@ -1,13 +1,13 @@
 # Mobile / live simplified control — Rigbench vision
 
-> **Status:** Vision + research (Stage-era). **Superseded for Bank UI** by
-> [bank-patch-config.md](./bank-patch-config.md) (Tone Deck + Simple/Advanced).
-> Not a second app. Not a rename of Maestro.
-> **Precedence:** code → [AGENTS.md](../../AGENTS.md) → [bank-patch-config.md](./bank-patch-config.md)
-> for Bank → this file (vision only) →
+> **Status: VISION ONLY (Stage-era research, predates the Patch workspace MVP).**
+> Not shipped IA, not a live briefing: the current IA is the Patch workspace
+> ([simple-patch-editor.md](./simple-patch-editor.md)). §2 Platform truth is still accurate;
+> §1–§10 are historical — routes they mention (`palco`, `maestro`, `configuracao`) are legacy
+> redirects (see `src/devices/gr55/routes.ts`), and the Alpha/P boom chain appendix was cut.
+> Precedence: code → [AGENTS.md](../../AGENTS.md) → product SoT → this file →
 > [archive research](../archive/research/mobile-gr55-system-prompt.md).
-> If this doc disagrees with shipped IA (`routes.ts`, Bank \| Global), **fix code / AGENTS**.
-> Connect/resume on desktop: [connection-resume.md](./connection-resume.md).
+> Platform matrix below is referenced from the root [README](../../README.md#what-you-need).
 
 External brief (archived): “Roland GR-55 Mobile Web/Native Control Interface”
 ([raw prompt](../archive/research/mobile-gr55-system-prompt.md)). This file reconciles that
@@ -45,12 +45,13 @@ Additional constraints:
 
 ---
 
-## 3. IA mapping (do not rename Maestro)
+## 3. IA mapping (historical — Stage-era wording below)
 
-The external brief used “Maestro” for setlist/gig. In Rigbench **Maestro means the Gemini
-copilot** ([maestro-architecture.md](./maestro-architecture.md)). Keep that name.
+> The surfaces named in this section describe the Stage-era app, not the current MVP. Treat the
+> table as history; current IA: Connect → Patch workspace ([simple-patch-editor.md](./simple-patch-editor.md)).
 
-The simple-first IA shipped (Advanced editor removed):
+The external brief used “Maestro” for setlist/gig. In Rigbench of that era **Maestro meant the
+Gemini copilot** (now out of the product shell): keep that name for history.
 
 | Surface | Rigbench | Role |
 | --- | --- | --- |
@@ -216,7 +217,7 @@ Changing patches mutes the pedal ~1 s — Stage already warns on cross-slot move
 ### 6.4 Structure 1 / 2
 
 `effectStructure` `"1"` | `"2"` is in the address map; OM routing is summarized in
-[studio-sessions.md](./studio-sessions.md). Studio macro `chain-path` is still a stub
+[../archive/studio-sessions.md](../archive/studio-sessions.md). Studio macro `chain-path` is still a stub
 (`implemented: false`). Live Simplify does not require Structure UI in P1.
 
 ---

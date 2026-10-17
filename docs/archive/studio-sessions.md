@@ -1,19 +1,20 @@
-# Maestro craft — session-scoped macros
+# Studio craft — session-scoped macros (ARCHIVE)
 
-> **Status:** ACTIVE for **session taxonomy + macros only**.
-> **Superseded for app home / top nav:** the live product is **Bank · Global**
-> ([AGENTS.md](../../AGENTS.md)). Bank page session id is `bank`; macros keyed as `patch`
-> apply via `macroSessionOf`. Do **not** treat “Studio home” or “TopNav Studio · Stage · ⋯”
-> in older sections of this file as current IA.
-> **SoT for:** System / Patch / Library session model, macro groups (Bank maps to patch macros).
-> Precedence: code → [AGENTS.md](../../AGENTS.md) → this file (craft sections) → archive.
-> Connect / resume: [connection-resume.md](./connection-resume.md).
-> Grounded in: `docs/manuals/GR-55_OM.pdf` (Owner’s Manual EN),
-> `docs/manuals/GR-55_PT.pdf` (manual PT), `GR-55_PA.pdf` (patch list),
-> `GR-55_PCM_Tone_List.pdf`, `GR-55_Additional_PatchList.pdf`.
-> Cross-checked: `src/devices/gr55/pages.ts`, `systemMap.ts` / Device / GkSets,
-> `src/maestro/fieldRegistry.ts`, `policy.ts`, `macros/registry.ts`.
-> Read-with: [maestro-architecture.md](./maestro-architecture.md).
+> **Status: ARCHIVED (Stage-era Studio design).** App-home, top-nav and “Studio surfaces”
+> sections are historical fiction for today’s app — live IA is the Patch workspace
+> ([../current/simple-patch-editor.md](../current/simple-patch-editor.md)); legacy hashes
+> (`bank`, `global`, `estudio`) redirect to `patch` (`src/devices/gr55/routes.ts`).
+> Still-true reference: the macro **file contract** matches `src/craft/macros/**`
+> (`registry.ts` groups, `types.ts` write domains, `apply.ts`, `match.ts`, `policy.ts`,
+> `session.ts` — sessions `system` / `patch` / `bank` / `library`). Non-AI craft, no chat mounts.
+> Precedence: code → [AGENTS.md](../../AGENTS.md) → current docs → this file.
+> Connect / resume: [../current/connection-resume.md](../current/connection-resume.md).
+> Grounded in: `docs/gr55-collection/manuals/GR-55 Owner's Manual (EN).pdf` (Owner’s Manual EN),
+> PT manual, `GR-55 Patch List (PA).pdf`, `GR-55 Tone List (PCM).pdf`,
+> `GR-55 Additional Patch List.pdf` (moved to docs/gr55-collection/manuals/).
+> Cross-checked: `src/devices/gr55/pages.ts`, `systemMap.ts`, `instrumentProfiles.ts`,
+> `src/craft/fieldRegistry.ts`, `policy.ts`, `macros/registry.ts`.
+> Read-with: [maestro-architecture.md](./maestro-architecture.md) (same archive).
 
 ---
 

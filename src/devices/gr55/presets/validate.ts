@@ -3,12 +3,7 @@ import { ARCHITECTURES } from './architectures';
 import { shippedPresets, type MusicalPreset } from './catalog';
 import { isValidPcmTone } from './pcmCatalog';
 import { ARTICULATION_PROFILES } from './profiles';
-import {
-  brazilianRhythms,
-  cumbiaRhythms,
-  ROLES,
-  type RoleId,
-} from './taxonomy';
+import { brazilianRhythms, cumbiaRhythms, ROLES, type RoleId } from './taxonomy';
 import { TONE_LIBRARY } from './toneLibrary';
 import { CTL_ACTIONS, EXP_ACTIONS, EXP_SW_ACTIONS } from './ctlExp';
 

@@ -61,13 +61,11 @@ function enumLabels(field: FieldReference<EnumField>): string[] {
     .map((encoded) => String(type.labels[encoded]));
 }
 
-type PickerTarget =
-  | { kind: 'pcm'; voice: 'pcm1' | 'pcm2' }
-  | { kind: 'modeling' };
+type PickerTarget = { kind: 'pcm'; voice: 'pcm1' | 'pcm2' } | { kind: 'modeling' };
 
 /**
  * Always-visible source mix: mute, level, tone name, and searchable tone pickers.
- * Never collapse this — tones and combinations stay first-class on Bank.
+ * Never collapse this — tones and combinations stay first-class in the workspace.
  */
 export function ToneDeck({
   host,
@@ -118,9 +116,7 @@ export function ToneDeck({
     const field = VOICE_FIELDS[voice].tone;
     if (!field) return t('gr55.toneDeck.noTone');
     const result = host.read(field);
-    return result.ok && typeof result.value === 'string'
-      ? result.value
-      : t('gr55.toneDeck.noTone');
+    return result.ok && typeof result.value === 'string' ? result.value : t('gr55.toneDeck.noTone');
   };
 
   const openPicker = (voice: VoiceId) => {
@@ -203,9 +199,7 @@ export function ToneDeck({
                 step={type.step}
                 value={voice.level ?? 0}
                 disabled={voice.muted}
-                onChange={(event) =>
-                  host.write(fields.level, Number(event.target.value) as never)
-                }
+                onChange={(event) => host.write(fields.level, Number(event.target.value) as never)}
                 aria-label={t(`voices.${voice.id}`)}
               />
               <output className="voice-level">{voice.level ?? '—'}</output>

@@ -3,13 +3,14 @@
 > **Status:** Live. SoT for visual design of the Rigbench web UI.
 > **Precedence:** code (`src/app/styles.css`, `index.html`) → this file → [AGENTS.md](../../AGENTS.md).
 > Agents **must** follow this when changing any user-visible layout or chrome.
-> Product IA (Stage · Maestro · Setup) is unchanged — see [AGENTS.md](../../AGENTS.md).
+> Product IA (Connect → Patch workspace) lives in [simple-patch-editor.md](./simple-patch-editor.md) —
+> see [glossary.md](./glossary.md) for surface names.
 
 ## Intent
 
 A dense, calm, **Linear-inspired dark** interface: Inter, 4px grid, few colors, high
-contrast text, no decorative motion. The musician reads Stage at arm’s length; craft
-surfaces stay quiet.
+contrast text, no decorative motion. The musician reads the workspace at arm’s length;
+craft surfaces stay quiet.
 
 ## Tokens (CSS)
 
@@ -76,22 +77,24 @@ docs update.
 
 - No Inter alternatives (Roboto, system stack as primary).
 - No warm cream / terracotta / purple-gradient marketing skins.
-- No flat single-purpose “dashboard card grids” that fight Stage’s one-job layout.
+- No flat single-purpose “dashboard card grids” that fight the workspace’s one-job layout.
 - No inventing a second accent that competes with `#5E6AD2` for chrome (scope chips excepted).
 
-## Bank (mobile-first)
+## Workspace surfaces (mobile-first)
 
-Bank patch UI SoT: [bank-patch-config.md](./bank-patch-config.md).
+Patch workspace (Tone Deck / Advanced / pickers) behavior SoT:
+[simple-patch-editor.md](./simple-patch-editor.md); Tone Deck rules also in
+[bank-patch-config.md](./bank-patch-config.md) (legacy design whose components remain live).
 
-- **Tone Deck** stays above Simple/Advanced; tone rows ≥48px tap targets; picker is a
+- **Tone Deck** stays above the Advanced editor; tone rows ≥48px tap targets; picker is a
   fixed overlay with safe-area insets.
-- Simple profile pills: full-width stack under 640px; two columns above.
-- AppShell ≤900px: config main above Maestro; chat collapsed by default on first load.
+- Profile pills (craft macros, `SimpleProfiles`): full-width stack under 640px; two columns above.
+- AppShell ≤900px: main content stacks above secondary panes; collapsed by default on first load.
 
 ## Checklist before shipping UI
 
 1. Tokens only — no new hex for chrome colors.
 2. Inter still loaded; body still ~17px.
 3. Focus ring visible on keyboard path.
-4. Bank / Connect / AppNav still readable on a phone-width viewport.
+4. Workspace / Connect / AppNav still readable on a phone-width viewport.
 5. Update this file if you add a token; point from [docs/current/README.md](./README.md).

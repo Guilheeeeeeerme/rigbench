@@ -238,22 +238,10 @@ const GkSet = {
     'Play Feel',
     new UByteField(1, 5, { encodedOffset: -1 }),
   ),
-  lowVelocityCut: new FieldDefinition(
-    pack7(0x1e),
-    'Low Velocity Cut',
-    new UByteField(0, 10),
-  ),
+  lowVelocityCut: new FieldDefinition(pack7(0x1e), 'Low Velocity Cut', new UByteField(0, 10)),
   /** OM VELOCITY DYNAMICS; stored 0–10 on the unit. */
-  velocityDynamics: new FieldDefinition(
-    pack7(0x1f),
-    'Velocity Dynamics',
-    new UByteField(0, 10),
-  ),
-  nuanceDynamics: new FieldDefinition(
-    pack7(0x20),
-    'Nuance Dynamics',
-    new UByteField(0, 10),
-  ),
+  velocityDynamics: new FieldDefinition(pack7(0x1f), 'Velocity Dynamics', new UByteField(0, 10)),
+  nuanceDynamics: new FieldDefinition(pack7(0x20), 'Nuance Dynamics', new UByteField(0, 10)),
   nuanceTrim: new FieldDefinition(pack7(0x21), 'Nuance Trim', new UByteField(0, 10)),
   downTune: new FieldDefinition(
     pack7(0x22),

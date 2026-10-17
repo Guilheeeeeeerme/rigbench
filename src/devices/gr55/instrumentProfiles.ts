@@ -304,8 +304,7 @@ export function gkWritesForProfile(
   const sens = profile.sensSeed;
   const cal = calibrationOf(profile, calibrationId);
   const playFeel = cal?.playFeel ?? 3;
-  const lowVelocityCut =
-    cal?.lowVelocityCut ?? (puType.startsWith('PIEZO') ? 4 : 2);
+  const lowVelocityCut = cal?.lowVelocityCut ?? (puType.startsWith('PIEZO') ? 4 : 2);
   const velocityDynamics = cal?.velocityDynamics ?? 5;
   const nuanceDynamics = profile.nuanceDynamics ?? 5;
   const writes: { field: keyof GkSetFields; value: string | number }[] = [

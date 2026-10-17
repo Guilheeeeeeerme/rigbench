@@ -9,13 +9,15 @@ first visit; the **EN | PT-BR** switch in the corner of every screen changes it 
 The UI is a dark Linear-inspired shell (Inter, indigo accent) — see
 [docs/current/ui-guidelines.md](./docs/current/ui-guidelines.md).
 
-| Device       | Status                                             |
-| ------------ | -------------------------------------------------- |
+| Device       | Status                                                     |
+| ------------ | ---------------------------------------------------------- |
 | Roland GR-55 | Home → Connect → Patch workspace (WIP); silent MIDI resume |
-| Roland VG-99 | Coming soon                                        |
-| BOSS GT-10   | Coming soon                                        |
+| Roland VG-99 | Coming soon                                                |
+| BOSS GT-10   | Coming soon                                                |
 
-Contributors and coding agents: start at [AGENTS.md](./AGENTS.md) and [docs/](./docs/).
+Contributors and coding agents: start at [AGENTS.md](./AGENTS.md), then [docs/](./docs/) —
+app specs in `docs/current/`, design history in `docs/archive/`, and the GR-55 patch/manual
+library in `docs/gr55-collection/` (data, not documentation; it is not in git).
 
 ## GR-55 (WIP)
 
@@ -54,8 +56,8 @@ misbehaves on a real GR-55, please open an issue with the firmware version and w
 
 - **System addresses.** GK sets, output, pedals, MIDI and USB follow the system map of the
   CASouthEast fork of gr55-remote (see Credits), which was made against a real pedal. Rigbench
-  has not confirmed them itself. Read the values on the Device screen and compare them with the
-  pedal's own screen before applying a change.
+  has not confirmed them itself. Read the values on the workspace screens and compare them with
+  the pedal's own screen before applying a change.
 - **Pickup list.** The order of PU TYPE follows that fork and lists eight values where the
   owner's manual lists seven. Check that the pickup named on screen is the one the pedal shows.
 - **Scale length.** Stored as millimetres above 500, on the evidence of one captured GK set.
@@ -66,7 +68,7 @@ misbehaves on a real GR-55, please open an issue with the firmware version and w
 - **String meter.** The pedal does not report its own level meter. The bars are drawn from the
   velocity of the notes the pedal sends when Guitar to MIDI is on, which follows how hard the
   pedal heard each string but is not the pedal's meter.
-- **Stage states.** Whether CTL or the EXP switch is on, and so which cut is active, is read from
+- **CTL readout.** Whether CTL or the EXP switch is on, and so which cut is active, is read from
   the status the patch reports. Treat it as a guide.
 - **Quick sync.** A second sync reads the first block of each slot — its name and common
   settings — and reads a slot in full only when that block differs. An edit made on the pedal
@@ -88,11 +90,9 @@ byte encoding.
   read still hits the 5 second timeout, lengthen the wait on that command only.
 - Set a delay time in the middle of the millisecond range, then one at the top (a note division).
   If the bytes on the wire do not match the sound, then adjust `USplit12Field` encode. Not before.
-- Open Device. The GK set in use, its name and OUTPUT SELECT match the pedal's EDIT › SYSTEM
-  screens. Change OUTPUT SELECT, apply, and confirm it on the pedal.
+- In the workspace Setup (SYSTEM/GK items), the GK set in use and its name match the pedal's
+  EDIT › SYSTEM screens. Change a system value, confirm, and verify it on the pedal.
 - Let a full sync run. Note the time it takes and whether the seal ever reports a stop.
-- Build a two-song setlist on two slots and press `N`. The pedal changes patch and the Stage
-  shows the new one.
 
 Not included yet: `.g5l` librarian files, and the read-only preset banks.
 
@@ -136,38 +136,42 @@ you walk the setup, the sync and the Stage with no hardware attached.
 
 ```
 src/
-  app/            App shell, routes, styles
+  app/            App shell, Redux store (connection prefs only), styles
   shell/          Browser gate, device picker, language switch
   copy/           en.ts (source of truth) and pt-BR.ts; t() and useT() in index.ts
-  maestro/        Maestro (policy, registry, Gemini BYOK, macros/, Studio host)
   midi/           Web MIDI access; the session that queues RQ1/DT1 messages 20 ms apart
   protocol/       Roland SysEx and the GR-55 patch address map (see Credits)
   devices/gr55/   Everything the GR-55 screens are made of:
-    Stage.tsx, PatchBoard.tsx     the live surface and the iconified patch picker
-    Icons.tsx, voices.ts          instrument icons and the four voices of a patch
-    Stage.tsx, stageModel.ts     live Stage and what it reads out of a patch
-    editor.ts, pages.ts, …       working copy; pages.ts stays the Maestro field-key source
-    Setup.tsx                     the global-config screen of cards
-    Studio.tsx, StudioPanels.tsx Maestro sessions (chat + macro panels)
-    systemMap.ts, systemState.ts pedal-wide settings, staged until applied
-    sync/                        sync engine, IndexedDB cache, corner seal
-    Wizard.tsx, setupState.ts    first-run / recalibrate setup
-    routes.ts, AppNav.tsx        hash routes and the Stage · Setup app bar
-    fakeDevice.ts                simulated pedal for tests and the dev build
+    Gr55Screen.tsx, routes.ts     shell: silent resume, Connect, legacy-hash redirects
+    AppShell.tsx                  app bar: Exit · Sync
+    ConnectScreen.tsx             MIDI port picker (+ simulated pedal in DEV)
+    PatchWorkspace.tsx            the patch workspace: Setup · Choose · Shape
+    ToneDeck.tsx, TonePicker.tsx  tone-source deck inside the Advanced section
+    AdvancedPatchEditor.tsx       OM-grouped parameter editor (escape hatch)
+    toneMatch.ts                  musician words → PCM tone name search
+    pages.ts                      locale-free field keys for the editor (frozen PAGE_IDS)
+    editor.ts, changeTracking.ts  working-copy model of the sounding patch
+    presets/                      rhythm → role → sound catalog: taxonomy, architectures, apply
+    instrumentProfiles.ts         instrument → GK SET writes (Godin, Caimbé, bass)
+    systemMap.ts, systemState.ts  pedal-wide settings, written immediately (no staging)
+    sessionAuthority.ts …         app-vs-pedal authority, snapshot, verified save, guard
+    sync/                         sync engine, IndexedDB cache, SyncBadge
+    troubleshooting.ts            rule-based diagnostics (ghost notes, string SENS…)
+    fakeDevice.ts                 simulated pedal for tests and the dev build
 ```
 
-There is no parameter-by-parameter screen anymore. The simple surfaces read what a patch holds
-from the address map (voices, icons) and change it with whole-instrument controls; `pages.ts`
-survives as the locale-free field-key source of truth for Maestro macros and validation, with a
-test pinning every patch field to exactly one key.
+There is no parameter-by-parameter first screen. The workspace reads what a patch holds from the
+address map and changes it with musician-level controls; `pages.ts` stays the locale-free field-key
+source of truth for validation, with tests pinning every patch field to exactly one section. When
+something needs parameter-level care, the workspace's Advanced section is the escape hatch.
 
 Every string the interface shows lives in `src/copy/`. New text goes into `en.ts` and `pt-BR.ts`
 under the same key and is read with `t('some.key')`; the names of synths, amps and tones stay as
 the pedal prints them.
 
-What Rigbench keeps on your computer: the language, the stage setup and the setlist in
-`localStorage`; the synced slots in IndexedDB. Clearing the site's data removes them and nothing
-on the pedal.
+What Rigbench keeps on your computer: the language in `localStorage`, the MIDI ports to resume
+with (redux-persist), and the synced slots in IndexedDB. Clearing the site's data removes them and
+nothing on the pedal.
 
 Agent-oriented recipes and glossary: [docs/current/](./docs/current/).
 

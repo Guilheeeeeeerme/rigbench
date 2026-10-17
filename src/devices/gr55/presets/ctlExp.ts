@@ -1,9 +1,4 @@
-export type CtlActionId =
-  | 'solo-boost'
-  | 'effect-toggle'
-  | 'tone-switch'
-  | 'sustain'
-  | 'octave';
+export type CtlActionId = 'solo-boost' | 'effect-toggle' | 'tone-switch' | 'sustain' | 'octave';
 
 export type ExpActionId = 'volume' | 'expression' | 'wah' | 'filter' | 'blend';
 

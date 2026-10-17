@@ -1,12 +1,7 @@
 import type { InstrumentProfileId } from '../instrumentProfiles';
 import type { ArchitectureId } from './architectures';
 import { architectureOf } from './architectures';
-import type {
-  MusicalPreset,
-  ParamScope,
-  PresetCtlExp,
-  ValidationStatus,
-} from './catalog';
+import type { MusicalPreset, ParamScope, PresetCtlExp, ValidationStatus } from './catalog';
 import type { ArticulationProfileId } from './profiles';
 import { articulationProfileOf } from './profiles';
 import type { RoleId } from './taxonomy';
@@ -135,11 +130,7 @@ export function composePreset(slot: PresetSlotDef): MusicalPreset {
     gkPrerequisitesEn: 'Stable GK set; calibrate SENS on the pedal display.',
     gkPrerequisitesPt: 'GK set estável; calibre SENS no display da pedaleira.',
     scopes,
-    docRefs: [
-      'GR-55_OM.pdf',
-      'RolandGR55ToneMap.ts',
-      'docs/current/brazilian-rhythm-catalog.md',
-    ],
+    docRefs: ['GR-55_OM.pdf', 'RolandGR55ToneMap.ts', 'docs/current/brazilian-rhythm-catalog.md'],
     validationStatus,
     shipped: true,
     priority: slot.priority === true,

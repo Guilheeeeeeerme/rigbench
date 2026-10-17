@@ -1,7 +1,0 @@
-# Maestro (legacy — out of MVP shell)
-
-- **Product shell has no AI.** Do not mount Gemini chat. Live IA: [docs/current/simple-patch-editor.md](../../docs/current/simple-patch-editor.md).
-- Non-AI craft (macros, fieldRegistry, toneMatch, policy) lives under `src/craft/`.
-- `src/maestro/**` may remain as unused legacy; prefer `src/craft/` for new work.
-- Never commit API keys. `npm run check:secrets` remains useful if any BYOK code stays in-tree.
-- Architecture notes are **superseded**: `docs/current/maestro-architecture.md`.

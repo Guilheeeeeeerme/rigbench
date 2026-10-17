@@ -1,14 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import {
-  connectionReducer,
-  setHasAccess,
-  setPhase,
-} from '../../app/store/slices/connectionSlice';
-import {
-  sessionPrefsReducer,
-  setRememberedPorts,
-} from '../../app/store/slices/sessionPrefsSlice';
+import { connectionReducer, setHasAccess, setPhase } from '../../app/store/slices/connectionSlice';
+import { sessionPrefsReducer, setRememberedPorts } from '../../app/store/slices/sessionPrefsSlice';
 import { setLiveConnection, setMidiAccess } from './connectionRuntime';
 import { resumeIfPossible } from './connectionThunks';
 

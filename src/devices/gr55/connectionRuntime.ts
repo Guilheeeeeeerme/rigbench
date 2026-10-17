@@ -1,4 +1,3 @@
-import { createContext, useContext } from 'react';
 import type { MidiSession } from '../../midi/session';
 import type { Gr55Editor } from './editor';
 import type { SyncEngine } from './sync/engine';
@@ -80,20 +79,4 @@ export function retainLiveConnection(onReleased?: () => void): () => void {
       }
     }, RELEASE_GRACE_MS);
   };
-}
-
-const ConnectionContext = createContext<LiveConnection | null>(null);
-
-export const ConnectionProvider = ConnectionContext.Provider;
-
-export function useConnection(): LiveConnection {
-  const value = useContext(ConnectionContext);
-  if (!value) {
-    throw new Error('useConnection needs a connected GR-55 above it');
-  }
-  return value;
-}
-
-export function useConnectionOptional(): LiveConnection | null {
-  return useContext(ConnectionContext);
 }

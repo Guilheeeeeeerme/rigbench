@@ -5,14 +5,7 @@ import type { FieldReference } from '../../protocol/RolandAddressMap';
 import type { FieldHost } from './FieldControl';
 import { FieldControl } from './FieldControl';
 import type { GkMode } from './editor';
-import {
-  buildPages,
-  effectOfFields,
-  isField,
-  memberOf,
-  type PageId,
-  type Section,
-} from './pages';
+import { buildPages, effectOfFields, isField, memberOf, type PageId, type Section } from './pages';
 
 function activeEffectOf(host: FieldHost, section: Section): string | undefined {
   if (!section.typeKey) return undefined;
@@ -105,12 +98,7 @@ export function AdvancedPatchEditor({
                 const atom = memberOf(section.struct, key);
                 if (!isField(atom)) return null;
                 return (
-                  <FieldControl
-                    key={key}
-                    editor={host}
-                    field={atom}
-                    readOnly={readOnly.has(key)}
-                  />
+                  <FieldControl key={key} editor={host} field={atom} readOnly={readOnly.has(key)} />
                 );
               })}
             </div>

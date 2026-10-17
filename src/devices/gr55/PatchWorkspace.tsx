@@ -79,7 +79,9 @@ function Collapsible({
       <button type="button" className="mvp-section-toggle" aria-expanded={open} onClick={onToggle}>
         <span>{title}</span>
         {summary ? <span className="hint">{summary}</span> : null}
-        <span className="mvp-section-chevron">{open ? t('gr55.mvp.collapse') : t('gr55.mvp.expand')}</span>
+        <span className="mvp-section-chevron">
+          {open ? t('gr55.mvp.collapse') : t('gr55.mvp.expand')}
+        </span>
       </button>
       {open ? <div className="mvp-section-body">{children}</div> : null}
     </section>
@@ -101,10 +103,7 @@ export function PatchWorkspace({
   const locale = useLocale();
   const system = useSystem();
   const source = useMemo(() => asSnapshotSource({ editor, system }), [editor, system]);
-  const host = useMemo(
-    () => snapshotFieldHost(editor, source, onError),
-    [editor, source, onError],
-  );
+  const host = useMemo(() => snapshotFieldHost(editor, source, onError), [editor, source, onError]);
   const patchVersion = useSyncExternalStore(editor.subscribe, editor.patchSnapshot);
   useSyncExternalStore(system.subscribe, system.snapshot);
 
@@ -139,16 +138,10 @@ export function PatchWorkspace({
   const [confirm, setConfirm] = useState<'instrument' | 'replace' | null>(null);
   const [confirmBusy, setConfirmBusy] = useState(false);
 
-  const pitchOptions = useMemo(
-    () => Array.from({ length: 49 }, (_, i) => i - 24),
-    [],
-  );
+  const pitchOptions = useMemo(() => Array.from({ length: 49 }, (_, i) => i - 24), []);
 
   const familyRhythms = useMemo(
-    () =>
-      familyId === 'all'
-        ? RHYTHMS
-        : RHYTHMS.filter((rhythm) => rhythm.family === familyId),
+    () => (familyId === 'all' ? RHYTHMS : RHYTHMS.filter((rhythm) => rhythm.family === familyId)),
     [familyId],
   );
   const rhythm = RHYTHMS.find((item) => item.id === rhythmId) ?? familyRhythms[0] ?? RHYTHMS[0];
@@ -164,9 +157,7 @@ export function PatchWorkspace({
   const selectedPreset: MusicalPreset | undefined =
     presets.find((p) => p.id === presetId) ?? presets[0];
   const resolvedChromatic =
-    pitchCorrectionOverride !== null
-      ? pitchCorrectionOverride
-      : Boolean(selectedPreset?.chromatic);
+    pitchCorrectionOverride !== null ? pitchCorrectionOverride : Boolean(selectedPreset?.chromatic);
   const profile = profileOf(instrumentId)!;
   const activeCalibration = calibrationOf(profile, calibrationId);
   const output = OUTPUT_DESTINATIONS.find((item) => item.id === outputId)!;
@@ -380,7 +371,11 @@ export function PatchWorkspace({
             <label className="mvp-field">
               <span>{t('gr55.mvp.pickCalibration')}</span>
               <select
-                value={activeCalibration?.id ?? profile.defaultCalibrationId ?? profile.calibrations[0]!.id}
+                value={
+                  activeCalibration?.id ??
+                  profile.defaultCalibrationId ??
+                  profile.calibrations[0]!.id
+                }
                 onChange={(event) =>
                   setCalibrationId(event.target.value as CalibrationSubProfileId)
                 }
@@ -511,7 +506,9 @@ export function PatchWorkspace({
                       {!fits ? (
                         <span className="hint">{t('gr55.mvp.incompatibleInstrument')}</span>
                       ) : null}
-                      <span className="hint">{label(preset.descriptionEn, preset.descriptionPt)}</span>
+                      <span className="hint">
+                        {label(preset.descriptionEn, preset.descriptionPt)}
+                      </span>
                       <span className="hint">{statusLabel(t, preset.validationStatus)}</span>
                     </span>
                   </label>
@@ -570,7 +567,9 @@ export function PatchWorkspace({
                   {selectedPreset
                     ? (() => {
                         const action = ctlAction(selectedPreset.ctlExp.ctl);
-                        return action ? label(action.labelEn, action.labelPt) : selectedPreset.ctlExp.ctl;
+                        return action
+                          ? label(action.labelEn, action.labelPt)
+                          : selectedPreset.ctlExp.ctl;
                       })()
                     : '—'}
                 </li>
@@ -579,7 +578,9 @@ export function PatchWorkspace({
                   {selectedPreset
                     ? (() => {
                         const action = expAction(selectedPreset.ctlExp.exp);
-                        return action ? label(action.labelEn, action.labelPt) : selectedPreset.ctlExp.exp;
+                        return action
+                          ? label(action.labelEn, action.labelPt)
+                          : selectedPreset.ctlExp.exp;
                       })()
                     : '—'}
                 </li>
@@ -640,11 +641,7 @@ export function PatchWorkspace({
             onToggle={() => toggleShape('advanced')}
           >
             <ToneDeck host={host} gkMode={editor.gkMode} />
-            <AdvancedPatchEditor
-              host={host}
-              gkMode={editor.gkMode}
-              patchVersion={patchVersion}
-            />
+            <AdvancedPatchEditor host={host} gkMode={editor.gkMode} patchVersion={patchVersion} />
           </Collapsible>
         </section>
       ) : null}
@@ -663,10 +660,7 @@ export function PatchWorkspace({
         title={t('gr55.mvp.replaceWarnTitle')}
         body={
           selectedPreset
-            ? t(
-                'gr55.mvp.replaceWarnBody',
-                label(selectedPreset.nameEn, selectedPreset.namePt),
-              )
+            ? t('gr55.mvp.replaceWarnBody', label(selectedPreset.nameEn, selectedPreset.namePt))
             : ''
         }
         scopeLabel={t('gr55.mvp.patchScope')}

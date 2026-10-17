@@ -10,7 +10,7 @@
 export type Authority = 'app' | 'pedal';
 
 let authority: Authority = 'pedal';
-let snapshotInFlight: Promise<void> | undefined;
+let snapshotInFlight: object | undefined;
 let mutationTail: Promise<void> = Promise.resolve();
 /** Bumps on every snapshot start; late snapshots no-op when superseded. */
 let snapshotGeneration = 0;
@@ -88,18 +88,19 @@ export async function runAppMutation(
     try {
       await mutate();
     } finally {
-      let work!: Promise<void>;
-      work = (async () => {
+      // A unique token per trailing snapshot so an older in-flight one cannot clear it.
+      const token = {};
+      const work = (async () => {
         try {
           await readFullSnapshot(source);
         } finally {
-          if (snapshotInFlight === work) {
+          if (snapshotInFlight === token) {
             snapshotInFlight = undefined;
             setAuthority('pedal');
           }
         }
       })();
-      snapshotInFlight = work;
+      snapshotInFlight = token;
       await work;
     }
   };
@@ -127,9 +128,4 @@ export async function syncFromPedal(
       await reloadWorkingCopy();
     }
   }, source);
-}
-
-/** @deprecated use syncFromPedal */
-export async function requestSnapshot(source: SnapshotSource): Promise<void> {
-  return syncFromPedal(source);
 }

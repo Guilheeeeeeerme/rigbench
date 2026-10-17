@@ -11,10 +11,15 @@ reports/
 
 # Local agent tooling (AGENTS.md and .cursor/rules are tracked)
 .claude/
+.codex/
 .opencode/
 .cursor/*
 !.cursor/rules/
 !.cursor/rules/**
+
+# GR-55 patch/manual collection (~100 MB binaries): data library, not source.
+# Kept out of git on purpose; see docs/gr55-collection/AGENTS.md for its rules.
+docs/gr55-collection/
 
 .DS_Store
 Thumbs.db

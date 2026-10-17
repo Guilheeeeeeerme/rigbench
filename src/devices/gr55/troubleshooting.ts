@@ -122,7 +122,10 @@ export const TROUBLE_FLOWS: readonly TroubleFlow[] = [
     id: 'excess-sustain',
     titleEn: 'Excessive sustain',
     titlePt: 'Sustain excessivo',
-    stepsEn: ['Lower Nuance Dynamics or raise Nuance Trim on the GK set.', 'Check HOLD is not latched on CTL.'],
+    stepsEn: [
+      'Lower Nuance Dynamics or raise Nuance Trim on the GK set.',
+      'Check HOLD is not latched on CTL.',
+    ],
     stepsPt: [
       'Baixe Nuance Dynamics ou suba Nuance Trim no GK set.',
       'Confira se HOLD não ficou travado no CTL.',

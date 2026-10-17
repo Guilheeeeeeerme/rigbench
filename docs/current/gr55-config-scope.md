@@ -1,21 +1,25 @@
 # GR-55 configuration scope report
 
-**Status:** Live taxonomy SoT for SYSTEM vs patch memory. App surfaces: Bank \| Global (see AGENTS.md).  
+**Status:** Live taxonomy SoT for SYSTEM (🔵) vs patch (🟠) memory. App surfaces: Patch workspace
+(see [simple-patch-editor.md](./simple-patch-editor.md)).  
 **Date:** 2026-10-11  
-**Primary source:** Roland GR-55 Owner’s Manual EN (`docs/manuals/GR-55_OM.pdf`), Parameter List SYSTEM pp.74–80, MASTER pp.54–59, TONE pp.25–37, EFFECT pp.38–53.  
-**Also used:** `GR-55_PT.pdf` (PT OM), online Roland PDFs + VGuitar Forums; `src/devices/gr55/systemMap.ts` as app cross-check only.
+**Primary source:** Roland GR-55 Owner’s Manual EN
+(`docs/gr55-collection/manuals/GR-55 Owner's Manual (EN).pdf`), Parameter List SYSTEM pp.74–80,
+MASTER pp.54–59, TONE pp.25–37, EFFECT pp.38–53.  
+**Also used:** PT owner’s manual (same structure), online Roland PDFs + VGuitar Forums;
+`src/devices/gr55/systemMap.ts` as app cross-check only.
 
 ---
 
 ## 0. Manuals inventory
 
-| File | Role for this report |
+| File (in `docs/gr55-collection/manuals/`) | Role for this report |
 | --- | --- |
-| `GR-55_OM.pdf` | English Owner’s Manual — **source of truth** for SYSTEM vs PATCH |
-| `GR-55_PT.pdf` | Portuguese Owner’s Manual — same structure |
-| `GR-55_PA.pdf` | Factory patch *names* list — not a parameter guide |
-| `GR-55_PCM_Tone_List.pdf` | PCM tone catalog |
-| `GR-55_Additional_PatchList.pdf` | Additional patch names |
+| `GR-55 Owner's Manual (EN).pdf` | English Owner’s Manual — **source of truth** for SYSTEM vs PATCH |
+| `GR-55 Owner's Manual (PT-BR).pdf` | Portuguese Owner’s Manual — same structure |
+| `GR-55 Patch List (PA).pdf` | Factory patch *names* list — not a parameter guide |
+| `GR-55 Tone List (PCM).pdf` | PCM tone catalog |
+| `GR-55 Additional Patch List.pdf` | Additional patch names |
 
 Roland support lists Owner’s Manual, Tone List, Patch List, Addendum — **no separate Parameter Guide PDF**. Parameter lists live inside the OM.
 

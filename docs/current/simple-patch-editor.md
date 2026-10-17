@@ -94,6 +94,7 @@ Anti-Ghost matches a community report (Cifra Club / Pamplona Jr.) — **not Rola
 | `instrumentProfiles.ts` | Godin/Caimbé/GK/piezo/bass → GK SET writes + calibration sub-profiles |
 | `presets/` | Taxonomy, tone library, profiles, architectures, slots, apply, validate |
 | `troubleshooting.ts` | Rule-based diagnostic flows (incl. ghost-note isolate) |
-| `src/craft/` | Non-AI macros / fieldRegistry / toneMatch |
+| `toneMatch.ts` | Musician words → PCM tone-name search (TonePicker) |
+| `ToneDeck.tsx` + `AdvancedPatchEditor.tsx` | Advanced escape hatch inside the workspace |
 
-Maestro Gemini chat is out of the product shell for this MVP.
+Maestro Gemini chat is out of the product shell for this MVP — and its code was removed.

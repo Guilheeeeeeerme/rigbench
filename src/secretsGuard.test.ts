@@ -3,7 +3,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
-const ROOT = join(fileURLToPath(new URL('../..', import.meta.url)));
+const ROOT = join(fileURLToPath(new URL('..', import.meta.url)));
 
 /** Patterns that look like real Gemini / Google API keys. */
 const FORBIDDEN = [/AIza[\w-]{20,}/, /AQ\./];
@@ -16,6 +16,11 @@ const SKIP_DIRS = new Set([
   '.cursor',
   'research_notes',
   'reports',
+  '.worktrees',
+  '.tmp',
+  '.serena',
+  '.opencode',
+  '.claude',
 ]);
 
 const TEXT_EXT = new Set([

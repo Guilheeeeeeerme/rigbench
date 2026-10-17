@@ -1,19 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type ConnectionPhase =
-  | 'idle'
-  | 'requesting'
-  | 'connecting'
-  | 'connected'
-  | 'needsPrompt';
+export type ConnectionPhase = 'idle' | 'requesting' | 'connecting' | 'connected' | 'needsPrompt';
 
-export type ConnectionProblem =
-  | 'denied'
-  | 'noReply'
-  | 'wrongDevice'
-  | 'lost'
-  | 'noPorts'
-  | null;
+export type ConnectionProblem = 'denied' | 'noReply' | 'wrongDevice' | 'lost' | 'noPorts' | null;
 
 export interface PortChoice {
   id: string;
@@ -64,10 +53,7 @@ const connectionSlice = createSlice({
     setHasAccess(state, action: PayloadAction<boolean>) {
       state.hasAccess = action.payload;
     },
-    setPorts(
-      state,
-      action: PayloadAction<{ inputs: PortChoice[]; outputs: PortChoice[] }>,
-    ) {
+    setPorts(state, action: PayloadAction<{ inputs: PortChoice[]; outputs: PortChoice[] }>) {
       state.inputs = action.payload.inputs;
       state.outputs = action.payload.outputs;
     },

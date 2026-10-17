@@ -5,7 +5,7 @@ Active design: [docs/current/](./docs/current/). Historical material: [docs/arch
 
 ## Precedence (highest wins)
 
-1. **Code** — especially `src/devices/gr55/routes.ts`, `systemMap.ts`, `pages.ts`, `presets/`, `src/craft/`
+1. **Code** — especially `src/devices/gr55/routes.ts`, `systemMap.ts`, `pages.ts`, `presets/`
 2. **This file** + [docs/current/](./docs/current/)
 3. **README.md** (user-facing; keep in sync when IA changes)
 4. **docs/archive/** — research and shipped redesign plans only
@@ -59,8 +59,9 @@ Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, 
 - **No GPL FloorBoard** material (text, XML, skins) in the repo. Address facts only; MIT fork CASouthEast is the system-map reference (see README credits).
 - **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
 - **Writes**: patch and system parameters DT1 immediately; then full snapshot. No ApplyBar / staging.
-- **No AI / Maestro in the product shell.** Craft helpers live under `src/craft/`. Never commit API keys. Never invent SysEx addresses or live calibration meters.
+- **No AI in the product shell.** There is no chat/copilot code (`src/maestro` was removed). Never commit API keys. Never invent SysEx addresses or live calibration meters.
 - **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
+- **Data library is not code:** `docs/gr55-collection/` is a gitignored binary library. Never `git add` it, never let the app read its binaries, never rename a `.g5l`/`.mid` without its name-paired partner (see `docs/gr55-collection/AGENTS.md`).
 - Prefer targeted reads and the smallest sufficient change. Do not run broad refactors or the full test matrix unless asked.
 
 ## Where to work
@@ -70,15 +71,15 @@ Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, 
 | App Redux store (connection resume) | `src/app/store/**` |
 | Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
 | GR-55 shell / workspace | `Gr55Screen.tsx`, `AppShell.tsx`, `PatchWorkspace.tsx`, `ConnectScreen.tsx` |
-| Presets / instruments / CTL | `presets/**` (taxonomy, toneLibrary, profiles, architectures, catalogSlots, validate), `instrumentProfiles.ts`, `troubleshooting.ts` |
+| Presets / instruments / CTL | `presets/**` (taxonomy, toneLibrary, profiles, architectures, catalogSlots, validate), `instrumentProfiles.ts`, `troubleshooting.ts`, `toneMatch.ts` |
 | Advanced escape hatch | `ToneDeck.tsx`, `TonePicker.tsx`, `AdvancedPatchEditor.tsx`, `pages.ts` |
-| Craft (non-AI macros) | `src/craft/**` |
 | Icons / voices | `Icons.tsx`, `voices.ts` |
 | Authority + snapshot + save | `sessionAuthority.ts`, `snapshotHost.ts`, `saveUserSlot.ts`, `patchGuard.ts` |
 | Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |
 | System map / immediate system writes | `systemMap.ts`, `systemState.ts` |
 | Copy | `src/copy/` |
 | Frozen protocol / MIDI | `src/protocol/**`, `src/midi/**` |
+| Data library (patches/manuals, gitignored) | `docs/gr55-collection/**` — its own AGENTS.md governs the subtree |
 
 Recipes: [docs/current/recipes.md](./docs/current/recipes.md). Glossary: [docs/current/glossary.md](./docs/current/glossary.md).
 
@@ -88,7 +89,7 @@ Recipes: [docs/current/recipes.md](./docs/current/recipes.md). Glossary: [docs/c
 npm run check:copy
 npm run typecheck
 npm test # or a focused Vitest path for the files you touched
-npm run check:secrets # if Maestro / keys / storage touched
+npm run check:secrets # if keys / storage / downloads touched
 npm run lint # before a broad handoff
 ```
 
@@ -106,7 +107,8 @@ user-facing behavior:
 3. **Consolidate** — prefer updating the existing SoT over adding a parallel file.
 4. Mark superseded claims in older specs (status banner), never leave two homes.
 
-Index: [docs/current/README.md](./docs/current/README.md).
+Index: [docs/current/README.md](./docs/current/README.md) (app specs) ·
+[docs/README.md](./docs/README.md) (whole tree) · [docs/gr55-collection/AGENTS.md](./docs/gr55-collection/AGENTS.md) (data library).
 
 ## Communication
 

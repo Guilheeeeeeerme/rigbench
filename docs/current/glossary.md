@@ -8,7 +8,7 @@ Keep UI copy aligned with this language. Surfaces match [AGENTS.md](../../AGENTS
 | --- | --- | --- |
 | 🟠 **Working copy** | Temporary patch buffer on the pedal — sounds now | Cleared when the patch changes or power cycles |
 | 🟢 **Slot** | User memory U01:1 … U99:3 | Permanent until overwritten |
-| 🔵 **System** | Pedal-wide (GK sets, OUTPUT SELECT, MIDI/USB, GUITAR/BASS, …) | Permanent; staged in-app until Apply |
+| 🔵 **System** | Pedal-wide (GK sets, OUTPUT SELECT, MIDI/USB, GUITAR/BASS, …) | Permanent; pedal changes are immediate (confirm in UI gates the write) |
 
 Every control must show scope. Prefer words + color (accessibility).
 
@@ -34,22 +34,23 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 
 ## Hardware truths the UI must respect
 
-- Changing **patches** mutes the pedal ~1 s — warn on Stage before cross-slot moves.
+- Changing **patches** mutes the pedal ~1 s — warn before cross-slot moves.
 - **Saving a slot** locks the pedal several seconds; queue must wait for the reply.
 - The pedal does **not** push memory; sync is RQ1 poll only and must never write during sync.
 - Temporary-patch edits disappear when another patch is selected — that is why slot save exists.
 - On connect, the app reads the sounding temporary patch **and** which user slot is selected
   (setup BS MSB + PC). See [connection-resume.md](./connection-resume.md).
+- Pedal-wide system writes are **immediate** (DT1, no staging layer) and need an impact confirm
+  in the UI — see [gr55-config-scope.md](./gr55-config-scope.md) and `systemState.ts`.
 
-## Surfaces (current IA — WIP)
+## Surfaces (current IA)
 
 | Surface | Route | Role |
 | --- | --- | --- |
 | **Home** | `#/` | Pick GR-55 or a placeholder |
 | **Connect** | `#/gr55/conectar` | MIDI ports; silent resume when remembered ports still valid |
-| **Bank** | `#/gr55/bank` | Three-key bank, Tone Deck + Simple/Advanced; Maestro scopes the bank set |
-| **Global** | `#/gr55/global` | SYSTEM / GK + Maestro (system scope) |
+| **Patch workspace** | `#/gr55/patch` | Patch generator (Setup · Choose · Shape); Advanced section collapsed (Tone Deck + full editor) |
 
-Legacy addresses redirect into Bank or Global. `pages.ts` remains field-key SoT for Maestro.
-
-Macro / session taxonomy (System · Patch · Library) for Maestro craft: [studio-sessions.md](./studio-sessions.md).
+These are legacy first segments that **redirect** to `patch`: `bank`, `global`, `palco`,
+`estudio`, `maestro`, `configuracao`, `dispositivo`, `editor`, `setup`. Source of truth:
+`src/devices/gr55/routes.ts` (so do not advertise them in user-facing copy).

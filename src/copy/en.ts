@@ -52,27 +52,17 @@ export const en = {
       'Nothing answered on these ports. Check that the pedal is on and that both ports belong to it.',
     wrongDevice: 'The device on these ports answered, but it is not a GR-55.',
     simulate: 'Use a simulated pedal',
-    disconnect: 'Disconnect',
     lost: 'The connection to the pedal failed.',
   },
   gr55: {
     reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
-    reload: 'Read from pedal',
     search: {
       placeholder: 'Find any parameter of this patch…',
     },
-    navConfig: 'Patch',
-    navStage: 'Patch',
     navPatch: 'Patch',
-    navBank: 'Patch',
-    navGlobal: 'Patch',
-    bankHere: 'Here',
-    bankPedals: 'CTL and expression',
     bankChatHint:
       'Chat on this page can set anything in this bank — the three keys, CTL, expression, and the sounding patch.',
     bankMode: {
-      label: 'Bank edit mode',
-      simple: 'Simple',
       advanced: 'Advanced',
     },
     toneDeck: {
@@ -86,14 +76,13 @@ export const en = {
       recent: 'Recent',
       all: 'All tones',
       empty: 'No tones match that search.',
-      typeToSearch: (count: number) => `Showing a page of ${count} tones — type to search the rest.`,
+      typeToSearch: (count: number) =>
+        `Showing a page of ${count} tones — type to search the rest.`,
       pcm1Title: 'PCM 1 tone',
       pcm2Title: 'PCM 2 tone',
       modelingTitle: 'Modeling tone',
     },
     simple: {
-      title: 'Simple profiles',
-      hint: 'Musician-language presets that set many parameters at once. Tones stay in the deck above.',
       applyFailed: (reason: string) => `Could not apply that profile (${reason}).`,
       cancel: 'Cancel',
       confirm: 'Confirm',
@@ -142,15 +131,12 @@ export const en = {
       pickFamily: 'Family',
       familyAll: 'All families',
       pickRhythm: 'Rhythm',
-      pickGenre: 'Musical style',
-      pickSubgenre: 'Subgenre',
       pickRole: 'Musical role',
       pickPreset: 'Sound',
       chooseInstrumentHint: (name: string) =>
         `Filtering recommendations for “${name}” (from Setup). Apply sound never changes GK.`,
       incompatibleInstrument: 'Not recommended for your instrument',
       replaceSound: 'Apply to GR-55',
-      applyPreset: 'Apply to GR-55',
       applyInstrument: 'Apply instrument setup',
       systemWarnTitle: 'This changes pedal-wide settings',
       systemWarnBody:
@@ -177,9 +163,6 @@ export const en = {
       ctlLabel: 'CTL pedal',
       expLabel: 'Expression pedal',
       expSwLabel: 'EXP switch',
-      feelPurpose: 'Purpose',
-      feelAttack: 'Attack',
-      feelPriority: 'Priority',
       feelCalibrate:
         'Per-string SENS is guided by the pedal’s own meter. This app cannot read live string levels over MIDI — adjust SENS while watching the GR-55 display.',
       feelRefineHint:
@@ -187,16 +170,6 @@ export const en = {
       applyFix: 'Try suggested fix',
       collapse: 'Collapse',
       expand: 'Expand',
-      purposeSolo: 'Solo',
-      purposeRhythm: 'Rhythm',
-      purposeFinger: 'Fingerstyle',
-      purposeRiffs: 'Riffs',
-      purposeMixed: 'Mixed',
-      attackLight: 'Light',
-      attackMedium: 'Medium',
-      attackHeavy: 'Heavy',
-      priorityPrecision: 'Precision',
-      priorityFast: 'Fast response',
       priorityBalance: 'Balance',
     },
     advanced: {
@@ -204,40 +177,23 @@ export const en = {
       showAll: 'Show all parameters',
       pages: 'Patch sections',
     },
-    navLibrary: 'Slots & files',
-    navDevice: 'Configuration',
-    navGk: 'GK sets',
-    navMaestro: 'Maestro AI',
-    navMore: 'More',
-    navRecalibrate: 'Recalibrate instrument',
     exit: 'Exit',
     /** Header control: pull system + working copy from the pedal (USER memory when on a slot). */
     sync: 'Sync',
     syncBusy: 'Syncing…',
     syncHint:
       'Reload what the pedal has stored. On a USER slot this replaces the temporary edits with the saved patch.',
-    /** @deprecated use sync */
-    requestSnapshot: 'Sync',
-    /** @deprecated use syncBusy */
-    snapshotBusy: 'Syncing…',
     authorityApp: 'Trusting the app',
     authorityPedal: 'Mirroring the pedal',
-    patchSlot: 'Patch slot',
     patchSlotUnknown: 'Unknown / not a user slot',
-    chatCollapse: 'Hide chat',
-    chatExpand: 'Show chat',
-    chatResize: 'Resize chat panel',
     workspace: {
       /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
       workingCopy: 'Working copy',
       workingCopyHint:
         'This is the patch the pedal is sounding right now. It lives only while this patch is selected: the pedal throws it away when you switch patches.',
-      /** Scope chip: this control is stored permanently in the pedal. */
-      savedSlot: 'Saved slot',
       /** Scope chip: this control is device-wide, not per patch. */
       pedal: 'Pedal',
       pedalHint: 'Pedal-wide setting. The same for every patch.',
-      noUnsavedChanges: 'No unsaved changes',
       unsavedChanges: (count: number) =>
         count === 1 ? '1 unsaved change' : `${count} unsaved changes`,
       confirmDiscard: (count: number) =>
@@ -251,7 +207,6 @@ export const en = {
     },
     mode: { GUITAR: 'Guitar mode', BASS: 'Bass mode' },
     unnamed: '(unnamed)',
-    showAllEffects: 'Show the parameters of every effect type',
     unknownValue: (hex: string) => `Unknown value (${hex})`,
     error: (message: string) => `The pedal did not accept or answer the last message: ${message}`,
     dismiss: 'Dismiss',
@@ -281,9 +236,6 @@ export const en = {
       ez: 'EZ sound',
     },
     document: {
-      save: 'Save',
-      saveAs: 'Save as…',
-      revert: 'Revert',
       revertConfirm: (count: number) =>
         `Undo all ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`} and go back ` +
         'to how the pedal had it? The pedal keeps sounding the stored patch in the meantime.',
@@ -293,39 +245,10 @@ export const en = {
       advanced: 'Advanced',
     },
     blocks: {
-      title: 'Signal chain',
       intro:
         'How the sound travels through this patch. Click a block to set its parameters; greyed blocks are switched off.',
-      input: 'Input',
-      inputHint: 'GK 13-pin and the 1/4" normal pickup feed the patch.',
-      sources: 'Sound sources',
-      pcm1: 'PCM 1',
-      pcm2: 'PCM 2',
-      modeling: 'Modeling',
-      normalPickup: 'Normal pickup',
-      layers: 'Layers',
-      layersHint: 'Level, pan and mute per source.',
-      amp: 'Amp',
-      mod: 'MOD',
-      mfx: 'MFX',
-      chorus: 'Chorus',
-      delay: 'Delay',
-      reverb: 'Reverb',
-      eq: 'EQ',
-      master: 'Master',
-      control: 'Pedals and GK',
-      controlHint: 'What stepping on each pedal does: assigns, CTL, EXP, GK controls.',
-      output: 'Output',
-      off: 'Off',
       assignCables: 'Cables: stepping on a pedal',
     },
-  },
-  config: {
-    title: 'Setup',
-    intro: 'The pedal-wide configuration: set once, updated at a very low frequency.',
-    deviceItem: 'Output, pedals, MIDI and USB, guitar/bass mode, system backup.',
-    gkItem: 'GK pickup and sensitivity of each string; what is your guitar.',
-    recalibrateItem: 'The guided setup again, step by step.',
   },
   voices: {
     pcm1: 'PCM synth 1',
@@ -342,45 +265,8 @@ export const en = {
   },
   stage: {
     title: 'Stage',
-    now: 'Now',
-    userMark: 'USER',
-    bankMark: 'Bank',
-    feet: 'On the pedal',
-    gapWarn: 'Changing patch silences the pedal for about a second.',
-    notSynced: 'Not read yet',
-    unknownSlot: 'The pedal changed patches on its own; pick one here to be on the map again.',
-    sound: 'Instruments',
-    playingCopy:
-      'The pedal is sounding your working copy, not the saved slot. Switching patches or unplugging loses those changes.',
-    slotOf: (number: number) => `User patch ${number + 1}`,
     onOff: 'On / off',
-    mixerHint:
-      'These switches and levels change the patch the pedal is sounding now — the working copy. Nothing is saved to a slot here.',
     on: 'On',
-  },
-  device: {
-    title: 'Device',
-    intro:
-      'Pedal-wide rules. Every change here carries the blue chip, because it affects the whole pedal and all 297 slots.',
-    modeTitle: 'Guitar mode / Bass mode',
-    modeIntro:
-      'Pedal-wide. Switching remakes the whole patch list — all 297 slots change meaning. Save your working copy first.',
-    confirmMode: (count: number) =>
-      `Switching Guitar⇄Bass is a pedal-wide change that affects all 297 slots` +
-      `${count ? ` and discards ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`}` : ''}. Switch it?`,
-    modeSwitchBlocked:
-      'The working copy still has unsaved changes. Save, revert, or discard them before switching modes.',
-    modeSwitchedTo: (mode: string) => `The pedal is now in ${mode}.`,
-    systemNotice: 'Pedal-wide settings always ask first.',
-    backupTitle: 'System backup',
-    backupIntro:
-      'Saves the pedal-wide settings Rigbench reads — the ten GK sets, output, pedals, MIDI and mode — into a small .syx file. Restoring asks first.',
-    backup: 'Save the system settings…',
-    backupWrite: 'Put a system backup back…',
-    backupDone: (file: string) => `System backup saved as ${file}.`,
-    confirmSystemWrite:
-      'Put these pedal-wide settings back on the pedal? GK sets, output, pedals, MIDI and mode all go back to what the backup holds.',
-    systemRestored: 'The system settings are back on the pedal.',
   },
   sync: {
     title: 'Pedal sync',
@@ -450,8 +336,6 @@ export const en = {
     outputSelect: {
       'LINE/PHONES': 'Line or headphones (mixer, PA, audio interface)',
       'JC-120': 'JC-120 amp, guitar input',
-      SMALL: 'Small amp, guitar input',
-      COMBO: 'Combo amp, guitar input',
       STACK: 'Stack amp, guitar input',
       'JC-120 RETURN': 'JC-120 amp, return jack',
       'COMBO RETURN': 'Combo amp, return jack',
@@ -460,19 +344,14 @@ export const en = {
       'B-AMP NO TWEETER': 'Bass amp without a tweeter',
     },
     guitarOut: {
-      PATCH: 'Whatever each patch says',
       OFF: 'Nothing',
       'NORMAL PU': 'The normal pickup',
-      MODELING: 'The modeling sound',
       BOTH: 'Both',
     },
     polarity: {
-      NORMAL: 'Normal',
-      INVERSE: 'Inverted',
       REVERSE: 'Reversed',
     },
     midiMode: {
-      MONO: 'Mono: one channel per string',
       POLY: 'Poly: every string on one channel',
     },
     pedalFunction: {
@@ -508,261 +387,5 @@ export const en = {
       'AUDIO PLAYER SW': 'Audio player on/off',
       'V-LINK SW': 'V-LINK on/off',
     },
-  },
-  system: {
-    reading: 'Reading the pedal-wide settings…',
-    readFailed: 'The pedal-wide settings could not be read.',
-    retry: 'Read again',
-    pending: (count: number) =>
-      count === 1
-        ? '1 pedal-wide change not applied yet'
-        : `${count} pedal-wide changes not applied yet`,
-    pendingHint:
-      'Nothing here reaches the pedal until you apply it. Each change affects every patch.',
-    apply: 'Apply to the pedal',
-    discard: 'Discard',
-    change: (label: string, from: string, to: string) => `${label}: ${from} → ${to}`,
-    inGkSet: (number: number, label: string) => `GK set ${number} · ${label}`,
-    confirmApply: (count: number, list: string) =>
-      `Apply ${count === 1 ? 'this pedal-wide change' : `these ${count} pedal-wide changes`}? ` +
-      `${count === 1 ? 'It affects' : 'They affect'} every patch.\n\n${list}`,
-    applied: (count: number) =>
-      count === 1 ? '1 change applied to the pedal.' : `${count} changes applied to the pedal.`,
-    fields: {
-      activeGkSet: 'GK set in use',
-      outputSelect: 'The pedal’s output goes to',
-      guitarOut: 'The GUITAR OUT jack carries',
-      rxSwitch: 'Change patches when a program change arrives',
-      txSwitch: 'Send a program change when the patch changes',
-      channel: 'MIDI channel for patch changes',
-      guitarToMidi: 'Guitar to MIDI (play other gear from the strings)',
-      guitarToMidiMode: 'Guitar to MIDI mode',
-      stringChannels: 'Channels of the six strings',
-      usbMonitor: 'Hear the pedal directly while recording over USB',
-      ctl: 'CTL pedal',
-      expOff: 'EXP pedal',
-      expOn: 'EXP pedal, with its switch on',
-      expSw: 'EXP pedal switch (press the toe down)',
-      gkVol: 'GK volume knob',
-      gkS1: 'GK switch S1',
-      gkS2: 'GK switch S2',
-    },
-    outputTitle: 'Output',
-    outputIntro:
-      'Tell the pedal what it is plugged into, so its amp models sound right there. The GUITAR OUT jack is separate: choose what it carries for your monitor or second amp.',
-    pedalsTitle: 'Pedals, for every patch',
-    pedalsIntro:
-      'A pedal step is decided in three layers. Here is the first: the pedal-wide rule. “Whatever each patch says” hands the pedal to the second layer, the patch’s own pedal settings; the eight assigns of a patch are the third and finest layer. Anything else chosen here is the same in all 297 slots.',
-    midiTitle: 'MIDI and USB',
-    midiIntro:
-      'Only needed when other gear changes patches on the pedal, or the pedal plays other gear. Rigbench itself works whatever is set here.',
-    notMapped:
-      'Screen contrast, auto power off and MIDI soft thru are set on the pedal itself: EDIT › SYSTEM.',
-    gkTitle: 'GK sets: your instruments',
-    gkIntro:
-      'The pedal keeps ten sets of pickup settings, one per instrument. The set in use decides how the pedal hears your strings in every patch that follows the system.',
-    gkOpen: 'Open the GK sets',
-  },
-  gk: {
-    title: 'GK sets',
-    intro:
-      'One set per instrument: which pickup it has, how long its scale is, how hard each string has to be played. Calibrate once and every patch tracks better.',
-    back: 'Back to Device',
-    set: (number: number) => `GK set ${number}`,
-    unnamed: '(no name)',
-    inUse: 'In use',
-    use: 'Use this set',
-    name: 'Name (8 characters)',
-    puType: 'Pickup',
-    scale: 'Scale length',
-    scaleMm: (mm: number) => `${mm} mm`,
-    scalePresetOnPedal: 'A preset chosen on the pedal (ST or LP)',
-    scaleSt: 'ST · 648 mm',
-    scaleLp: 'LP · 628 mm',
-    puPhase: 'Pickup phase',
-    puPhaseHint: 'If the low end thins out when the normal pickup is mixed in, invert the phase.',
-    puDirection: 'Pickup direction',
-    s1s2: 'S1/S2 switch order',
-    normalGain: 'Normal pickup gain',
-    sensTitle: 'Sensitivity per string',
-    sensIntro:
-      'Play each string as hard as you ever will on stage. Raise its sensitivity until its bar just reaches the top on those hardest notes — and no higher.',
-    string: (number: number) => `String ${number}`,
-    meterNeedsMidi:
-      'The bars listen to the notes the pedal sends over MIDI, and Guitar to MIDI is off on this pedal. Turn it on to see them move.',
-    meterEnable: 'Turn Guitar to MIDI on',
-    meterWaiting: 'Play a string…',
-    meterHint:
-      'The bars show how hard the pedal heard the last note on each string, read from its MIDI notes. In poly mode all strings share one bar.',
-    meterReset: 'Clear the bars',
-    bassLimited:
-      'In bass mode Rigbench names a set and chooses its pickup. Scale, pickup position and sensitivity are set on the pedal: EDIT › SYSTEM › GK SETTING.',
-    patchesFollowing: (count: number) =>
-      count === 1 ? '1 slot follows the set in use.' : `${count} slots follow the set in use.`,
-    patchesFollowingHint: 'The others name a GK set of their own in their Master page.',
-    patchesUnknown: 'Sync the pedal to see which slots follow the set in use.',
-    instrumentNote: 'Note for yourself (kept on this computer)',
-    instrumentNotePlaceholder: 'Red SG with the GK-3',
-  },
-  wizard: {
-    title: 'Stage setup',
-    intro:
-      'Eight steps from a pedal fresh out of the bag to a rig ready for the stage. Nothing changes on the pedal until you apply it.',
-    step: (number: number, total: number) => `Step ${number} of ${total}`,
-    steps: {
-      rig: 'Language and rig name',
-      mode: 'Guitar or bass',
-      instruments: 'Your instruments',
-      output: 'Output',
-      pedals: 'Pedals',
-      midi: 'MIDI and USB',
-      backup: 'Backup',
-      sync: 'Sync everything',
-    },
-    status: { ok: 'Done', warn: 'Skipped', todo: 'To do' },
-    next: 'Next',
-    applyAndNext: 'Apply and continue',
-    back: 'Back',
-    skip: 'Continue anyway',
-    finish: 'Go to the Stage',
-    rigName: 'Name of this rig',
-    rigNamePlaceholder: 'My Saturday rig',
-    rigIntro: 'Pick the language first; everything after follows it.',
-    modeIntro:
-      'The pedal is in one of two modes, and each has its own 297 slots. Check that it matches the instrument you are plugging in.',
-    modeNow: (mode: string) => `The pedal is in ${mode}.`,
-    instrumentsIntro:
-      'One GK set per instrument you bring. Name it, choose its pickup and scale, then calibrate the strings. The set marked “in use” is the one the pedal hears with now.',
-    outputIntro: 'Where does the sound go tonight?',
-    pedalsIntro: 'Check what each pedal does before any patch has its say.',
-    midiIntro: 'Skip this if nothing but this computer is connected to the pedal by MIDI.',
-    backupIntro:
-      'Before a show, keep a copy of the whole pedal on this computer: every slot and the pedal-wide settings in one file. Reading everything takes a few minutes the first time.',
-    backupMinutes: (minutes: number) =>
-      minutes <= 1 ? 'This takes about a minute.' : `This takes about ${minutes} minutes.`,
-    backupStart: 'Read everything and save the backup',
-    backupSave: 'Save the backup file',
-    backupSaved: (file: string) => `Backup saved as ${file}.`,
-    backupWaiting: 'Reading the pedal — the file is saved when it finishes.',
-    syncIntro:
-      'Rigbench now reads every slot, so the Stage has every name and every pedal map at hand. You can watch it here or move on: it carries on behind every screen.',
-    syncReady: 'Everything is read. The rig is ready.',
-    summaryWarn: (steps: string) => `Skipped in setup: ${steps}.`,
-    reopen: 'Open the stage setup',
-  },
-  studio: {
-    title: 'Studio',
-    sessionSwitcher: 'Craft session',
-    session: {
-      system: 'System',
-      patch: 'Patch',
-      library: 'Library',
-    },
-    goStage: 'Go to Stage',
-    panelsTitle: 'Sound',
-    custom: 'Custom',
-    stub: 'Soon',
-    renameHint: 'Rename the working copy in the Advanced editor.',
-    careHint: 'Backup and restore the pedal-wide system from Device.',
-    modeHint: 'Guitar ↔ Bass remakes every slot. Change it from Device with a double confirm.',
-    openAdvanced: 'Open Advanced',
-    openDevice: 'Open Device',
-    advancedEditor: 'Advanced editor',
-    advancedGk: 'GK sets (Advanced)',
-    applyFailed: 'That sound selector could not be applied.',
-  },
-  librarian: {
-    problems: {
-      'no-patch-data': 'This file has no GR-55 patch in it.',
-      'bad-checksum': 'This file is damaged: a message in it fails its checksum.',
-      'out-of-range': 'This file is damaged: it addresses data outside a GR-55 patch.',
-    },  },
-
-  maestro: {
-    open: 'Open Maestro',
-    title: 'Maestro',
-    placeholder: 'Ask for a change, or how a control works…',
-    thinking: 'Thinking…',
-    send: 'Send',
-    stop: 'Stop',
-    applyAll: 'Apply all',
-    applyItem: 'Apply',
-    applied: (count: number) =>
-      count === 1 ? 'Applied ✓ (1 unsaved)' : `Applied ✓ (${count} unsaved)`,
-    discard: 'Discard',
-    revert: 'Revert',
-    proposal: (intent: string) => (intent ? `Proposal · ${intent}` : 'Proposal'),
-    current: 'Now',
-    proposed: 'Proposed',
-    rejected: (reason: string) => `Rejected: ${reason}`,
-    clampedNote: 'Truncated to fit the field',
-    staleDivider: (note: string) => note,
-    cleared: 'Conversation cleared',
-    clear: 'Clear conversation',
-    close: 'Close',
-    sourceCopy: (source: string, mode: string, unsaved: number) =>
-      unsaved > 0 ? `copy of ${source} · ${mode} · 🟠 ${unsaved}` : `copy of ${source} · ${mode}`,
-    needsKey: {
-      title: 'Add a Gemini API key',
-      body: 'Maestro talks to Google Gemini with a key you bring. It stays in this browser only.',
-      openSettings: 'Open key settings',
-    },
-    settings: {
-      title: 'Maestro settings',
-      key: 'Gemini API key',
-      remember: 'Remember on this device',
-      test: 'Test key',
-      testOk: 'Key works',
-      forget: 'Forget key',
-      privacy:
-        'Restrict the key by HTTP referrer to this site’s origin, set a budget cap in Google AI Studio, and rotate the key if it was ever exposed. The key is never written into the Rigbench repo.',
-      close: 'Done',
-    },
-    err: {
-      badKey: 'Gemini rejected this key.',
-      rateLimited: 'Gemini rate limit hit. Wait a moment and try again.',
-      unreachable: 'Could not reach Gemini.',
-      timeout: 'Gemini timed out.',
-      stageLive: 'Maestro cannot change the patch while the Stage is full-screen.',
-      generic: 'Something went wrong talking to Maestro.',
-    },
-    voice: {
-      label: 'Voice input',
-      unsupported: 'Voice input needs Chrome or Edge.',
-      listening: 'Listening…',
-    },
-    loadSlot: {
-      confirm: (slot: string, unsaved: number) =>
-        unsaved > 0
-          ? `Load ${slot}? You have ${unsaved} unsaved change(s) that will be lost.`
-          : `Load ${slot}?`,
-      load: 'Load',
-      cancel: 'Cancel',
-      loaded: (slot: string) => `Loaded ${slot}.`,
-    },
-    bankRecipe: {
-      progress: 'Bank keys',
-      writeAllHint: 'Changes stay on the temporary patch until you press WRITE.',
-      testing: 'On pedal (temporary) — test now',
-      written: 'Written to USER',
-      pending: 'Waiting',
-      stepReady: (slot: string, name: string, index: number, total: number) =>
-        `USER ${slot} (“${name}”) is on the temporary patch — ${index}/${total}. Test it, then WRITE.`,
-      write: (slot: string, name: string) => `WRITE USER ${slot} (“${name}”)`,
-      singleWritten: (slot: string) => `Wrote ${slot} into USER memory.`,
-      allDone: (total: number) => `All ${total} keys written to USER memory.`,
-      needConnection: 'Connect the pedal (or use the simulated pedal) before applying.',
-      verifyFailed: (detail: string) => `Pedal did not confirm the temporary changes: ${detail}`,
-      writeFailed: (detail: string) => `WRITE failed: ${detail}`,
-    },
-    policy: {
-      systemDenied: 'System settings are not available through Maestro. Open Device instead.',
-      slotDenied: 'Maestro never writes a pedal slot. Use Library to save.',
-      stageLive: 'Editing is paused on the Stage. Leave Stage to change the patch.',
-    },
-    hint: {
-      searchRound: 'Looking up more parameters…',
-    },
-    stopped: 'Stopped.',
   },
 };

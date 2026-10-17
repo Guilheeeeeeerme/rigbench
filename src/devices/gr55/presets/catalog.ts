@@ -6,11 +6,7 @@ import type { ArticulationProfileId } from './profiles';
 import type { RoleId } from './taxonomy';
 import { RHYTHMS } from './taxonomy';
 
-export type ValidationStatus =
-  | 'documented'
-  | 'implemented'
-  | 'hardware-tested'
-  | 'approximation';
+export type ValidationStatus = 'documented' | 'implemented' | 'hardware-tested' | 'approximation';
 
 export type ParamScope = 'system' | 'gk-set' | 'patch';
 

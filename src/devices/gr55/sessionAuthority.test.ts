@@ -113,12 +113,7 @@ describe('sessionAuthority', () => {
       },
     );
     expect(hits[0]).toBe('reloadWorkingCopy');
-    expect(hits.slice(1)).toEqual([
-      'loadSystem',
-      'readSystem',
-      'readPatch',
-      'readPatchLocation',
-    ]);
+    expect(hits.slice(1)).toEqual(['loadSystem', 'readSystem', 'readPatch', 'readPatchLocation']);
     expect(getAuthority()).toBe('pedal');
   });
 });

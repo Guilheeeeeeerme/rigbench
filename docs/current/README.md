@@ -1,23 +1,34 @@
-# Current product & agent specs
+# Current specs — live product & agent docs
 
-Living documents. If these disagree with code, **fix the docs** (or the code if the code is wrong) — do not invent a third story in chat.
+One SoT per topic. If an entry here disagrees with code, **fix the docs** (or the code if the
+code is wrong) — never invent a third story in chat, never leave two homes for one topic.
 
-After any IA, connect, route, or surface change: **audit this folder + [AGENTS.md](../../AGENTS.md) + root [README.md](../../README.md) + `.cursor/rules/`** — dedupe, fix drift, prefer one SoT with pointers elsewhere. See [AGENTS.md § Documentation](../../AGENTS.md#documentation).
+After any IA, connect, route, or surface change: audit this folder + root [AGENTS.md](../../AGENTS.md)
++ root [README.md](../../README.md) + `.cursor/rules/` — dedupe, fix drift, point rather than restate.
 
 | File | Topic | Authority |
 | --- | --- | --- |
-| [simple-patch-editor.md](./simple-patch-editor.md) | Patch generator MVP (minimal flow; Caimbé GK helper) | **SoT** for product IA |
-| [brazilian-rhythm-catalog.md](./brazilian-rhythm-catalog.md) | 40 BR rhythms + cumbia; priority pagode/sertanejo; profiles A–H; pitch policy | **SoT** for musical catalog |
-| [ui-guidelines.md](./ui-guidelines.md) | Linear dark UI: tokens, Inter, spacing, focus | **SoT** for visual design |
-| [connection-resume.md](./connection-resume.md) | MIDI connect, silent resume, Exit purge | **SoT** for connect/resume |
-| [gr55-config-scope.md](./gr55-config-scope.md) | SYSTEM vs current-patch parameter inventory (OM) | Discovery / taxonomy SoT |
-| [glossary.md](./glossary.md) | Scope chips, personas, surface names | **SoT** for UI terminology |
-| [recipes.md](./recipes.md) | How to change fields, macros, copy, tests | How-to |
-| [bank-patch-config.md](./bank-patch-config.md) | Former Bank Tone Deck / Simple | **Superseded** → [simple-patch-editor.md](./simple-patch-editor.md) |
-| [maestro-architecture.md](./maestro-architecture.md) | Former Maestro Gemini stack | **Superseded** (AI out of MVP shell); craft in `src/craft/` |
-| [studio-sessions.md](./studio-sessions.md) | Former Bank\|Global session macros | Historical; craft macros under `src/craft/` |
-| [mobile-live-control.md](./mobile-live-control.md) | Mobile vision (Stage-era) | Vision only |
+| [simple-patch-editor.md](./simple-patch-editor.md) | Patch workspace (generator flow, Choose/Shape, Caimbé GK helper, escape hatch) | **SoT** — product IA |
+| [brazilian-rhythm-catalog.md](./brazilian-rhythm-catalog.md) | 40 BR rhythms + cumbia; priority pagode/sertanejo; profiles A–H; pitch policy | **SoT** — musical catalog |
+| [connection-resume.md](./connection-resume.md) | MIDI connect, silent resume, Exit purge, Sync | **SoT** — connect/resume |
+| [gr55-config-scope.md](./gr55-config-scope.md) | SYSTEM 🔵 vs patch 🟠 parameter inventory (owner's manual) | **SoT** — parameter taxonomy |
+| [ui-guidelines.md](./ui-guidelines.md) | Linear dark UI: tokens, Inter, spacing, focus | **SoT** — visual design |
+| [glossary.md](./glossary.md) | Scope chips, personas, hardware truths, UI wording | **SoT** — UI terminology |
+| [recipes.md](./recipes.md) | How to change fields, system maps, copy, chrome | How-to (points to SoTs) |
 
-App navigation: **[AGENTS.md](../../AGENTS.md)** (Home → Connect → Patch).
+Retired from this folder, kept in [archive/](../archive/) with banners:
 
-Roland manuals (PDFs): [../manuals/](../manuals/).
+- `maestro-architecture.md` — Gemini copilot stack; **no AI in the MVP shell**, and `src/maestro` was removed outright
+- `studio-sessions.md` — Stage-era Studio sessions; the craft/macro layer (`src/craft/**`) was removed with the dead-code sweep
+
+Both retired designs keep their full story in the archive only.
+
+| File | Topic | Authority |
+| --- | --- | --- |
+| [bank-patch-config.md](./bank-patch-config.md) | Tone Deck / Advanced / recent tones | **Superseded stub** — facts only |
+| [mobile-live-control.md](./mobile-live-control.md) | Mobile platform truth + live-simplify vision | **Vision only** (not shipped IA) |
+
+Roland manuals (PDFs): [../gr55-collection/manuals/](../gr55-collection/manuals/) —
+an owner's-manual parameter guide lives inline in [gr55-config-scope.md](./gr55-config-scope.md).
+
+App navigation summary: root [AGENTS.md](../../AGENTS.md) (Home → Connect → Patch).

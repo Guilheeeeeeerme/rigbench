@@ -45,11 +45,7 @@ export function toneNeedlesOf(query: string): string[] {
  * Rank PCM tone labels that match the query against the pedal catalog
  * (same names as `GR-55_PCM_Tone_List.pdf` / `RolandGR55ToneMap`).
  */
-export function matchPcmTones(
-  query: string,
-  labels: readonly string[],
-  limit = 24,
-): string[] {
+export function matchPcmTones(query: string, labels: readonly string[], limit = 24): string[] {
   const needles = toneNeedlesOf(query).map((needle) => needle.toLowerCase());
   if (needles.length === 0) return [];
 
@@ -67,50 +63,3 @@ export function matchPcmTones(
   scored.sort((a, b) => b.score - a.score || a.label.localeCompare(b.label));
   return scored.slice(0, limit).map((item) => item.label);
 }
-
-/** True when the query looks like a full patch recipe (INIT + tones + CTL…). */
-export function isPatchRecipeQuery(query: string): boolean {
-  const lower = query.toLowerCase();
-  const hits = [
-    /init|inicializ|zerar|reset/,
-    /pcm\s*1|pcm1|tone select|timbre/,
-    /ctl|expression|pedal/,
-    /user\s*\d|u\d{1,3}\s*[:-]\s*\d|\d{1,2}\s*-\s*\d/,
-    /mute|muteswitch|pickup|viol[aã]o|normal\s*pu/,
-    /metais|gaita|cumbia|brass|harmonica|accordion/,
-  ].filter((pattern) => pattern.test(lower)).length;
-  return hits >= 2;
-}
-
-/** Curated keys every patch recipe should see in full (compact constraints). */
-export const RECIPE_FIELD_KEYS: readonly string[] = [
-  'patch/common/patchName',
-  'pcm1/tone/toneSelect',
-  'pcm1/tone/muteSwitch',
-  'pcm1/tone/partLevel',
-  'pcm2/tone/toneSelect',
-  'pcm2/tone/muteSwitch',
-  'pcm2/tone/partLevel',
-  'modeling/tone/muteSwitch',
-  'modeling/tone/level',
-  'normal-pickup/level/normalPuMute',
-  'normal-pickup/level/normalPuLevel',
-  'amp/amp/ampSwitch',
-  'mod/mod/modSwitch',
-  'mfx/mfx/mfxSwitch',
-  'delay/delay/delaySwitch',
-  'chorus/chorus/chorusSwitch',
-  'reverb/reverb/reverbSwitch',
-  'eq/eq/eqSwitch',
-  'pedal-gk/ctl/status',
-  'pedal-gk/ctl/function',
-  'pedal-gk/ctl/holdSwitchMode',
-  'pedal-gk/ctl/offPcmTone1Switch',
-  'pedal-gk/ctl/offPcmTone2Switch',
-  'pedal-gk/ctl/offModelingToneSwitch',
-  'pedal-gk/ctl/offNormalPuSwitch',
-  'pedal-gk/ctl/onPcmTone1Switch',
-  'pedal-gk/ctl/onPcmTone2Switch',
-  'pedal-gk/ctl/onModelingToneSwitch',
-  'pedal-gk/ctl/onNormalPuSwitch',
-];

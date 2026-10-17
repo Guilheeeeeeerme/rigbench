@@ -89,9 +89,7 @@ describe('brazilian rhythm catalog', () => {
     const rock = shippedPresets().find(
       (preset) => preset.architectureId === 'amp-guitar' || preset.chain?.ampOn,
     )!;
-    const dry = shippedPresets().find(
-      (preset) => preset.pcm1 === 'Flute 1' && !preset.modelingOn,
-    )!;
+    const dry = shippedPresets().find((preset) => preset.pcm1 === 'Flute 1' && !preset.modelingOn)!;
     applyPresetToTemp(editor, rock);
     applyPresetToTemp(editor, dry);
     const patch = TEMPORARY_PATCH;

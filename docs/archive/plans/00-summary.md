@@ -1,8 +1,8 @@
 # Redesign do Rigbench — Summary dos 11 planos
 
-> **ARCHIVED.** Stage-era “v2 implementada” note below is historical; craft home
-> is now Studio — see [AGENTS.md](../../../AGENTS.md) and
-> [docs/current/studio-sessions.md](../../current/studio-sessions.md).
+> **ARCHIVED.** Stage-era “v2 implementada” note below is historical; app is now the
+> Patch workspace — see [AGENTS.md](../../../AGENTS.md) and
+> [docs/current/simple-patch-editor.md](../../current/simple-patch-editor.md).
 >
 > Perguntas de fundação que todo plano responde: **o que é global, o que é local,
 > o que é por patch?** · **Onde configuro o instrumento (GK‑3, violão piezo, baixo)?**

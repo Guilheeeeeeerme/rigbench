@@ -88,12 +88,8 @@ export function refreshPortsFromAccess(dispatch: AppDispatch, getState: () => Ro
   dispatch(setPorts({ inputs, outputs }));
   const remembered = getState().sessionPrefs.rememberedPorts;
   const { selectedInputId, selectedOutputId } = getState().connection;
-  dispatch(
-    setSelectedInputId(pickSelection(inputs, selectedInputId, remembered?.inputId)),
-  );
-  dispatch(
-    setSelectedOutputId(pickSelection(outputs, selectedOutputId, remembered?.outputId)),
-  );
+  dispatch(setSelectedInputId(pickSelection(inputs, selectedInputId, remembered?.inputId)));
+  dispatch(setSelectedOutputId(pickSelection(outputs, selectedOutputId, remembered?.outputId)));
 }
 
 export function requestMidiAccess() {
@@ -126,7 +122,7 @@ export interface ConnectPortsArgs {
 }
 
 export function connectWithPorts(args: ConnectPortsArgs) {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+  return async (dispatch: AppDispatch) => {
     const ticket = ++connectAttempt;
     identifyAbort?.abort();
     identifyAbort = new AbortController();

@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "typecheck": "tsc -b",
     "check:copy": "vitest run src/copy",
-    "check:secrets": "vitest run src/maestro/secretsGuard.test.ts"
+    "check:secrets": "vitest run src/secretsGuard.test.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.13.0",

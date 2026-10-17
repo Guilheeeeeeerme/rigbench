@@ -118,10 +118,7 @@ export function ConnectScreen() {
 
       {import.meta.env.DEV && (
         <p className="hint">
-          <button
-            type="button"
-            onClick={() => void dispatch(connectSimulatedPedal())}
-          >
+          <button type="button" onClick={() => void dispatch(connectSimulatedPedal())}>
             {t('connection.simulate')}
           </button>
         </p>

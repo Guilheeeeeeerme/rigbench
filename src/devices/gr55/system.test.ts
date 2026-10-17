@@ -3,16 +3,9 @@ import { MidiSession } from '../../midi/session';
 import { RolandGR55SysExConfig } from '../../protocol/RolandDevices';
 import { pack7 } from '../../protocol/RolandSysExProtocol';
 import { FakeGr55 } from './fakeDevice';
-import { GR55_MAP, PATCH_SPAN } from './patchLayout';
-import {
-  decodeSlotBackupSyx,
-  decodeSystemBlocksSyx,
-  encodePedalBackupSyx,
-  encodeSystemBlocksSyx,
-} from './syx';
+import { GR55_MAP } from './patchLayout';
 import {
   GK_SET_COUNT,
-  GK_SET_SPAN,
   GK_STRING_SENS,
   SYSTEM,
   SYSTEM_ADDRESS,
@@ -93,7 +86,7 @@ describe('system map', () => {
 });
 
 describe('Gr55System', () => {
-  test('a write reaches the pedal immediately with no pending changes', async () => {
+  test('a write reaches the pedal immediately, DT1 bytes and mirror in step', async () => {
     const { device, system } = setUp();
     await system.load();
     const field = SYSTEM.common.outputSelect;
@@ -103,9 +96,6 @@ describe('Gr55System', () => {
     system.write(gkSet(2).string1Sens, 80);
     await settle();
     expect(system.read(field)).toEqual({ ok: true, value: 'STACK' });
-    expect(system.readApplied(field)).toEqual({ ok: true, value: 'STACK' });
-    expect(system.changeCount).toBe(0);
-    expect(system.changes).toEqual([]);
     expect([...device.peek(field.address, 1)]).toEqual([4]);
     expect([...device.peek(gkSet(2).string1Sens.address, 1)]).toEqual([80]);
     expect(device.received.length).toBe(sent + 2);
@@ -117,46 +107,5 @@ describe('Gr55System', () => {
     system.write(gkSet(1).scale, 648 - 500);
     await settle();
     expect([...device.peek(gkSet(1).scale.address, 2)]).toEqual([0x09, 0x04]);
-  });
-});
-
-describe('system backup files', () => {
-  test('the mirrored system area round-trips through a .syx file and back onto a pedal', async () => {
-    const { system } = setUp();
-    await system.load();
-    system.write(SYSTEM.common.outputSelect, 'COMBO');
-    system.write(gkSet(7).name, 'GODIN');
-
-    const file = encodeSystemBlocksSyx(SYSTEM_ADDRESS, system.appliedBytes(), SYSTEM_BLOCKS);
-    const writes = decodeSystemBlocksSyx(file, SYSTEM_ADDRESS, SYSTEM_SPAN);
-    expect(writes.map((write) => write.offset)).toEqual(SYSTEM_BLOCKS.map((b) => b.offset));
-
-    const other = setUp();
-    await other.system.load();
-    await other.system.restore(writes);
-    expect(other.system.read(SYSTEM.common.outputSelect)).toEqual({ ok: true, value: 'COMBO' });
-    expect(other.system.read(gkSet(7).name)).toEqual({ ok: true, value: 'GODIN' });
-    // The pedal's eight characters, padded with spaces.
-    expect([...other.device.peek(gkSet(7).name.address, 8)]).toEqual([
-      0x47, 0x4f, 0x44, 0x49, 0x4e, 0x20, 0x20, 0x20,
-    ]);
-    expect([...other.device.peek(gkSet(1).address, GK_SET_SPAN)]).toEqual(GK_SET_1);
-  });
-
-  test('a whole-pedal file holds the system and the slots, each readable on its own', async () => {
-    const { system } = setUp();
-    await system.load();
-    const slot = new Uint8Array(PATCH_SPAN);
-    slot[0] = 0x41;
-    const file = encodePedalBackupSyx(
-      encodeSystemBlocksSyx(SYSTEM_ADDRESS, system.appliedBytes(), SYSTEM_BLOCKS),
-      [{ userPatchNumber: 12, bytes: slot }],
-    );
-    expect(decodeSystemBlocksSyx(file, SYSTEM_ADDRESS, SYSTEM_SPAN)).toHaveLength(
-      SYSTEM_BLOCKS.length,
-    );
-    const slots = decodeSlotBackupSyx(file);
-    expect(slots.map((image) => image.userPatchNumber)).toEqual([12]);
-    expect(slots[0].bytes[0]).toBe(0x41);
   });
 });

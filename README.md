@@ -11,7 +11,7 @@ The UI is a dark Linear-inspired shell (Inter, indigo accent) — see
 
 | Device       | Status                                             |
 | ------------ | -------------------------------------------------- |
-| Roland GR-55 | Home → Connect → Bank \| Global (WIP); silent MIDI resume |
+| Roland GR-55 | Home → Connect → Patch workspace (WIP); silent MIDI resume |
 | Roland VG-99 | Coming soon                                        |
 | BOSS GT-10   | Coming soon                                        |
 
@@ -19,48 +19,32 @@ Contributors and coding agents: start at [AGENTS.md](./AGENTS.md) and [docs/](./
 
 ## GR-55 (WIP)
 
+Musician-oriented **patch generator** (complete starting patches). Final polish is on the pedal.
+
 ```
-Home → Connect (resumes when ports still work) → Bank | Global
-         Maestro chat (left) · bank / global UI (right)
-         Exit purges connection memory → Home
+Home → Connect (resumes when ports still work) → Patch workspace
+         Setup instrument · Choose (rhythm → role → sound → apply) · Shape (light)
+         Save to USER · Sync · Exit → Home
 ```
 
 - **Home.** Pick GR-55 (or a placeholder device).
 - **Connect.** Remembers MIDI ports only (not pedal settings). Silent resume when those ports
   still answer as a GR-55. DEV: simulated pedal.
-- **Bank** (`#/gr55/bank`). Where you are (`USER xx-y`), the three keys of the bank (instrument
-  icons), always-visible Tone Deck with searchable tones, Simple use-case profiles or Advanced
-  OM-grouped editor for the sounding patch. Maestro on this page can configure the whole bank
-  set — not only the sounding key. Writes go to the temporary working copy immediately, then a
-  full snapshot.
-- **Global** (`#/gr55/global`). SYSTEM / GK settings. Maestro acts on global only. Same
-  immediate-write + snapshot rule (no staging / Apply bar).
+- **Patch** (`#/gr55/patch`). Setup (SYSTEM/GK, confirm), Choose sound (full replace — rhythm →
+  role → sound; Apply does not write GK), Shape (pitch, CTL readout, light trouble; Advanced
+  collapsed). Temporary-patch writes audition immediately; **Save** persists to the current USER
+  slot with readback verify. Presets are curated starting points — not claimed hardware-tested
+  unless tested.
 - **Authority.** While you edit, the app ignores pedal churn; when idle, it mirrors the pedal
-  (including patch changes made on the board). **Sync** reloads the working copy from
-  the pedal (on a USER slot, from what that slot has stored).
+  (Program Change when PC TX is on). **Sync** reloads from the pedal.
 - **Exit.** Top-left: disconnect and forget remembered ports, back to Home.
+- **No AI** in this MVP. Legacy `#/gr55/bank`, `#/gr55/global`, `#/gr55/maestro` redirect to Patch.
 
-Parameter taxonomy (manual-derived): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
+Product SoT: [docs/current/simple-patch-editor.md](./docs/current/simple-patch-editor.md).  
+Rhythm catalog: [docs/current/brazilian-rhythm-catalog.md](./docs/current/brazilian-rhythm-catalog.md).  
+Parameter taxonomy: [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
 Every control carries a chip that says what it changes: 🟠 the working copy, 🔵 the whole pedal.
-
-### Maestro (BYOK Gemini)
-
-Maestro talks to Google Gemini (`gemini-3.6-flash`) with **your** API key. Rigbench never ships a
-key and never puts one in the repository, `.env`, logs, or fixtures.
-
-- **Open.** Chat pane on Bank or Global (collapsible). Legacy `#/gr55/maestro` redirects to Bank.
-- **Storage.** The key lives in `sessionStorage` by default. Opt in to “Remember on this device”
-  to keep it in `localStorage`. Use **Forget** to clear both. Use **Test** to ping Gemini without
-  sending patch data.
-- **Privacy / rotation.** In Google AI Studio, restrict the key by HTTP referrer to this app’s
-  origin, set a budget cap, and rotate the key if it was ever exposed.
-- **What it can do.** On Bank: edit orange temporary-patch fields and ask to switch keys across
-  the bank set (you confirm). On Global: write blue system fields. Voice input (Chrome/Edge)
-  fills the draft only — it never auto-sends.
-- **What it cannot do.** Auto-apply without policy, or write USER slots directly.
-
-`npm run check:secrets` scans the tree for Gemini/Google key-shaped strings.
 
 ### What has not been checked on a real pedal
 

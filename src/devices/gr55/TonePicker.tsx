@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useT } from '../../copy';
-import { matchPcmTones } from '../../maestro/toneMatch';
+import { matchPcmTones } from '../../craft/toneMatch';
 
 const RECENT_KEY = 'rigbench.recentTones';
 const RECENT_LIMIT = 8;

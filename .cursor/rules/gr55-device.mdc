@@ -1,13 +1,14 @@
 # GR-55 device layer
 
-- Routes SoT: `routes.ts`. Connected surfaces: `bankRoute`, `globalRoute`. Legacy paths redirect.
-- Shell: `AppShell.tsx` — Exit · Bank | Global · snapshot; Maestro left, parameters right.
-- Bank UI: `BankPage.tsx` — here + 3 keys (instrument icons) + CTL/EXP + mixer/chain (`Icons.tsx`, `voices.ts`).
+- Routes SoT: `routes.ts`. Connected surface: `patchRoute` only. Legacy paths redirect.
+- Shell: `AppShell.tsx` — Exit · Sync · single `PatchWorkspace` (no Maestro pane).
+- Workspace: `PatchWorkspace.tsx` — patch generator (Setup / Choose / Shape); rhythm→role→sound; Apply is patch-only (no silent GK).
 - Connect / silent resume / Exit: `connectionThunks.ts` + Redux `sessionPrefs` — SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
 - On connect: `readSystem` → `readPatch` → `readPatchLocation`.
-- **Writes**: patch + system DT1 immediately; then `runAppMutation` / full snapshot. No system staging.
+- **Writes**: patch + system DT1 immediately; then `runAppMutation` / full snapshot (serialized). No staging.
+- **Save**: `saveUserSlotVerified` (PATCH WRITE + USER readback). Patch-guard before apply/save.
 - **Authority**: `sessionAuthority.ts` — `app` while writing/snapshotting, `pedal` when idle.
-- Maestro session: `bank` | `system` (`session.ts`). Bank chat may `loadSlot` (ask) across the bank set; macros keyed as `patch` apply via `macroSessionOf`.
-- Field keys for Maestro: `pages.ts` (`PAGE_IDS` frozen).
+- Presets / instruments: `presets/**` (taxonomy, toneLibrary, profiles, architectures, catalogSlots, validate), `instrumentProfiles.ts`. Craft helpers: `src/craft/**`.
+- Field keys for Advanced: `pages.ts` (`PAGE_IDS` frozen).
 - Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path.
-- Config taxonomy: `docs/current/gr55-config-scope.md`.
+- Product SoT: `docs/current/simple-patch-editor.md`. Catalog: `docs/current/brazilian-rhythm-catalog.md`. Config taxonomy: `docs/current/gr55-config-scope.md`.

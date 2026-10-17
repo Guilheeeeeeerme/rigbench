@@ -1,11 +1,7 @@
-# Maestro
+# Maestro (legacy — out of MVP shell)
 
-- Policy SoT: `decide()` in `policy.ts`. Deny is final (no confirm).
-- Page scope via `session`: `patch` on Patch page, `system` on Global page.
-- `changePlan` → working-copy fields only (Patch page).
-- `writeSystem` / `stageSystemPlan` → Global page only; system host writes DT1 immediately + snapshot.
-- Never `writeSlot` / factory reset.
-- Model never sees SysEx addresses; registry keys / human labels only (`fieldRegistry.ts`).
-- Macros: `macros/registry.ts` — set `implemented: true` only when writes are real.
-- Keys: sessionStorage by default; optional localStorage; `npm run check:secrets`.
-- Architecture notes: `docs/current/maestro-architecture.md`.
+- **Product shell has no AI.** Do not mount Gemini chat. Live IA: [docs/current/simple-patch-editor.md](../../docs/current/simple-patch-editor.md).
+- Non-AI craft (macros, fieldRegistry, toneMatch, policy) lives under `src/craft/`.
+- `src/maestro/**` may remain as unused legacy; prefer `src/craft/` for new work.
+- Never commit API keys. `npm run check:secrets` remains useful if any BYOK code stays in-tree.
+- Architecture notes are **superseded**: `docs/current/maestro-architecture.md`.

@@ -1,11 +1,9 @@
 # Bank patch config — Tone Deck + Simple / Advanced
 
-> **Status:** Live. SoT for Bank sounding-patch configuration UI.
-> **Precedence:** code (`BankPage.tsx`, `ToneDeck.tsx`, `pages.ts`, `macros/registry.ts`) →
-> this file → [AGENTS.md](../../AGENTS.md).
+> **Status: SUPERSEDED.** Product IA is the single Patch workspace —
+> [simple-patch-editor.md](./simple-patch-editor.md). Tone Deck / Advanced remain as the
+> Advanced escape hatch inside that workspace. Do not treat Bank \| Global as live navigation.
 > Scope taxonomy (SYSTEM vs patch): [gr55-config-scope.md](./gr55-config-scope.md).
-> Macros: [studio-sessions.md](./studio-sessions.md). Mobile vision (outdated Stage IA):
-> [mobile-live-control.md](./mobile-live-control.md) — does not override this file.
 
 ## Intent
 

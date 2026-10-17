@@ -1,16 +1,9 @@
 # Maestro — architecture reference
 
-> **Status: SHIPPED (v1)** under `src/maestro/**`. Design record for registry /
-> policy / BYOK / prompts — not a “plan only” backlog.
-> **App shell:** Bank · Global ([AGENTS.md](../../AGENTS.md)). Chat pane on those
-> pages; `#/gr55/maestro` redirects to Bank. Craft macros:
-> [studio-sessions.md](./studio-sessions.md).
-> **Policy:** Live SoT is `src/maestro/policy.ts`. Prompt/manual SoT:
-> `manualCanon.ts` (OM p.55–56 / p.60 + PCM Tone List + registry keys).
-> Solo+guitar recipes: `recipePlan.ts` → select USER slot and apply to the **temporary**
-> patch (await patch-change settle ~1.2s + sequential DT1 + read-back under one app-authority
-> lock). Nothing hits USER memory until the user presses **WRITE**. Three-key bank sets walk
-> keys the same way: temp → test → WRITE → next. `writeSlot` allow on Bank for that button only.
+> **Status: SUPERSEDED for product shell.** MVP has **no AI**. Live product SoT:
+> [simple-patch-editor.md](./simple-patch-editor.md). Non-AI craft helpers moved to
+> `src/craft/` (macros, fieldRegistry, toneMatch, policy). `src/maestro/**` may still
+> exist as legacy code; do not mount Gemini chat in the app shell.
 > Read-with: [glossary.md](./glossary.md), [connection-resume.md](./connection-resume.md).
 
 ---

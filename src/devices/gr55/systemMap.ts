@@ -164,6 +164,16 @@ const SystemPedals = {
 const sens = (offset: number, string: number) =>
   new FieldDefinition(pack7(offset), `String ${string} Sens`, new UByteField(0, 100));
 
+/** Guitar PU↔BRIDGE: stored 0–100 → 10.0–60.0 mm (0.5 mm steps). */
+const dist = (offset: number, string: number) =>
+  new FieldDefinition(
+    pack7(offset),
+    `String ${string} Distance`,
+    new UByteField(0, 100, {
+      format: (value) => `${(value * 0.5 + 10).toFixed(1)} mm`,
+    }),
+  );
+
 /** One GK set in guitar mode. Name and PU TYPE sit at the same place in bass mode. */
 const GkSet = {
   name: new FieldDefinition(pack7(0x00), 'Name', new AsciiStringField(8)),
@@ -198,15 +208,61 @@ const GkSet = {
     'Normal PU Gain',
     new UByteField(-20, 20, { encodedOffset: 20, format: (value) => `${value} dB` }),
   ),
+  // Offsets 0x0f–0x22 follow CASouthEast/gr55-remote-main (MIT) hardware dumps.
+  // OM menu order for velocity differs slightly; ranges below match stored bytes.
+  piezoToneLow: new FieldDefinition(
+    pack7(0x0f),
+    'Piezo Tone Low',
+    new UByteField(-10, 10, { encodedOffset: 10, format: (value) => `${value} dB` }),
+  ),
+  piezoToneHigh: new FieldDefinition(
+    pack7(0x10),
+    'Piezo Tone High',
+    new UByteField(-10, 10, { encodedOffset: 10, format: (value) => `${value} dB` }),
+  ),
+  string1Dist: dist(0x11, 1),
+  string2Dist: dist(0x12, 2),
+  string3Dist: dist(0x13, 3),
+  string4Dist: dist(0x14, 4),
+  string5Dist: dist(0x15, 5),
+  string6Dist: dist(0x16, 6),
   string1Sens: sens(0x17, 1),
   string2Sens: sens(0x18, 2),
   string3Sens: sens(0x19, 3),
   string4Sens: sens(0x1a, 4),
   string5Sens: sens(0x1b, 5),
   string6Sens: sens(0x1c, 6),
+  /** OM PLAY FEEL 1–5 (memory order before the two 0–10 velocity fields). */
+  playFeel: new FieldDefinition(
+    pack7(0x1d),
+    'Play Feel',
+    new UByteField(1, 5, { encodedOffset: -1 }),
+  ),
+  lowVelocityCut: new FieldDefinition(
+    pack7(0x1e),
+    'Low Velocity Cut',
+    new UByteField(0, 10),
+  ),
+  /** OM VELOCITY DYNAMICS; stored 0–10 on the unit. */
+  velocityDynamics: new FieldDefinition(
+    pack7(0x1f),
+    'Velocity Dynamics',
+    new UByteField(0, 10),
+  ),
+  nuanceDynamics: new FieldDefinition(
+    pack7(0x20),
+    'Nuance Dynamics',
+    new UByteField(0, 10),
+  ),
+  nuanceTrim: new FieldDefinition(pack7(0x21), 'Nuance Trim', new UByteField(0, 10)),
+  downTune: new FieldDefinition(
+    pack7(0x22),
+    'Down Tune',
+    new UByteField(0, 5, { format: (value) => (value === 0 ? '0' : `-${value}`) }),
+  ),
 };
 
-/** Bytes of a GK set the app reads: up to the last guitar-mode parameter. */
+/** Bytes of a GK set the app reads: through Down Tune (guitar mode). */
 export const GK_SET_SPAN = pack7(0x23);
 export const SYSTEM_COMMON_SPAN = pack7(0x21);
 export const SYSTEM_PEDALS_SPAN = pack7(0x7d);
@@ -252,6 +308,15 @@ export const GK_STRING_SENS = [
   'string4Sens',
   'string5Sens',
   'string6Sens',
+] as const;
+
+export const GK_STRING_DIST = [
+  'string1Dist',
+  'string2Dist',
+  'string3Dist',
+  'string4Dist',
+  'string5Dist',
+  'string6Dist',
 ] as const;
 
 /** The runs of the system area read from the pedal, as offsets from its start. */

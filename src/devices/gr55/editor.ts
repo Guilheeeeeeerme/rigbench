@@ -374,6 +374,25 @@ export class Gr55Editor {
   }
 
   /**
+   * PATCH WRITE then RQ1 the USER slot and compare to the working-copy mirror.
+   * Handshake replies alone do not prove slot content.
+   */
+  async writeToUserSlotVerified(userPatchNumber: number): Promise<{
+    ok: boolean;
+    differences: number;
+  }> {
+    await this.writeToUserSlot(userPatchNumber);
+    const slot = await this.readUserPatch(userPatchNumber);
+    const differences = this.countDifferences(this.image, slot);
+    return { ok: differences === 0, differences };
+  }
+
+  /** Copy of the current temporary-patch mirror (for tests / verify helpers). */
+  peekWorkingCopy(): Uint8Array {
+    return this.image.slice();
+  }
+
+  /**
    * Puts a slot image back into one user slot. This is the only write that does not
    * start from the temporary patch, so the caller owns its confirmation.
    */

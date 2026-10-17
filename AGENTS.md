@@ -5,7 +5,7 @@ Active design: [docs/current/](./docs/current/). Historical material: [docs/arch
 
 ## Precedence (highest wins)
 
-1. **Code** — especially `src/devices/gr55/routes.ts`, `policy.ts`, `systemMap.ts`, `pages.ts`, `macros/registry.ts`
+1. **Code** — especially `src/devices/gr55/routes.ts`, `systemMap.ts`, `pages.ts`, `presets/`, `src/craft/`
 2. **This file** + [docs/current/](./docs/current/)
 3. **README.md** (user-facing; keep in sync when IA changes)
 4. **docs/archive/** — research and shipped redesign plans only
@@ -17,36 +17,41 @@ Do **not** follow `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
 Static React 19 + Vite + TypeScript app. Web MIDI SysEx to a Roland GR-55. No backend.
 Connection prefs may persist; **pedal configuration does not** (immediate write + snapshot).
 EN + PT-BR via `src/copy/`.
+**No AI** in the MVP shell.
+
+The GR-55 surface is a **complete, musician-oriented patch generator** — not a fine-tuning editor. Final refinement happens on the physical pedal.
 
 ```
 Home (GR-55 + placeholders)
   → Connect (silent resume if ports still valid; else prompt)
-  → App: Bank | Global
-       Maestro chat (left) · bank / global UI (right)
-       Exit (top-left) purges connection prefs → Home
+  → App: Patch workspace (generator)
+       Setup instrument (SYSTEM/GK, confirm) · Choose (rhythm → role → sound → apply)
+       Shape (pitch / CTL readout / light trouble; Advanced collapsed)
+       Save to USER (verified) · Sync · Exit → Home
 ```
 
-Connect / resume: [docs/current/connection-resume.md](./docs/current/connection-resume.md).  
-Config scope (global vs patch memory): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
+Product SoT: [docs/current/simple-patch-editor.md](./docs/current/simple-patch-editor.md). 
+Rhythm catalog: [docs/current/brazilian-rhythm-catalog.md](./docs/current/brazilian-rhythm-catalog.md). 
+Connect / resume: [docs/current/connection-resume.md](./docs/current/connection-resume.md). 
+Config scope (SYSTEM vs patch): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
 | Route | Role |
 | --- | --- |
 | `#/` | **Home** — pick GR-55 or a placeholder device |
 | `#/gr55/conectar` | **Connect** — MIDI ports / simulated pedal |
-| `#/gr55/bank` | **Bank** — here (USER xx-y), three keys, always-visible Tone Deck (searchable tones), Simple profiles / Advanced editor; Maestro scopes the whole bank set |
-| `#/gr55/global` | **Global** — SYSTEM / GK + Maestro (system scope only) |
+| `#/gr55/patch` | **Patch workspace** — patch generator (only resumable app route) |
 
-Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `dispositivo`, …) redirect into Bank or Global.
+Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, `dispositivo`, …) redirect to Patch.
 
 ### Authority model
 
-- **App write** (UI or Maestro) → DT1 immediately → **full snapshot** (system + temp patch + location). No pending/staged local state.
+- **App write** → DT1 immediately → **full snapshot** (system + temp patch + location). Mutations enqueue serially.
 - While a write/snapshot is in flight → **trust the app** (`sessionAuthority`: ignore pedal churn).
-- When idle → **mirror the pedal** (remote DT1 / program change).
-- Explicit **Sync** control (reload system + working copy from the pedal; on a USER
-  slot, copies USER memory into the temporary patch so leftover temp edits are dropped).
-- Slot WRITE: Bank Maestro applies recipes to the temporary patch only; the user presses **WRITE** to call `writeToUserSlot`.
-- localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` Bank|Global). Never pedal field values.
+- When idle → **mirror the pedal** (remote DT1 / program change when PC TX is on).
+- Explicit **Sync** reloads system + working copy (USER → temp on a USER slot).
+- **Save** = PATCH WRITE + USER readback verify (`saveUserSlotVerified`). Never factory banks.
+- SYSTEM/GK changes use impact confirm (pedal-wide / GK set).
+- localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` = `patch`). Never pedal field values.
 
 ## Hard rules
 
@@ -54,7 +59,7 @@ Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `disposit
 - **No GPL FloorBoard** material (text, XML, skins) in the repo. Address facts only; MIT fork CASouthEast is the system-map reference (see README credits).
 - **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
 - **Writes**: patch and system parameters DT1 immediately; then full snapshot. No ApplyBar / staging.
-- **Maestro**: BYOK Gemini for free chat; never commit API keys. Model never sees raw SysEx. Policy SoT: `policy.ts`. Manual SoT: `manualCanon.ts`. **Scope isolation:** Bank → temporary patch via `recipePlan.ts` (USER WRITE only on explicit WRITE button); Global → SYSTEM/GK only (`systemPlan.ts`). Local recipes auto-apply to temp; no Gemini key required for those.
+- **No AI / Maestro in the product shell.** Craft helpers live under `src/craft/`. Never commit API keys. Never invent SysEx addresses or live calibration meters.
 - **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
 - Prefer targeted reads and the smallest sufficient change. Do not run broad refactors or the full test matrix unless asked.
 
@@ -64,14 +69,14 @@ Legacy hashes (`patch`, `palco`, `maestro`, `estudio`, `configuracao`, `disposit
 | --- | --- |
 | App Redux store (connection resume) | `src/app/store/**` |
 | Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
-| GR-55 shell / pages | `Gr55Screen.tsx`, `AppShell.tsx`, `BankPage.tsx`, `GlobalPage.tsx`, `ConnectScreen.tsx` |
-| Bank Tone Deck / Simple / Advanced | `ToneDeck.tsx`, `TonePicker.tsx`, `SimpleProfiles.tsx`, `AdvancedPatchEditor.tsx`; SoT [docs/current/bank-patch-config.md](./docs/current/bank-patch-config.md) |
+| GR-55 shell / workspace | `Gr55Screen.tsx`, `AppShell.tsx`, `PatchWorkspace.tsx`, `ConnectScreen.tsx` |
+| Presets / instruments / CTL | `presets/**` (taxonomy, toneLibrary, profiles, architectures, catalogSlots, validate), `instrumentProfiles.ts`, `troubleshooting.ts` |
+| Advanced escape hatch | `ToneDeck.tsx`, `TonePicker.tsx`, `AdvancedPatchEditor.tsx`, `pages.ts` |
+| Craft (non-AI macros) | `src/craft/**` |
 | Icons / voices | `Icons.tsx`, `voices.ts` |
-| Authority + snapshot | `sessionAuthority.ts`, `snapshotHost.ts` |
+| Authority + snapshot + save | `sessionAuthority.ts`, `snapshotHost.ts`, `saveUserSlot.ts`, `patchGuard.ts` |
 | Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |
 | System map / immediate system writes | `systemMap.ts`, `systemState.ts` |
-| Field-key SoT (Maestro) | `pages.ts` |
-| Maestro | `src/maestro/**` |
 | Copy | `src/copy/` |
 | Frozen protocol / MIDI | `src/protocol/**`, `src/midi/**` |
 

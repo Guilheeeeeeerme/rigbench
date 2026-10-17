@@ -1,11 +1,11 @@
 import { useMemo, useSyncExternalStore } from 'react';
 import { useLocale, useT } from '../../copy';
 import type { Gr55Editor } from './editor';
-import { applyMacroOption } from '../../maestro/macros/apply';
-import { matchGroup } from '../../maestro/macros/match';
-import { findGroup } from '../../maestro/macros/registry';
-import type { MacroGroup } from '../../maestro/macros/types';
-import { buildFieldRegistry, registryIndex } from '../../maestro/fieldRegistry';
+import { applyMacroOption } from '../../craft/macros/apply';
+import { matchGroup } from '../../craft/macros/match';
+import { findGroup } from '../../craft/macros/registry';
+import type { MacroGroup } from '../../craft/macros/types';
+import { buildFieldRegistry, registryIndex } from '../../craft/fieldRegistry';
 import type { PageId } from './pages';
 import { runAppMutation, type SnapshotSource } from './sessionAuthority';
 

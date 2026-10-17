@@ -64,7 +64,7 @@ describe('system map', () => {
     expect(SYSTEM_BLOCKS).toHaveLength(2 + GK_SET_COUNT);
     const end = Math.max(...SYSTEM_BLOCKS.map((block) => block.offset + block.length));
     expect(end).toBe(SYSTEM_SPAN);
-    const last = gkSet(GK_SET_COUNT).string6Sens;
+    const last = gkSet(GK_SET_COUNT).downTune;
     expect(last.address - SYSTEM_ADDRESS + last.definition.size).toBeLessThanOrEqual(SYSTEM_SPAN);
   });
 
@@ -79,6 +79,14 @@ describe('system map', () => {
     expect(GK_STRING_SENS.map((key) => system.read(set[key]))).toEqual(
       [70, 43, 43, 50, 40, 10].map((value) => ({ ok: true, value })),
     );
+    expect(system.read(set.piezoToneLow)).toEqual({ ok: true, value: 0 });
+    expect(system.read(set.piezoToneHigh)).toEqual({ ok: true, value: 0 });
+    expect(system.read(set.playFeel)).toEqual({ ok: true, value: 3 });
+    expect(system.read(set.lowVelocityCut)).toEqual({ ok: true, value: 5 });
+    expect(system.read(set.velocityDynamics)).toEqual({ ok: true, value: 5 });
+    expect(system.read(set.nuanceDynamics)).toEqual({ ok: true, value: 5 });
+    expect(system.read(set.nuanceTrim)).toEqual({ ok: true, value: 5 });
+    expect(system.read(set.downTune)).toEqual({ ok: true, value: 0 });
     // Two nibbles, 0a 02: above the 160 that 660 mm takes, so one of the pedal's presets.
     expect(system.read(set.scale)).toEqual({ ok: true, value: 0xa2 });
   });

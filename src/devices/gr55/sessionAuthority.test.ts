@@ -69,6 +69,28 @@ describe('sessionAuthority', () => {
     expect(hits).toEqual(['loadSystem', 'readSystem', 'readPatch', 'readPatchLocation']);
   });
 
+  it('serializes concurrent mutations', async () => {
+    const order: string[] = [];
+    const source = {
+      loadSystem: async () => {
+        order.push('snap');
+      },
+      readSystem: async () => undefined,
+      readPatch: async () => undefined,
+      readPatchLocation: async () => undefined,
+    };
+    const a = runAppMutation(async () => {
+      order.push('a-start');
+      await new Promise((r) => setTimeout(r, 20));
+      order.push('a-end');
+    }, source);
+    const b = runAppMutation(() => {
+      order.push('b');
+    }, source);
+    await Promise.all([a, b]);
+    expect(order.indexOf('a-end')).toBeLessThan(order.indexOf('b'));
+  });
+
   it('syncFromPedal runs reloadWorkingCopy before the trailing snapshot', async () => {
     const hits: string[] = [];
     await syncFromPedal(

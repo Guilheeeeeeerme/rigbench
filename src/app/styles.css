@@ -2533,3 +2533,315 @@ body.app-shell-resizing iframe {
     display: none;
   }
 }
+
+/* —— Simple Patch Editor (MVP) —— */
+
+.app-shell-solo .app-shell-body {
+  grid-template-columns: 1fr;
+}
+
+.app-shell-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.mvp-workspace {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.mvp-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.mvp-header h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.mvp-preset-line {
+  margin: var(--space-1) 0 0;
+  color: var(--text-secondary);
+}
+
+.mvp-save {
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+}
+
+.mvp-jobs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.mvp-job {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+  text-align: left;
+  padding: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg, 8px);
+  background: var(--surface-base);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  min-height: 4.5rem;
+}
+
+.mvp-job strong {
+  font-size: 0.95rem;
+}
+
+.mvp-job-active {
+  border-color: var(--accent, #5e6ad2);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--accent, #5e6ad2);
+}
+
+.mvp-job-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg, 8px);
+  background: var(--surface-raised);
+}
+
+.mvp-job-lead {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.mvp-callout {
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-default);
+  background: color-mix(in srgb, var(--accent, #5e6ad2) 12%, transparent);
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.mvp-callout-quiet {
+  background: var(--surface-base);
+}
+
+.mvp-pitch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mvp-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2);
+  align-items: start;
+  font-size: 0.95rem;
+}
+
+.mvp-check span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mvp-shape-pitch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.mvp-subhead {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+@media (max-width: 720px) {
+  .mvp-jobs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mvp-section {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg, 8px);
+  background: var(--surface-raised);
+}
+
+.mvp-section-toggle {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mvp-section-chevron {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mvp-section-body {
+  padding: 0 var(--space-4) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.mvp-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: 0.95rem;
+}
+
+.mvp-field select {
+  min-height: 2.5rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-default);
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.mvp-preset-list {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mvp-preset-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.mvp-preset-card span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mvp-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.mvp-chip {
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.mvp-ctl-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.mvp-trouble {
+  border-top: 1px solid var(--border-default);
+  padding: var(--space-2) 0;
+}
+
+.scope-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 40;
+  padding: var(--space-4);
+}
+
+.scope-confirm {
+  max-width: 28rem;
+  width: 100%;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg, 8px);
+  border: 1px solid var(--border-default);
+  background: var(--surface-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.scope-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.scope-chip {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.scope-chip.scope-system {
+  background: color-mix(in srgb, var(--scope-system, #5b8def) 22%, transparent);
+  color: var(--scope-system, #8eb6ff);
+}
+
+.scope-chip.scope-working {
+  background: color-mix(in srgb, var(--scope-working, #e8a24a) 22%, transparent);
+  color: var(--scope-working, #f0c27a);
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

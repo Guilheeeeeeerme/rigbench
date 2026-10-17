@@ -1,16 +1,17 @@
 # Connection, resume, and Exit
 
-> **Status:** Live (WIP two-page app). SoT for MIDI connect / silent resume / Exit purge.
+> **Status:** Live (Patch workspace MVP). SoT for MIDI connect / silent resume / Exit purge.
 > **Precedence:** code (`src/app/store/**`, `connectionThunks.ts`, `connectionRuntime.ts`,
 > `Gr55Screen.tsx`) → this file → [AGENTS.md](../../AGENTS.md) → README.
+> Product IA: [simple-patch-editor.md](./simple-patch-editor.md).
 > Do not restate this flow in other docs beyond a one-line pointer.
 
 ## Product rule
 
 If remembered MIDI ports still exist and identify as a GR-55, **reconnect silently** and land on
-the **last app page** (`bank` or `global`). Prompt only when permission, ports, device identity,
-or the connect handshake fails. Legacy persisted `lastRoute` values (e.g. `patch`) normalize to
-Bank or Global.
+the **Patch workspace** (`patch`). Prompt only when permission, ports, device identity,
+or the connect handshake fails. Legacy persisted `lastRoute` values (`bank`, `global`, …)
+normalize to `patch`.
 
 On a successful connect the app reads a **full snapshot**: system + temporary patch + patch
 location. The UI shows that snapshot. Pedal configuration is **never** stored in localStorage.
@@ -22,7 +23,7 @@ location. The UI shows that snapshot. Pedal configuration is **never** stored in
 
 | Layer | Owns | Persist? |
 | --- | --- | --- |
-| Redux `sessionPrefs` | `rememberedPorts`, `lastRoute` (`bank`\|`global`), DEV `preferSimulated` | Yes (`redux-persist`, key `rigbench.redux`) |
+| Redux `sessionPrefs` | `rememberedPorts`, `lastRoute` (`patch`), DEV `preferSimulated` | Yes (`redux-persist`, key `rigbench.redux`) |
 | Redux `connection` | phase, progress, port lists, selection, problems | No |
 | `connectionRuntime` | `MIDIAccess`, live `MidiSession` / `Gr55Editor` / `Gr55System` | No (in-memory) |
 
@@ -41,7 +42,7 @@ Open /gr55/*
        no remembered ports → needsPrompt (ConnectScreen)
        ports missing from MIDIAccess → clear prefs, needsPrompt
        ports present → identify → readSystem → readPatch → readPatchLocation
-                    → phase connected → restore lastRoute or bank
+                    → phase connected → restore lastRoute or patch
 Exit → disconnect + purge connection prefs → Home
 ```
 

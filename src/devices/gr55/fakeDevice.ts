@@ -60,6 +60,11 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
   replyDelayMs = 0;
   /** How many of the next data requests go unanswered, as when the pedal falls behind. */
   dropRequests = 0;
+  /**
+   * When true, PATCH WRITE copies temp→USER but corrupts one USER byte so
+   * readback verification can fail in tests.
+   */
+  corruptNextWrite = false;
 
   constructor(options?: { persist?: boolean }) {
     this.persist = Boolean(options?.persist);
@@ -206,10 +211,20 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
   private writePatchToUserSlot(userPatchNumber: number): void {
     if (userPatchNumber < USER_PATCH_COUNT) {
       this.copyPatch(TEMPORARY_PATCH_ADDRESS, userPatchAddress(userPatchNumber));
+      if (this.corruptNextWrite) {
+        this.corruptNextWrite = false;
+        const nameAddr = userPatchAddress(userPatchNumber) + PATCH_NAME_OFFSET;
+        this.poke(nameAddr, [0x58]); // 'X' — breaks name match / field diff
+      }
     }
     this.saveMemory();
     this.emitData(pack7(0x0f000001), Uint8Array.of(0));
     this.emitData(pack7(0x0f000002), Uint8Array.of(0));
+  }
+
+  /** Simulate a physical patch change (requires the editor's PC listener). */
+  emitProgramChange(program: number, channel = 0): void {
+    this.emit([0xc0 | (channel & 0x0f), program & 0x7f]);
   }
 
   private selectUserPatch(): void {

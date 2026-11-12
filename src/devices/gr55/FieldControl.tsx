@@ -1,4 +1,4 @@
-import { useId, useState, useSyncExternalStore } from 'react';
+import { useEffect, useId, useState, useSyncExternalStore } from 'react';
 import { useEnumLabel, useT } from '../../copy';
 import type { EnumGroup } from '../../copy';
 import {
@@ -119,6 +119,15 @@ function formatNumber(type: NumericField, value: number): string {
 
 function SliderControl({ id, editor, field, value, disabled }: ControlProps<NumericField>) {
   const type = field.definition.type;
+  const [pending, setPending] = useState<number | null>(null);
+  const shown = pending ?? value;
+  useEffect(() => {
+    if (pending != null && value === pending) setPending(null);
+  }, [pending, value]);
+  const commit = () => {
+    if (pending == null || disabled) return;
+    editor.write(field, pending);
+  };
   return (
     <span className="control slider">
       <input
@@ -127,11 +136,14 @@ function SliderControl({ id, editor, field, value, disabled }: ControlProps<Nume
         min={type.min}
         max={type.max}
         step={type.step}
-        value={value}
+        value={shown}
         disabled={disabled}
-        onChange={(event) => editor.write(field, Number(event.target.value))}
+        onChange={(event) => setPending(Number(event.target.value))}
+        onPointerUp={commit}
+        onKeyUp={commit}
+        onBlur={commit}
       />
-      <output htmlFor={id}>{formatNumber(type, value)}</output>
+      <output htmlFor={id}>{formatNumber(type, shown)}</output>
     </span>
   );
 }
@@ -183,12 +195,11 @@ function TextControl({ id, editor, field, value, disabled }: ControlProps<AsciiS
         spellCheck={false}
         autoComplete="off"
         onFocus={() => setDraft(value)}
-        onBlur={() => setDraft(null)}
-        onChange={(event) => {
-          const next = event.target.value;
-          setDraft(next);
-          editor.write(field, next);
+        onBlur={() => {
+          if (draft != null) editor.write(field, draft);
+          setDraft(null);
         }}
+        onChange={(event) => setDraft(event.target.value)}
       />
     </span>
   );

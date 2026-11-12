@@ -1,15 +1,15 @@
 # GR-55 device layer
 
 - Routes SoT: `routes.ts`. Connected surface: `patchRoute` only. Legacy paths redirect.
-- Shell: `AppShell.tsx` — Exit · Sync · single `PatchWorkspace` (no AI anywhere).
-- Workspace: `PatchWorkspace.tsx` — patch generator (Setup / Choose / Shape); rhythm→role→sound; Apply is patch-only (no silent GK).
-- Advanced escape hatch: `ToneDeck.tsx` + `TonePicker.tsx` + `AdvancedPatchEditor.tsx` inside the workspace.
-- Connect / silent resume / Exit: `connectionThunks.ts` + Redux `sessionPrefs` — SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
-- On connect: `readSystem` → `readPatch` → `readPatchLocation`.
-- **Writes**: patch + system DT1 immediately; then `runAppMutation` / full snapshot (serialized). No staging.
-- **Save**: `saveUserSlotVerified` (PATCH WRITE + USER readback). Patch-guard before apply/save.
-- **Authority**: `sessionAuthority.ts` — `app` while writing/snapshotting, `pedal` when idle.
-- Presets / instruments: `presets/**` (taxonomy, toneLibrary, profiles, architectures, catalogSlots, validate), `instrumentProfiles.ts`, `troubleshooting.ts`. Tone search: `toneMatch.ts`.
+- Shell: `AppShell.tsx` — Exit · Sync · `Gr55Workspace` (no AI anywhere).
+- Workspace: `src/experience/IntentionWorkspace.tsx` plus `src/devices/gr55/intentions/`. Instrument, modes, layers, pedals. No rhythm catalog.
+- Advanced escape hatch: `AdvancedPatchEditor.tsx` on `verifiedFieldHost` (same queue).
+- Connect / Exit: `connectionThunks.ts`. No port memory. SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
+- On connect: identify, then `readSystem` → system `load` → `readPatch` → `readPatchLocation`. No writes during discovery.
+- **Writes**: one verified field at a time (`writeVerified`). The mirror updates from the readback.
+- **Save**: explicit `writeToUserSlotVerified` (PATCH WRITE + USER readback). Not automatic.
+- **Authority**: `src/session/operationQueue.ts`. `holdRemoteMirror` ignores pedal churn only while a verified batch is on the wire.
+- Instruments: `instrumentProfiles.ts`. Tone names: `presets/toneLibrary.ts`. Tone search: `toneMatch.ts`.
 - Field keys for Advanced: `pages.ts` (`PAGE_IDS` frozen).
-- Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path.
-- Product SoT: `docs/current/simple-patch-editor.md`. Catalog: `docs/current/brazilian-rhythm-catalog.md`. Config taxonomy: `docs/current/gr55-config-scope.md`.
+- Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path. Not shown when SysEx is unavailable outside development.
+- Product SoT: `docs/current/intention-workbench.md`. Claims: `docs/current/capability-matrix.md`. Config taxonomy: `docs/current/gr55-config-scope.md`.

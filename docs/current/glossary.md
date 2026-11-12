@@ -48,8 +48,8 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 | Surface | Route | Role |
 | --- | --- | --- |
 | **Home** | `#/` | Pick GR-55 or a placeholder |
-| **Connect** | `#/gr55/conectar` | MIDI ports; silent resume when remembered ports still valid |
-| **Patch workspace** | `#/gr55/patch` | Patch generator (Setup · Choose · Shape); Advanced section collapsed (Tone Deck + full editor) |
+| **Connect** | `#/gr55/conectar` | MIDI ports after a gesture; no remembered ports |
+| **Intention workspace** | `#/gr55/patch` | Instrument, modes, layers, pedals; Advanced collapsed |
 
 These are legacy first segments that **redirect** to `patch`: `bank`, `global`, `palco`,
 `estudio`, `maestro`, `configuracao`, `dispositivo`, `editor`, `setup`. Source of truth:

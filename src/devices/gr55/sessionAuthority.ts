@@ -41,6 +41,11 @@ export function subscribeAuthority(listener: () => void): () => void {
   };
 }
 
+/** Ignore pedal churn while a verified write is on the wire. */
+export function holdRemoteMirror(hold: boolean): void {
+  setAuthority(hold ? 'app' : 'pedal');
+}
+
 function setAuthority(next: Authority): void {
   if (authority === next) {
     return;

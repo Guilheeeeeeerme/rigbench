@@ -2,28 +2,17 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useT } from '../../copy';
 import { matchPcmTones } from './toneMatch';
 
-const RECENT_KEY = 'rigbench.recentTones';
 const RECENT_LIMIT = 8;
 const EMPTY_PAGE = 80;
+const recentTones: string[] = [];
 
 function loadRecent(): string[] {
-  try {
-    const raw = localStorage.getItem(RECENT_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as unknown;
-    return Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : [];
-  } catch {
-    return [];
-  }
+  return recentTones;
 }
 
 function pushRecent(label: string): void {
-  const next = [label, ...loadRecent().filter((item) => item !== label)].slice(0, RECENT_LIMIT);
-  try {
-    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
-  } catch {
-    /* ignore quota */
-  }
+  const next = [label, ...recentTones.filter((item) => item !== label)].slice(0, RECENT_LIMIT);
+  recentTones.splice(0, recentTones.length, ...next);
 }
 
 /** Filter catalog labels; empty query keeps order for the caller to page. */

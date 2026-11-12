@@ -2,18 +2,20 @@
 
 Run your guitar gear from the browser, on stage and off. Rigbench is a static web app that talks
 to the device over [Web MIDI](https://developer.mozilla.org/docs/Web/API/Web_MIDI_API): there is
-no backend, and nothing you edit leaves your computer.
+no backend, and nothing you edit leaves your computer. The published app is
+[guilheeeeeeerme.github.io/rigbench](https://guilheeeeeeerme.github.io/rigbench/). That build needs
+Chrome or Edge and a GR-55 on USB. The simulated pedal is only in `npm run dev`.
 
 The interface is in English and Brazilian Portuguese. It follows the browser's language on the
 first visit; the **EN | PT-BR** switch in the corner of every screen changes it without a reload.
 The UI is a dark Linear-inspired shell (Inter, indigo accent) — see
 [docs/current/ui-guidelines.md](./docs/current/ui-guidelines.md).
 
-| Device       | Status                                                     |
-| ------------ | ---------------------------------------------------------- |
-| Roland GR-55 | Home → Connect → Patch workspace (WIP); silent MIDI resume |
-| Roland VG-99 | Coming soon                                                |
-| BOSS GT-10   | Coming soon                                                |
+| Device       | Status                                                           |
+| ------------ | ---------------------------------------------------------------- |
+| Roland GR-55 | Home → Connect → intention workspace (WIP); connect is a gesture |
+| Roland VG-99 | Coming soon                                                      |
+| BOSS GT-10   | Coming soon                                                      |
 
 Contributors and coding agents: start at [AGENTS.md](./AGENTS.md), then [docs/](./docs/) —
 app specs in `docs/current/`, design history in `docs/archive/`, and the GR-55 patch/manual
@@ -21,29 +23,29 @@ library in `docs/gr55-collection/` (data, not documentation; it is not in git).
 
 ## GR-55 (WIP)
 
-Musician-oriented **patch generator** (complete starting patches). Final polish is on the pedal.
+Intention workspace for the GR-55. You describe the instrument and the sound; the app writes only the fields that intention needs, then reads them back.
 
 ```
-Home → Connect (resumes when ports still work) → Patch workspace
-         Setup instrument · Choose (rhythm → role → sound → apply) · Shape (light)
-         Save to USER · Sync · Exit → Home
+Home → Connect (a gesture, then a confirmed read) → Intention workspace
+         Instrument · modes · layers · pedals
+         Save and verify · Sync · Exit → Home
 ```
 
 - **Home.** Pick GR-55 (or a placeholder device).
-- **Connect.** Remembers MIDI ports only (not pedal settings). Silent resume when those ports
-  still answer as a GR-55. DEV: simulated pedal.
-- **Patch** (`#/gr55/patch`). Setup (SYSTEM/GK, confirm), Choose sound (full replace — rhythm →
-  role → sound; Apply does not write GK), Shape (pitch, CTL readout, light trouble; Advanced
-  collapsed). Temporary-patch writes audition immediately; **Save** persists to the current USER
-  slot with readback verify. Presets are curated starting points — not claimed hardware-tested
-  unless tested.
-- **Authority.** While you edit, the app ignores pedal churn; when idle, it mirrors the pedal
-  (Program Change when PC TX is on). **Sync** reloads from the pedal.
-- **Exit.** Top-left: disconnect and forget remembered ports, back to Home.
+- **Connect.** Asks for MIDI after you choose it. Nothing is written while the pedal is identified.
+  The workspace opens only after the system area, the sounding patch, and its position have been read.
+  Development builds can use a simulated pedal. A browser without SysEx does not invent a device.
+- **Patch** (`#/gr55/patch`). Instrument and calibration, original / accompaniment / both, up to two
+  PCM layers, expression and CTL, then an explicit **Save and verify** into a USER slot. A patch that
+  is not one of the reference recipes is shown as a custom configuration. Advanced stays available on
+  the same queue. Automatic saving is off until it is measured on hardware.
+- **Authority.** The screen follows the last confirmed reading. A send acknowledgement is not enough.
+  **Sync** reads the sounding patch again.
+- **Exit.** Top-left: disconnect and return Home. Ports are not remembered.
 - **No AI** in this MVP. Legacy `#/gr55/bank`, `#/gr55/global`, `#/gr55/maestro` redirect to Patch.
 
-Product SoT: [docs/current/simple-patch-editor.md](./docs/current/simple-patch-editor.md).  
-Rhythm catalog: [docs/current/brazilian-rhythm-catalog.md](./docs/current/brazilian-rhythm-catalog.md).  
+Product SoT: [docs/current/intention-workbench.md](./docs/current/intention-workbench.md).
+Hardware claims: [docs/current/capability-matrix.md](./docs/current/capability-matrix.md).
 Parameter taxonomy: [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
 Every control carries a chip that says what it changes: 🟠 the working copy, 🔵 the whole pedal.
@@ -65,16 +67,12 @@ misbehaves on a real GR-55, please open an issue with the firmware version and w
   are shown as "a preset chosen on the pedal" and never written.
 - **Bass mode GK sets.** Only the name and the pickup are editable; the rest of the bass layout
   is not settled, so it is left to the pedal.
-- **String meter.** The pedal does not report its own level meter. The bars are drawn from the
-  velocity of the notes the pedal sends when Guitar to MIDI is on, which follows how hard the
-  pedal heard each string but is not the pedal's meter.
-- **CTL readout.** Whether CTL or the EXP switch is on, and so which cut is active, is read from
-  the status the patch reports. Treat it as a guide.
-- **Quick sync.** A second sync reads the first block of each slot — its name and common
-  settings — and reads a slot in full only when that block differs. An edit made on the pedal
-  itself outside that block is not noticed until you choose **Read every slot again**.
-- **Sync pace.** How fast a real pedal answers 297 slots in a row is not published; the pace
-  adapts, and the first estimate of the time left is a guess until a few slots have been timed.
+- **No string meter.** The workspace does not draw level, accuracy, or latency. Guided checks are
+  what you hear.
+- **Save.** “Saved and verified” means the USER slot we read back matched. It does not yet mean the
+  sound is still there after the pedal is switched off. See the capability matrix.
+- **Panel patch changes.** The screen shows the time of the last check. Without a message from the
+  pedal, editing waits on the next reading. How often a real GR-55 sends that message is not measured.
 - Screen contrast, auto power off and MIDI soft thru are not mapped; they stay on the pedal.
 
 ### Check on a real GR-55
@@ -90,8 +88,8 @@ byte encoding.
   read still hits the 5 second timeout, lengthen the wait on that command only.
 - Set a delay time in the middle of the millisecond range, then one at the top (a note division).
   If the bytes on the wire do not match the sound, then adjust `USplit12Field` encode. Not before.
-- In the workspace Setup (SYSTEM/GK items), the GK set in use and its name match the pedal's
-  EDIT › SYSTEM screens. Change a system value, confirm, and verify it on the pedal.
+- On My instrument, the GK set in use and its name match the pedal's EDIT › SYSTEM screens.
+  Activate, then confirm the same values on the pedal.
 - Let a full sync run. Note the time it takes and whether the seal ever reports a stop.
 
 Not included yet: `.g5l` librarian files, and the read-only preset banks.
@@ -119,7 +117,7 @@ Open the address Vite prints (`http://localhost:5173`), pick the GR-55, allow MI
 choose the pedal's input and output ports.
 
 In the development build the connection screen also offers **Use a simulated pedal**, which lets
-you walk the setup, the sync and the Stage with no hardware attached.
+you walk connect, the intention workspace, and a verified USER save with no hardware attached.
 
 | Script                  | What it does                                                       |
 | ----------------------- | ------------------------------------------------------------------ |
@@ -136,27 +134,25 @@ you walk the setup, the sync and the Stage with no hardware attached.
 
 ```
 src/
-  app/            App shell, Redux store (connection prefs only), styles
+  app/            Redux connection phase, styles
   shell/          Browser gate, device picker, language switch
   copy/           en.ts (source of truth) and pt-BR.ts; t() and useT() in index.ts
+  experience/     Intention screens. They do not import a device or SysEx
+  intentions/     Shared intention types
+  session/        Serial queue, tab lock, storage allow-list
   midi/           Web MIDI access; the session that queues RQ1/DT1 messages 20 ms apart
   protocol/       Roland SysEx and the GR-55 patch address map (see Credits)
-  devices/gr55/   Everything the GR-55 screens are made of:
-    Gr55Screen.tsx, routes.ts     shell: silent resume, Connect, legacy-hash redirects
+  devices/gr55/   GR-55 adapter and screens:
+    Gr55Screen.tsx, routes.ts     shell: Connect, legacy-hash redirects
     AppShell.tsx                  app bar: Exit · Sync
+    Gr55Workspace.tsx             binds the GR-55 session to the experience
     ConnectScreen.tsx             MIDI port picker (+ simulated pedal in DEV)
-    PatchWorkspace.tsx            the patch workspace: Setup · Choose · Shape
-    ToneDeck.tsx, TonePicker.tsx  tone-source deck inside the Advanced section
-    AdvancedPatchEditor.tsx       OM-grouped parameter editor (escape hatch)
-    toneMatch.ts                  musician words → PCM tone name search
-    pages.ts                      locale-free field keys for the editor (frozen PAGE_IDS)
-    editor.ts, changeTracking.ts  working-copy model of the sounding patch
-    presets/                      rhythm → role → sound catalog: taxonomy, architectures, apply
-    instrumentProfiles.ts         instrument → GK SET writes (Godin, Caimbé, bass)
-    systemMap.ts, systemState.ts  pedal-wide settings, written immediately (no staging)
-    sessionAuthority.ts …         app-vs-pedal authority, snapshot, verified save, guard
-    sync/                         sync engine, IndexedDB cache, SyncBadge
-    troubleshooting.ts            rule-based diagnostics (ghost notes, string SENS…)
+    intentions/                   recipes and the confirmed-read session
+    AdvancedPatchEditor.tsx       parameter editor on the same queue
+    editor.ts                     working copy; verified writes update it from the readback
+    presets/toneLibrary.ts        PCM names the recipes use
+    instrumentProfiles.ts         instrument → GK starting points
+    systemMap.ts, systemState.ts  pedal-wide settings
     fakeDevice.ts                 simulated pedal for tests and the dev build
 ```
 
@@ -169,9 +165,9 @@ Every string the interface shows lives in `src/copy/`. New text goes into `en.ts
 under the same key and is read with `t('some.key')`; the names of synths, amps and tones stay as
 the pedal prints them.
 
-What Rigbench keeps on your computer: the language in `localStorage`, the MIDI ports to resume
-with (redux-persist), and the synced slots in IndexedDB. Clearing the site's data removes them and
-nothing on the pedal.
+What Rigbench keeps on your computer: the language, under `rigbench.locale`. Ports, recent tones,
+and pedal settings are not stored. Clearing the site's data forgets the language and nothing on
+the pedal.
 
 Agent-oriented recipes and glossary: [docs/current/](./docs/current/).
 

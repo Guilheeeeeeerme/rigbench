@@ -5,7 +5,7 @@ Active design: [docs/current/](./docs/current/). Historical material: [docs/arch
 
 ## Precedence (highest wins)
 
-1. **Code** — especially `src/devices/gr55/routes.ts`, `systemMap.ts`, `pages.ts`, `presets/`
+1. **Code** — especially `src/devices/gr55/routes.ts`, `systemMap.ts`, `pages.ts`, `src/devices/gr55/intentions/`
 2. **This file** + [docs/current/](./docs/current/)
 3. **README.md** (user-facing; keep in sync when IA changes)
 4. **docs/archive/** — research and shipped redesign plans only
@@ -15,50 +15,50 @@ Do **not** follow `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
 ## Product (current — WIP)
 
 Static React 19 + Vite + TypeScript app. Web MIDI SysEx to a Roland GR-55. No backend.
-Connection prefs may persist; **pedal configuration does not** (immediate write + snapshot).
+The pedal is the only confirmed state. The browser stores the interface language (`rigbench.locale`) and nothing about the setup.
 EN + PT-BR via `src/copy/`.
 **No AI** in the MVP shell.
 
-The GR-55 surface is a **complete, musician-oriented patch generator** — not a fine-tuning editor. Final refinement happens on the physical pedal.
+The GR-55 surface is an **intention workspace**: instrument and calibration, three sound modes, layers, expression and CTL, then an explicit verified save. Hardware claims stay open in the capability matrix until a pedal is measured.
 
 ```
 Home (GR-55 + placeholders)
-  → Connect (silent resume if ports still valid; else prompt)
-  → App: Patch workspace (generator)
-       Setup instrument (SYSTEM/GK, confirm) · Choose (rhythm → role → sound → apply)
-       Shape (pitch / CTL readout / light trouble; Advanced collapsed)
-       Save to USER (verified) · Sync · Exit → Home
+  → Connect (gesture, then a confirmed read; no silent resume)
+  → App: intention workspace
+       Instrument (confirm, then GK) · modes · layers · pedals
+       Advanced (same queue) · Save to USER (verified) · Sync · Exit → Home
 ```
 
-Product SoT: [docs/current/simple-patch-editor.md](./docs/current/simple-patch-editor.md). 
-Rhythm catalog: [docs/current/brazilian-rhythm-catalog.md](./docs/current/brazilian-rhythm-catalog.md). 
-Connect / resume: [docs/current/connection-resume.md](./docs/current/connection-resume.md). 
+Product SoT: [docs/current/intention-workbench.md](./docs/current/intention-workbench.md).
+Hardware claims: [docs/current/capability-matrix.md](./docs/current/capability-matrix.md).
+Connect: [docs/current/connection-resume.md](./docs/current/connection-resume.md).
 Config scope (SYSTEM vs patch): [docs/current/gr55-config-scope.md](./docs/current/gr55-config-scope.md).
 
 | Route | Role |
 | --- | --- |
 | `#/` | **Home** — pick GR-55 or a placeholder device |
-| `#/gr55/conectar` | **Connect** — MIDI ports / simulated pedal |
-| `#/gr55/patch` | **Patch workspace** — patch generator (only resumable app route) |
+| `#/gr55/conectar` | **Connect** — MIDI ports / simulated pedal in development |
+| `#/gr55/patch` | **Intention workspace** (only app route after connect) |
 
 Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, `dispositivo`, …) redirect to Patch.
 
 ### Authority model
 
-- **App write** → DT1 immediately → **full snapshot** (system + temp patch + location). Mutations enqueue serially.
-- While a write/snapshot is in flight → **trust the app** (`sessionAuthority`: ignore pedal churn).
-- When idle → **mirror the pedal** (remote DT1 / program change when PC TX is on).
-- Explicit **Sync** reloads system + working copy (USER → temp on a USER slot).
-- **Save** = PATCH WRITE + USER readback verify (`saveUserSlotVerified`). Never factory banks.
-- SYSTEM/GK changes use impact confirm (pedal-wide / GK set).
-- localStorage / redux-persist: **connection only** (`rememberedPorts`, `preferSimulated`, `lastRoute` = `patch`). Never pedal field values.
+- One operation at a time (`src/session/operationQueue.ts`). The mirror updates from the readback, not from the send.
+- While that batch is on the wire → ignore pedal churn (`holdRemoteMirror`).
+- When idle → mirror the pedal.
+- A timeout or a mismatch blocks the next edit until a new reading.
+- **Sync** reads system, the sounding patch, and the position again. It does not copy USER over the temporary patch.
+- **Save** is explicit: PATCH WRITE plus USER readback (`writeToUserSlotVerified`). Never factory banks. Not automatic.
+- SYSTEM/GK changes list the groups before the write.
+- Browser storage: `rigbench.locale` only.
 
 ## Hard rules
 
 - **Do not rewrite** `src/protocol/**` or `src/midi/**` unless the task explicitly requires a protocol/MIDI fix. Prefer `systemMap.ts` and device-layer types for system extensions.
 - **No GPL FloorBoard** material (text, XML, skins) in the repo. Address facts only; MIT fork CASouthEast is the system-map reference (see README credits).
 - **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
-- **Writes**: patch and system parameters DT1 immediately; then full snapshot. No ApplyBar / staging.
+- **Writes**: patch and system parameters go out as verified DT1, then the readback updates the mirror. No ApplyBar / staging. No automatic USER write.
 - **No AI in the product shell.** There is no chat/copilot code (`src/maestro` was removed). Never commit API keys. Never invent SysEx addresses or live calibration meters.
 - **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
 - **Data library is not code:** `docs/gr55-collection/` is a gitignored binary library. Never `git add` it, never let the app read its binaries, never rename a `.g5l`/`.mid` without its name-paired partner (see `docs/gr55-collection/AGENTS.md`).
@@ -68,13 +68,15 @@ Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, 
 
 | Area | Path |
 | --- | --- |
-| App Redux store (connection resume) | `src/app/store/**` |
+| App Redux store (connection phase only) | `src/app/store/**` |
 | Visual UI (Linear dark) | `src/app/styles.css`, `index.html`, `docs/current/ui-guidelines.md` |
-| GR-55 shell / workspace | `Gr55Screen.tsx`, `AppShell.tsx`, `PatchWorkspace.tsx`, `ConnectScreen.tsx` |
-| Presets / instruments / CTL | `presets/**` (taxonomy, toneLibrary, profiles, architectures, catalogSlots, validate), `instrumentProfiles.ts`, `troubleshooting.ts`, `toneMatch.ts` |
-| Advanced escape hatch | `ToneDeck.tsx`, `TonePicker.tsx`, `AdvancedPatchEditor.tsx`, `pages.ts` |
+| Experience (no device imports) | `src/experience/IntentionWorkspace.tsx` |
+| Intentions and the GR-55 translator | `src/intentions/`, `src/devices/gr55/intentions/` |
+| GR-55 shell | `Gr55Screen.tsx`, `AppShell.tsx`, `Gr55Workspace.tsx`, `ConnectScreen.tsx` |
+| Tone names / GK starting points | `presets/toneLibrary.ts`, `presets/profiles.ts`, `instrumentProfiles.ts`, `toneMatch.ts` |
+| Advanced escape hatch | `AdvancedPatchEditor.tsx`, `verifiedFieldHost.ts`, `pages.ts` |
 | Icons / voices | `Icons.tsx`, `voices.ts` |
-| Authority + snapshot + save | `sessionAuthority.ts`, `snapshotHost.ts`, `saveUserSlot.ts`, `patchGuard.ts` |
+| Queue, tab lock, storage audit, save | `src/session/`, `sessionAuthority.ts`, `saveUserSlot.ts` |
 | Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |
 | System map / immediate system writes | `systemMap.ts`, `systemState.ts` |
 | Copy | `src/copy/` |
@@ -94,6 +96,7 @@ npm run lint # before a broad handoff
 ```
 
 Dev: Node 22 (`.nvmrc`), `npm run dev` → `http://localhost:5173`. Use **simulated pedal** when hardware is unavailable. Chrome/Edge for real Web MIDI + SysEx.
+Production builds from `main` publish to [GitHub Pages](https://guilheeeeeeerme.github.io/rigbench/). That workflow sets `VITE_BASE=/rigbench/`; local dev and preview stay at `/`.
 
 ## Documentation
 

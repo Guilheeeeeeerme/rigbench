@@ -16,9 +16,9 @@ Quick task → doc lookup:
 
 | Task | Go to |
 | --- | --- |
-| Change product IA, routes, surfaces | `current/simple-patch-editor.md` |
-| Add a rhythm / preset / tone | `current/brazilian-rhythm-catalog.md` |
-| Touch connect / resume / Exit / Sync | `current/connection-resume.md` |
+| Change product IA, routes, surfaces | `current/intention-workbench.md` |
+| Claim a behavior on a real GR-55 | `current/capability-matrix.md` |
+| Touch connect / Exit / Sync | `current/connection-resume.md` |
 | Change SYSTEM (🔵) vs patch (🟠) fields | `current/gr55-config-scope.md` |
 | Change UI chrome / tokens | `current/ui-guidelines.md` |
 | Name a UI string | `current/glossary.md` |

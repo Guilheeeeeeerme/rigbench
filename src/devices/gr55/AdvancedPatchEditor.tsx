@@ -36,12 +36,15 @@ export function AdvancedPatchEditor({
   gkMode,
   patchVersion,
   initialPageId,
+  locked = false,
 }: {
   host: FieldHost;
   gkMode: GkMode;
   /** Bumps when the temporary patch changes (e.g. editor.patchSnapshot). */
   patchVersion: string | number;
   initialPageId?: PageId;
+  /** Block edits while a verified operation is in flight or the state is uncertain. */
+  locked?: boolean;
 }) {
   const t = useT();
   const pages = useMemo(() => buildPages(gkMode, t), [gkMode, t]);
@@ -98,7 +101,12 @@ export function AdvancedPatchEditor({
                 const atom = memberOf(section.struct, key);
                 if (!isField(atom)) return null;
                 return (
-                  <FieldControl key={key} editor={host} field={atom} readOnly={readOnly.has(key)} />
+                  <FieldControl
+                    key={key}
+                    editor={host}
+                    field={atom}
+                    readOnly={locked || readOnly.has(key)}
+                  />
                 );
               })}
             </div>

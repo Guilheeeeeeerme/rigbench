@@ -94,7 +94,7 @@ describe('Gr55System', () => {
 
     system.write(field, 'STACK');
     system.write(gkSet(2).string1Sens, 80);
-    await settle();
+    await settle(100);
     expect(system.read(field)).toEqual({ ok: true, value: 'STACK' });
     expect([...device.peek(field.address, 1)]).toEqual([4]);
     expect([...device.peek(gkSet(2).string1Sens.address, 1)]).toEqual([80]);

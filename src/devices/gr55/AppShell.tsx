@@ -1,12 +1,11 @@
-import { useState, useSyncExternalStore } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useT } from '../../copy';
 import { useAppDispatch } from '../../app/store/hooks';
 import type { Gr55Editor } from './editor';
 import { exitToHome } from './connectionThunks';
-import { PatchWorkspace } from './PatchWorkspace';
-import { asSnapshotSource } from './snapshotHost';
-import { getAuthority, syncFromPedal, subscribeAuthority } from './sessionAuthority';
+import { Gr55Workspace } from './Gr55Workspace';
+import { createGr55Session } from './intentions/session';
 import { useSystem } from './SystemParts';
 
 function errorText(error: unknown): string {
@@ -21,22 +20,13 @@ export function AppShell({ editor }: { editor: Gr55Editor }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const system = useSystem();
+  const session = useMemo(() => createGr55Session(editor, system), [editor, system]);
+  const view = useSyncExternalStore(session.subscribe, session.getState, session.getState);
   const [error, setError] = useState<unknown>();
-  const [syncBusy, setSyncBusy] = useState(false);
-  const authority = useSyncExternalStore(subscribeAuthority, getAuthority);
-  const source = asSnapshotSource({ editor, system });
+  const syncBusy = view.phase === 'verifying' || view.phase === 'reading';
 
   const onSync = () => {
-    setSyncBusy(true);
-    void syncFromPedal(source, async () => {
-      await editor.readPatchLocation();
-      const slot = editor.patchSource;
-      if (slot?.kind === 'slot') {
-        await editor.loadUserSlotIntoWorkingCopy(slot.userPatchNumber);
-      }
-    })
-      .catch(setError)
-      .finally(() => setSyncBusy(false));
+    void session.reread().catch(setError);
   };
 
   const onExit = () => {
@@ -53,7 +43,7 @@ export function AppShell({ editor }: { editor: Gr55Editor }) {
         <h1 className="app-shell-title">{t('gr55.mvp.title')}</h1>
         <div className="app-shell-actions">
           <span className="hint" role="status">
-            {authority === 'app' ? t('gr55.authorityApp') : t('gr55.authorityPedal')}
+            {view.blocked ? t('intention.blocked') : t('gr55.authorityPedal')}
           </span>
           <button type="button" disabled={syncBusy} onClick={onSync} title={t('gr55.syncHint')}>
             {syncBusy ? t('gr55.syncBusy') : t('gr55.sync')}
@@ -72,7 +62,7 @@ export function AppShell({ editor }: { editor: Gr55Editor }) {
 
       <div className="app-shell-body chat-collapsed">
         <section className="app-main" aria-label={t('gr55.mvp.title')}>
-          <PatchWorkspace editor={editor} onError={setError} />
+          <Gr55Workspace editor={editor} session={session} onError={setError} />
         </section>
       </div>
     </div>

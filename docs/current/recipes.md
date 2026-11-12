@@ -1,7 +1,7 @@
 # Recipes for common changes
 
 Run the verification commands in [AGENTS.md](../../AGENTS.md) after each recipe.
-Product IA SoT: [simple-patch-editor.md](./simple-patch-editor.md).
+Product IA SoT: [intention-workbench.md](./intention-workbench.md).
 
 ## Add or move a patch editor field
 
@@ -45,15 +45,14 @@ whenever storage, keys, or downloaded data could be touched. Historical architec
 
 ## Sync behavior
 
-- Read-only toward the pedal. Adaptive RQ1 pacing lives in `sync/engine.ts`.
-- Cache in IndexedDB; resume after reload; quick sync probes then full-reads diffs.
-- UI progress: `SyncBadge` on all connected screens — do not add a blocking modal except first-run setup.
+The workspace **Sync** control reads the sounding patch again. It does not open the slot cache.
+`sync/engine.ts` and IndexedDB remain in the tree for their own tests; do not mount them on connect.
 
-## Connect / silent resume
+## Connect
 
-Do not re-implement port memory in components. Use Redux `sessionPrefs` +
-`resumeIfPossible` / `connectWithPorts` in `connectionThunks.ts`. Live MIDI stays
-in `connectionRuntime`. Full SoT: [connection-resume.md](./connection-resume.md).
+Do not store ports or resume a previous session. Connect goes through `connectWithPorts` in
+`connectionThunks.ts`. Live MIDI stays in `connectionRuntime`. Full SoT:
+[connection-resume.md](./connection-resume.md).
 
 After changing connect or silent-resume behavior, run the docs audit in
 [AGENTS.md](../../AGENTS.md#documentation).

@@ -1,5 +1,6 @@
 import type { MidiSession } from '../../midi/session';
 import type { FieldReference, FieldType } from '../../protocol/RolandAddressMap';
+import { sameValue } from '../../session/sameValue';
 import type { FieldValue } from './editor';
 import { SYSTEM_ADDRESS, SYSTEM_BLOCKS, SYSTEM_SPAN } from './systemMap';
 
@@ -76,6 +77,47 @@ export class Gr55System {
     this.image.set(bytes, offset);
     this.bump();
     void this.session.writeData(field.address, bytes, { coalesce: true });
+  }
+
+  /** Send, read back, then mirror whatever the device stored. */
+  async writeVerified(
+    field: FieldReference<FieldType<unknown>>,
+    value: unknown,
+  ): Promise<{ match: boolean }> {
+    const offset = field.address - SYSTEM_ADDRESS;
+    const { type, size } = field.definition;
+    const bytes = new Uint8Array(size);
+    type.encode(value as never, bytes, 0, size);
+    await this.session.writeData(field.address, bytes);
+    const read = await this.session.requestData(field.address, size);
+    let match = false;
+    try {
+      match = sameValue(value, type.decode(read, 0, size));
+    } catch {
+      match = false;
+    }
+    if (offset >= 0 && offset + size <= this.image.length) {
+      this.image.set(read.subarray(0, size), offset);
+      this.bump();
+    }
+    return { match };
+  }
+
+  /** Write bytes already stored on the pedal, then compare the readback. */
+  async writeVerifiedBytes(
+    field: FieldReference<FieldType<unknown>>,
+    bytes: Uint8Array,
+  ): Promise<{ match: boolean }> {
+    const offset = field.address - SYSTEM_ADDRESS;
+    const payload = Uint8Array.from(bytes);
+    await this.session.writeData(field.address, payload);
+    const read = await this.session.requestData(field.address, payload.length);
+    const match = payload.length === read.length && payload.every((byte, index) => byte === read[index]);
+    if (offset >= 0 && offset + payload.length <= this.image.length) {
+      this.image.set(read.subarray(0, payload.length), offset);
+      this.bump();
+    }
+    return { match };
   }
 
   private bump(): void {

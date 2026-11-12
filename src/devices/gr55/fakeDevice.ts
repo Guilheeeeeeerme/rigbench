@@ -22,17 +22,6 @@ const COMMAND_RQ1 = 0x11;
 const WRITE_PATCH_COMMAND = pack7(0x0f000000);
 const PATCH_NAME_OFFSET =
   GR55_MAP.temporaryPatch.common.patchName.address - TEMPORARY_PATCH_ADDRESS;
-/** Dev simulated pedal — survive Vite reloads so USER WRITE can be verified. */
-const FAKE_MEMORY_KEY = 'rigbench.fakeGr55.memory.v1';
-
-export function clearFakeGr55Memory(): void {
-  try {
-    sessionStorage.removeItem(FAKE_MEMORY_KEY);
-  } catch {
-    // ignore
-  }
-}
-
 function fromSevenBitBytes(bytes: Uint8Array): number {
   let value = 0;
   for (const byte of bytes) {
@@ -50,7 +39,6 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
   /** Device memory by packed address. Bytes never written read as zero. */
   private readonly memory = new Map<number, number>();
   private readonly listeners = new Set<MidiMessageListener>();
-  private readonly persist: boolean;
   /** Every message the editor sent, oldest first. */
   readonly received: number[][] = [];
   /** Largest DT1 payload in a reply; lower it to make the device split its answers. */
@@ -66,11 +54,7 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
    */
   corruptNextWrite = false;
 
-  constructor(options?: { persist?: boolean }) {
-    this.persist = Boolean(options?.persist);
-    if (this.persist && this.restoreMemory()) {
-      return;
-    }
+  constructor() {
     this.setName(TEMPORARY_PATCH_ADDRESS, 'Simulated Patch');
     // Audible default — real factory patches are not silent at patch level 0.
     this.poke(GR55_MAP.temporaryPatch.common.patchLevel.address, [100]);
@@ -89,32 +73,6 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
     }
     for (let number = 1; number <= GK_SET_COUNT; number++) {
       this.poke(gkSet(number).name.address, Array<number>(8).fill(0x20));
-    }
-  }
-
-  private restoreMemory(): boolean {
-    try {
-      const raw = sessionStorage.getItem(FAKE_MEMORY_KEY);
-      if (!raw) return false;
-      const entries = JSON.parse(raw) as [number, number][];
-      if (!Array.isArray(entries) || entries.length === 0) return false;
-      for (const [address, byte] of entries) {
-        if (typeof address === 'number' && typeof byte === 'number') {
-          this.memory.set(address, byte);
-        }
-      }
-      return this.memory.size > 0;
-    } catch {
-      return false;
-    }
-  }
-
-  private saveMemory(): void {
-    if (!this.persist) return;
-    try {
-      sessionStorage.setItem(FAKE_MEMORY_KEY, JSON.stringify([...this.memory.entries()]));
-    } catch {
-      // ignore quota / private mode
     }
   }
 
@@ -211,13 +169,16 @@ export class FakeGr55 implements MidiInputLike, MidiOutputLike {
   private writePatchToUserSlot(userPatchNumber: number): void {
     if (userPatchNumber < USER_PATCH_COUNT) {
       this.copyPatch(TEMPORARY_PATCH_ADDRESS, userPatchAddress(userPatchNumber));
+      const msb = Math.floor(userPatchNumber / 128);
+      const program = userPatchNumber % 128;
+      this.poke(GR55_MAP.setup.patchBsMsb.address, [msb]);
+      this.poke(GR55_MAP.setup.patchPc.address, [program]);
       if (this.corruptNextWrite) {
         this.corruptNextWrite = false;
         const nameAddr = userPatchAddress(userPatchNumber) + PATCH_NAME_OFFSET;
         this.poke(nameAddr, [0x58]); // 'X' — breaks name match / field diff
       }
     }
-    this.saveMemory();
     this.emitData(pack7(0x0f000001), Uint8Array.of(0));
     this.emitData(pack7(0x0f000002), Uint8Array.of(0));
   }

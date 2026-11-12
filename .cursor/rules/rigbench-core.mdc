@@ -2,9 +2,9 @@
 
 - Precedence: **code** → `AGENTS.md` + `docs/current/` → `README.md` → `docs/archive/` (never overrides).
 - Ignore `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
-- App after connect: **Patch** (`#/gr55/patch`) only — musician-oriented **patch generator**, not a fine-tuning editor. Home + Connect otherwise. No AI in the MVP shell.
-- Product SoT: `docs/current/simple-patch-editor.md`. Catalog: `docs/current/brazilian-rhythm-catalog.md`. Connect/resume/Exit: `docs/current/connection-resume.md`.
-- Authority: app write → DT1 → full snapshot; idle → mirror pedal (`sessionAuthority.ts`). Save = verified USER WRITE.
+- App after connect: **Patch** (`#/gr55/patch`) only — the intention workspace. Home + Connect otherwise. No AI in the MVP shell.
+- Product SoT: `docs/current/intention-workbench.md`. Hardware claims: `docs/current/capability-matrix.md`. Connect/Exit: `docs/current/connection-resume.md`.
+- Authority: one verified operation at a time; the mirror updates from the readback. Save is an explicit verified USER write. Nothing but `rigbench.locale` is stored in the browser.
 - Do not rewrite `src/protocol/**` or `src/midi/**` unless the task explicitly requires it.
 - No Gemini/Google API keys in the repo, `.env`, logs, or fixtures.
 - UI strings only via `t()` / `useT()`; update both `en.ts` and `pt-BR.ts`.

@@ -1,13 +1,12 @@
 import type { MidiSession } from '../../midi/session';
 import type { Gr55Editor } from './editor';
-import type { SyncEngine } from './sync/engine';
+import { releaseWriterLock } from '../../session/tabLock';
 import type { Gr55System } from './systemState';
 
 /** Live MIDI objects for the open GR-55. Never put these in Redux. */
 export interface LiveConnection {
   session: MidiSession;
   editor: Gr55Editor;
-  sync: SyncEngine;
   system: Gr55System;
 }
 
@@ -39,7 +38,7 @@ export function setLiveConnection(next: LiveConnection | undefined): void {
 }
 
 function disposeLive(connection: LiveConnection): void {
-  connection.sync.dispose();
+  releaseWriterLock();
   connection.editor.dispose();
   connection.session.close();
 }

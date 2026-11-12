@@ -1,7 +1,7 @@
 # GR-55 configuration scope report
 
-**Status:** Live taxonomy SoT for SYSTEM (🔵) vs patch (🟠) memory. App surfaces: Patch workspace
-(see [simple-patch-editor.md](./simple-patch-editor.md)).  
+**Status:** Live taxonomy SoT for SYSTEM (🔵) vs patch (🟠) memory. App surface: intention workspace
+(see [intention-workbench.md](./intention-workbench.md)).  
 **Date:** 2026-10-11  
 **Primary source:** Roland GR-55 Owner’s Manual EN
 (`docs/gr55-collection/manuals/GR-55 Owner's Manual (EN).pdf`), Parameter List SYSTEM pp.74–80,

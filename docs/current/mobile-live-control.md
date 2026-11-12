@@ -1,8 +1,8 @@
 # Mobile / live simplified control — Rigbench vision
 
 > **Status: VISION ONLY (Stage-era research, predates the Patch workspace MVP).**
-> Not shipped IA, not a live briefing: the current IA is the Patch workspace
-> ([simple-patch-editor.md](./simple-patch-editor.md)). §2 Platform truth is still accurate;
+> Not shipped IA, not a live briefing: the current IA is the intention workspace
+> ([intention-workbench.md](./intention-workbench.md)). §2 Platform truth is still accurate;
 > §1–§10 are historical — routes they mention (`palco`, `maestro`, `configuracao`) are legacy
 > redirects (see `src/devices/gr55/routes.ts`), and the Alpha/P boom chain appendix was cut.
 > Precedence: code → [AGENTS.md](../../AGENTS.md) → product SoT → this file →
@@ -48,7 +48,7 @@ Additional constraints:
 ## 3. IA mapping (historical — Stage-era wording below)
 
 > The surfaces named in this section describe the Stage-era app, not the current MVP. Treat the
-> table as history; current IA: Connect → Patch workspace ([simple-patch-editor.md](./simple-patch-editor.md)).
+> table as history; current IA: Connect → intention workspace ([intention-workbench.md](./intention-workbench.md)).
 
 The external brief used “Maestro” for setlist/gig. In Rigbench of that era **Maestro meant the
 Gemini copilot** (now out of the product shell): keep that name for history.

@@ -21,6 +21,7 @@ const PROBLEM_COPY: Record<Exclude<ConnectionProblem, null>, CopyKey> = {
   wrongDevice: 'connection.wrongDevice',
   lost: 'connection.lost',
   noPorts: 'connection.noPorts',
+  otherTab: 'connection.otherTab',
 };
 
 /** Allow MIDI, pick ports, or watch a silent reconnect — shown when not connected. */
@@ -47,6 +48,7 @@ export function ConnectScreen() {
       </Link>
       <h1>{t('connection.title')}</h1>
       <p>{t('connection.intro')}</p>
+      <p className="hint">{t('connection.persistence')}</p>
 
       {!hasAccess ? (
         <button

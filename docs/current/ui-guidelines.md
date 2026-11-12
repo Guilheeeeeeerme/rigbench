@@ -3,7 +3,7 @@
 > **Status:** Live. SoT for visual design of the Rigbench web UI.
 > **Precedence:** code (`src/app/styles.css`, `index.html`) → this file → [AGENTS.md](../../AGENTS.md).
 > Agents **must** follow this when changing any user-visible layout or chrome.
-> Product IA (Connect → Patch workspace) lives in [simple-patch-editor.md](./simple-patch-editor.md) —
+> Product IA (Connect → intention workspace) lives in [intention-workbench.md](./intention-workbench.md) —
 > see [glossary.md](./glossary.md) for surface names.
 
 ## Intent
@@ -82,12 +82,10 @@ docs update.
 
 ## Workspace surfaces (mobile-first)
 
-Patch workspace (Tone Deck / Advanced / pickers) behavior SoT:
-[simple-patch-editor.md](./simple-patch-editor.md); Tone Deck rules also in
-[bank-patch-config.md](./bank-patch-config.md) (legacy design whose components remain live).
+Intention workspace behavior SoT: [intention-workbench.md](./intention-workbench.md).
+Advanced editor notes: [bank-patch-config.md](./bank-patch-config.md).
 
-- **Tone Deck** stays above the Advanced editor; tone rows ≥48px tap targets; picker is a
-  fixed overlay with safe-area insets.
+- Intention cards and ranges use the same tokens as the rest of the shell. Tap targets stay at least 48px.
 - Profile pills (craft macros, `SimpleProfiles`): full-width stack under 640px; two columns above.
 - AppShell ≤900px: main content stacks above secondary panes; collapsed by default on first load.
 

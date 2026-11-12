@@ -19,13 +19,8 @@ import {
   setSelectedInputId,
   setSelectedOutputId,
   type PortChoice,
-  type RememberedPorts,
 } from '../../app/store/slices/connectionSlice';
-import {
-  setLastRoute,
-  setPreferSimulated,
-  setRememberedPorts,
-} from '../../app/store/slices/sessionPrefsSlice';
+import { acquireWriterLock, releaseWriterLock } from '../../session/tabLock';
 import {
   getLiveConnection,
   getMidiAccess,
@@ -34,8 +29,6 @@ import {
   setMidiAccess,
 } from './connectionRuntime';
 import { Gr55Editor } from './editor';
-import { openSyncCache } from './sync/cache';
-import { SyncEngine } from './sync/engine';
 import { Gr55System } from './systemState';
 
 const GR55_PORT_NAME = /gr-?55/i;
@@ -63,16 +56,9 @@ function preferredPortId(ports: PortChoice[]): string {
   return [...ports].sort((a, b) => rank(a.name) - rank(b.name))[0]?.id ?? '';
 }
 
-function pickSelection(
-  ports: PortChoice[],
-  current: string,
-  remembered: string | undefined,
-): string {
+function pickSelection(ports: PortChoice[], current: string): string {
   if (ports.some((port) => port.id === current)) {
     return current;
-  }
-  if (remembered && ports.some((port) => port.id === remembered)) {
-    return remembered;
   }
   return preferredPortId(ports);
 }
@@ -86,10 +72,9 @@ export function refreshPortsFromAccess(dispatch: AppDispatch, getState: () => Ro
   const inputs = portChoices(access.inputs.values());
   const outputs = portChoices(access.outputs.values());
   dispatch(setPorts({ inputs, outputs }));
-  const remembered = getState().sessionPrefs.rememberedPorts;
   const { selectedInputId, selectedOutputId } = getState().connection;
-  dispatch(setSelectedInputId(pickSelection(inputs, selectedInputId, remembered?.inputId)));
-  dispatch(setSelectedOutputId(pickSelection(outputs, selectedOutputId, remembered?.outputId)));
+  dispatch(setSelectedInputId(pickSelection(inputs, selectedInputId)));
+  dispatch(setSelectedOutputId(pickSelection(outputs, selectedOutputId)));
 }
 
 export function requestMidiAccess() {
@@ -104,6 +89,7 @@ export function requestMidiAccess() {
       access.onstatechange = () => {
         refreshPortsFromAccess(dispatch, getState);
       };
+      dispatch(setPhase('needsPrompt'));
       return true;
     } catch {
       setMidiAccess(undefined);
@@ -118,7 +104,6 @@ export function requestMidiAccess() {
 export interface ConnectPortsArgs {
   input: MidiInputLike;
   output: MidiOutputLike;
-  remember?: RememberedPorts;
 }
 
 export function connectWithPorts(args: ConnectPortsArgs) {
@@ -149,17 +134,31 @@ export function connectWithPorts(args: ConnectPortsArgs) {
         return false;
       }
 
+      const lock = await acquireWriterLock();
+      if (!stillHere()) {
+        releaseWriterLock();
+        return false;
+      }
+      if (lock === 'blocked') {
+        dispatch(setProblem('otherTab'));
+        dispatch(setPhase('needsPrompt'));
+        return false;
+      }
+
       session = new MidiSession(args.input, args.output, config, identity.deviceId);
       const editor = new Gr55Editor(session, () => {
         if (stillHere()) {
           dispatch(setProblem('lost'));
         }
       });
-      const sync = new SyncEngine(editor, openSyncCache());
       const system = new Gr55System(session);
-      setLiveConnection({ session, editor, sync, system });
+      setLiveConnection({ session, editor, system });
 
       await editor.readSystem();
+      if (!stillHere()) {
+        return false;
+      }
+      await system.load();
       if (!stillHere()) {
         return false;
       }
@@ -176,13 +175,6 @@ export function connectWithPorts(args: ConnectPortsArgs) {
         return false;
       }
 
-      if (args.remember) {
-        dispatch(setRememberedPorts(args.remember));
-        dispatch(setPreferSimulated(false));
-      }
-
-      // Slot library sync intentionally not started — pedal config is not cached as SoT.
-      void sync;
       dispatch(setPhase('connected'));
       return true;
     } catch (reason) {
@@ -226,73 +218,7 @@ export function connectSelectedPorts() {
       dispatch(setPhase('needsPrompt'));
       return false;
     }
-    return dispatch(
-      connectWithPorts({
-        input,
-        output,
-        remember: { inputId: input.id, outputId: output.id },
-      }),
-    );
-  };
-}
-
-/**
- * After MIDI access: if remembered ports are still present, connect silently.
- * Otherwise leave the UI on the connect prompt.
- */
-export function resumeIfPossible() {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { phase, hasAccess } = getState().connection;
-    const { rememberedPorts, preferSimulated } = getState().sessionPrefs;
-    if (getLiveConnection() && phase === 'connected') {
-      return true;
-    }
-    if (phase === 'connecting' || phase === 'requesting') {
-      return false;
-    }
-
-    if (import.meta.env.DEV && preferSimulated) {
-      return dispatch(connectSimulatedPedal());
-    }
-
-    const ports = rememberedPorts;
-    if (!ports) {
-      dispatch(setPhase('needsPrompt'));
-      return false;
-    }
-
-    if (!hasAccess || !getMidiAccess()) {
-      const ok = await dispatch(requestMidiAccess());
-      if (!ok) {
-        return false;
-      }
-    } else {
-      refreshPortsFromAccess(dispatch, getState);
-    }
-
-    const access = getMidiAccess();
-    if (!access) {
-      dispatch(setPhase('needsPrompt'));
-      return false;
-    }
-    const input = [...access.inputs.values()].find((port) => port.id === ports.inputId);
-    const output = [...access.outputs.values()].find((port) => port.id === ports.outputId);
-    if (!input || !output) {
-      // Stale pair: forget it so the user picks fresh ports.
-      dispatch(setRememberedPorts(null));
-      dispatch(setPhase('needsPrompt'));
-      return false;
-    }
-
-    dispatch(setSelectedInputId(input.id));
-    dispatch(setSelectedOutputId(output.id));
-    return dispatch(
-      connectWithPorts({
-        input,
-        output,
-        remember: { inputId: input.id, outputId: output.id },
-      }),
-    );
+    return dispatch(connectWithPorts({ input, output }));
   };
 }
 
@@ -301,10 +227,8 @@ export function connectSimulatedPedal() {
     if (!import.meta.env.DEV) {
       return false;
     }
-    dispatch(setPreferSimulated(true));
-    dispatch(setRememberedPorts(null));
     const { FakeGr55 } = await import('./fakeDevice');
-    const pedal = new FakeGr55({ persist: true });
+    const pedal = new FakeGr55();
     return dispatch(connectWithPorts({ input: pedal, output: pedal }));
   };
 }
@@ -325,14 +249,7 @@ export function disconnectPedal() {
  * Does not touch pedal configuration (nothing of that is stored locally).
  */
 export function exitToHome() {
-  return async (dispatch: AppDispatch) => {
+  return (dispatch: AppDispatch) => {
     dispatch(disconnectPedal());
-    dispatch(setRememberedPorts(null));
-    dispatch(setPreferSimulated(false));
-    dispatch(setLastRoute(''));
-    if (import.meta.env.DEV) {
-      const { clearFakeGr55Memory } = await import('./fakeDevice');
-      clearFakeGr55Memory();
-    }
   };
 }

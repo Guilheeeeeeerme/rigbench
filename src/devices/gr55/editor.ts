@@ -11,6 +11,7 @@ import {
 } from './patchLayout';
 import { temporaryPatchFields, spanMatches } from './changeTracking';
 import type { PatchFieldSpan } from './changeTracking';
+import { sameValue } from '../../session/sameValue';
 import { isPedalAuthority } from './sessionAuthority';
 
 export type GkMode = 'GUITAR' | 'BASS';
@@ -167,6 +168,50 @@ export class Gr55Editor {
     return this.session.writeData(field.address, bytes, { coalesce: true });
   }
 
+  /**
+   * Send one field, read it back, and only then update the mirror from the
+   * bytes the device returned. A match is decoded equality, not a send ack.
+   */
+  async writeVerified(
+    field: FieldReference<FieldType<unknown>>,
+    value: unknown,
+  ): Promise<{ match: boolean }> {
+    const offset = field.address - TEMPORARY_PATCH_ADDRESS;
+    const { type, size } = field.definition;
+    const bytes = new Uint8Array(size);
+    type.encode(value as never, bytes, 0, size);
+    await this.session.writeData(field.address, bytes);
+    const read = await this.session.requestData(field.address, size);
+    let match = false;
+    try {
+      match = sameValue(value, type.decode(read, 0, size));
+    } catch {
+      match = false;
+    }
+    if (offset >= 0 && offset + size <= this.image.length) {
+      this.image.set(read.subarray(0, size), offset);
+      this.bumpField(field.address);
+    }
+    return { match };
+  }
+
+  /** Write bytes already stored on the pedal, then compare the readback. */
+  async writeVerifiedBytes(
+    field: FieldReference<FieldType<unknown>>,
+    bytes: Uint8Array,
+  ): Promise<{ match: boolean }> {
+    const offset = field.address - TEMPORARY_PATCH_ADDRESS;
+    const payload = Uint8Array.from(bytes);
+    await this.session.writeData(field.address, payload);
+    const read = await this.session.requestData(field.address, payload.length);
+    const match = payload.length === read.length && payload.every((byte, index) => byte === read[index]);
+    if (offset >= 0 && offset + payload.length <= this.image.length) {
+      this.image.set(read.subarray(0, payload.length), offset);
+      this.bumpField(field.address);
+    }
+    return { match };
+  }
+
   get patchName(): string {
     return decodeName(this.image, PATCH_NAME_OFFSET);
   }
@@ -267,6 +312,13 @@ export class Gr55Editor {
   /** How many parameters differ between two slot images. */
   countDifferences(a: Uint8Array, b: Uint8Array): number {
     return this.changeIndex.filter((field) => !spanMatches(a, b, field.offset, field.size)).length;
+  }
+
+  /** True when the sounding patch differs from the USER slot the pedal is on. */
+  async differsFromCurrentUserSlot(): Promise<boolean | null> {
+    if (this.patchSource?.kind !== 'slot') return null;
+    const slot = await this.readUserPatch(this.patchSource.userPatchNumber);
+    return this.countDifferences(this.image, slot) > 0;
   }
 
   private applyRemoteData(address: number, bytes: Uint8Array): void {

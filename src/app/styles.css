@@ -1283,3 +1283,54 @@ button.primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.intention-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.intention-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.intention-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  text-align: left;
+}
+
+.intention-card.is-selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.intention-range {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.intention-overlay {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface-raised, #141616);
+  border: 1px solid var(--border, #2a2e2e);
+  border-radius: var(--radius);
+}
+
+.intention-test {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}

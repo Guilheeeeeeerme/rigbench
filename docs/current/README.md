@@ -8,9 +8,11 @@ After any IA, connect, route, or surface change: audit this folder + root [AGENT
 
 | File | Topic | Authority |
 | --- | --- | --- |
-| [simple-patch-editor.md](./simple-patch-editor.md) | Patch workspace (generator flow, Choose/Shape, Caimbé GK helper, escape hatch) | **SoT** — product IA |
-| [brazilian-rhythm-catalog.md](./brazilian-rhythm-catalog.md) | 40 BR rhythms + cumbia; priority pagode/sertanejo; profiles A–H; pitch policy | **SoT** — musical catalog |
-| [connection-resume.md](./connection-resume.md) | MIDI connect, silent resume, Exit purge, Sync | **SoT** — connect/resume |
+| [intention-workbench.md](./intention-workbench.md) | Intention workspace: instrument, modes, layers, pedals, verified save | **SoT** — product IA |
+| [capability-matrix.md](./capability-matrix.md) | What is still unmeasured on a real GR-55 | **SoT** — hardware claims |
+| [simple-patch-editor.md](./simple-patch-editor.md) | Former rhythm → role → sound generator | **Superseded** — pointer only |
+| [brazilian-rhythm-catalog.md](./brazilian-rhythm-catalog.md) | Former rhythm catalog | **Superseded** — pointer only |
+| [connection-resume.md](./connection-resume.md) | MIDI connect, confirmed read, Exit, read-again Sync | **SoT** — connect |
 | [gr55-config-scope.md](./gr55-config-scope.md) | SYSTEM 🔵 vs patch 🟠 parameter inventory (owner's manual) | **SoT** — parameter taxonomy |
 | [ui-guidelines.md](./ui-guidelines.md) | Linear dark UI: tokens, Inter, spacing, focus | **SoT** — visual design |
 | [glossary.md](./glossary.md) | Scope chips, personas, hardware truths, UI wording | **SoT** — UI terminology |
@@ -31,4 +33,4 @@ Both retired designs keep their full story in the archive only.
 Roland manuals (PDFs): [../gr55-collection/manuals/](../gr55-collection/manuals/) —
 an owner's-manual parameter guide lives inline in [gr55-config-scope.md](./gr55-config-scope.md).
 
-App navigation summary: root [AGENTS.md](../../AGENTS.md) (Home → Connect → Patch).
+App navigation summary: root [AGENTS.md](../../AGENTS.md) (Home → Connect → intention workspace).

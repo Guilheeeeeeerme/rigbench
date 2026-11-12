@@ -20,16 +20,16 @@ The pedal is the authority. RAM holds the last confirmed reading, the operation 
 
 ## What the musician sees
 
-One workspace replaces Setup / Choose by rhythm / Shape.
+The workspace is the sound that is playing. The title is the patch name and the USER slot. One word shows the phase: Confirmed, Checking, Applying, Saved, Uncertain.
 
-- **Connect.** Web MIDI and the USB link are explained first. SysEx starts after the gesture. Family `0x5302` is required. Discovery does not write. **Ready** only after identity, the relevant system area, the temporary patch, and the patch position have been read. The app does not change patches while connecting.
-- **My instrument.** Nylon, steel, guitar, or another profile. Choosing it sends nothing. **Activate** lists the groups that will be replaced, then writes the active GK set: pickup, touch (`playFeel`), unwanted notes (`lowVelocityCut`, a velocity gate), dynamics, and the six string sensitivities. Scale is written only when the musician types millimetres. Brand, playing style, and recipe name stay in the session and the screen says they disappear on reload. The GK set name may use the native 8-character field.
-- **How you want to play.** Original signal, accompaniment, or both. Up to two PCM layers from tones already in the library. Modeling is not offered as a pure acoustic guitar. Shared effects (dry, small room, soft ambience, solo delay) warn that both layers use the same processor.
-- **Pedals.** The screen reads the current expression and CTL roles. A recipe continues only when that control is free or already doing the requested job. A busy control is refused before any write.
-- **Destination.** Factory presets are not overwritten. The first save to a USER slot asks once; the next save to that same slot does not ask again. Reordering the bank is unavailable.
-- **Advanced.** The parameter editor stays, on the same queue. A value the map cannot label is read-only. A patch that is not one of the recipes is labeled a custom configuration.
+- **Connect.** One sentence, then Connect. When the browser offers a single input and a single output, the port selects stay hidden. SysEx starts after the gesture. Family `0x5302` is required. Discovery does not write. The workspace opens only after identity, the relevant system area, the temporary patch, and the patch position have been read.
+- **Sound.** The screen is the current patch and fills the window without scrolling. The name and the USER slot are the title, with previous and next. Choosing one loads that USER patch on the pedal, and the title changes when the reading comes back. A program change from the pedal updates the same title. One board holds the rest: Original, PCM and Both beside the two PCM chips; EXP, CTL, the four effects and the three recipes on the other side. Save and Guitar are the last row. Save writes the slot that is sounding. A dot on Save means that sounding patch differs from the slot. Read again stays in the top bar.
+- **Sheets.** One at a time, over the current patch. A PCM chip opens the nine tones, a level, Use, and Remove. A recipe card opens the scope chip and the groups, then Apply. Save confirms the current USER slot and says a verified save does not promise the sound survives switching the pedal off. Guitar opens the instrument, PU TYPE when that profile asks, Play Feel, Low Velocity Cut, Velocity Dynamics, SENS, and scale. Activate lists the groups in that sheet before the write. Advanced stays at the bottom of the Guitar sheet.
+- A tile shows the last confirmed reading while a write is in flight, then the readback. A patch that matches no recipe has no recipe card selected. There is no string meter.
 
-Guided tests (silence, string, articulation, groove, validation) record only the musician’s own ok / issue. There is no string meter, accuracy percentage, or acoustic latency.
+## Language
+
+English is written first in `src/copy/en.ts`. PT-BR translates sentences and verbs. These stay English in both dictionaries: patch names and USER slots as read; PCM tone names; PCM 1, PCM 2, EXP, CTL, GK, USER, PU TYPE, SENS; Play Feel, Low Velocity Cut, Velocity Dynamics; Natural, Anti-Ghost; instrument product names; Reverb, Delay, Chorus, Pad.
 
 ## Confirmed writes
 
@@ -37,7 +37,7 @@ One operation at a time. The mirror updates from the readback, not from the send
 
 Slider and text fields send the latest value when the control is released, then verify once. They do not send a USER write on every step.
 
-Automatic saving after each gesture stays off until [capability-matrix.md](./capability-matrix.md) records a hardware pass. The musician picks a USER slot and uses **Save and verify**. “Saved and verified” appears only after that slot is read back. The screen does not promise the sound survives power-off.
+Automatic saving after each gesture stays off until [capability-matrix.md](./capability-matrix.md) records a hardware pass. Save opens the USER slot and Apply writes it. “Saved” appears only after that slot is read back. The save sheet says the sound is not promised after the pedal is switched off.
 
 ## Reference recipes
 

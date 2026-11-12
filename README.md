@@ -35,10 +35,10 @@ Home → Connect (a gesture, then a confirmed read) → Intention workspace
 - **Connect.** Asks for MIDI after you choose it. Nothing is written while the pedal is identified.
   The workspace opens only after the system area, the sounding patch, and its position have been read.
   Development builds can use a simulated pedal. A browser without SysEx does not invent a device.
-- **Patch** (`#/gr55/patch`). Instrument and calibration, original / accompaniment / both, up to two
-  PCM layers, expression and CTL, then an explicit **Save and verify** into a USER slot. A patch that
-  is not one of the reference recipes is shown as a custom configuration. Advanced stays available on
-  the same queue. Automatic saving is off until it is measured on hardware.
+- **Patch** (`#/gr55/patch`). The screen is the sounding patch: Original, PCM, or Both; two PCM
+  chips; EXP and CTL; Harmonica, Piano + Strings, or Solo. Previous and next change the current
+  USER patch with the pedal. Save and Guitar open a sheet. Advanced
+  stays on the Guitar sheet, on the same queue. Automatic saving is off until it is measured on hardware.
 - **Authority.** The screen follows the last confirmed reading. A send acknowledgement is not enough.
   **Sync** reads the sounding patch again.
 - **Exit.** Top-left: disconnect and return Home. Ports are not remembered.
@@ -67,8 +67,7 @@ misbehaves on a real GR-55, please open an issue with the firmware version and w
   are shown as "a preset chosen on the pedal" and never written.
 - **Bass mode GK sets.** Only the name and the pickup are editable; the rest of the bass layout
   is not settled, so it is left to the pedal.
-- **No string meter.** The workspace does not draw level, accuracy, or latency. Guided checks are
-  what you hear.
+- **No string meter.** The workspace does not draw level, accuracy, or latency. You hear the change.
 - **Save.** “Saved and verified” means the USER slot we read back matched. It does not yet mean the
   sound is still there after the pedal is switched off. See the capability matrix.
 - **Panel patch changes.** The screen shows the time of the last check. Without a message from the

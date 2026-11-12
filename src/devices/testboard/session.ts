@@ -122,6 +122,14 @@ export function createTestSession(): IntentionSession {
       publish();
       return { ok: true };
     },
+    async selectSlot(slot) {
+      if (state.blocked) return { ok: false, code: 'blocked' };
+      confirmed = { ...confirmed, userSlot: slot, slotLabel: `T${slot}`, tempDiffersFromUser: null };
+      state.phase = 'idle';
+      state.lastVerifiedAt = Date.now();
+      publish();
+      return { ok: true };
+    },
     async save(slot) {
       if (state.blocked) return { ok: false, code: 'blocked' };
       saved = structuredClone(confirmed);

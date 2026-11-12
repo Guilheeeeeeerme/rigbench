@@ -48,7 +48,6 @@ export function ConnectScreen() {
       </Link>
       <h1>{t('connection.title')}</h1>
       <p>{t('connection.intro')}</p>
-      <p className="hint">{t('connection.persistence')}</p>
 
       {!hasAccess ? (
         <button
@@ -63,34 +62,38 @@ export function ConnectScreen() {
         <p className="hint">{t('connection.noPorts')}</p>
       ) : (
         <div className="ports">
-          <label>
-            {t('connection.input')}
-            <select
-              value={selectedInputId}
-              disabled={connecting}
-              onChange={(event) => dispatch(setSelectedInputId(event.target.value))}
-            >
-              {inputs.map((port) => (
-                <option key={port.id} value={port.id}>
-                  {port.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            {t('connection.output')}
-            <select
-              value={selectedOutputId}
-              disabled={connecting}
-              onChange={(event) => dispatch(setSelectedOutputId(event.target.value))}
-            >
-              {outputs.map((port) => (
-                <option key={port.id} value={port.id}>
-                  {port.name}
-                </option>
-              ))}
-            </select>
-          </label>
+          {inputs.length === 1 && outputs.length === 1 ? null : (
+            <>
+              <label>
+                {t('connection.input')}
+                <select
+                  value={selectedInputId}
+                  disabled={connecting}
+                  onChange={(event) => dispatch(setSelectedInputId(event.target.value))}
+                >
+                  {inputs.map((port) => (
+                    <option key={port.id} value={port.id}>
+                      {port.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                {t('connection.output')}
+                <select
+                  value={selectedOutputId}
+                  disabled={connecting}
+                  onChange={(event) => dispatch(setSelectedOutputId(event.target.value))}
+                >
+                  {outputs.map((port) => (
+                    <option key={port.id} value={port.id}>
+                      {port.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </>
+          )}
           <button
             type="button"
             className="primary"

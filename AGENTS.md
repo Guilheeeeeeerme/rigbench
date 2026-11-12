@@ -19,14 +19,15 @@ The pedal is the only confirmed state. The browser stores the interface language
 EN + PT-BR via `src/copy/`.
 **No AI** in the MVP shell.
 
-The GR-55 surface is an **intention workspace**: instrument and calibration, three sound modes, layers, expression and CTL, then an explicit verified save. Hardware claims stay open in the capability matrix until a pedal is measured.
+The GR-55 surface is an **intention workspace**: the sounding patch fills the screen. Previous and next load a USER slot, and a program change on the pedal updates the same title. Three modes, two PCM chips, EXP and CTL, three recipes. Guitar setup and USER save open a sheet. Hardware claims stay open in the capability matrix until a pedal is measured.
 
 ```
 Home (GR-55 + placeholders)
   → Connect (gesture, then a confirmed read; no silent resume)
-  → App: intention workspace
-       Instrument (confirm, then GK) · modes · layers · pedals
-       Advanced (same queue) · Save to USER (verified) · Sync · Exit → Home
+  → App: Now Playing
+       Modes · PCM · EXP/CTL · recipes
+       Save sheet · Guitar sheet (Activate, then Advanced)
+       Sync · Exit → Home
 ```
 
 Product SoT: [docs/current/intention-workbench.md](./docs/current/intention-workbench.md).

@@ -4,6 +4,7 @@ import { useT } from '../../copy';
 import { useAppDispatch } from '../../app/store/hooks';
 import type { Gr55Editor } from './editor';
 import { exitToHome } from './connectionThunks';
+import { LocaleSwitch } from '../../shell/LocaleSwitch';
 import { Gr55Workspace } from './Gr55Workspace';
 import { createGr55Session } from './intentions/session';
 import { useSystem } from './SystemParts';
@@ -42,6 +43,7 @@ export function AppShell({ editor }: { editor: Gr55Editor }) {
         </button>
         <h1 className="app-shell-title">{t('gr55.mvp.title')}</h1>
         <div className="app-shell-actions">
+          <LocaleSwitch inline />
           <span className="hint" role="status">
             {view.blocked ? t('intention.blocked') : t('gr55.authorityPedal')}
           </span>

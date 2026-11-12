@@ -16,7 +16,7 @@ import {
   QueueBlockedError,
   QueueTimeoutError,
 } from '../../../session/operationQueue';
-import { holdRemoteMirror } from '../sessionAuthority';
+import { holdRemoteMirror, isPedalAuthority } from '../sessionAuthority';
 import type { Gr55Editor } from '../editor';
 import { formatUserSlot } from '../slots';
 import { SYSTEM_ADDRESS, SYSTEM_SPAN, SYSTEM, gkSet } from '../systemMap';
@@ -59,6 +59,14 @@ export function createGr55Session(editor: Gr55Editor, system: Gr55System): Gr55I
   }
 
   queue.subscribe(() => publish());
+  editor.subscribe(() => {
+    if (!isPedalAuthority()) return;
+    const phase = queue.snapshot().phase;
+    if (phase !== 'idle' && phase !== 'applied' && phase !== 'saved') return;
+    const nextSlot = editor.patchSource?.kind === 'slot' ? editor.patchSource.userPatchNumber : null;
+    view = capture(editor, system, nextSlot === view.userSlot ? view.tempDiffersFromUser : null);
+    publish();
+  });
   publish();
 
   async function reloadView(): Promise<void> {
@@ -132,6 +140,23 @@ export function createGr55Session(editor: Gr55Editor, system: Gr55System): Gr55I
           const again = translate(editor, system, intention);
           if (!again.ok) throw new MismatchError();
           await commit(again.changes);
+        });
+        return { ok: true };
+      } catch (error) {
+        return mapError(error);
+      }
+    },
+    async selectSlot(slot: number): Promise<OperationResult> {
+      if (queue.snapshot().blocked) return { ok: false, code: 'blocked' };
+      try {
+        await queue.run('read', 'read', async () => {
+          holdRemoteMirror(true);
+          try {
+            await editor.loadUserSlotIntoWorkingCopy(slot);
+          } finally {
+            holdRemoteMirror(false);
+          }
+          await reloadView();
         });
         return { ok: true };
       } catch (error) {

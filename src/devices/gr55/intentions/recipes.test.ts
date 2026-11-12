@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { MidiSession } from '../../../midi/session';
 import { RolandGR55SysExConfig } from '../../../protocol/RolandDevices';
 import { FakeGr55 } from '../fakeDevice';
@@ -148,5 +148,19 @@ describe('GR-55 intention recipes', () => {
     const bad = await intentions.save(5);
     expect(bad).toEqual({ ok: false, code: 'mismatch' });
     expect(intentions.getState().blocked).toBe(true);
+  });
+
+  test('the current patch follows the slot chosen here and a program change from the pedal', async () => {
+    const { device, intentions } = await ready();
+    const chosen = await intentions.selectSlot(1);
+    expect(chosen).toEqual({ ok: true });
+    expect(intentions.getState().confirmed?.userSlot).toBe(1);
+    expect(intentions.getState().confirmed?.patchName).toBe('User 2');
+
+    device.poke(GR55_MAP.setup.patchPc.address, [2]);
+    device.emitProgramChange(2);
+    await vi.waitFor(() => expect(intentions.getState().confirmed?.userSlot).toBe(2), {
+      timeout: 5000,
+    });
   });
 });

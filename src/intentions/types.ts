@@ -130,6 +130,8 @@ export interface IntentionSession {
   preview(intention: MusicalIntention): PreviewResult;
   apply(intention: MusicalIntention): Promise<OperationResult>;
   save(slot: number): Promise<OperationResult>;
+  /** Load a USER slot on the pedal and show the reading that comes back. */
+  selectSlot(slot: number): Promise<OperationResult>;
   restore(): Promise<OperationResult>;
   reread(): Promise<void>;
   recover(): Promise<void>;

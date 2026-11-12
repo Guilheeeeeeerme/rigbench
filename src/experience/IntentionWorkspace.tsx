@@ -2,6 +2,8 @@ import { useEffect, useId, useState, useSyncExternalStore, type ReactNode } from
 import { useT } from '../copy';
 import type { Translate } from '../copy';
 import type {
+  ConfirmedView,
+  EffectId,
   IntentionSession,
   LayerId,
   MusicalIntention,
@@ -9,9 +11,11 @@ import type {
   PedalRole,
   PreviewGroup,
   PreviewResult,
+  RecipeId,
+  SoundMode,
 } from '../intentions/types';
 
-const LAYERS: readonly LayerId[] = [
+const TONES: readonly LayerId[] = [
   'piano',
   'epiano',
   'strings',
@@ -23,7 +27,17 @@ const LAYERS: readonly LayerId[] = [
   'bass',
 ];
 
-const TESTS = ['silence', 'string', 'articulation', 'groove', 'validate'] as const;
+const RECIPES: readonly RecipeId[] = [
+  'nylon-harmonica-exp',
+  'nylon-piano-strings-ctl',
+  'solo-without-guitar',
+];
+
+const EFFECTS: readonly EffectId[] = ['dry', 'small-room', 'soft-ambience', 'solo-delay'];
+
+const MODES: readonly SoundMode[] = ['original', 'accompaniment', 'both'];
+
+type SheetKind = 'pcm' | 'recipe' | 'save' | 'guitar';
 
 export interface InstrumentChoice {
   id: string;
@@ -57,27 +71,23 @@ export function IntentionWorkspace({
     state.blocked ||
     state.phase === 'applying' ||
     state.phase === 'saving' ||
-    state.phase === 'verifying';
+    state.phase === 'verifying' ||
+    state.phase === 'reading';
+  const [sheet, setSheet] = useState<SheetKind | null>(null);
+  const [pcmSlot, setPcmSlot] = useState<1 | 2>(1);
+  const [tone, setTone] = useState<LayerId | null>(null);
+  const [level, setLevel] = useState(80);
   const [instrumentId, setInstrumentId] = useState(instruments[0]?.id ?? '');
   const [calibrationId, setCalibrationId] = useState(instruments[0]?.calibrations[0]?.id ?? '');
   const [pickup, setPickup] = useState('');
   const [scale, setScale] = useState('');
-  const [brand, setBrand] = useState('');
-  const [playing, setPlaying] = useState('mixed');
-  const [use, setUse] = useState('both');
-  const [pending, setPending] = useState<MusicalIntention | null>(null);
-  const [preview, setPreview] = useState<Extract<PreviewResult, { ok: true }> | null>(null);
-  const [notice, setNotice] = useState<string>();
-  const [slot, setSlot] = useState<number>(confirmed?.userSlot ?? slots[0]?.id ?? 0);
-  const [acceptedSlot, setAcceptedSlot] = useState<number | null>(null);
-  const [checks, setChecks] = useState<Record<string, 'ok' | 'issue'>>({});
-  const [layerSlot, setLayerSlot] = useState<1 | 2>(1);
-  const [layerId, setLayerId] = useState<LayerId>('piano');
-  const [level, setLevel] = useState(80);
   const [feel, setFeel] = useState(confirmed?.gk?.playFeel ?? 3);
   const [cut, setCut] = useState(confirmed?.gk?.lowVelocityCut ?? 3);
   const [dynamics, setDynamics] = useState(confirmed?.gk?.velocityDynamics ?? 4);
   const [sens, setSens] = useState(confirmed?.gk?.sens[0] ?? 28);
+  const [pending, setPending] = useState<MusicalIntention | null>(null);
+  const [preview, setPreview] = useState<Extract<PreviewResult, { ok: true }> | null>(null);
+  const [notice, setNotice] = useState<string>();
 
   useEffect(() => {
     const gk = state.confirmed?.gk;
@@ -88,7 +98,29 @@ export function IntentionWorkspace({
     setSens(gk.sens[0] ?? 0);
   }, [state.lastVerifiedAt, state.confirmed]);
 
+  useEffect(() => {
+    if (!sheet) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSheet(null);
+        setPending(null);
+        setPreview(null);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [sheet]);
+
   const instrument = instruments.find((item) => item.id === instrumentId) ?? instruments[0];
+  const mode = confirmed ? confirmedMode(confirmed) : null;
+  const slotIndex = slots.findIndex((item) => item.id === confirmed?.userSlot);
+  const previousSlot = slotIndex >= 0 ? slots[(slotIndex - 1 + slots.length) % slots.length] : undefined;
+  const nextSlot = slotIndex >= 0 ? slots[(slotIndex + 1) % slots.length] : undefined;
+
+  const chooseSlot = (id: number | undefined) => {
+    if (id == null) return;
+    void session.selectSlot(id).then(report);
+  };
 
   const report = (result: OperationResult) => {
     if (result.ok) {
@@ -106,7 +138,20 @@ export function IntentionWorkspace({
     else setNotice(t('intention.failed'));
   };
 
-  const ask = (intention: MusicalIntention) => {
+  const closeSheet = () => {
+    setSheet(null);
+    setPending(null);
+    setPreview(null);
+  };
+
+  const run = (intention: MusicalIntention, closeOnOk = false) => {
+    void session.apply(intention).then((result) => {
+      report(result);
+      if (result.ok && closeOnOk) closeSheet();
+    });
+  };
+
+  const ask = (intention: MusicalIntention, kind: SheetKind) => {
     const plan = session.preview(intention);
     if (!plan.ok) {
       report(plan);
@@ -115,439 +160,473 @@ export function IntentionWorkspace({
     setPending(intention);
     setPreview(plan);
     setNotice(undefined);
+    setSheet(kind);
   };
 
-  const run = (intention: MusicalIntention) => {
+  const applyPending = () => {
+    if (!pending) return;
+    const intention = pending;
     void session.apply(intention).then((result) => {
       report(result);
-      if (result.ok) {
-        setPending(null);
-        setPreview(null);
-      }
+      if (result.ok) closeSheet();
     });
   };
 
-  const checked = (time: number | null) =>
-    time == null
-      ? t('intention.phases.verifying')
-      : t('intention.lastCheck', new Date(time).toLocaleTimeString());
+  const openPcm = (next: 1 | 2) => {
+    const layer = confirmed?.layers.find((item) => item.slot === next);
+    setPcmSlot(next);
+    setTone(null);
+    setLevel(layer?.level ?? 80);
+    setPending(null);
+    setPreview(null);
+    setSheet('pcm');
+  };
+
+  const openSave = () => {
+    setPending(null);
+    setPreview(null);
+    setSheet('save');
+  };
 
   return (
-    <div className="mvp-workspace intention-workspace">
-      <header className="mvp-header">
-        <div>
-          <h1>{t('intention.title')}</h1>
-          <p className="mvp-preset-line">
-            {confirmed?.patchName || t('intention.unnamed')}
-            {confirmed?.slotLabel ? ` · ${confirmed.slotLabel}` : ''}
-            {' · '}
-            {checked(state.lastVerifiedAt)}
+    <div className="mvp-workspace now-playing">
+      <header className="now-patch">
+        <button
+          type="button"
+          aria-label={t('intention.previous')}
+          disabled={busy || previousSlot == null}
+          onClick={() => chooseSlot(previousSlot?.id)}
+        >
+          ‹
+        </button>
+        <div className="now-title">
+          <h1>{confirmed?.patchName || t('intention.unnamed')}</h1>
+          <p>
+            {confirmed?.slotLabel}
+            <span className="now-phase">{phaseLabel(t, state.phase)}</span>
           </p>
         </div>
-        <p className="status" role="status">
-          {phaseLabel(t, state.phase)}
-        </p>
+        <button
+          type="button"
+          aria-label={t('intention.next')}
+          disabled={busy || nextSlot == null}
+          onClick={() => chooseSlot(nextSlot?.id)}
+        >
+          ›
+        </button>
       </header>
 
-      <p className="mvp-callout">{t('intention.persistence')}</p>
-      <p className="hint">{t('intention.cable')}</p>
-      {confirmed && confirmed.recipeId == null && (
-        <p className="mvp-callout">
-          <strong>{t('intention.custom')}</strong> {t('intention.customHint')}
-        </p>
-      )}
-      {confirmed?.tempDiffersFromUser && <p className="hint">{t('intention.tempDiffers')}</p>}
-      {notice && (
-        <p className="error" role="alert">
+      {notice && !sheet && (
+        <p className="error now-notice" role="alert">
           {notice}
         </p>
       )}
 
-      {(state.phase === 'applying' ||
-        state.phase === 'saving' ||
-        state.phase === 'verifying' ||
-        state.phase === 'uncertain') && (
-        <div className="intention-overlay" role="status" aria-live="polite">
-          <p>{phaseLabel(t, state.phase)}</p>
-          {state.phase === 'uncertain' && (
-            <button type="button" onClick={() => void session.recover()}>
-              {t('intention.recover')}
-            </button>
-          )}
-        </div>
-      )}
-
-      {preview && pending && (
-        <section className="mvp-callout">
-          <h2>{t('intention.confirmTitle')}</h2>
-          <p>
-            {preview.scope === 'system'
-              ? t('intention.scopeSystem')
-              : preview.scope === 'both'
-                ? t('intention.scopeBoth')
-                : t('intention.scopePatch')}
-          </p>
-          <ul>
-            {preview.groups.map((group) => (
-              <li key={group}>{groupLabel(t, group)}</li>
+      <div className="now-board">
+        <div className="now-sound">
+          <div className="now-row" role="group" aria-label={t('intention.modes')}>
+            {MODES.map((item) => (
+              <button
+                key={item}
+                type="button"
+                className={mode === item ? 'is-selected' : undefined}
+                aria-pressed={mode === item}
+                disabled={busy}
+                onClick={() => run({ kind: 'mode', mode: item })}
+              >
+                {modeLabel(t, item)}
+              </button>
             ))}
-          </ul>
-          <p className="hint">{t('intention.sentStays')}</p>
-          <button type="button" className="primary" disabled={busy} onClick={() => run(pending)}>
-            {t('intention.confirm')}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setPending(null);
-              setPreview(null);
-            }}
-          >
-            {t('intention.cancel')}
-          </button>
-        </section>
-      )}
-
-      <section className="mvp-section">
-        <h2>{t('intention.instrumentTitle')}</h2>
-        <p className="hint">{t('intention.instrumentLead')}</p>
-        <p className="hint">{t('intention.sessionOnly')}</p>
-        <label>
-          {t('intention.instrumentTitle')}
-          <select
-            value={instrument?.id ?? ''}
-            disabled={busy}
-            onChange={(event) => {
-              const next = instruments.find((item) => item.id === event.target.value);
-              setInstrumentId(event.target.value);
-              setCalibrationId(next?.calibrations[0]?.id ?? '');
-              setPickup('');
-            }}
-          >
-            {instruments.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        {instrument && <p className="hint">{instrument.note}</p>}
-        <label>
-          {t('intention.brand')}
-          <input value={brand} onChange={(event) => setBrand(event.target.value)} disabled={busy} />
-        </label>
-        <p className="hint">{t('intention.brandHint')}</p>
-        {instrument?.confirmPickup && (
-          <label>
-            {t('intention.pickup')}
-            <select value={pickup} disabled={busy} onChange={(event) => setPickup(event.target.value)}>
-              <option value="">{instrument.pickups[0]?.label ?? ''}</option>
-              {instrument.pickups.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        {instrument && instrument.calibrations.length > 0 && (
-          <label>
-            {t('intention.touch')}
-            <select
-              value={calibrationId}
-              disabled={busy}
-              onChange={(event) => setCalibrationId(event.target.value)}
-            >
-              {instrument.calibrations.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        <label>
-          {t('intention.playing')}
-          <select value={playing} disabled={busy} onChange={(event) => setPlaying(event.target.value)}>
-            <option value="finger">{t('intention.playingFinger')}</option>
-            <option value="pick">{t('intention.playingPick')}</option>
-            <option value="hard">{t('intention.playingHard')}</option>
-            <option value="soft">{t('intention.playingSoft')}</option>
-            <option value="mixed">{t('intention.playingMixed')}</option>
-          </select>
-        </label>
-        <p className="hint">{t('intention.playingHint')}</p>
-        <label>
-          {t('intention.use')}
-          <select value={use} disabled={busy} onChange={(event) => setUse(event.target.value)}>
-            <option value="base">{t('intention.useBase')}</option>
-            <option value="solo">{t('intention.useSolo')}</option>
-            <option value="both">{t('intention.useBoth')}</option>
-          </select>
-        </label>
-        <label>
-          {t('intention.scale')}
-          <input
-            inputMode="numeric"
-            value={scale}
-            disabled={busy}
-            onChange={(event) => setScale(event.target.value)}
-          />
-        </label>
-        <p className="hint">{t('intention.scaleHint')}</p>
-        <button
-          type="button"
-          className="primary"
-          disabled={busy || !instrument}
-          onClick={() => {
-            if (!instrument) return;
-            const scaleMm = scale.trim() === '' ? undefined : Number(scale);
-            ask({
-              kind: 'instrument',
-              profileId: instrument.id,
-              calibrationId: calibrationId || undefined,
-              puType: pickup || undefined,
-              scaleMm: scaleMm != null && Number.isFinite(scaleMm) ? scaleMm : undefined,
-            });
-          }}
-        >
-          {t('intention.activate')}
-        </button>
-      </section>
-
-      <section className="mvp-section">
-        <h2>{t('intention.touch')}</h2>
-        <p className="hint">{t('intention.touchHint')}</p>
-        <Range
-          label={t('intention.touch')}
-          min={1}
-          max={5}
-          value={feel}
-          disabled={busy}
-          onChange={setFeel}
-          onCommit={(value) => void session.apply({ kind: 'calibration', playFeel: value }).then(report)}
-        />
-        <p className="hint">{t('intention.cutHint')}</p>
-        <Range
-          label={t('intention.cut')}
-          min={0}
-          max={10}
-          value={cut}
-          disabled={busy}
-          onChange={setCut}
-          onCommit={(value) =>
-            void session.apply({ kind: 'calibration', lowVelocityCut: value }).then(report)
-          }
-        />
-        <p className="hint">{t('intention.dynamicsHint')}</p>
-        <Range
-          label={t('intention.dynamics')}
-          min={0}
-          max={10}
-          value={dynamics}
-          disabled={busy}
-          onChange={setDynamics}
-          onCommit={(value) =>
-            void session.apply({ kind: 'calibration', velocityDynamics: value }).then(report)
-          }
-        />
-        <p className="hint">{t('intention.balanceHint')}</p>
-        <Range
-          label={t('intention.balance')}
-          min={0}
-          max={100}
-          value={sens}
-          disabled={busy}
-          onChange={setSens}
-          onCommit={(value) => void session.apply({ kind: 'calibration', sens: value }).then(report)}
-        />
-        {!session.capabilities.supportsArticulation && <p className="hint">{t('intention.noArticulation')}</p>}
-      </section>
-
-      <section className="mvp-section">
-        <h2>{t('intention.testsTitle')}</h2>
-        <p className="hint">{t('intention.testsLead')}</p>
-        {TESTS.map((step) => (
-          <div key={step} className="intention-test">
-            <p>{testLabel(t, step)}</p>
-            <button type="button" disabled={busy} onClick={() => setChecks((prev) => ({ ...prev, [step]: 'ok' }))}>
-              {t('intention.testOk')}
-            </button>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => setChecks((prev) => ({ ...prev, [step]: 'issue' }))}
-            >
-              {t('intention.testIssue')}
-            </button>
-            {checks[step] && <span className="hint">{checks[step] === 'ok' ? t('intention.testOk') : t('intention.testIssue')}</span>}
           </div>
-        ))}
-      </section>
 
-      <section className="mvp-section">
-        <h2>{t('intention.title')}</h2>
-        <ModeButton
-          busy={busy}
-          title={t('intention.modeOriginal')}
-          hint={t('intention.modeOriginalHint')}
-          onClick={() => run({ kind: 'mode', mode: 'original' })}
-        />
-        <ModeButton
-          busy={busy}
-          title={t('intention.modeAccomp')}
-          hint={t('intention.modeAccompHint')}
-          onClick={() => run({ kind: 'mode', mode: 'accompaniment' })}
-        />
-        <ModeButton
-          busy={busy}
-          title={t('intention.modeBoth')}
-          hint={t('intention.modeBothHint')}
-          onClick={() => run({ kind: 'mode', mode: 'both' })}
-        />
-      </section>
-
-      <section className="mvp-section">
-        <h2>{t('intention.layersTitle')}</h2>
-        <label>
-          {t('intention.slot', layerSlot)}
-          <select
-            value={layerSlot}
-            disabled={busy}
-            onChange={(event) => setLayerSlot(Number(event.target.value) as 1 | 2)}
-          >
-            <option value={1}>{t('intention.slot', 1)}</option>
-            {session.capabilities.maxSynthLayers > 1 && <option value={2}>{t('intention.slot', 2)}</option>}
-          </select>
-        </label>
-        <div className="intention-cards">
-          {LAYERS.map((id) => (
-            <button
-              key={id}
-              type="button"
-              className={id === layerId ? 'intention-card is-selected' : 'intention-card'}
-              disabled={busy}
-              onClick={() => setLayerId(id)}
-            >
-              {layerLabel(t, id)}
-            </button>
-          ))}
+          <div className="now-row now-row-2">
+            {([1, 2] as const).map((index) => {
+              const layer = confirmed?.layers.find((item) => item.slot === index);
+              const name = layer?.on ? layer.toneName : t('intention.free');
+              return (
+                <button key={index} type="button" disabled={busy} onClick={() => openPcm(index)}>
+                  {t('intention.pcm', index)} · {name}
+                </button>
+              );
+            })}
+          </div>
         </div>
-        <Range label={t('intention.level')} min={0} max={100} value={level} disabled={busy} onChange={setLevel} />
-        <button
-          type="button"
-          className="primary"
-          disabled={busy}
-          onClick={() => run({ kind: 'layer', slot: layerSlot, layer: layerId, level })}
-        >
-          {t('intention.applyLayer')}
-        </button>
-        <button type="button" disabled={busy} onClick={() => run({ kind: 'clear-layer', slot: layerSlot })}>
-          {t('intention.clearLayer')}
-        </button>
-        {confirmed && (
-          <ul>
-            {confirmed.layers.map((layer) => (
-              <li key={layer.slot}>
-                {t('intention.slot', layer.slot)}: {layer.on ? layer.toneName : t('intention.pedalOff')}
-              </li>
+
+        <div className="now-side">
+          <div className="now-row now-row-2 now-pills">
+            <p>EXP · {pedalLabel(t, confirmed?.expression ?? 'off')}</p>
+            <p>CTL · {pedalLabel(t, confirmed?.ctl ?? 'off')}</p>
+          </div>
+
+          <div className="now-effects" role="group" aria-label={t('intention.effectShared')}>
+            {EFFECTS.map((effect) => (
+              <button
+                key={effect}
+                type="button"
+                disabled={busy}
+                onClick={() => run({ kind: 'effect', effect })}
+              >
+                {effectLabel(t, effect)}
+              </button>
             ))}
-          </ul>
-        )}
-      </section>
+          </div>
 
-      <section className="mvp-section">
-        <h2>{t('intention.effectsTitle')}</h2>
-        <p className="hint">{t('intention.effectsHint')}</p>
-        {(
-          [
-            ['dry', 'intention.effectDry'],
-            ['small-room', 'intention.effectRoom'],
-            ['soft-ambience', 'intention.effectAmb'],
-            ['solo-delay', 'intention.effectDelay'],
-          ] as const
-        ).map(([effect, key]) => (
-          <button key={effect} type="button" disabled={busy} onClick={() => run({ kind: 'effect', effect })}>
-            {t(key)}
-          </button>
-        ))}
-      </section>
+          <div className="now-row">
+            {RECIPES.map((id) => {
+              const allowed = session.preview({ kind: 'recipe', id }).ok;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  className={confirmed?.recipeId === id ? 'is-selected' : undefined}
+                  aria-pressed={confirmed?.recipeId === id}
+                  disabled={busy || !allowed}
+                  onClick={() => ask({ kind: 'recipe', id }, 'recipe')}
+                >
+                  {recipeLabel(t, id)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
-      <section className="mvp-section">
-        <h2>{t('intention.pedalsTitle')}</h2>
-        <p>{t('intention.expressionNow', pedalLabel(t, confirmed?.expression ?? 'off'))}</p>
-        <p>{t('intention.ctlNow', pedalLabel(t, confirmed?.ctl ?? 'off'))}</p>
-        <h3>{t('intention.recipesTitle')}</h3>
-        <p className="hint">{t('intention.grade')}</p>
-        <button type="button" disabled={busy} onClick={() => ask({ kind: 'recipe', id: 'nylon-harmonica-exp' })}>
-          {t('intention.recipeHarmonica')}
+      <div className="now-actions">
+        <button type="button" className="primary" disabled={busy || confirmed?.userSlot == null} onClick={openSave}>
+          {t('intention.save')}
+          {confirmed?.tempDiffersFromUser ? <span className="now-dot" aria-hidden="true" /> : null}
         </button>
-        <p className="hint">{t('intention.recipeHarmonicaHint')}</p>
         <button
           type="button"
-          disabled={busy || session.capabilities.maxSynthLayers < 2}
-          onClick={() => ask({ kind: 'recipe', id: 'nylon-piano-strings-ctl' })}
-        >
-          {t('intention.recipeStrings')}
-        </button>
-        <p className="hint">{t('intention.recipeStringsHint')}</p>
-        <button type="button" disabled={busy} onClick={() => ask({ kind: 'recipe', id: 'solo-without-guitar' })}>
-          {t('intention.recipeSolo')}
-        </button>
-        <p className="hint">{t('intention.recipeSoloHint')}</p>
-      </section>
-
-      <section className="mvp-section">
-        <h2>{t('intention.save')}</h2>
-        <p className="hint">{t('intention.bankBlocked')}</p>
-        {confirmed?.userSlot == null && <p className="hint">{t('intention.noUserSlot')}</p>}
-        <label>
-          {t('intention.saveSlot')}
-          <select
-            value={slot}
-            disabled={busy}
-            onChange={(event) => {
-              setSlot(Number(event.target.value));
-              setAcceptedSlot(null);
-            }}
-          >
-            {slots.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button
-          type="button"
-          className="primary"
           disabled={busy}
           onClick={() => {
-            if (acceptedSlot !== slot) {
-              setAcceptedSlot(slot);
-              setNotice(t('intention.saveConfirm'));
-              return;
-            }
-            void session.save(slot).then((result) => {
-              if (result.ok) setNotice(t('intention.saved'));
-              else {
-                report(result);
-                setNotice(t('intention.saveFailed'));
-              }
-            });
+            setPending(null);
+            setPreview(null);
+            setSheet('guitar');
           }}
         >
-          {acceptedSlot === slot ? t('intention.saveAgain') : t('intention.save')}
+          {t('intention.guitar')}
         </button>
-        {state.canRestore && (
-          <button type="button" disabled={busy} onClick={() => void session.restore().then(report)}>
-            {t('intention.restore')}
-          </button>
-        )}
-      </section>
+      </div>
 
-      {advanced}
+      {sheet && (
+        <div className="now-sheet-backdrop" role="presentation" onClick={closeSheet}>
+          <div
+            className="now-sheet"
+            role="dialog"
+            aria-modal="true"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {notice && (
+              <p className="error" role="alert">
+                {notice}
+              </p>
+            )}
+            {sheet === 'pcm' && (
+              <>
+                <h2>
+                  {t('intention.pcm', pcmSlot)}
+                  {confirmed?.layers.find((item) => item.slot === pcmSlot)?.on
+                    ? ` · ${confirmed.layers.find((item) => item.slot === pcmSlot)?.toneName}`
+                    : ''}
+                </h2>
+                <div className="now-tones">
+                  {TONES.map((id) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className={tone === id ? 'is-selected' : undefined}
+                      aria-pressed={tone === id}
+                      disabled={busy}
+                      onClick={() => setTone(id)}
+                    >
+                      {toneLabel(t, id)}
+                    </button>
+                  ))}
+                </div>
+                <Range
+                  label={t('intention.level')}
+                  min={0}
+                  max={100}
+                  value={level}
+                  disabled={busy}
+                  onChange={setLevel}
+                />
+                <div className="now-actions">
+                  <button
+                    type="button"
+                    className="primary"
+                    disabled={busy || tone == null}
+                    onClick={() => {
+                      if (!tone) return;
+                      run({ kind: 'layer', slot: pcmSlot, layer: tone, level }, true);
+                    }}
+                  >
+                    {t('intention.use')}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => run({ kind: 'clear-layer', slot: pcmSlot }, true)}
+                  >
+                    {t('intention.remove')}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {sheet === 'recipe' && preview && (
+              <Confirm
+                t={t}
+                preview={preview}
+                busy={busy}
+                onApply={applyPending}
+                onCancel={closeSheet}
+              />
+            )}
+
+            {sheet === 'save' && confirmed?.userSlot != null && confirmed.slotLabel && (
+              <>
+                <p className="now-slot">{confirmed.slotLabel}</p>
+                <p className="scope chip-amber">
+                  <span className="dot" aria-hidden="true" />
+                  USER
+                </p>
+                <p>{t('intention.powerOff')}</p>
+                <div className="now-actions">
+                  <button
+                    type="button"
+                    className="primary"
+                    disabled={busy}
+                    onClick={() => {
+                      void session.save(confirmed.userSlot!).then((result) => {
+                        report(result);
+                        if (result.ok) closeSheet();
+                        else setNotice(t('intention.saveFailed'));
+                      });
+                    }}
+                  >
+                    {t('intention.apply')}
+                  </button>
+                  <button type="button" disabled={busy} onClick={closeSheet}>
+                    {t('intention.cancel')}
+                  </button>
+                </div>
+                {state.canRestore && (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      void session.restore().then((result) => {
+                        report(result);
+                        if (result.ok) closeSheet();
+                      });
+                    }}
+                  >
+                    {t('intention.restore')}
+                  </button>
+                )}
+              </>
+            )}
+
+            {sheet === 'guitar' && !preview && instrument && (
+              <>
+                <h2>{t('intention.guitar')}</h2>
+                <p className="scope chip-blue">
+                  <span className="dot" aria-hidden="true" />
+                  {t('intention.scopeSystem')}
+                </p>
+                <label>
+                  {t('intention.guitar')}
+                  <select
+                    value={instrument.id}
+                    disabled={busy}
+                    onChange={(event) => {
+                      const next = instruments.find((item) => item.id === event.target.value);
+                      setInstrumentId(event.target.value);
+                      setCalibrationId(next?.calibrations[0]?.id ?? '');
+                      setPickup('');
+                    }}
+                  >
+                    {instruments.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {instrument.confirmPickup && (
+                  <label>
+                    {t('intention.puType')}
+                    <select
+                      value={pickup}
+                      disabled={busy}
+                      onChange={(event) => setPickup(event.target.value)}
+                    >
+                      <option value="">{instrument.pickups[0]?.label ?? ''}</option>
+                      {instrument.pickups.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                {instrument.calibrations.length > 0 && (
+                  <label>
+                    <select
+                      aria-label={
+                        instrument.calibrations.find((item) => item.id === calibrationId)?.label ??
+                        instrument.calibrations[0]?.label
+                      }
+                      value={calibrationId}
+                      disabled={busy}
+                      onChange={(event) => setCalibrationId(event.target.value)}
+                    >
+                      {instrument.calibrations.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <Range
+                  label={t('intention.playFeel')}
+                  min={1}
+                  max={5}
+                  value={feel}
+                  disabled={busy}
+                  onChange={setFeel}
+                  onCommit={(value) => void session.apply({ kind: 'calibration', playFeel: value }).then(report)}
+                />
+                <Range
+                  label={t('intention.lowVelocityCut')}
+                  min={0}
+                  max={10}
+                  value={cut}
+                  disabled={busy}
+                  onChange={setCut}
+                  onCommit={(value) =>
+                    void session.apply({ kind: 'calibration', lowVelocityCut: value }).then(report)
+                  }
+                />
+                <Range
+                  label={t('intention.velocityDynamics')}
+                  min={0}
+                  max={10}
+                  value={dynamics}
+                  disabled={busy}
+                  onChange={setDynamics}
+                  onCommit={(value) =>
+                    void session.apply({ kind: 'calibration', velocityDynamics: value }).then(report)
+                  }
+                />
+                <Range
+                  label={t('intention.sens')}
+                  min={0}
+                  max={100}
+                  value={sens}
+                  disabled={busy}
+                  onChange={setSens}
+                  onCommit={(value) => void session.apply({ kind: 'calibration', sens: value }).then(report)}
+                />
+                <label>
+                  {t('intention.scale')}
+                  <input
+                    inputMode="numeric"
+                    value={scale}
+                    disabled={busy}
+                    onChange={(event) => setScale(event.target.value)}
+                  />
+                </label>
+                <div className="now-actions">
+                  <button
+                    type="button"
+                    className="primary"
+                    disabled={busy}
+                    onClick={() => {
+                      const scaleMm = scale.trim() === '' ? undefined : Number(scale);
+                      ask(
+                        {
+                          kind: 'instrument',
+                          profileId: instrument.id,
+                          calibrationId: calibrationId || undefined,
+                          puType: pickup || undefined,
+                          scaleMm: scaleMm != null && Number.isFinite(scaleMm) ? scaleMm : undefined,
+                        },
+                        'guitar',
+                      );
+                    }}
+                  >
+                    {t('intention.activate')}
+                  </button>
+                  <button type="button" disabled={busy} onClick={closeSheet}>
+                    {t('intention.cancel')}
+                  </button>
+                </div>
+                {advanced}
+              </>
+            )}
+
+            {sheet === 'guitar' && preview && (
+              <Confirm
+                t={t}
+                preview={preview}
+                busy={busy}
+                onApply={applyPending}
+                onCancel={() => {
+                  setPending(null);
+                  setPreview(null);
+                }}
+              />
+            )}
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+function Confirm({
+  t,
+  preview,
+  busy,
+  onApply,
+  onCancel,
+}: {
+  t: Translate;
+  preview: Extract<PreviewResult, { ok: true }>;
+  busy: boolean;
+  onApply: () => void;
+  onCancel: () => void;
+}) {
+  const scope =
+    preview.scope === 'system'
+      ? t('intention.scopeSystem')
+      : preview.scope === 'both'
+        ? t('intention.scopeBoth')
+        : t('intention.scopePatch');
+  return (
+    <>
+      <p className={preview.scope === 'patch' ? 'scope chip-amber' : 'scope chip-blue'}>
+        <span className="dot" aria-hidden="true" />
+        {scope}
+      </p>
+      <ul>
+        {preview.groups.map((group) => (
+          <li key={group}>{groupLabel(t, group)}</li>
+        ))}
+      </ul>
+      <div className="now-actions">
+        <button type="button" className="primary" disabled={busy} onClick={onApply}>
+          {t('intention.apply')}
+        </button>
+        <button type="button" disabled={busy} onClick={onCancel}>
+          {t('intention.cancel')}
+        </button>
+      </div>
+    </>
   );
 }
 
@@ -589,23 +668,10 @@ function Range({
   );
 }
 
-function ModeButton({
-  title,
-  hint,
-  busy,
-  onClick,
-}: {
-  title: string;
-  hint: string;
-  busy: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button type="button" className="intention-card" disabled={busy} onClick={onClick}>
-      <strong>{title}</strong>
-      <span className="hint">{hint}</span>
-    </button>
-  );
+function confirmedMode(view: ConfirmedView): SoundMode | null {
+  if (!view.normalOn) return 'accompaniment';
+  if (view.modelingOn) return null;
+  return view.layers.some((layer) => layer.on) ? 'both' : 'original';
 }
 
 function phaseLabel(t: Translate, phase: string): string {
@@ -621,12 +687,43 @@ function phaseLabel(t: Translate, phase: string): string {
     case 'uncertain':
       return t('intention.phases.uncertain');
     case 'verifying':
-      return t('intention.phases.verifying');
     case 'reading':
-      return t('intention.phases.reading');
+      return t('intention.phases.checking');
     default:
       return t('intention.phases.idle');
   }
+}
+
+function modeLabel(t: Translate, mode: SoundMode): string {
+  if (mode === 'original') return t('intention.modeOriginal');
+  if (mode === 'accompaniment') return t('intention.modePcm');
+  return t('intention.modeBoth');
+}
+
+function recipeLabel(t: Translate, id: RecipeId): string {
+  if (id === 'nylon-harmonica-exp') return t('intention.recipeHarmonica');
+  if (id === 'nylon-piano-strings-ctl') return t('intention.recipeStrings');
+  return t('intention.recipeSolo');
+}
+
+function effectLabel(t: Translate, effect: EffectId): string {
+  if (effect === 'dry') return t('intention.effectDry');
+  if (effect === 'small-room') return t('intention.effectRoom');
+  if (effect === 'soft-ambience') return t('intention.effectAmb');
+  return t('intention.effectDelay');
+}
+
+function toneLabel(t: Translate, id: LayerId): string {
+  return t(`intention.tones.${id}`);
+}
+
+function pedalLabel(t: Translate, role: PedalRole): string {
+  if (role === 'off') return t('intention.free');
+  if (role === 'layer-1') return t('intention.pcmLevel', 1);
+  if (role === 'layer-2') return t('intention.pcmLevel', 2);
+  if (role === 'toggle-1') return t('intention.togglesPcm', 1);
+  if (role === 'toggle-2') return t('intention.togglesPcm', 2);
+  return t('intention.inUse');
 }
 
 function groupLabel(t: Translate, group: PreviewGroup): string {
@@ -659,60 +756,5 @@ function groupLabel(t: Translate, group: PreviewGroup): string {
       return t('intention.groups.gkScale');
     case 'systemPedals':
       return t('intention.groups.systemPedals');
-  }
-}
-
-function pedalLabel(t: Translate, role: PedalRole): string {
-  switch (role) {
-    case 'off':
-      return t('intention.pedalOff');
-    case 'layer-1':
-      return t('intention.pedalLayer1');
-    case 'layer-2':
-      return t('intention.pedalLayer2');
-    case 'toggle-1':
-      return t('intention.pedalToggle1');
-    case 'toggle-2':
-      return t('intention.pedalToggle2');
-    default:
-      return t('intention.pedalOther');
-  }
-}
-
-function layerLabel(t: Translate, id: LayerId): string {
-  switch (id) {
-    case 'piano':
-      return t('intention.layers.piano');
-    case 'epiano':
-      return t('intention.layers.epiano');
-    case 'strings':
-      return t('intention.layers.strings');
-    case 'pad':
-      return t('intention.layers.pad');
-    case 'organ':
-      return t('intention.layers.organ');
-    case 'harmonica':
-      return t('intention.layers.harmonica');
-    case 'sax':
-      return t('intention.layers.sax');
-    case 'brass':
-      return t('intention.layers.brass');
-    case 'bass':
-      return t('intention.layers.bass');
-  }
-}
-
-function testLabel(t: Translate, step: (typeof TESTS)[number]): string {
-  switch (step) {
-    case 'silence':
-      return t('intention.testSilence');
-    case 'string':
-      return t('intention.testString');
-    case 'articulation':
-      return t('intention.testArticulation');
-    case 'groove':
-      return t('intention.testGroove');
-    case 'validate':
-      return t('intention.testValidate');
   }
 }

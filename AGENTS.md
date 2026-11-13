@@ -72,9 +72,8 @@ Writes, the queue, and save: [intention-workbench.md](./docs/current/intention-w
 | Experience (no device imports) | `src/experience/IntentionWorkspace.tsx` |
 | Intentions and the GR-55 translator | `src/intentions/`, `src/devices/gr55/intentions/` |
 | GR-55 shell | `Gr55Screen.tsx`, `AppShell.tsx`, `Gr55Workspace.tsx`, `ConnectScreen.tsx` |
-| Tone names / GK starting points | `presets/toneLibrary.ts`, `presets/profiles.ts`, `instrumentProfiles.ts`, `toneMatch.ts` |
+| Recipe PCM names / GK starting points | `intentions/translate.ts` (`LAYER_PCM`), `instrumentProfiles.ts` |
 | Advanced escape hatch | `AdvancedPatchEditor.tsx`, `verifiedFieldHost.ts`, `pages.ts` |
-| Icons / voices | `Icons.tsx`, `voices.ts` |
 | Queue, tab lock, storage audit, save | `src/session/`, `sessionAuthority.ts`, `saveUserSlot.ts` |
 | Connect / live MIDI | `connectionThunks.ts`, `connectionRuntime.ts` |
 | System map / immediate system writes | `systemMap.ts`, `systemState.ts` |

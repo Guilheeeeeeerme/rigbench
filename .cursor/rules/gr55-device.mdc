@@ -7,7 +7,7 @@
 - Connect / Exit: `connectionThunks.ts`. No port memory. SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
 - On connect: identify, then `readSystem` → system `load` → `readPatch` → `readPatchLocation`. No writes during discovery.
 - **Writes, save, authority**: [docs/current/intention-workbench.md](../../docs/current/intention-workbench.md) (Confirmed writes). One verified operation; the mirror updates from the readback.
-- Instruments: `instrumentProfiles.ts`. Tone names: `presets/toneLibrary.ts`. Tone search: `toneMatch.ts`.
+- Instruments: `instrumentProfiles.ts`. Recipe PCM names: `intentions/translate.ts` (`LAYER_PCM`).
 - Field keys for Advanced: `pages.ts` (`PAGE_IDS` frozen).
 - Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path. Not shown when SysEx is unavailable outside development.
 - Product SoT: `docs/current/intention-workbench.md`. Claims: `docs/current/capability-matrix.md`. Config taxonomy: `docs/current/gr55-config-scope.md`.

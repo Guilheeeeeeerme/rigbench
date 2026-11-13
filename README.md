@@ -146,7 +146,7 @@ src/
     intentions/                   recipes and the confirmed-read session
     AdvancedPatchEditor.tsx       parameter editor on the same queue
     editor.ts                     working copy; verified writes update it from the readback
-    presets/toneLibrary.ts        PCM names the recipes use
+    intentions/translate.ts       recipe PCM names (`LAYER_PCM`) and field writes
     instrumentProfiles.ts         instrument → GK starting points
     systemMap.ts, systemState.ts  pedal-wide settings
     fakeDevice.ts                 simulated pedal for tests and the dev build

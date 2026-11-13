@@ -57,4 +57,4 @@ Moving CTL/EXP from system to patch setting, when a recipe needs it, stays a ped
 
 ## What left the experience
 
-The rhythm → role → sound generator and its full-patch replace are not the product. The rhythm catalog modules were removed. Tone names remain in `presets/toneLibrary.ts`. GK starting points remain in `instrumentProfiles.ts`.
+The rhythm → role → sound generator and its full-patch replace are not the product. The rhythm catalog modules were removed. Recipe PCM names live in `intentions/translate.ts` (`LAYER_PCM`). GK starting points remain in `instrumentProfiles.ts`.

@@ -1,4 +1,4 @@
-# Tone Deck / Advanced — legacy design, live components
+# Advanced editor — legacy design notes
 
 > **Status: SUPERSEDED as IA.** Bank \| Global navigation is gone (and its page code was removed);
 > legacy hashes redirect to the intention workspace ([intention-workbench.md](./intention-workbench.md)).
@@ -11,13 +11,13 @@
 | Fact | Where |
 | --- | --- |
 | **AdvancedPatchEditor** — tabs from `PAGE_IDS`, essentials first, "Show all" for remaining keys | `AdvancedPatchEditor.tsx` via `verifiedFieldHost`, mapped by `pages.ts` |
-| Recent tone picks | RAM in `TonePicker.tsx` for the session only. Not `localStorage` |
 
 ## What is dead (do not re-implement)
 
 - Bank \| Global pages as routes — `BankPage.tsx` / `GlobalPage.tsx` / `SimpleProfiles.tsx` /
   `setupState.ts` were **deleted** in the dead-code sweep; the whole `src/craft/**` macro layer
   (profile pills, sessions, policy) went with them.
+- Tone Deck, TonePicker, ScopeConfirm, voices/Icons, and the bank `sync/` + IndexedDB tree.
 - Keys 1/2/3 as "which USER slot is sounding" switches — previous and next on the current patch load the slot.
 - The craft macro "Simple" profile-pill surface (historical design in the archive).
 

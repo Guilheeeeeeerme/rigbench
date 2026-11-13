@@ -18,7 +18,7 @@ Product IA SoT: [intention-workbench.md](./intention-workbench.md).
 2. Do **not** invent addresses; verify against the owner's manual parameter list
    ([gr55-config-scope.md](./gr55-config-scope.md)) or a captured dump.
 3. `systemState.ts` writes are **immediate DT1** — there is no staging layer; controls gate on
-   impact confirm (ScopeConfirm) instead. Never queue a hidden write.
+   an impact confirm dialog instead. Never queue a hidden write.
 4. Surface a system field from `systemMap.ts` on the Guitar sheet, or in Advanced when it is a patch field. There is no Setup section.
 5. Confirm dialogs must name what changes. Guitar/Bass mode needs the high-impact warning.
 6. Tests: `system.test.ts`. Unmeasured hardware claims stay in [capability-matrix.md](./capability-matrix.md).
@@ -40,7 +40,7 @@ No chat or copilot in the product shell. History: [../archive/maestro-architectu
 
 ## Sync and connect
 
-[connection-resume.md](./connection-resume.md). Do not mount `sync/engine.ts` or IndexedDB on connect.
+[connection-resume.md](./connection-resume.md). Do not mount a bank sync engine or IndexedDB on connect. The old `sync/` tree was removed.
 
 After changing connect or silent-resume behavior, run the docs audit in
 [AGENTS.md](../../AGENTS.md#documentation).

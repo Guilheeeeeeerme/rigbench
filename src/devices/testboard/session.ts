@@ -4,7 +4,6 @@ import type {
   DeviceCapabilities,
   IntentionSession,
   MusicalIntention,
-  OperationResult,
   PreviewResult,
   SessionView,
 } from '../../intentions/types';
@@ -54,7 +53,8 @@ export function createTestSession(): IntentionSession {
       return { ok: false, code: 'unsupported' };
     }
     if (intention.kind === 'recipe' && intention.id === 'nylon-harmonica-exp') {
-      if (confirmed.expression === 'other') return { ok: false, code: 'refused', control: 'expression' };
+      if (confirmed.expression === 'other')
+        return { ok: false, code: 'refused', control: 'expression' };
       return { ok: true, groups: ['normal', 'layer1', 'expression'], scope: 'patch' };
     }
     if (intention.kind === 'recipe' && intention.id === 'nylon-piano-strings-ctl') {
@@ -114,7 +114,9 @@ export function createTestSession(): IntentionSession {
             { slot: 2, on: false, toneName: '', level: 0 },
           ],
           recipeId:
-            confirmed.expression === 'off' && confirmed.ctl === 'off' ? 'solo-without-guitar' : null,
+            confirmed.expression === 'off' && confirmed.ctl === 'off'
+              ? 'solo-without-guitar'
+              : null,
         };
       }
       state.phase = 'applied';
@@ -124,7 +126,12 @@ export function createTestSession(): IntentionSession {
     },
     async selectSlot(slot) {
       if (state.blocked) return { ok: false, code: 'blocked' };
-      confirmed = { ...confirmed, userSlot: slot, slotLabel: `T${slot}`, tempDiffersFromUser: null };
+      confirmed = {
+        ...confirmed,
+        userSlot: slot,
+        slotLabel: `T${slot}`,
+        tempDiffersFromUser: null,
+      };
       state.phase = 'idle';
       state.lastVerifiedAt = Date.now();
       publish();
@@ -186,5 +193,3 @@ function empty(): ConfirmedView {
     },
   };
 }
-
-export type { OperationResult };

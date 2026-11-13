@@ -9,8 +9,8 @@ export const TEMPORARY_PATCH_ADDRESS = TEMPORARY_PATCH.address;
 // Span of the patch in packed address space, holes between its blocks included.
 export const PATCH_SPAN = TEMPORARY_PATCH.definition.size;
 
-export const USER_PATCH_AREA_ADDRESS = pack7(0x20000000);
-export const USER_PATCH_STRIDE = pack7(0x010000);
+const USER_PATCH_AREA_ADDRESS = pack7(0x20000000);
+const USER_PATCH_STRIDE = pack7(0x010000);
 export const USER_PATCH_COUNT = 297;
 
 export function userPatchAddress(userPatchNumber: number): number {
@@ -27,7 +27,7 @@ export interface PatchBlock {
  * The runs of consecutive addresses a definition is made of. Each run is read with one RQ1.
  * Mirrors the coalescing done by fetchAndTokenize in the protocol's address map.
  */
-export function contiguousBlocks(definition: AtomDefinition, offset = 0): PatchBlock[] {
+function contiguousBlocks(definition: AtomDefinition, offset = 0): PatchBlock[] {
   if (definition.isContiguous) {
     return [{ offset, length: definition.size }];
   }

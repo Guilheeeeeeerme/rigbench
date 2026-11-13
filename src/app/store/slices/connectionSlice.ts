@@ -1,17 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type ConnectionPhase = 'idle' | 'requesting' | 'connecting' | 'connected' | 'needsPrompt';
+type ConnectionPhase = 'idle' | 'requesting' | 'connecting' | 'connected' | 'needsPrompt';
 
-export type ConnectionProblem = 'denied' | 'noReply' | 'wrongDevice' | 'lost' | 'noPorts' | 'otherTab' | null;
+export type ConnectionProblem =
+  'denied' | 'noReply' | 'wrongDevice' | 'lost' | 'noPorts' | 'otherTab' | null;
 
 export interface PortChoice {
   id: string;
   name: string;
-}
-
-export interface RememberedPorts {
-  inputId: string;
-  outputId: string;
 }
 
 export interface ConnectionState {

@@ -1,6 +1,3 @@
-import type { GkSetFields } from './systemMap';
-import { SCALE_BASE_MM } from './systemMap';
-
 export type InstrumentProfileId =
   | 'caimbe-nylon'
   | 'godin-multiac-nylon'
@@ -13,8 +10,6 @@ export type InstrumentProfileId =
   | 'bass-gk3b'
   | 'bass-gk2b'
   | 'generic-13pin';
-
-export type OutputDestinationId = 'phones' | 'pa' | 'powered-cab' | 'guitar-amp';
 
 /** Community-reported GK velocity starting points (not Roland official). */
 export type CalibrationSubProfileId = 'natural' | 'equilibrado' | 'anti-ghost';
@@ -55,16 +50,8 @@ export interface InstrumentProfile {
   confirmPiezoBrand?: boolean;
 }
 
-export interface OutputDestination {
-  id: OutputDestinationId;
-  labelEn: string;
-  labelPt: string;
-  outputSelect: string;
-  scope: 'system';
-}
-
 /** Caimbé nylon community starting points (Cifra Club / Pamplona Jr. report for Anti-Ghost). */
-export const CAIMBE_CALIBRATIONS: readonly CalibrationSubProfile[] = [
+const CAIMBE_CALIBRATIONS: readonly CalibrationSubProfile[] = [
   {
     id: 'natural',
     labelEn: 'Natural',
@@ -241,37 +228,6 @@ export const INSTRUMENT_PROFILES: readonly InstrumentProfile[] = [
   },
 ];
 
-export const OUTPUT_DESTINATIONS: readonly OutputDestination[] = [
-  {
-    id: 'phones',
-    labelEn: 'Headphones / line / PA interface',
-    labelPt: 'Fones / linha / interface de PA',
-    outputSelect: 'LINE/PHONES',
-    scope: 'system',
-  },
-  {
-    id: 'pa',
-    labelEn: 'Mixer / PA return',
-    labelPt: 'Mesa / retorno de PA',
-    outputSelect: 'LINE/PHONES',
-    scope: 'system',
-  },
-  {
-    id: 'powered-cab',
-    labelEn: 'Powered speaker / FRFR',
-    labelPt: 'Caixa amplificada / FRFR',
-    outputSelect: 'STACK',
-    scope: 'system',
-  },
-  {
-    id: 'guitar-amp',
-    labelEn: 'Guitar amplifier',
-    labelPt: 'Amplificador de guitarra',
-    outputSelect: 'JC-120',
-    scope: 'system',
-  },
-];
-
 export const PIEZO_BRAND_OPTIONS = [
   { id: 'PIEZO', labelEn: 'Flat-response piezo', labelPt: 'Piezo resposta plana' },
   { id: 'PIEZO F', labelEn: 'Fishman', labelPt: 'Fishman' },
@@ -292,48 +248,4 @@ export function calibrationOf(
   if (!list?.length) return undefined;
   const want = id ?? profile.defaultCalibrationId;
   return list.find((item) => item.id === want) ?? list[0];
-}
-
-/** Deterministic GK-set field writes for a profile (SYSTEM scope). */
-export function gkWritesForProfile(
-  profile: InstrumentProfile,
-  puTypeOverride?: string,
-  calibrationId?: CalibrationSubProfileId,
-): { field: keyof GkSetFields; value: string | number }[] {
-  const puType = puTypeOverride ?? profile.puType;
-  const sens = profile.sensSeed;
-  const cal = calibrationOf(profile, calibrationId);
-  const playFeel = cal?.playFeel ?? 3;
-  const lowVelocityCut = cal?.lowVelocityCut ?? (puType.startsWith('PIEZO') ? 4 : 2);
-  const velocityDynamics = cal?.velocityDynamics ?? 5;
-  const nuanceDynamics = profile.nuanceDynamics ?? 5;
-  const writes: { field: keyof GkSetFields; value: string | number }[] = [
-    { field: 'puType', value: puType },
-    { field: 'scale', value: profile.scaleMm - SCALE_BASE_MM },
-    { field: 'puPhase', value: 'NORMAL' },
-    { field: 'puDirection', value: 'NORMAL' },
-    { field: 's1s2Position', value: 'NORMAL' },
-    { field: 'normalPuGain', value: 0 },
-    { field: 'string1Sens', value: sens },
-    { field: 'string2Sens', value: sens },
-    { field: 'string3Sens', value: sens },
-    { field: 'string4Sens', value: sens },
-    { field: 'string5Sens', value: sens },
-    { field: 'string6Sens', value: sens },
-    { field: 'playFeel', value: playFeel },
-    { field: 'lowVelocityCut', value: lowVelocityCut },
-    { field: 'velocityDynamics', value: velocityDynamics },
-    { field: 'nuanceDynamics', value: nuanceDynamics },
-    { field: 'nuanceTrim', value: 5 },
-  ];
-  if (profile.piezoToneLow != null) {
-    writes.push({ field: 'piezoToneLow', value: profile.piezoToneLow });
-  }
-  if (profile.piezoToneHigh != null) {
-    writes.push({ field: 'piezoToneHigh', value: profile.piezoToneHigh });
-  }
-  if (profile.downTune != null) {
-    writes.push({ field: 'downTune', value: profile.downTune });
-  }
-  return writes;
 }

@@ -182,7 +182,7 @@ export class Gr55Editor {
     type.encode(value as never, bytes, 0, size);
     await this.session.writeData(field.address, bytes);
     const read = await this.session.requestData(field.address, size);
-    let match = false;
+    let match: boolean;
     try {
       match = sameValue(value, type.decode(read, 0, size));
     } catch {
@@ -204,7 +204,8 @@ export class Gr55Editor {
     const payload = Uint8Array.from(bytes);
     await this.session.writeData(field.address, payload);
     const read = await this.session.requestData(field.address, payload.length);
-    const match = payload.length === read.length && payload.every((byte, index) => byte === read[index]);
+    const match =
+      payload.length === read.length && payload.every((byte, index) => byte === read[index]);
     if (offset >= 0 && offset + payload.length <= this.image.length) {
       this.image.set(read.subarray(0, payload.length), offset);
       this.bumpField(field.address);

@@ -4,7 +4,7 @@ import { en } from './en';
 import { ptBR } from './pt-BR';
 
 /** The shape every dictionary has. English is the key schema; the app opens in Brazilian Portuguese. */
-export type Copy = typeof en;
+type Copy = typeof en;
 
 export type Locale = 'en' | 'pt-BR';
 
@@ -30,7 +30,7 @@ type At<T, P extends string> = P extends `${infer Head}.${infer Rest}`
 export type CopyKey = Paths<Copy>;
 
 /** What a key's text needs filled in: nothing for plain strings. */
-export type CopyParams<K extends CopyKey> =
+type CopyParams<K extends CopyKey> =
   At<Copy, K> extends (...args: infer Args) => string ? Args : [];
 
 export type Translate = <K extends CopyKey>(key: K, ...params: CopyParams<K>) => string;
@@ -131,7 +131,7 @@ export function useLocale(): Locale {
 export type EnumGroup = keyof Copy['enums'];
 
 /** A pedal value in the given language; the pedal's own wording when there is none. */
-export function enumLabelIn(locale: Locale, group: EnumGroup, raw: string | number): string {
+function enumLabelIn(locale: Locale, group: EnumGroup, raw: string | number): string {
   const labels = dictionaries[locale].enums[group] as Record<string, string>;
   return labels[String(raw)] ?? String(raw);
 }

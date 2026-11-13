@@ -37,30 +37,23 @@ export interface Page {
   sections: readonly Section[];
 }
 
-/** Page ids double as URL slugs; they are frozen here so links cannot drift. */
-export const PAGE_IDS = [
-  'patch',
-  'pcm1',
-  'pcm2',
-  'modeling',
-  'normal-pickup',
-  'amp',
-  'mod',
-  'mfx',
-  'delay',
-  'chorus',
-  'reverb',
-  'eq',
-  'assigns',
-  'pedal-gk',
-  'master',
-] as const;
-
-export type PageId = (typeof PAGE_IDS)[number];
-
-export function editorHref(pageId: PageId, sectionSlug: string): string {
-  return `/gr55/editor/${pageId}/${sectionSlug}`;
-}
+/** Page ids for Advanced tabs; frozen so section membership cannot drift. */
+export type PageId =
+  | 'patch'
+  | 'pcm1'
+  | 'pcm2'
+  | 'modeling'
+  | 'normal-pickup'
+  | 'amp'
+  | 'mod'
+  | 'mfx'
+  | 'delay'
+  | 'chorus'
+  | 'reverb'
+  | 'eq'
+  | 'assigns'
+  | 'pedal-gk'
+  | 'master';
 
 export function memberOf(struct: StructReference, key: string): AtomReference {
   return (struct as unknown as Record<string, AtomReference>)[key];

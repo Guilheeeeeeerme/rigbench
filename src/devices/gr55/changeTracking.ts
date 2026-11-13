@@ -72,34 +72,6 @@ export function temporaryPatchFields(): PatchFieldSpan[] {
   return [...byAddress.values()].sort((a, b) => a.offset - b.offset);
 }
 
-/**
- * The spans that overlap the given range, using a list sorted by offset.
- * Looking up a position only ever revisits one field at a time, so a linear walk
- * backward before the range converges on the candidates.
- */
-export function spansOverlapping(
-  fields: readonly PatchFieldSpan[],
-  offset: number,
-  size: number,
-): PatchFieldSpan[] {
-  const end = offset + size;
-  const hits: PatchFieldSpan[] = [];
-  let start = 0;
-  while (start < fields.length && fields[start].offset + fields[start].size <= offset) {
-    start++;
-  }
-  for (let index = start; index < fields.length; index++) {
-    const field = fields[index];
-    if (field.offset >= end) {
-      break;
-    }
-    if (field.offset + field.size > offset) {
-      hits.push(field);
-    }
-  }
-  return hits;
-}
-
 export function scopeOf(fieldAddress: number): Scope {
   return fieldAddress >= TEMPORARY_PATCH_ADDRESS ? 'working-copy' : 'system';
 }

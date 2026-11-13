@@ -1,17 +1,8 @@
 import type { FieldReference, FieldType } from '../../../protocol/RolandAddressMap';
-import type {
-  LayerId,
-  MusicalIntention,
-  PedalRole,
-  PreviewGroup,
-} from '../../../intentions/types';
+import type { LayerId, MusicalIntention, PedalRole, PreviewGroup } from '../../../intentions/types';
 import type { Gr55Editor } from '../editor';
 import { TEMPORARY_PATCH } from '../patchLayout';
-import {
-  INSTRUMENT_PROFILES,
-  calibrationOf,
-  profileOf,
-} from '../instrumentProfiles';
+import { calibrationOf, profileOf } from '../instrumentProfiles';
 import { SCALE_BASE_MM, SCALE_MAX_MM, SYSTEM, gkSet } from '../systemMap';
 import type { Gr55System } from '../systemState';
 
@@ -54,16 +45,25 @@ export function translate(
   const groups = new Set<PreviewGroup>();
   let scope: Scope = 'patch';
 
-  const push = (area: 'patch' | 'system', field: FieldReference<FieldType<unknown>>, value: unknown) => {
+  const push = (
+    area: 'patch' | 'system',
+    field: FieldReference<FieldType<unknown>>,
+    value: unknown,
+  ) => {
     changes.push({ area, field, value });
   };
-  const patchField = (field: FieldReference<FieldType<unknown>>, value: unknown) => push('patch', field, value);
+  const patchField = (field: FieldReference<FieldType<unknown>>, value: unknown) =>
+    push('patch', field, value);
   const systemField = (field: FieldReference<FieldType<unknown>>, value: unknown) => {
     push('system', field, value);
     if (scope === 'patch') scope = 'both';
   };
 
-  const refused = (control: 'expression' | 'ctl'): Translation => ({ ok: false, code: 'refused', control });
+  const refused = (control: 'expression' | 'ctl'): Translation => ({
+    ok: false,
+    code: 'refused',
+    control,
+  });
   const unsupported = (): Translation => ({ ok: false, code: 'unsupported' });
 
   if (intention.kind === 'instrument') {
@@ -78,9 +78,19 @@ export function translate(
     patchScopeSystem();
     systemField(set.puType as never, puType);
     systemField(set.playFeel as never, cal?.playFeel ?? 3);
-    systemField(set.lowVelocityCut as never, cal?.lowVelocityCut ?? (puType.startsWith('PIEZO') ? 4 : 2));
+    systemField(
+      set.lowVelocityCut as never,
+      cal?.lowVelocityCut ?? (puType.startsWith('PIEZO') ? 4 : 2),
+    );
     systemField(set.velocityDynamics as never, cal?.velocityDynamics ?? 5);
-    for (const key of ['string1Sens', 'string2Sens', 'string3Sens', 'string4Sens', 'string5Sens', 'string6Sens'] as const) {
+    for (const key of [
+      'string1Sens',
+      'string2Sens',
+      'string3Sens',
+      'string4Sens',
+      'string5Sens',
+      'string6Sens',
+    ] as const) {
       systemField(set[key] as never, sens);
     }
     if (profile.gkSetName) systemField(set.name as never, profile.gkSetName.slice(0, 8));
@@ -116,7 +126,14 @@ export function translate(
       groups.add('gkDynamics');
     }
     if (intention.sens != null) {
-      for (const key of ['string1Sens', 'string2Sens', 'string3Sens', 'string4Sens', 'string5Sens', 'string6Sens'] as const) {
+      for (const key of [
+        'string1Sens',
+        'string2Sens',
+        'string3Sens',
+        'string4Sens',
+        'string5Sens',
+        'string6Sens',
+      ] as const) {
         systemField(set[key] as never, intention.sens);
       }
       groups.add('gkBalance');
@@ -311,10 +328,20 @@ export function readExpression(editor: Gr55Editor): PedalRole {
   const modeling = editor.read(exp.volumeSwitchModelingTone);
   const normal = editor.read(exp.volumeSwitchNormalPU);
   if (!pcm1.ok || !pcm2.ok || !modeling.ok || !normal.ok) return 'other';
-  if (pcm1.value === true && pcm2.value === false && modeling.value === false && normal.value === false) {
+  if (
+    pcm1.value === true &&
+    pcm2.value === false &&
+    modeling.value === false &&
+    normal.value === false
+  ) {
     return 'layer-1';
   }
-  if (pcm2.value === true && pcm1.value === false && modeling.value === false && normal.value === false) {
+  if (
+    pcm2.value === true &&
+    pcm1.value === false &&
+    modeling.value === false &&
+    normal.value === false
+  ) {
     return 'layer-2';
   }
   return 'other';
@@ -363,5 +390,3 @@ function clampLevel(level: number): number {
   if (!Number.isFinite(level)) return 0;
   return Math.max(0, Math.min(100, Math.round(level)));
 }
-
-export const KNOWN_PROFILES = INSTRUMENT_PROFILES;

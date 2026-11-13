@@ -7,11 +7,10 @@ export const connectRoute = 'conectar';
 export const patchRoute = 'patch';
 
 const base = '/gr55';
-export const connectHref = `${base}/${connectRoute}`;
 export const patchHref = `${base}/${patchRoute}`;
 
 /** Child routes restored after silent reconnect. */
-export const RESUMABLE_ROUTES = [patchRoute] as const;
+const RESUMABLE_ROUTES = [patchRoute] as const;
 
 export type ResumableRoute = (typeof RESUMABLE_ROUTES)[number];
 

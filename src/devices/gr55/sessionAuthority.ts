@@ -14,13 +14,6 @@ let snapshotInFlight: object | undefined;
 let mutationTail: Promise<void> = Promise.resolve();
 /** Bumps on every snapshot start; late snapshots no-op when superseded. */
 let snapshotGeneration = 0;
-const listeners = new Set<() => void>();
-
-function notify(): void {
-  for (const listener of listeners) {
-    listener();
-  }
-}
 
 export function getAuthority(): Authority {
   return authority;
@@ -30,28 +23,13 @@ export function isPedalAuthority(): boolean {
   return authority === 'pedal';
 }
 
-export function getSnapshotGeneration(): number {
-  return snapshotGeneration;
-}
-
-export function subscribeAuthority(listener: () => void): () => void {
-  listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
-}
-
 /** Ignore pedal churn while a verified write is on the wire. */
 export function holdRemoteMirror(hold: boolean): void {
   setAuthority(hold ? 'app' : 'pedal');
 }
 
 function setAuthority(next: Authority): void {
-  if (authority === next) {
-    return;
-  }
   authority = next;
-  notify();
 }
 
 export interface SnapshotSource {

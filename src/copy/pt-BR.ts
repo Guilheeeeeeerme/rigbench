@@ -76,7 +76,8 @@ export const ptBR: typeof en = {
     exit: 'Sair',
     sync: 'Ler de novo',
     syncBusy: 'Lendo…',
-    syncHint: 'Lê o patch que está soando e o sistema do pedal. Não substitui isso por um slot gravado.',
+    syncHint:
+      'Lê o patch que está soando e o sistema do pedal. Não substitui isso por um slot gravado.',
     authorityPedal: 'Confirmado no pedal',
     workspace: {
       workingCopy: 'Cópia de trabalho',

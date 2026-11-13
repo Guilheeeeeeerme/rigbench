@@ -1,23 +1,13 @@
-export type PersistenceMode = 'explicit-verified-write' | 'physical-write';
+type PersistenceMode = 'explicit-verified-write' | 'physical-write';
 
 export type LayerId =
-  | 'piano'
-  | 'epiano'
-  | 'strings'
-  | 'pad'
-  | 'organ'
-  | 'harmonica'
-  | 'sax'
-  | 'brass'
-  | 'bass';
+  'piano' | 'epiano' | 'strings' | 'pad' | 'organ' | 'harmonica' | 'sax' | 'brass' | 'bass';
 
 export type SoundMode = 'original' | 'accompaniment' | 'both';
 
 export type EffectId = 'dry' | 'small-room' | 'soft-ambience' | 'solo-delay';
 
 export type RecipeId = 'nylon-harmonica-exp' | 'nylon-piano-strings-ctl' | 'solo-without-guitar';
-
-export type ValidationGrade = 'documented' | 'implemented' | 'hardware-tested';
 
 export interface DeviceCapabilities {
   id: string;
@@ -104,18 +94,15 @@ export type PreviewResult =
 
 export type OperationResult =
   | { ok: true }
-  | { ok: false; code: 'refused' | 'unsupported' | 'blocked' | 'timeout' | 'mismatch' | 'failed'; control?: 'expression' | 'ctl' };
+  | {
+      ok: false;
+      code: 'refused' | 'unsupported' | 'blocked' | 'timeout' | 'mismatch' | 'failed';
+      control?: 'expression' | 'ctl';
+    };
 
 export interface SessionView {
   phase:
-    | 'idle'
-    | 'reading'
-    | 'applying'
-    | 'applied'
-    | 'saving'
-    | 'saved'
-    | 'verifying'
-    | 'uncertain';
+    'idle' | 'reading' | 'applying' | 'applied' | 'saving' | 'saved' | 'verifying' | 'uncertain';
   detail: string;
   blocked: boolean;
   lastVerifiedAt: number | null;

@@ -64,7 +64,7 @@ function pickSelection(ports: PortChoice[], current: string): string {
 }
 
 /** Refresh port lists and selected ids from the current MIDIAccess. */
-export function refreshPortsFromAccess(dispatch: AppDispatch, getState: () => RootState): void {
+function refreshPortsFromAccess(dispatch: AppDispatch, getState: () => RootState): void {
   const access = getMidiAccess();
   if (!access) {
     return;
@@ -106,7 +106,7 @@ export interface ConnectPortsArgs {
   output: MidiOutputLike;
 }
 
-export function connectWithPorts(args: ConnectPortsArgs) {
+function connectWithPorts(args: ConnectPortsArgs) {
   return async (dispatch: AppDispatch) => {
     const ticket = ++connectAttempt;
     identifyAbort?.abort();

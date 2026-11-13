@@ -73,7 +73,8 @@ export const en = {
     /** Header control: pull system + working copy from the pedal (USER memory when on a slot). */
     sync: 'Read again',
     syncBusy: 'Reading…',
-    syncHint: 'Read the sounding patch and the system from the pedal. This does not replace them with a stored slot.',
+    syncHint:
+      'Read the sounding patch and the system from the pedal. This does not replace them with a stored slot.',
     authorityPedal: 'Confirmed on the pedal',
     workspace: {
       /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */

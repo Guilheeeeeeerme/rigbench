@@ -4,22 +4,15 @@
  *
  * The timeout is a provisional ceiling, not a measured pedal limit.
  */
-export const UNMEASURED_TIMEOUT_MS = 12_000;
+const UNMEASURED_TIMEOUT_MS = 12_000;
 
 /** How long a confirmed reading stays fresh enough to edit. Not measured on hardware. */
-export const UNMEASURED_STALE_MS = 20_000;
+const UNMEASURED_STALE_MS = 20_000;
 
 export type OperationKind = 'read' | 'apply' | 'save';
 
 export type OperationPhase =
-  | 'idle'
-  | 'reading'
-  | 'applying'
-  | 'applied'
-  | 'saving'
-  | 'saved'
-  | 'verifying'
-  | 'uncertain';
+  'idle' | 'reading' | 'applying' | 'applied' | 'saving' | 'saved' | 'verifying' | 'uncertain';
 
 export class QueueTimeoutError extends Error {
   constructor() {

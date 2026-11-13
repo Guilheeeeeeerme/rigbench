@@ -251,9 +251,9 @@ const GkSet = {
 };
 
 /** Bytes of a GK set the app reads: through Down Tune (guitar mode). */
-export const GK_SET_SPAN = pack7(0x23);
-export const SYSTEM_COMMON_SPAN = pack7(0x21);
-export const SYSTEM_PEDALS_SPAN = pack7(0x7d);
+const GK_SET_SPAN = pack7(0x23);
+const SYSTEM_COMMON_SPAN = pack7(0x21);
+const SYSTEM_PEDALS_SPAN = pack7(0x7d);
 
 const gkSets = Object.fromEntries(
   Array.from({ length: GK_SET_COUNT }, (_, index) => [
@@ -296,15 +296,6 @@ export const GK_STRING_SENS = [
   'string4Sens',
   'string5Sens',
   'string6Sens',
-] as const;
-
-export const GK_STRING_DIST = [
-  'string1Dist',
-  'string2Dist',
-  'string3Dist',
-  'string4Dist',
-  'string5Dist',
-  'string6Dist',
 ] as const;
 
 /** The runs of the system area read from the pedal, as offsets from its start. */

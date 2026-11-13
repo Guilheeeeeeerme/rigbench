@@ -205,7 +205,6 @@ export const ptBR: typeof en = {
       checking: 'Verificando',
       idle: 'Confirmado',
     },
-    recover: 'Ler de novo',
     timeout: 'O pedal não confirmou a tempo. A edição fica bloqueada até a próxima leitura.',
     mismatch: 'O pedal não guardou o valor pedido. A edição fica bloqueada.',
     failed: 'A operação não terminou. A edição fica bloqueada até a próxima leitura.',

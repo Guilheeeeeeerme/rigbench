@@ -593,10 +593,6 @@ body:has(.app-shell) .locale-switch:not(.is-inline) {
   color: var(--text-secondary);
 }
 
-.app-shell-solo .app-shell-body {
-  grid-template-columns: 1fr;
-}
-
 .app-shell-title {
   margin: 0;
   font-size: 1rem;

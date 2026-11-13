@@ -205,7 +205,6 @@ export const en = {
       checking: 'Checking',
       idle: 'Confirmed',
     },
-    recover: 'Read again',
     timeout: 'The pedal did not confirm in time. Editing stays blocked until the next reading.',
     mismatch: 'The pedal did not store the value we asked for. Editing stays blocked.',
     failed: 'The operation did not finish. Editing stays blocked until the next reading.',

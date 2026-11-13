@@ -36,7 +36,7 @@ export function AppShell({ editor }: { editor: Gr55Editor }) {
   };
 
   return (
-    <div className="app-shell app-shell-solo">
+    <div className="app-shell">
       <header className="app-shell-bar">
         <button type="button" className="app-exit" onClick={onExit}>
           {t('gr55.exit')}

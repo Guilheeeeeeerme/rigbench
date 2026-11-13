@@ -1430,12 +1430,18 @@ button.primary:disabled {
 .now-row,
 .now-effects,
 .now-tones,
-.now-actions,
 .now-slot-row {
   display: grid;
   gap: var(--space-2);
   min-height: 0;
   height: 100%;
+}
+
+.now-actions {
+  display: grid;
+  gap: var(--space-2);
+  height: auto;
+  min-height: 4.25rem;
 }
 
 .now-row {
@@ -1462,13 +1468,9 @@ button.primary:disabled {
 
 .now-board button,
 .now-actions button,
-.now-pills p {
+.now-pills .now-card {
   min-height: 2.75rem;
   height: 100%;
-}
-
-.now-actions {
-  height: 3rem;
 }
 
 .now-playing button.is-selected {
@@ -1476,14 +1478,63 @@ button.primary:disabled {
   outline-offset: 2px;
 }
 
-.now-pills p {
-  margin: 0;
+.now-card {
   display: flex;
-  align-items: center;
-  padding: 0 var(--space-3);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+div.now-card {
+  background: var(--surface-raised);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+}
+
+.now-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.now-value {
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.now-detail {
   color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.now-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+  height: 100%;
+}
+
+.now-block .now-effects {
+  flex: 1;
+  min-height: 0;
+}
+
+.now-effects button {
+  text-align: center;
+}
+
+.now-actions .now-card {
+  justify-content: center;
+  min-height: 4.25rem;
 }
 
 .now-caption {

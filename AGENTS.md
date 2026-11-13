@@ -16,18 +16,18 @@ Do **not** follow `docs/archive/prompt-v2-rigbench-palco.md` as a live briefing.
 
 Static React 19 + Vite + TypeScript app. Web MIDI SysEx to a Roland GR-55. No backend.
 The pedal is the only confirmed state. The browser stores the interface language (`rigbench.locale`) and nothing about the setup.
-EN + PT-BR via `src/copy/`.
+The app opens in Brazilian Portuguese. Language policy: [docs/current/intention-workbench.md](./docs/current/intention-workbench.md) (Language).
 **No AI** in the MVP shell.
 
-The GR-55 surface is an **intention workspace**: the sounding patch fills the screen. Previous and next load a USER slot, and a program change on the pedal updates the same title. Three modes, two PCM chips, EXP and CTL, three recipes. Guitar setup and USER save open a sheet. Hardware claims stay open in the capability matrix until a pedal is measured.
+The GR-55 surface is an **intention workspace**: the sounding patch fills the screen. What each card shows is the product SoT below.
 
 ```
 Home (GR-55 + placeholders)
   → Connect (gesture, then a confirmed read; no silent resume)
-  → App: Now Playing
-       Modes · PCM · EXP/CTL · recipes
-       Save sheet · Guitar sheet (Activate, then Advanced)
-       Sync · Exit → Home
+  → Patch board (no main-screen scroll)
+       previous / next stay with the pedal
+       Save sheet · Guitar sheet (Play Feel, then Advanced)
+       Read again · Exit → Home
 ```
 
 Product SoT: [docs/current/intention-workbench.md](./docs/current/intention-workbench.md).
@@ -45,14 +45,12 @@ Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, 
 
 ### Authority model
 
-- One operation at a time (`src/session/operationQueue.ts`). The mirror updates from the readback, not from the send.
-- While that batch is on the wire → ignore pedal churn (`holdRemoteMirror`).
-- When idle → mirror the pedal.
+Writes, the queue, and save: [intention-workbench.md](./docs/current/intention-workbench.md) (Confirmed writes). Connect, Exit, Sync, and storage: [connection-resume.md](./docs/current/connection-resume.md).
+
+- One operation at a time (`src/session/operationQueue.ts`). The mirror updates from the readback.
+- While that batch is on the wire, ignore pedal churn (`holdRemoteMirror`).
 - A timeout or a mismatch blocks the next edit until a new reading.
-- **Sync** reads system, the sounding patch, and the position again. It does not copy USER over the temporary patch.
-- **Save** is explicit: PATCH WRITE plus USER readback (`writeToUserSlotVerified`). Never factory banks. Not automatic.
-- SYSTEM/GK changes list the groups before the write.
-- Browser storage: `rigbench.locale` only.
+- Save is explicit. Never factory banks. Not automatic.
 
 ## Hard rules
 
@@ -61,7 +59,7 @@ Legacy hashes (`bank`, `global`, `maestro`, `palco`, `estudio`, `configuracao`, 
 - **Scope chips**: 🟠 temporary working copy · 🔵 pedal-wide system. Every control must make scope obvious.
 - **Writes**: patch and system parameters go out as verified DT1, then the readback updates the mirror. No ApplyBar / staging. No automatic USER write.
 - **No AI in the product shell.** There is no chat/copilot code (`src/maestro` was removed). Never commit API keys. Never invent SysEx addresses or live calibration meters.
-- **i18n**: all UI strings through `t()` / `useT()`; add keys to **both** `en.ts` (source of truth) and `pt-BR.ts`. Device tone/amp enum names stay as on the pedal (English). `npm run check:copy` must pass.
+- **i18n**: UI strings through `t()` / `useT()` in both dictionaries. The app opens in pt-BR. Policy: [intention-workbench.md](./docs/current/intention-workbench.md) (Language). `npm run check:copy` must pass.
 - **Data library is not code:** `docs/gr55-collection/` is a gitignored binary library. Never `git add` it, never let the app read its binaries, never rename a `.g5l`/`.mid` without its name-paired partner (see `docs/gr55-collection/AGENTS.md`).
 - Prefer targeted reads and the smallest sufficient change. Do not run broad refactors or the full test matrix unless asked.
 
@@ -117,5 +115,5 @@ Index: [docs/current/README.md](./docs/current/README.md) (app specs) ·
 ## Communication
 
 - Match the user’s language in chat.
-- Code, commits, and comments: **English**.
-- User-visible UI strings: English + PT-BR dictionaries only.
+- Code, commits, comments, and docs: **English**.
+- The app opens in Brazilian Portuguese; English is the switch. Policy: [intention-workbench.md](./docs/current/intention-workbench.md) (Language).

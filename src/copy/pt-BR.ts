@@ -1,7 +1,6 @@
 import type { en } from './en';
 
-// Brazilian Portuguese, key for key with en.ts. Glossary: cópia de trabalho · slot ·
-// gravar · aplicar · sistema. Names the pedal prints (PCM, MFX, CTL, GK…) stay as printed.
+// Brazilian Portuguese, key for key with en.ts. Names the pedal prints (PCM, MFX, CTL, GK) stay as printed.
 const changes = (count: number) =>
   count === 1 ? '1 alteração não gravada' : `${count} alterações não gravadas`;
 
@@ -415,6 +414,14 @@ export const ptBR: typeof en = {
     modeOriginal: 'Original',
     modePcm: 'PCM',
     modeBoth: 'Os dois',
+    modeHintOriginal: 'Guitarra',
+    modeHintPcm: 'Só PCM',
+    modeHintBoth: 'Guitarra + PCM',
+    pcmChoose: 'Escolher um tom',
+    effectRow: 'Reverb',
+    recipeHintHarmonica: 'Nível do PCM 1',
+    recipeHintStrings: 'Alterna o PCM 2',
+    recipeHintSolo: 'Sem a guitarra',
     pcm: (n: number) => `PCM ${n}`,
     pcmLevel: (n: number) => `Nível do PCM ${n}`,
     togglesPcm: (n: number) => `Alterna o PCM ${n}`,

@@ -6,7 +6,8 @@ alwaysApply: false
 
 # Copy / i18n
 
-- `en.ts` is the source of truth; `pt-BR.ts` must mirror keys and interpolation params 1:1.
+- The app opens in pt-BR. A stored `rigbench.locale` of `en` or `pt-BR` wins. English is the switch.
+- `en.ts` is the key schema; `pt-BR.ts` must mirror keys and interpolation params 1:1. Policy: [docs/current/intention-workbench.md](../../docs/current/intention-workbench.md) (Language).
 - Read strings with `t('key')` or `useT()` — no hardcoded UI English/Portuguese in JSX.
 - Do not translate pedal tone/amp/PCM names; keep device map strings as on hardware.
 - After edits: `npm run check:copy` (also runs inside `npm run build`).

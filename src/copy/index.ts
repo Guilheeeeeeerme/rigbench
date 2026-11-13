@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { en } from './en';
 import { ptBR } from './pt-BR';
 
-/** The shape every dictionary has. English is the source of truth. */
+/** The shape every dictionary has. English is the key schema; the app opens in Brazilian Portuguese. */
 export type Copy = typeof en;
 
 export type Locale = 'en' | 'pt-BR';
@@ -37,21 +37,18 @@ export type Translate = <K extends CopyKey>(key: K, ...params: CopyParams<K>) =>
 
 const LOCALE_KEY = 'rigbench.locale';
 
-/** Picks the dictionary closest to a browser language tag; English when none fits. */
-export function matchLocale(tag: string | undefined | null): Locale {
-  return tag?.toLowerCase().startsWith('pt') ? 'pt-BR' : 'en';
+/** Stored choice wins. With nothing stored, the app opens in Brazilian Portuguese. */
+export function localeFromStorage(stored: string | null | undefined): Locale {
+  if (stored === 'en' || stored === 'pt-BR') return stored;
+  return 'pt-BR';
 }
 
 function initialLocale(): Locale {
   try {
-    const stored = localStorage.getItem(LOCALE_KEY);
-    if (stored && (LOCALES as readonly string[]).includes(stored)) {
-      return stored as Locale;
-    }
+    return localeFromStorage(localStorage.getItem(LOCALE_KEY));
   } catch {
-    // No storage (private mode, tests): fall through to the browser language.
+    return 'pt-BR';
   }
-  return matchLocale(typeof navigator === 'undefined' ? undefined : navigator.language);
 }
 
 let current: Locale = initialLocale();

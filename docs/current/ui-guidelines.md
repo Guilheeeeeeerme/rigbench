@@ -9,8 +9,7 @@
 ## Intent
 
 A dense, calm, **Linear-inspired dark** interface: Inter, 4px grid, few colors, high
-contrast text, no decorative motion. The musician reads the workspace at arm’s length;
-craft surfaces stay quiet.
+contrast text, no decorative motion. The musician reads the current patch at arm’s length.
 
 ## Tokens (CSS)
 
@@ -77,22 +76,20 @@ docs update.
 
 - No Inter alternatives (Roboto, system stack as primary).
 - No warm cream / terracotta / purple-gradient marketing skins.
-- No flat single-purpose “dashboard card grids” that fight the workspace’s one-job layout.
+- No second chrome layout beside the current patch board.
 - No inventing a second accent that competes with `#5E6AD2` for chrome (scope chips excepted).
 
-## Workspace surfaces (mobile-first)
+## Current patch board
 
-Intention workspace behavior SoT: [intention-workbench.md](./intention-workbench.md).
-Advanced editor notes: [bank-patch-config.md](./bank-patch-config.md).
+What the musician sees: [intention-workbench.md](./intention-workbench.md). Advanced notes: [bank-patch-config.md](./bank-patch-config.md).
 
-- Intention cards and ranges use the same tokens as the rest of the shell. Tap targets stay at least 48px.
-- Profile pills (craft macros, `SimpleProfiles`): full-width stack under 640px; two columns above.
-- AppShell ≤900px: main content stacks above secondary panes; collapsed by default on first load.
+- The board fills the window and does not scroll. Cards use the same tokens as the shell. Tap targets stay at least 48px.
+- On a narrow window the two columns stack. Save and Guitar stay on the last row.
 
 ## Checklist before shipping UI
 
 1. Tokens only — no new hex for chrome colors.
 2. Inter still loaded; body still ~17px.
 3. Focus ring visible on keyboard path.
-4. Workspace / Connect / AppNav still readable on a phone-width viewport.
+4. The patch board and Connect stay readable on a phone-width viewport.
 5. Update this file if you add a token; point from [docs/current/README.md](./README.md).

@@ -203,7 +203,9 @@ export function IntentionWorkspace({
           <h1>{confirmed?.patchName || t('intention.unnamed')}</h1>
           <p>
             {confirmed?.slotLabel}
-            <span className="now-phase">{phaseLabel(t, state.phase)}</span>
+            {state.phase !== 'idle' && (
+              <span className="now-phase">{phaseLabel(t, state.phase)}</span>
+            )}
           </p>
         </div>
         <button
@@ -229,12 +231,13 @@ export function IntentionWorkspace({
               <button
                 key={item}
                 type="button"
-                className={mode === item ? 'is-selected' : undefined}
+                className={mode === item ? 'now-card is-selected' : 'now-card'}
                 aria-pressed={mode === item}
                 disabled={busy}
                 onClick={() => run({ kind: 'mode', mode: item })}
               >
-                {modeLabel(t, item)}
+                <span className="now-value">{modeLabel(t, item)}</span>
+                <span className="now-detail">{modeDetail(t, item)}</span>
               </button>
             ))}
           </div>
@@ -242,10 +245,14 @@ export function IntentionWorkspace({
           <div className="now-row now-row-2">
             {([1, 2] as const).map((index) => {
               const layer = confirmed?.layers.find((item) => item.slot === index);
-              const name = layer?.on ? layer.toneName : t('intention.free');
+              const on = layer?.on === true;
               return (
-                <button key={index} type="button" disabled={busy} onClick={() => openPcm(index)}>
-                  {t('intention.pcm', index)} · {name}
+                <button key={index} type="button" className="now-card" disabled={busy} onClick={() => openPcm(index)}>
+                  <span className="now-kicker">{t('intention.pcm', index)}</span>
+                  <span className="now-value">{on ? layer.toneName : t('intention.free')}</span>
+                  <span className="now-detail">
+                    {on ? `${t('intention.level')} ${layer.level}` : t('intention.pcmChoose')}
+                  </span>
                 </button>
               );
             })}
@@ -254,36 +261,49 @@ export function IntentionWorkspace({
 
         <div className="now-side">
           <div className="now-row now-row-2 now-pills">
-            <p>EXP · {pedalLabel(t, confirmed?.expression ?? 'off')}</p>
-            <p>CTL · {pedalLabel(t, confirmed?.ctl ?? 'off')}</p>
+            <div className="now-card">
+              <span className="now-kicker">EXP</span>
+              <span className="now-value">{pedalLabel(t, confirmed?.expression ?? 'off')}</span>
+            </div>
+            <div className="now-card">
+              <span className="now-kicker">CTL</span>
+              <span className="now-value">{pedalLabel(t, confirmed?.ctl ?? 'off')}</span>
+            </div>
           </div>
 
-          <div className="now-effects" role="group" aria-label={t('intention.effectShared')}>
-            {EFFECTS.map((effect) => (
-              <button
-                key={effect}
-                type="button"
-                disabled={busy}
-                onClick={() => run({ kind: 'effect', effect })}
-              >
-                {effectLabel(t, effect)}
-              </button>
-            ))}
+          <div className="now-block">
+            <p className="now-kicker">
+              {t('intention.effectRow')} · {t('intention.effectShared')}
+            </p>
+            <div className="now-effects" role="group" aria-label={t('intention.effectShared')}>
+              {EFFECTS.map((effect) => (
+                <button
+                  key={effect}
+                  type="button"
+                  disabled={busy}
+                  onClick={() => run({ kind: 'effect', effect })}
+                >
+                  {effectLabel(t, effect)}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="now-row">
             {RECIPES.map((id) => {
-              const allowed = session.preview({ kind: 'recipe', id }).ok;
+              const plan = session.preview({ kind: 'recipe', id });
               return (
                 <button
                   key={id}
                   type="button"
-                  className={confirmed?.recipeId === id ? 'is-selected' : undefined}
+                  className={confirmed?.recipeId === id ? 'now-card is-selected' : 'now-card'}
                   aria-pressed={confirmed?.recipeId === id}
-                  disabled={busy || !allowed}
+                  disabled={busy || !plan.ok}
                   onClick={() => ask({ kind: 'recipe', id }, 'recipe')}
                 >
-                  {recipeLabel(t, id)}
+                  <span className="now-kicker">{recipeKicker(id)}</span>
+                  <span className="now-value">{recipeLabel(t, id)}</span>
+                  <span className="now-detail">{plan.ok ? recipeHint(t, id) : t('intention.inUse')}</span>
                 </button>
               );
             })}
@@ -292,12 +312,16 @@ export function IntentionWorkspace({
       </div>
 
       <div className="now-actions">
-        <button type="button" className="primary" disabled={busy || confirmed?.userSlot == null} onClick={openSave}>
-          {t('intention.save')}
-          {confirmed?.tempDiffersFromUser ? <span className="now-dot" aria-hidden="true" /> : null}
+        <button type="button" className="primary now-card" disabled={busy || confirmed?.userSlot == null} onClick={openSave}>
+          <span className="now-kicker">USER {confirmed?.slotLabel}</span>
+          <span className="now-value">
+            {t('intention.save')}
+            {confirmed?.tempDiffersFromUser ? <span className="now-dot" aria-hidden="true" /> : null}
+          </span>
         </button>
         <button
           type="button"
+          className="now-card"
           disabled={busy}
           onClick={() => {
             setPending(null);
@@ -305,7 +329,9 @@ export function IntentionWorkspace({
             setSheet('guitar');
           }}
         >
-          {t('intention.guitar')}
+          <span className="now-kicker">GK</span>
+          <span className="now-value">{t('intention.guitar')}</span>
+          <span className="now-detail">{t('intention.playFeel')}</span>
         </button>
       </div>
 
@@ -698,6 +724,24 @@ function modeLabel(t: Translate, mode: SoundMode): string {
   if (mode === 'original') return t('intention.modeOriginal');
   if (mode === 'accompaniment') return t('intention.modePcm');
   return t('intention.modeBoth');
+}
+
+function modeDetail(t: Translate, mode: SoundMode): string {
+  if (mode === 'original') return t('intention.modeHintOriginal');
+  if (mode === 'accompaniment') return t('intention.modeHintPcm');
+  return t('intention.modeHintBoth');
+}
+
+function recipeKicker(id: RecipeId): string {
+  if (id === 'nylon-harmonica-exp') return 'EXP';
+  if (id === 'nylon-piano-strings-ctl') return 'CTL';
+  return 'PCM';
+}
+
+function recipeHint(t: Translate, id: RecipeId): string {
+  if (id === 'nylon-harmonica-exp') return t('intention.recipeHintHarmonica');
+  if (id === 'nylon-piano-strings-ctl') return t('intention.recipeHintStrings');
+  return t('intention.recipeHintSolo');
 }
 
 function recipeLabel(t: Translate, id: RecipeId): string {

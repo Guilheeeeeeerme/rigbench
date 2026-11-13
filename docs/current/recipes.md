@@ -9,7 +9,7 @@ Product IA SoT: [intention-workbench.md](./intention-workbench.md).
 2. Place the field on exactly one section in `src/devices/gr55/pages.ts` (`keys` list).
 3. Mark essentials with `essentialKeys`; effect-type gating with `typeKey`; use `readOnlyKeys` when needed.
 4. `PAGE_IDS` and URL slugs are frozen — do not rename casually; use `editorHref(pageId, sectionSlug)`.
-5. If the UI needs a curated label (not the raw map name), add copy keys in `en.ts` + `pt-BR.ts`.
+5. If the UI needs a curated label (not the raw map name), follow [intention-workbench.md](./intention-workbench.md) (Language).
 6. Extend coverage tests in `gr55.test.ts` / page membership tests so every field still lands on one page.
 
 ## Add a system (🔵) field
@@ -19,16 +19,13 @@ Product IA SoT: [intention-workbench.md](./intention-workbench.md).
    ([gr55-config-scope.md](./gr55-config-scope.md)) or a captured dump.
 3. `systemState.ts` writes are **immediate DT1** — there is no staging layer; controls gate on
    impact confirm (ScopeConfirm) instead. Never queue a hidden write.
-4. Surface new fields through UI reads (`system.read(...)`) wired into the workspace or Setup section.
+4. Surface a system field from `systemMap.ts` on the Guitar sheet, or in Advanced when it is a patch field. There is no Setup section.
 5. Confirm dialogs must name what changes. Guitar/Bass mode needs the high-impact warning.
-6. Tests: `system.test.ts`. Hardware caveats stay listed in the root README until verified on a real pedal.
+6. Tests: `system.test.ts`. Unmeasured hardware claims stay in [capability-matrix.md](./capability-matrix.md).
 
 ## Add UI copy
 
-1. Add the key under the right namespace in `src/copy/en.ts`.
-2. Mirror the same key and `{param}` placeholders in `pt-BR.ts`.
-3. Consume with `t('namespace.key', { param })` or `useT()`.
-4. `npm run check:copy`.
+[intention-workbench.md](./intention-workbench.md) (Language). Add the key to `en.ts` and the same key to `pt-BR.ts`, then `npm run check:copy`.
 
 ## Change visual chrome
 
@@ -39,20 +36,11 @@ Product IA SoT: [intention-workbench.md](./intention-workbench.md).
 
 ## No AI, ever
 
-`src/maestro` was removed; do not reintroduce chat/copilot code. Run `npm run check:secrets`
-whenever storage, keys, or downloaded data could be touched. Historical architecture:
-[../archive/maestro-architecture.md](../archive/maestro-architecture.md).
+No chat or copilot in the product shell. History: [../archive/maestro-architecture.md](../archive/maestro-architecture.md).
 
-## Sync behavior
+## Sync and connect
 
-The workspace **Sync** control reads the sounding patch again. It does not open the slot cache.
-`sync/engine.ts` and IndexedDB remain in the tree for their own tests; do not mount them on connect.
-
-## Connect
-
-Do not store ports or resume a previous session. Connect goes through `connectWithPorts` in
-`connectionThunks.ts`. Live MIDI stays in `connectionRuntime`. Full SoT:
-[connection-resume.md](./connection-resume.md).
+[connection-resume.md](./connection-resume.md). Do not mount `sync/engine.ts` or IndexedDB on connect.
 
 After changing connect or silent-resume behavior, run the docs audit in
 [AGENTS.md](../../AGENTS.md#documentation).

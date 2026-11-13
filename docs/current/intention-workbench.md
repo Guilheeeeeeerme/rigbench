@@ -22,14 +22,18 @@ The pedal is the authority. RAM holds the last confirmed reading, the operation 
 
 The workspace is the sound that is playing. The title is the patch name and the USER slot. One word shows the phase: Confirmed, Checking, Applying, Saved, Uncertain.
 
-- **Connect.** One sentence, then Connect. When the browser offers a single input and a single output, the port selects stay hidden. SysEx starts after the gesture. Family `0x5302` is required. Discovery does not write. The workspace opens only after identity, the relevant system area, the temporary patch, and the patch position have been read.
-- **Sound.** The screen is the current patch and fills the window without scrolling. The name and the USER slot are the title, with previous and next. Choosing one loads that USER patch on the pedal, and the title changes when the reading comes back. A program change from the pedal updates the same title. One board holds the rest: Original, PCM and Both beside the two PCM chips; EXP, CTL, the four effects and the three recipes on the other side. Save and Guitar are the last row. Save writes the slot that is sounding. A dot on Save means that sounding patch differs from the slot. Read again stays in the top bar.
+- **Connect.** [connection-resume.md](./connection-resume.md).
+- **Sound.** The screen is the current patch and fills the window without scrolling. The name and the USER slot are the title, with previous and next. Choosing one loads that USER patch on the pedal, and the title changes when the reading comes back. A program change from the pedal updates the same title. One board holds the rest. Each card names the resource and the last confirmed reading: the mode and what it leaves in the mix, each PCM with its tone and level, EXP and CTL with the role they already have, Reverb shared by both PCMs, and the three recipes with the pedal they use. Save names the USER slot. Guitar names Play Feel. A dot on Save means that sounding patch differs from the slot. Read again stays in the top bar.
 - **Sheets.** One at a time, over the current patch. A PCM chip opens the nine tones, a level, Use, and Remove. A recipe card opens the scope chip and the groups, then Apply. Save confirms the current USER slot and says a verified save does not promise the sound survives switching the pedal off. Guitar opens the instrument, PU TYPE when that profile asks, Play Feel, Low Velocity Cut, Velocity Dynamics, SENS, and scale. Activate lists the groups in that sheet before the write. Advanced stays at the bottom of the Guitar sheet.
 - A tile shows the last confirmed reading while a write is in flight, then the readback. A patch that matches no recipe has no recipe card selected. There is no string meter.
 
 ## Language
 
-English is written first in `src/copy/en.ts`. PT-BR translates sentences and verbs. These stay English in both dictionaries: patch names and USER slots as read; PCM tone names; PCM 1, PCM 2, EXP, CTL, GK, USER, PU TYPE, SENS; Play Feel, Low Velocity Cut, Velocity Dynamics; Natural, Anti-Ghost; instrument product names; Reverb, Delay, Chorus, Pad.
+Code, comments, and these docs are English. The app opens in Brazilian Portuguese. With no `rigbench.locale` stored, the screen is `pt-BR`. A stored `en` or `pt-BR` wins. The EN | PT-BR switch changes it without a reload.
+
+`src/copy/en.ts` is the key schema (`Copy = typeof en`). `src/copy/pt-BR.ts` mirrors every key. A missing Portuguese string falls back to English, so both files stay complete. `npm run check:copy`.
+
+These stay English in both dictionaries: patch names and USER slots as read; PCM tone names; PCM 1, PCM 2, EXP, CTL, GK, USER, PU TYPE, SENS; Play Feel, Low Velocity Cut, Velocity Dynamics; Natural, Anti-Ghost; instrument product names; Reverb, Delay, Chorus, Pad.
 
 ## Confirmed writes
 

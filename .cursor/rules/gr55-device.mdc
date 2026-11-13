@@ -2,13 +2,11 @@
 
 - Routes SoT: `routes.ts`. Connected surface: `patchRoute` only. Legacy paths redirect.
 - Shell: `AppShell.tsx` — Exit · Sync · `Gr55Workspace` (no AI anywhere).
-- Workspace: `src/experience/IntentionWorkspace.tsx` plus `src/devices/gr55/intentions/`. Instrument, modes, layers, pedals. No rhythm catalog.
-- Advanced escape hatch: `AdvancedPatchEditor.tsx` on `verifiedFieldHost` (same queue).
+- Workspace: `src/experience/IntentionWorkspace.tsx` plus `src/devices/gr55/intentions/`. What the musician sees: [docs/current/intention-workbench.md](../../docs/current/intention-workbench.md). No rhythm catalog.
+- Advanced opens from the Guitar sheet: `AdvancedPatchEditor.tsx` on `verifiedFieldHost` (same queue).
 - Connect / Exit: `connectionThunks.ts`. No port memory. SoT [docs/current/connection-resume.md](../../docs/current/connection-resume.md). Live MIDI in `connectionRuntime`, not Redux.
 - On connect: identify, then `readSystem` → system `load` → `readPatch` → `readPatchLocation`. No writes during discovery.
-- **Writes**: one verified field at a time (`writeVerified`). The mirror updates from the readback.
-- **Save**: explicit `writeToUserSlotVerified` (PATCH WRITE + USER readback). Not automatic.
-- **Authority**: `src/session/operationQueue.ts`. `holdRemoteMirror` ignores pedal churn only while a verified batch is on the wire.
+- **Writes, save, authority**: [docs/current/intention-workbench.md](../../docs/current/intention-workbench.md) (Confirmed writes). One verified operation; the mirror updates from the readback.
 - Instruments: `instrumentProfiles.ts`. Tone names: `presets/toneLibrary.ts`. Tone search: `toneMatch.ts`.
 - Field keys for Advanced: `pages.ts` (`PAGE_IDS` frozen).
 - Fake pedal: `fakeDevice.ts` for tests and the DEV “simulated pedal” path. Not shown when SysEx is unavailable outside development.

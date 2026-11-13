@@ -34,7 +34,7 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 
 ## Hardware truths the UI must respect
 
-- Changing **patches** mutes the pedal ~1 s — warn before cross-slot moves.
+- Changing patches on the pedal can mute while it reloads. The duration is unmeasured ([capability-matrix.md](./capability-matrix.md)). The screen loads the next USER slot without a warning; the title updates from the readback.
 - **Saving a slot** locks the pedal several seconds; queue must wait for the reply.
 - The pedal does **not** push memory; sync is RQ1 poll only and must never write during sync.
 - Temporary-patch edits disappear when another patch is selected — that is why slot save exists.
@@ -49,7 +49,7 @@ GUITAR ⇄ BASS is system-wide: confirm and warn that it affects all 297 user sl
 | --- | --- | --- |
 | **Home** | `#/` | Pick GR-55 or a placeholder |
 | **Connect** | `#/gr55/conectar` | MIDI ports after a gesture; no remembered ports |
-| **Intention workspace** | `#/gr55/patch` | Instrument, modes, layers, pedals; Advanced collapsed |
+| **Intention workspace** | `#/gr55/patch` | Current patch board. Anatomy: [intention-workbench.md](./intention-workbench.md) |
 
 These are legacy first segments that **redirect** to `patch`: `bank`, `global`, `palco`,
 `estudio`, `maestro`, `configuracao`, `dispositivo`, `editor`, `setup`. Source of truth:

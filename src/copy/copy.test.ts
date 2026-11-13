@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { en } from './en';
 import { ptBR } from './pt-BR';
-import { getLocale, matchLocale, setLocale, t } from './index';
+import { getLocale, localeFromStorage, setLocale, t } from './index';
 
 /** Every leaf of a dictionary as `path → kind`, where a function's kind carries its arity. */
 function shape(node: unknown, path = '', out = new Map<string, string>()): Map<string, string> {
@@ -70,11 +70,12 @@ describe('t', () => {
     expect(t('gr55.workspace.unsavedChanges', 3)).toBe('3 alterações não gravadas');
   });
 
-  it('picks Portuguese for any pt browser language and English otherwise', () => {
-    expect(matchLocale('pt-BR')).toBe('pt-BR');
-    expect(matchLocale('pt-PT')).toBe('pt-BR');
-    expect(matchLocale('en-US')).toBe('en');
-    expect(matchLocale('de')).toBe('en');
-    expect(matchLocale(undefined)).toBe('en');
+  it('opens in Brazilian Portuguese unless a stored choice says otherwise', () => {
+    expect(localeFromStorage(null)).toBe('pt-BR');
+    expect(localeFromStorage(undefined)).toBe('pt-BR');
+    expect(localeFromStorage('')).toBe('pt-BR');
+    expect(localeFromStorage('en-US')).toBe('pt-BR');
+    expect(localeFromStorage('pt-BR')).toBe('pt-BR');
+    expect(localeFromStorage('en')).toBe('en');
   });
 });

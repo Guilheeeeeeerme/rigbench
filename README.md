@@ -6,8 +6,8 @@ no backend, and nothing you edit leaves your computer. The published app is
 [guilheeeeeeerme.github.io/rigbench](https://guilheeeeeeerme.github.io/rigbench/). That build needs
 Chrome or Edge and a GR-55 on USB. The simulated pedal is only in `npm run dev`.
 
-The interface is in English and Brazilian Portuguese. It follows the browser's language on the
-first visit; the **EN | PT-BR** switch in the corner of every screen changes it without a reload.
+The app opens in Brazilian Portuguese. English is the **EN | PT-BR** switch. Docs and code stay
+English. Policy: [docs/current/intention-workbench.md](./docs/current/intention-workbench.md) (Language).
 The UI is a dark Linear-inspired shell (Inter, indigo accent) — see
 [docs/current/ui-guidelines.md](./docs/current/ui-guidelines.md).
 
@@ -26,21 +26,18 @@ library in `docs/gr55-collection/` (data, not documentation; it is not in git).
 Intention workspace for the GR-55. You describe the instrument and the sound; the app writes only the fields that intention needs, then reads them back.
 
 ```
-Home → Connect (a gesture, then a confirmed read) → Intention workspace
-         Instrument · modes · layers · pedals
-         Save and verify · Sync · Exit → Home
+Home → Connect (a gesture, then a confirmed read) → Patch board
+         previous / next with the pedal
+         Save · Guitar · Read again · Exit → Home
 ```
 
 - **Home.** Pick GR-55 (or a placeholder device).
-- **Connect.** Asks for MIDI after you choose it. Nothing is written while the pedal is identified.
-  The workspace opens only after the system area, the sounding patch, and its position have been read.
-  Development builds can use a simulated pedal. A browser without SysEx does not invent a device.
-- **Patch** (`#/gr55/patch`). The screen is the sounding patch: Original, PCM, or Both; two PCM
-  chips; EXP and CTL; Harmonica, Piano + Strings, or Solo. Previous and next change the current
-  USER patch with the pedal. Save and Guitar open a sheet. Advanced
-  stays on the Guitar sheet, on the same queue. Automatic saving is off until it is measured on hardware.
+- **Connect.** [docs/current/connection-resume.md](./docs/current/connection-resume.md). Development builds can use a simulated pedal.
+- **Patch** (`#/gr55/patch`). The sounding patch fills the window. Previous and next stay with the
+  pedal. Save and Guitar open a sheet. Card anatomy:
+  [docs/current/intention-workbench.md](./docs/current/intention-workbench.md).
 - **Authority.** The screen follows the last confirmed reading. A send acknowledgement is not enough.
-  **Sync** reads the sounding patch again.
+  Connect, Exit, and Sync: [docs/current/connection-resume.md](./docs/current/connection-resume.md).
 - **Exit.** Top-left: disconnect and return Home. Ports are not remembered.
 - **No AI** in this MVP. Legacy `#/gr55/bank`, `#/gr55/global`, `#/gr55/maestro` redirect to Patch.
 
@@ -135,7 +132,7 @@ you walk connect, the intention workspace, and a verified USER save with no hard
 src/
   app/            Redux connection phase, styles
   shell/          Browser gate, device picker, language switch
-  copy/           en.ts (source of truth) and pt-BR.ts; t() and useT() in index.ts
+  copy/           en.ts (key schema) and pt-BR.ts; the app opens in pt-BR
   experience/     Intention screens. They do not import a device or SysEx
   intentions/     Shared intention types
   session/        Serial queue, tab lock, storage allow-list
@@ -160,9 +157,8 @@ address map and changes it with musician-level controls; `pages.ts` stays the lo
 source of truth for validation, with tests pinning every patch field to exactly one section. When
 something needs parameter-level care, the workspace's Advanced section is the escape hatch.
 
-Every string the interface shows lives in `src/copy/`. New text goes into `en.ts` and `pt-BR.ts`
-under the same key and is read with `t('some.key')`; the names of synths, amps and tones stay as
-the pedal prints them.
+Every string the interface shows lives in `src/copy/`. Language policy:
+[docs/current/intention-workbench.md](./docs/current/intention-workbench.md) (Language).
 
 What Rigbench keeps on your computer: the language, under `rigbench.locale`. Ports, recent tones,
 and pedal settings are not stored. Clearing the site's data forgets the language and nothing on

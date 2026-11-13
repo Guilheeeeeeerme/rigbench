@@ -63,7 +63,7 @@ Keep distinct from chrome accent:
 - Disabled: `opacity: 0.5`, `cursor: not-allowed`.
 - Primary hover: `--accent-hover`. Secondary hover: `--surface-overlay`.
 - Destructive / irreversible: confirm UI (existing Apply / discard patterns) — do not silent-write.
-- Errors next to the action (Connect problems, Apply bar, Maestro).
+- Errors next to the action (Connect problems, intention sheet failures).
 - **No new animation** unless explicitly requested. Respect `prefers-reduced-motion`.
 - Never block paste on inputs.
 

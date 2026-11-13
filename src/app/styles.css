@@ -356,39 +356,20 @@ a.device-card:hover {
 
 .app-shell-body {
   flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: var(--app-chat-width, 360px) 6px minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   overflow: hidden;
 }
 
-.app-shell-body.chat-collapsed {
-  grid-template-columns: minmax(0, 1fr);
-}
-
 .app-main {
-  grid-column: 3;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
   height: 100%;
   padding: var(--space-4);
   overflow: auto;
   overscroll-behavior: contain;
-}
-
-.app-shell-body.chat-collapsed .app-main {
-  grid-column: 1;
-}
-
-@media (max-width: 900px) {
-  .app-shell-body:not(.chat-collapsed) {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr) minmax(12rem, 38%);
-  }
-  .app-main {
-    grid-column: 1;
-    grid-row: 1;
-  }
 }
 
 .patch-page-tabs {

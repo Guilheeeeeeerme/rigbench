@@ -14,7 +14,7 @@ function errorText(error: unknown): string {
 }
 
 /**
- * Connected app: Exit · Sync · single patch workspace (no Maestro, no Global peer nav).
+ * Connected app: Exit · Read again · single patch workspace.
  */
 export function AppShell({ editor }: { editor: Gr55Editor }) {
   const t = useT();
@@ -62,7 +62,7 @@ export function AppShell({ editor }: { editor: Gr55Editor }) {
         </p>
       )}
 
-      <div className="app-shell-body chat-collapsed">
+      <div className="app-shell-body">
         <section className="app-main" aria-label={t('gr55.mvp.title')}>
           <Gr55Workspace editor={editor} session={session} onError={setError} />
         </section>

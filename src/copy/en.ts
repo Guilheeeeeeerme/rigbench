@@ -60,121 +60,9 @@ export const en = {
   },
   gr55: {
     reading: (done: number, total: number) => `Reading patch from the pedal… ${done}/${total}`,
-    search: {
-      placeholder: 'Find any parameter of this patch…',
-    },
     navPatch: 'Patch',
-    bankChatHint:
-      'Chat on this page can set anything in this bank — the three keys, CTL, expression, and the sounding patch.',
-    bankMode: {
-      advanced: 'Advanced',
-    },
-    toneDeck: {
-      title: 'Tones & mix',
-      noTone: 'No tone',
-    },
-    tonePicker: {
-      close: 'Close',
-      search: 'Search tones',
-      searchPlaceholder: 'Search tones…',
-      recent: 'Recent',
-      all: 'All tones',
-      empty: 'No tones match that search.',
-      typeToSearch: (count: number) =>
-        `Showing a page of ${count} tones — type to search the rest.`,
-      pcm1Title: 'PCM 1 tone',
-      pcm2Title: 'PCM 2 tone',
-      modelingTitle: 'Modeling tone',
-    },
-    simple: {
-      applyFailed: (reason: string) => `Could not apply that profile (${reason}).`,
-      cancel: 'Cancel',
-      confirm: 'Confirm',
-      saving: 'Working…',
-    },
     mvp: {
       title: 'GR-55',
-      activePatch: 'Active patch',
-      soundingAs: 'Sounding as',
-      soundingHint: 'Generate a complete starting patch, then refine on the pedal.',
-      save: 'Save to GR-55',
-      saveBusy: 'Saving…',
-      saveOk: 'Saved and verified on the USER slot.',
-      saveFail: (reason: string) => `Could not save (${reason}).`,
-      slotChanged: 'The pedal changed patches. Reloaded — nothing was overwritten.',
-      jobsLabel: 'What do you want to do?',
-      jobSetup: 'Setup instrument',
-      jobSetupBlurb: 'Guitar / GK / output — separate from sound',
-      jobChoose: 'Choose a sound',
-      jobChooseBlurb: 'Rhythm → role → sound → apply',
-      jobShape: 'Shape this sound',
-      jobShapeBlurb: 'Pitch, CTL readout, light trouble',
-      setupLead:
-        'Pick your physical instrument (optional calibration seed) and apply once. This never changes the musical patch — only SYSTEM / GK, with confirm.',
-      chooseLead:
-        'Select rhythm → musical role → sound, then apply. Each choice builds a complete starting patch — not a fine-tuning editor. Final polish happens on the GR-55.',
-      shapeLead:
-        'Light session tweaks for the patch already playing. For a different rhythm or role, go back to Choose.',
-      replaceCallout:
-        'Apply replaces the whole temporary patch (sources, FX, CTL/EXP). It does not write GK SENS or PU TYPE. Metal must not linger under sax.',
-      shapeCallout: 'Need another style? Choose a sound — Shape is not the catalog.',
-      shapeNeedSound: 'Apply a sound first, then shape it here.',
-      sectionFeel: 'Playability',
-      sectionPitch: 'Pitch',
-      sectionControls: 'Controls',
-      sectionTrouble: 'Troubleshooting',
-      sectionAdvanced: 'Advanced (escape hatch)',
-      pitchShift: 'Pitch (semitones)',
-      pitchZero: '0 — no shift',
-      pitchSemitones: (value: string) => `${value} semitones`,
-      pitchCorrection: 'Pitch correction (Chromatic)',
-      pitchCorrectionHint:
-        'Separate from pitch shift. Default follows the sound’s articulation profile; your choice here is kept when you replace a sound.',
-      pickInstrument: 'Your instrument',
-      pickOutput: 'Where you listen',
-      pickFamily: 'Family',
-      familyAll: 'All families',
-      pickRhythm: 'Rhythm',
-      pickRole: 'Musical role',
-      pickPreset: 'Sound',
-      chooseInstrumentHint: (name: string) =>
-        `Filtering recommendations for “${name}” (from Setup). Apply sound never changes GK.`,
-      incompatibleInstrument: 'Not recommended for your instrument',
-      replaceSound: 'Apply to GR-55',
-      applyInstrument: 'Apply instrument setup',
-      systemWarnTitle: 'This changes pedal-wide settings',
-      systemWarnBody:
-        'Instrument, sensitivity, and output live in SYSTEM / GK sets. They affect other patches that use the same GK set. Continue?',
-      replaceWarnTitle: 'Apply this starting patch?',
-      replaceWarnBody: (name: string) =>
-        `Clears the temporary patch and builds “${name}” from scratch — sources, amp, FX, and patch CTL/EXP. SYSTEM/GK stay untouched. Pitch shift and your pitch-correction override are kept. USER memory is untouched until you Save.`,
-      systemScope: 'SYSTEM / GK',
-      patchScope: 'Temporary patch',
-      bassModeWarn:
-        'Bass mode requires Guitar/Bass = BASS on the pedal and a power cycle. Separate patch banks.',
-      piezoConfirm: 'Confirm piezo brand if tracking is wrong',
-      pickCalibration: 'Optional GK velocity seed',
-      gkSetNameHint: (name: string) =>
-        `Will name the active GK set “${name}” (does not overwrite other sets unless that set is selected).`,
-      caimbeGhostHint:
-        'Hearing ghost notes? After setup, open Shape → Troubleshooting → Ghost / unwanted notes for a 5-minute SENS + LVC check (uses the pedal meter — this app cannot read live levels).',
-      priorityBadge: 'Recommended',
-      statusApproximation: 'Approximation — not a native GR-55 instrument',
-      statusImplemented: 'Curated starting point (not hardware-tested)',
-      statusDocumented: 'Documented hardware capability',
-      statusHardware: 'Hardware-tested',
-      technique: 'Playing tip',
-      ctlLabel: 'CTL pedal',
-      expLabel: 'Expression pedal',
-      expSwLabel: 'EXP switch',
-      feelCalibrate:
-        'Per-string SENS is guided by the pedal’s own meter. This app cannot read live string levels over MIDI — adjust SENS while watching the GR-55 display.',
-      feelRefineHint:
-        'Final feel and levels belong on the GR-55. Use Setup for GK seeds; use Troubleshooting only when notes misbehave.',
-      applyFix: 'Try suggested fix',
-      collapse: 'Collapse',
-      expand: 'Expand',
-      priorityBalance: 'Balance',
     },
     advanced: {
       title: 'Advanced',
@@ -186,9 +74,7 @@ export const en = {
     sync: 'Read again',
     syncBusy: 'Reading…',
     syncHint: 'Read the sounding patch and the system from the pedal. This does not replace them with a stored slot.',
-    authorityApp: 'Checking the pedal',
     authorityPedal: 'Confirmed on the pedal',
-    patchSlotUnknown: 'Unknown / not a user slot',
     workspace: {
       /** Scope chip: this control edits the working copy, which the pedal loses on a patch switch. */
       workingCopy: 'Working copy',
@@ -199,17 +85,7 @@ export const en = {
       pedalHint: 'Pedal-wide setting. The same for every patch.',
       unsavedChanges: (count: number) =>
         count === 1 ? '1 unsaved change' : `${count} unsaved changes`,
-      confirmDiscard: (count: number) =>
-        `The working copy has ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`}. ` +
-        'Replacing it loses them and the pedal keeps sounding the stored patch. Go ahead?',
-      pedalSwitchedNotice: (count: number) =>
-        `The pedal switched patches on its own. The working copy had ` +
-        `${count === 1 ? 'one unsaved change' : `${count} unsaved changes`}, and it is gone. ` +
-        'The patch below is the one the pedal now holds.',
-      dismissNotice: 'Dismiss',
     },
-    mode: { GUITAR: 'Guitar mode', BASS: 'Bass mode' },
-    unnamed: '(unnamed)',
     unknownValue: (hex: string) => `Unknown value (${hex})`,
     error: (message: string) => `The pedal did not accept or answer the last message: ${message}`,
     dismiss: 'Dismiss',
@@ -238,81 +114,6 @@ export const en = {
       vlink: 'V-LINK',
       ez: 'EZ sound',
     },
-    document: {
-      revertConfirm: (count: number) =>
-        `Undo all ${count === 1 ? '1 unsaved change' : `${count} unsaved changes`} and go back ` +
-        'to how the pedal had it? The pedal keeps sounding the stored patch in the meantime.',
-      saveHint: (slot: string) => `This patch came from ${slot}. Saving puts it back there.`,
-      saveNoSlot:
-        'This patch came off the pedal’s screen or a file, so there is no slot to save to. Use Save as… to keep it in a slot.',
-      advanced: 'Advanced',
-    },
-    blocks: {
-      intro:
-        'How the sound travels through this patch. Click a block to set its parameters; greyed blocks are switched off.',
-      assignCables: 'Cables: stepping on a pedal',
-    },
-  },
-  voices: {
-    pcm1: 'PCM synth 1',
-    pcm2: 'PCM synth 2',
-    modeling: 'Modeled guitar',
-    normalPickup: 'Normal pickup',
-    master: 'Master level',
-    amp: 'Amp',
-    chorus: 'Chorus',
-    delay: 'Delay',
-    reverb: 'Reverb',
-    eq: 'EQ',
-    mute: 'mute',
-  },
-  stage: {
-    title: 'Stage',
-    onOff: 'On / off',
-    on: 'On',
-  },
-  sync: {
-    title: 'Pedal sync',
-    intro:
-      'Rigbench keeps a copy of every slot on this computer, so names and patches are there at once. The pedal never sends its memory by itself: Rigbench reads it slot by slot, and never saves anything to the pedal while it does.',
-    badge: {
-      idle: (done: number, total: number) => `Not synced · ${done}/${total}`,
-      syncing: (slot: string, done: number, total: number) => `SYNC ${slot} · ${done}/${total}`,
-      paused: (done: number, total: number) => `Paused · ${done}/${total}`,
-      ready: (total: number) => `READY ✓ ${total}/${total}`,
-      changed: (count: number) => `Δ ${count} changed`,
-      failed: (done: number, total: number) => `Sync stopped · ${done}/${total}`,
-    },
-    percent: (percent: number) => `${percent}% complete`,
-    eta: (minutes: number) =>
-      minutes < 1
-        ? 'less than a minute left'
-        : minutes === 1
-          ? 'about 1 minute left'
-          : `about ${minutes} minutes left`,
-    reading: (slot: string) => `Reading ${slot} now.`,
-    queue: (count: number) =>
-      count === 1 ? '1 slot still to read' : `${count} slots still to read`,
-    finishedAt: (when: string) => `Last synced ${when}.`,
-    readInFull: (count: number) =>
-      count === 1
-        ? '1 slot was read in full this time.'
-        : `${count} slots were read in full this time.`,
-    start: 'Sync now',
-    continue: 'Continue the sync',
-    pause: 'Pause',
-    resume: 'Resume',
-    stop: 'Stop',
-    full: 'Read every slot again',
-    fullHint:
-      'A quick sync checks the name and common settings of each slot and reads again only the slots where those changed. If you edited something deeper on the pedal itself, read every slot again.',
-    close: 'Close',
-    failed: 'The pedal stopped answering. What was read is kept; continue when the pedal is back.',
-    changedTitle: 'Changed on the pedal since the last sync',
-    changedEntry: (slot: string, before: string, after: string, parameters: number) =>
-      `${slot}: “${before}” → “${after}” (${parameters === 1 ? '1 parameter' : `${parameters} parameters`})`,
-    acknowledge: 'Got it',
-    notSynced: 'Not read yet',
   },
   // Labels for the pedal's own value lists. A value missing here shows as the pedal words it.
   enums: {

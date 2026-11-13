@@ -114,7 +114,8 @@ export function IntentionWorkspace({
   const instrument = instruments.find((item) => item.id === instrumentId) ?? instruments[0];
   const mode = confirmed ? confirmedMode(confirmed) : null;
   const slotIndex = slots.findIndex((item) => item.id === confirmed?.userSlot);
-  const previousSlot = slotIndex >= 0 ? slots[(slotIndex - 1 + slots.length) % slots.length] : undefined;
+  const previousSlot =
+    slotIndex >= 0 ? slots[(slotIndex - 1 + slots.length) % slots.length] : undefined;
   const nextSlot = slotIndex >= 0 ? slots[(slotIndex + 1) % slots.length] : undefined;
 
   const chooseSlot = (id: number | undefined) => {
@@ -247,7 +248,13 @@ export function IntentionWorkspace({
               const layer = confirmed?.layers.find((item) => item.slot === index);
               const on = layer?.on === true;
               return (
-                <button key={index} type="button" className="now-card" disabled={busy} onClick={() => openPcm(index)}>
+                <button
+                  key={index}
+                  type="button"
+                  className="now-card"
+                  disabled={busy}
+                  onClick={() => openPcm(index)}
+                >
                   <span className="now-kicker">{t('intention.pcm', index)}</span>
                   <span className="now-value">{on ? layer.toneName : t('intention.free')}</span>
                   <span className="now-detail">
@@ -303,7 +310,9 @@ export function IntentionWorkspace({
                 >
                   <span className="now-kicker">{recipeKicker(id)}</span>
                   <span className="now-value">{recipeLabel(t, id)}</span>
-                  <span className="now-detail">{plan.ok ? recipeHint(t, id) : t('intention.inUse')}</span>
+                  <span className="now-detail">
+                    {plan.ok ? recipeHint(t, id) : t('intention.inUse')}
+                  </span>
                 </button>
               );
             })}
@@ -312,11 +321,18 @@ export function IntentionWorkspace({
       </div>
 
       <div className="now-actions">
-        <button type="button" className="primary now-card" disabled={busy || confirmed?.userSlot == null} onClick={openSave}>
+        <button
+          type="button"
+          className="primary now-card"
+          disabled={busy || confirmed?.userSlot == null}
+          onClick={openSave}
+        >
           <span className="now-kicker">USER {confirmed?.slotLabel}</span>
           <span className="now-value">
             {t('intention.save')}
-            {confirmed?.tempDiffersFromUser ? <span className="now-dot" aria-hidden="true" /> : null}
+            {confirmed?.tempDiffersFromUser ? (
+              <span className="now-dot" aria-hidden="true" />
+            ) : null}
           </span>
         </button>
         <button
@@ -524,7 +540,9 @@ export function IntentionWorkspace({
                   value={feel}
                   disabled={busy}
                   onChange={setFeel}
-                  onCommit={(value) => void session.apply({ kind: 'calibration', playFeel: value }).then(report)}
+                  onCommit={(value) =>
+                    void session.apply({ kind: 'calibration', playFeel: value }).then(report)
+                  }
                 />
                 <Range
                   label={t('intention.lowVelocityCut')}
@@ -545,7 +563,9 @@ export function IntentionWorkspace({
                   disabled={busy}
                   onChange={setDynamics}
                   onCommit={(value) =>
-                    void session.apply({ kind: 'calibration', velocityDynamics: value }).then(report)
+                    void session
+                      .apply({ kind: 'calibration', velocityDynamics: value })
+                      .then(report)
                   }
                 />
                 <Range
@@ -555,7 +575,9 @@ export function IntentionWorkspace({
                   value={sens}
                   disabled={busy}
                   onChange={setSens}
-                  onCommit={(value) => void session.apply({ kind: 'calibration', sens: value }).then(report)}
+                  onCommit={(value) =>
+                    void session.apply({ kind: 'calibration', sens: value }).then(report)
+                  }
                 />
                 <label>
                   {t('intention.scale')}
@@ -579,7 +601,8 @@ export function IntentionWorkspace({
                           profileId: instrument.id,
                           calibrationId: calibrationId || undefined,
                           puType: pickup || undefined,
-                          scaleMm: scaleMm != null && Number.isFinite(scaleMm) ? scaleMm : undefined,
+                          scaleMm:
+                            scaleMm != null && Number.isFinite(scaleMm) ? scaleMm : undefined,
                         },
                         'guitar',
                       );

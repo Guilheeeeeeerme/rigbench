@@ -63,7 +63,8 @@ export function createGr55Session(editor: Gr55Editor, system: Gr55System): Gr55I
     if (!isPedalAuthority()) return;
     const phase = queue.snapshot().phase;
     if (phase !== 'idle' && phase !== 'applied' && phase !== 'saved') return;
-    const nextSlot = editor.patchSource?.kind === 'slot' ? editor.patchSource.userPatchNumber : null;
+    const nextSlot =
+      editor.patchSource?.kind === 'slot' ? editor.patchSource.userPatchNumber : null;
     view = capture(editor, system, nextSlot === view.userSlot ? view.tempDiffersFromUser : null);
     publish();
   });
@@ -106,7 +107,10 @@ export function createGr55Session(editor: Gr55Editor, system: Gr55System): Gr55I
     });
   }
 
-  async function applyChanges(changes: FieldChange[], kind: 'apply' | 'save' = 'apply'): Promise<OperationResult> {
+  async function applyChanges(
+    changes: FieldChange[],
+    kind: 'apply' | 'save' = 'apply',
+  ): Promise<OperationResult> {
     if (queue.snapshot().blocked) return { ok: false, code: 'blocked' };
     try {
       await queue.run(kind, kind, async () => {
@@ -221,14 +225,22 @@ function mapError(error: unknown): OperationResult {
 function readChange(editor: Gr55Editor, system: Gr55System, change: FieldChange): FieldChange {
   const host = change.area === 'patch' ? editor : system;
   const read = host.read(change.field as never) as
-    | { ok: true; value: unknown }
-    | { ok: false; raw: Uint8Array };
+    { ok: true; value: unknown } | { ok: false; raw: Uint8Array };
   if (read.ok) return { area: change.area, field: change.field, value: read.value };
   if (read.raw.byteLength === 0) throw new MismatchError();
-  return { area: change.area, field: change.field, value: undefined, raw: Uint8Array.from(read.raw) };
+  return {
+    area: change.area,
+    field: change.field,
+    value: undefined,
+    raw: Uint8Array.from(read.raw),
+  };
 }
 
-function capture(editor: Gr55Editor, system: Gr55System, tempDiffersFromUser: boolean | null): ConfirmedView {
+function capture(
+  editor: Gr55Editor,
+  system: Gr55System,
+  tempDiffersFromUser: boolean | null,
+): ConfirmedView {
   const slot = editor.patchSource?.kind === 'slot' ? editor.patchSource.userPatchNumber : null;
   const layers = [1, 2].map((slotNumber) => {
     const pcm = slotNumber === 1 ? patch.patchPCMTone1 : patch.patchPCMTone2;

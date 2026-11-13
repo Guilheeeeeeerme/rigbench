@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { connectionReducer, initialConnectionState, setPhase, setProblem } from './slices/connectionSlice';
+import {
+  connectionReducer,
+  initialConnectionState,
+  setPhase,
+  setProblem,
+} from './slices/connectionSlice';
 
 describe('connection slice', () => {
   test('phase stays in memory and starts idle', () => {

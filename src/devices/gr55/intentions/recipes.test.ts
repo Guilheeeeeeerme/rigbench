@@ -64,8 +64,14 @@ describe('GR-55 intention recipes', () => {
     expect(editor.read(patch.common.normalPuLevel)).toEqual({ ok: true, value: 100 });
     expect(editor.read(patch.common.normalPuMute)).toEqual({ ok: true, value: false });
     expect(editor.read(patch.modelingTone.muteSwitch)).toEqual({ ok: true, value: true });
-    expect(editor.read(patch.common.expPdlOff.function)).toEqual({ ok: true, value: 'TONE VOLUME' });
-    expect(editor.read(patch.common.expPdlOff.volumeSwitchPCMTone1)).toEqual({ ok: true, value: true });
+    expect(editor.read(patch.common.expPdlOff.function)).toEqual({
+      ok: true,
+      value: 'TONE VOLUME',
+    });
+    expect(editor.read(patch.common.expPdlOff.volumeSwitchPCMTone1)).toEqual({
+      ok: true,
+      value: true,
+    });
     expect(editor.read(reverbLevel)).toEqual({ ok: true, value: 77 });
     const addresses = dt1(device).map(addressOf);
     expect(addresses).not.toContain(GR55_MAP.setup.patchPc.address);

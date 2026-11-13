@@ -4,10 +4,7 @@ import { IntentionWorkspace } from '../../experience/IntentionWorkspace';
 import type { Gr55Editor } from './editor';
 import { AdvancedPatchEditor } from './AdvancedPatchEditor';
 import { createGr55Session } from './intentions/session';
-import {
-  INSTRUMENT_PROFILES,
-  PIEZO_BRAND_OPTIONS,
-} from './instrumentProfiles';
+import { INSTRUMENT_PROFILES, PIEZO_BRAND_OPTIONS } from './instrumentProfiles';
 import { slotsOfMode } from './slots';
 import { useSystem } from './SystemParts';
 import { verifiedFieldHost } from './verifiedFieldHost';
@@ -26,7 +23,8 @@ export function Gr55Workspace({
   const system = useSystem();
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const state = useSyncExternalStore(session.subscribe, session.getState, session.getState);
-  const patchVersion = useSyncExternalStore(editor.subscribe, editor.patchSnapshot);
+  // Re-render when the temporary patch changes so editor.gkMode stays fresh.
+  useSyncExternalStore(editor.subscribe, editor.patchSnapshot);
   const host = useMemo(
     () => verifiedFieldHost(session, editor, system, onError),
     [session, editor, system, onError],
@@ -51,8 +49,9 @@ export function Gr55Workspace({
     [locale],
   );
   const slots = useMemo(
-    () => slotsOfMode(editor.gkMode).map((slot) => ({ id: slot.userPatchNumber, label: slot.label })),
-    [editor, patchVersion],
+    () =>
+      slotsOfMode(editor.gkMode).map((slot) => ({ id: slot.userPatchNumber, label: slot.label })),
+    [editor.gkMode],
   );
 
   useEffect(() => {
@@ -90,12 +89,17 @@ export function Gr55Workspace({
         >
           <summary>{t('gr55.advanced.title')}</summary>
           {advancedOpen && (
-          <AdvancedPatchEditor
-            host={host}
-            gkMode={editor.gkMode}
-            patchVersion={state.lastVerifiedAt ?? 0}
-            locked={state.blocked || state.phase === 'applying' || state.phase === 'saving' || state.phase === 'verifying'}
-          />
+            <AdvancedPatchEditor
+              host={host}
+              gkMode={editor.gkMode}
+              patchVersion={state.lastVerifiedAt ?? 0}
+              locked={
+                state.blocked ||
+                state.phase === 'applying' ||
+                state.phase === 'saving' ||
+                state.phase === 'verifying'
+              }
+            />
           )}
         </details>
       }

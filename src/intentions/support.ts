@@ -26,9 +26,7 @@ export function intentionSupported(
       }
       if (intention.id === 'nylon-piano-strings-ctl') {
         return (
-          capabilities.hasNormalSignal &&
-          capabilities.hasCtl &&
-          capabilities.maxSynthLayers >= 2
+          capabilities.hasNormalSignal && capabilities.hasCtl && capabilities.maxSynthLayers >= 2
         );
       }
       return capabilities.hasNormalSignal && capabilities.maxSynthLayers >= 1;

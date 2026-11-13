@@ -4,7 +4,10 @@ import { createTestSession } from './session';
 
 describe('a second adapter runs the same intentions', () => {
   test('the experience does not import a device or SysEx', () => {
-    const source = readFileSync(new URL('../../experience/IntentionWorkspace.tsx', import.meta.url), 'utf8');
+    const source = readFileSync(
+      new URL('../../experience/IntentionWorkspace.tsx', import.meta.url),
+      'utf8',
+    );
     expect(source).not.toMatch(/from ['"][^'"]*gr55/);
     expect(source).not.toMatch(/SysEx/);
     expect(source).not.toMatch(/if\s*\(\s*gr55/);
